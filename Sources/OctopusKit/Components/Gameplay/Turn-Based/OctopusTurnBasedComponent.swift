@@ -1,0 +1,29 @@
+//
+//  OctopusTurnBasedComponent.swift
+//  OctopusKit
+//
+//  Created by ShinryakuTako@invadingoctopus.io on 2018/03/04.
+//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//
+
+// CHECK: Should this be a protocal?
+
+// ⚠️ Prototype; Incomplete.
+
+import GameplayKit
+
+/// An abstract base class for components in a turn-based game.
+///
+/// Turn-based components may still have a per-frame `update(deltaTime:)` cycle and function like all other components, but they also have special turn-based methods that must be manually called to perform tasks during discrete game-defined turns.
+public class OctopusTurnBasedComponent: OctopusComponent {
+
+    /// Abstract; override in subclass.
+    public func didBeginTurn() {}
+    
+    /// Abstract; override in subclass.
+    public func executeTurn() {}
+    
+    /// Abstract; override in subclass.
+    public func didEndTurn() {}
+    
+}
