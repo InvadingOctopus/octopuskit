@@ -21,6 +21,10 @@
 
 3. Modify the `TitleScene.swift` and `PlayScene.swift` files in the `Scenes` folders to customize them for your game.
 
+    > The file names are prefixed with `Step #` so you can follow the flow of execution at a glance.
+    >
+    > 💡 Browse the `OctopusKit/Components` folder and try experimenting with the different components!
+    >
     > 💡 If something goes wrong, see [Tips & Troubleshooting.][tips-&-troubleshooting]  
 
 ### To import OctopusKit into a new or existing project:
