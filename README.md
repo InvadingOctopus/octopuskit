@@ -147,7 +147,7 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 - ⛓ **Systems** are simply collections of components of a specific type. They do not perform any logic, but they are arranged by a **Scene** to execute components in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
     > \* *These definitions may differ from other engines, like Unity.*  
-    > *OK does not use "data-oriented design" but it does prevent you from implementing that in your project.*
+    > *OK does not use "data-oriented design" but it does not prevent you from implementing that in your project.*
 
 The primary workflow is writing component classes for each "unit" of visual appearance and gameplay logic, then combining them in entities that appear onscreen or handle game data in the "backend."
 
