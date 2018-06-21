@@ -76,7 +76,8 @@ If an entity needs multiple components of the same type but with different param
 
 ----
 
-OctopusKit © 2018 InvadingOctopus.com, github.com/invadingoctopus/octopuskit  
-[Apache License 2.0][license]
+OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license] • [github.com/invadingoctopus/octopuskit][repository]
 
+[repository]: https://github.com/invadingoctopus/octopuskit
+[website]: https://invadingoctopus.io
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html

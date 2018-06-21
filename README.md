@@ -7,7 +7,7 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 2. [Overview](#overview)
 3. [Design Goals](#design-goals)
 4. [Getting Started](#getting-started)
-5. [Etcetera](#etcetera) (license, contact, etc.)
+5. [Etcetera](#etcetera) (license, contact etc.)
 
 🚀 *Anxious to dive in? Download the [Quickstart project.][quickstart-project]* 
 
@@ -214,8 +214,14 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ----
 
-OctopusKit © 2018 InvadingOctopus.com, github.com/invadingoctopus/octopuskit  
-[Apache License 2.0][license]
+OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license] • [github.com/invadingoctopus/octopuskit][repository]
+
+[repository]: https://github.com/invadingoctopus/octopuskit
+[website]: https://invadingoctopus.io
+[license]: https://www.apache.org/licenses/LICENSE-2.0.html
+[twitter]: https://twitter.com/invadingoctopus
+[discord]: https://discord.gg/y3har7D
+[patreon]: https://www.patreon.com/invadingoctopus
 
 [quickstart-&-usage-guide]: ./Documentation/Usage%20Guide.md
 [quickstart-project]: ../../releases
@@ -226,11 +232,6 @@ OctopusKit © 2018 InvadingOctopus.com, github.com/invadingoctopus/octopuskit
 [swift-book]: https://docs.swift.org/swift-book/GuidedTour/GuidedTour.html
 [swift-api-guidelines]: https://swift.org/documentation/api-design-guidelines/
 [wwdc-610]: https://developer.apple.com/videos/play/wwdc2016-610/?time=137
-
 [composition-over-inheritance]: https://en.wikipedia.org/wiki/Composition_over_inheritance
 [entity–component–system]: https://en.wikipedia.org/wiki/Entity–component–system
 
-[patreon]: https://www.patreon.com/invadingoctopus
-[twitter]: https://twitter.com/invadingoctopus
-[discord]: https://discord.gg/y3har7D
-[license]: https://www.apache.org/licenses/LICENSE-2.0.html

@@ -21,6 +21,10 @@
 
 3. Modify the `TitleScene.swift` and `PlayScene.swift` files in the `Scenes` folders to customize them for your game.
 
+    > The file names are prefixed with `Step #` so you can follow the flow of execution at a glance.
+    >
+    > 💡 Browse the `OctopusKit/Components` folder and try experimenting with the different components!
+    >
     > 💡 If something goes wrong, see [Tips & Troubleshooting.][tips-&-troubleshooting]  
 
 ### To import OctopusKit into a new or existing project:
@@ -270,9 +274,10 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ----
 
-OctopusKit © 2018 InvadingOctopus.com, github.com/invadingoctopus/octopuskit  
-[Apache License 2.0][license]
+OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license] • [github.com/invadingoctopus/octopuskit][repository]
 
+[repository]: https://github.com/invadingoctopus/octopuskit
+[website]: https://invadingoctopus.io
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html
 
 [quickstart-project]: ../../../releases
