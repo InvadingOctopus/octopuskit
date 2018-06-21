@@ -270,9 +270,10 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ----
 
-OctopusKit © 2018 InvadingOctopus.com, github.com/invadingoctopus/octopuskit  
-[Apache License 2.0][license]
+OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license] • [github.com/invadingoctopus/octopuskit][repository]
 
+[repository]: https://github.com/invadingoctopus/octopuskit
+[website]: https://invadingoctopus.com
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html
 
 [quickstart-project]: ../../../releases
