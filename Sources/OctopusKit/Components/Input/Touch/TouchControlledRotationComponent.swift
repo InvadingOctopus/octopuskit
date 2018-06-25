@@ -8,7 +8,6 @@
 
 // TODO: Tests
 // CHECK: Make it "PositionControlled" to be usable with mouse [and perhaps joystick] input too?
-// PERFORMANCE: May need optimization.
 
 import SpriteKit
 import GameplayKit
