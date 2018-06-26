@@ -27,10 +27,10 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
             NodeTouchComponent.self,
             NodeTouchClosureComponent.self,
             MotionManagerComponent.self,
-            TouchControlledPositioningComponent.self,
             
             // 3: Movement and physics.
             
+            TouchControlledPositioningComponent.self,
             OctopusAgent2D.self,
             PhysicsComponent.self, // The physics component should come in after other components have modified node properties, so it can clamp the velocity etc. if such limits have been specified.
             
@@ -44,7 +44,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     }
     
     fileprivate func createEntities() {
-        // Customize
+        // Customize: This is where you build your scene.
     }
     
     // MARK: - Frame Update
@@ -55,7 +55,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         
         // Update game state, entities and components.
         
-        OctopusEngine.shared?.gameController.update(deltaTime: updateTimeDelta)
+        OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)
         updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
 

@@ -65,6 +65,8 @@
 
 * You can give each of your projects a separate copy of the OctopusKit code to let you modify the engine to suit each project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "**Copy items if needed**")
 
+* To add templates for quickly creating common OK classes, copy the files from the `Templates/Xcode` folder in the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
+
 ## Control Flow & Object Hierarchy
 
 | 🐙 |
