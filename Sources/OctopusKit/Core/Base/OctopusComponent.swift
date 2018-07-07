@@ -36,9 +36,14 @@ public class OctopusComponent: GKComponent {
         return nil
     }
     
-    /// Returns the associated entity as an `OctopusEntity` if applicable.
+    /// Returns the entity associated with this component, if it is an `OctopusEntity`.
     public var octopusEntity: OctopusEntity? {
-        return super.entity as? OctopusEntity
+        return self.entity as? OctopusEntity
+    }
+    
+    /// Returns the delegate for the entity associated with this component, if any.
+    public var entityDelegate: OctopusEntityDelegate? {
+        return (self.entity as? OctopusEntity)?.delegate
     }
     
     /// Ensures that any necessary cleanup (such as removing child nodes) is performed in case of a forced deinit, which may be caused by GameplayKit if multiple components of the same type are added to the same entity, as that replaces previous components of the same class without letting them call `willRemoveFromEntity()`.
