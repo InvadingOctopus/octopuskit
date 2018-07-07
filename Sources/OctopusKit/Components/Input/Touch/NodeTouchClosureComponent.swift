@@ -86,7 +86,7 @@ public class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableCompon
         
         guard
             !isPaused,
-            let node = entityNode as? SKSpriteNode,
+            let node = entityNode,
             let nodeTouchComponent = coComponent(NodeTouchComponent.self)
             else { return }
      
