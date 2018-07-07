@@ -167,11 +167,13 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
         
         stateChangedThisFrame = false
         
+        // CHECK: This component should be usable on an `OctopusScene.entity` as well as any other subentity. Should we find a better way to do this than making `parent` and `scene` equal to the `node`?
+        
         guard
             self.state != .disabled,
             let node = entityNode,
-            let parent = node.parent,
-            let scene = node.scene as? OctopusScene,
+            let parent = (node is SKScene ? node : node.parent), // If the component's node is a scene, `parent` would be set to the node itself.
+            let scene = (node.scene as? OctopusScene) ?? (node as? OctopusScene), // We need the scene to be an `OctopusScene`.
             !scene.didDismissSubsceneThisFrame, // CHECK: Include `didPresentSubsceneThisFrame`?
             let touchEventComponent = coComponent(TouchEventComponent.self)
             else {
