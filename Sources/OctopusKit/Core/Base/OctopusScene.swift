@@ -329,7 +329,7 @@ public class OctopusScene: SKScene,
         }
     }
     
-    /// Searches the scene for a child node matching the specified name, and creates a new entity associated with it, adding any specified components, and adds the entity to the scene unless disallowed.
+    /// Searches the scene for a child node matching the specified name, and creates a new entity associated with it, adding any specified components, and adds the entity to the scene unless choosing not to.
     ///
     /// If more than one child node shares the same name, the first node discovered is used. The entity's name will be set to the node's name.
     ///
