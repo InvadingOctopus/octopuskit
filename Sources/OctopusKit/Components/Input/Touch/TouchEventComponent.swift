@@ -8,7 +8,7 @@
 
 // TODO: A way to associate each stored touch with the node that received it.
 // CHECK: Use arrays of each event category?
-
+// CHECK: Confirm that the first and latest touches are indeed tracked properly and update in order as arbitrary touches end.
 
 import GameplayKit
 
@@ -78,18 +78,33 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     // MARK: Events
     
+    // ℹ️ NOTE: The system may send the same type of event (began, ended, etc.) multiple times during a single frame, each reporting different touches, so the `touches` array must be updated inside the event property observers, NOT inside the `update` method, because that could miss the beginning or end of some touches (if they are not reported in the latest event to be received during a frame.) 2018-07-17
+    
     public var touchesBegan: TouchEvent? {
         didSet {
             #if LOGINPUT
-            if touchesBegan != oldValue { debugLog("\(String(optional: touchesBegan))") }
+            if touchesBegan != oldValue { debugLog("= \(String(optional: touchesBegan))") }
             #endif
+            
+            // Add new touches to our array.
+            
+            if let touchesBegan = self.touchesBegan {
+                for newTouch in touchesBegan.touches {
+                    if !self.touches.contains(newTouch) {
+                        self.touches.append(newTouch)
+                    }
+                }
+            }
+            
+            // CHECK: Should the array be sorted by touch timestamps?
+            // TODO: Confirm that the `firstTouch` property correctly points to the next oldest touch after the first touch ends.
         }
     }
     
     public var touchesMoved: TouchEvent? {
         didSet {
             #if LOGINPUT
-            if touchesMoved != oldValue { debugLog("\(String(optional: touchesMoved))") }
+            if touchesMoved != oldValue { debugLog("= \(String(optional: touchesMoved))") }
             #endif
         }
     }
@@ -97,30 +112,54 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     public var touchesEnded: TouchEvent? {
         didSet {
             #if LOGINPUT
-            if touchesEnded != oldValue { debugLog("\(String(optional: touchesEnded))") }
+            if touchesEnded != oldValue { debugLog("= \(String(optional: touchesEnded))") }
             #endif
+            
+            // Remove finished touches from our array.
+            
+            if let touchesEnded = self.touchesEnded {
+                for touch in touchesEnded.touches {
+                    if let indexToRemove = self.touches.index(of: touch) {
+                        self.touches.remove(at: indexToRemove)
+                    }
+                }
+            }
+            
+            // TODO: Confirm that the `latestTouch` property correctly points to the next latest touch after the latest touch end.
         }
     }
     
     public var touchesCancelled: TouchEvent? {
         didSet {
             #if LOGINPUT
-            if touchesCancelled != oldValue { debugLog("\(String(optional: touchesCancelled))") }
+            if touchesCancelled != oldValue { debugLog("= \(String(optional: touchesCancelled))") }
             #endif
+            
+            // Remove finished touches from our array.
+            
+            if let touchesEnded = self.touchesEnded {
+                for touch in touchesEnded.touches {
+                    if let indexToRemove = self.touches.index(of: touch) {
+                        self.touches.remove(at: indexToRemove)
+                    }
+                }
+            }
+            
+            // TODO: Confirm that the `latestTouch` property correctly points to the next latest touch after the latest touch ends.
         }
     }
     
     public var touchesEstimatedPropertiesUpdated: TouchEvent? {
         didSet {
             #if LOGINPUT
-            if touchesEstimatedPropertiesUpdated != oldValue { debugLog("\(String(optional: touchesEstimatedPropertiesUpdated))") }
+            if touchesEstimatedPropertiesUpdated != oldValue { debugLog("= \(String(optional: touchesEstimatedPropertiesUpdated))") }
             #endif
         }
     }
     
-    /// Returns an array of all the current events.
+    /// Returns an array of all events for the current frame.
     ///
-    /// - IMPORTANT: The array returned by this property is like a *snapshot* of the events *currently* stored by the component; it does *not* automatically point to new events when they are received. To ensure that you have the latest events, either query the individual `touches...` properties or recheck this property at the point of use.
+    /// - IMPORTANT: The array returned by this property is a *snapshot* of the events that are *currently* stored by this component; it does *not* automatically point to new events when they are received. To ensure that you have the latest events, either query the individual `touches...` properties or recheck this property at the point of use.
     public var allEvents: [TouchEvent?] {
         return [touchesBegan,
                 touchesMoved,
@@ -131,6 +170,8 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     // MARK: Touches
     
+    // ℹ️ DECIDE: If `touches` is an `Array` then they may be sorted and enumerated by their timestamp, but if `touches` is a `Set` then that will strongly prevent duplicate touches, right?
+    
     /// A list of currently active touches.
     ///
     /// Stores touches that are reported in `touchesBegan` events, until they are reported in a `touchesEnded` or `touchesCancelled` event.
@@ -139,31 +180,24 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     /// Stores the first touch that begins when the list of touches is empty.
     ///
     /// Components that only need to track a single touch may simply observe this property.
-    public fileprivate(set) var firstTouch: UITouch? {
-        didSet {
-            #if LOGINPUT
-            if firstTouch != oldValue { debugLog("\(String(optional: oldValue)) → \(String(optional: firstTouch))") }
-            #endif
-        }
+    public var firstTouch: UITouch? {
+        return touches.first
+        // TODO: Confirm that this property correctly points to the next oldest touch after the first touch ends.
     }
-    
     
     /// Stores the latest touch, which may be the same as the `firstTouch` property.
     ///
     /// Components that only need to track a single touch may simply observe this property.
-    public fileprivate(set) var latestTouch: UITouch? {
-        didSet {
-            #if LOGINPUT
-            if latestTouch != oldValue { debugLog("\(String(optional: oldValue)) → \(String(optional: latestTouch))") }
-            #endif
-        }
+    public var latestTouch: UITouch? {
+        return touches.last
+        // TODO: Confirm that this property correctly points to the next latest touch after the latest touch ends.
     }
     
     // MARK: - Life Cycle
     
     public override func update(deltaTime seconds: TimeInterval) {
   
-        // #1: Discard all events if we are part of a scene and the scene has displayed or dismissed a subscene this frame.
+        // #1: Discard all events if we are part of a scene that has displayed or dismissed a subscene in this frame.
         // CHECK: Necessary? Useful?
         
         if  let scene = coComponent(SpriteKitSceneComponent.self)?.scene,
@@ -181,65 +215,9 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         if touchesMoved?.shouldClear ?? false { touchesMoved = nil }
         if touchesEnded?.shouldClear ?? false { touchesEnded = nil }
         if touchesCancelled?.shouldClear ?? false { touchesCancelled = nil }
-        if  touchesEstimatedPropertiesUpdated?.shouldClear ?? false { touchesEstimatedPropertiesUpdated = nil }
+        if touchesEstimatedPropertiesUpdated?.shouldClear ?? false { touchesEstimatedPropertiesUpdated = nil }
         
-        // #3: Did any new touches begin during this frame?
-        
-        if let event = touchesBegan {
-            
-            // #2.1: Does the event have any touches we are not tracking? Add them to our list.
-            // Make sure it's in order.
-            
-            // TODO: Use functional methods for array joining.
-            
-            for touch in event.touches {
-                if !self.touches.contains(touch) {
-                    self.touches.append(touch)
-                }
-            }
-            
-            // CHECK: Should we sort the array by timestamp?
-        }
-        
-        // #4.1: Record the first touch to make it simpler to observe for components that follow a single touch.
-        
-        if self.firstTouch == nil {
-            self.firstTouch = self.touches.first
-        }
-        
-        // #4.1: Record the first touch to make it simpler to observe for components that follow a single touch.
-        // This touch may be the same as the first touch.
-        
-        self.latestTouch = self.touches.last
-        
-        // #5: Did any touches end during this frame?
-        
-        let endingEvents = [touchesEnded, touchesCancelled]
-        
-        for case let endingEvent? in endingEvents {
-            for touch in endingEvent.touches {
-                
-                // #5.1: If any of the touches we're tracking were reported in an `touchesEnded` or `touchesCancelled`, remove them from our list.
-                
-                if let indexToRemove = self.touches.index(of: touch) {
-                    self.touches.remove(at: indexToRemove)
-                }
-                
-                // #5.2: If the first touch we were tracking has ended, clear that property.
-                
-                if touch === self.firstTouch {
-                    self.firstTouch = nil
-                }
-                
-                // #5.2: If the latest touch we were tracking has ended, clear that property.
-                
-                if touch === self.latestTouch {
-                    self.latestTouch = nil
-                }
-            }
-        }
-        
-        // #6: Flag non-`nil` events to be cleared on the next frame, so that other components do not see any stale input data.
+        // #3: Flag non-`nil` events to be cleared on the next frame, so that other components do not see any stale input data.
         
         touchesBegan?.shouldClear = true
         touchesMoved?.shouldClear = true
@@ -259,8 +237,12 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         touchesCancelled = nil
         touchesEstimatedPropertiesUpdated = nil
         
-        touches.removeAll(keepingCapacity: true)
-        firstTouch = nil
+        touches.removeAll(keepingCapacity: true) // CHECK: Should the `touches` array be emptied in `clearAllEvents()`?
+    }
+    
+    public override func willRemoveFromEntity() {
+        super.willRemoveFromEntity()
+        clearAllEvents()
     }
 }
 
