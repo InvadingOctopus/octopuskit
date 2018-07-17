@@ -51,7 +51,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
             if state != oldValue { // Update only when changed.
                 
                 #if LOGINPUT
-                debugLog("\(oldValue) → \(state)")
+                debugLog("= \(oldValue) → \(state)")
                 #endif
                 
                 previousState = oldValue
@@ -75,7 +75,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
     public fileprivate(set) var stateChangedThisFrame: Bool = false{
         didSet {
             #if LOGINPUT
-            if stateChangedThisFrame != oldValue { debugLog("\(oldValue) → \(stateChangedThisFrame)") }
+            if stateChangedThisFrame != oldValue { debugLog("= \(oldValue) → \(stateChangedThisFrame)") }
             #endif
         }
     }
@@ -88,7 +88,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
             if trackedTouch != oldValue { // Reset the timestamps only if we stopped tracking a touch or started tracking a different touch.
                 
                 #if LOGINPUT
-                debugLog("\(String(optional: oldValue)) → \(String(optional: trackedTouch))")
+                debugLog("= \(String(optional: oldValue)) → \(String(optional: trackedTouch))")
                 #endif
                 
                 previousTouchTimestamp = 0
@@ -96,23 +96,28 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
 
                 if trackedTouch == nil {
                     initialTouchLocationInScene = nil
+                    initialTouchLocationInParent = nil
                 }
             }
         }
     }
     
-    /// The first observed location of the currently-tracked touch.
+    // CHECK: Keep `initialTouchLocationInScene`, or just `initialTouchLocationInParent`?
+    
+    /// The first observed location of the currently-tracked touch, in scene coordinates.
     ///
     /// Other components can compare the current location of the touch with this value to obtain the total translation over time.
     public fileprivate(set) var initialTouchLocationInScene: CGPoint? {
         didSet {
             #if LOGINPUT
-            if initialTouchLocationInScene != oldValue { debugLog("\(String(optional: oldValue)) → \(String(optional: initialTouchLocationInScene))") }
+            if initialTouchLocationInScene != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: initialTouchLocationInScene))") }
             #endif
         }
     }
     
-    /// Returns the total translation over time of the currently-tracked touch's location, in the coordinate system of the entity's `SpriteKitComponent` scene.
+    // CHECK: Keep `touchTranslationInScene`, or just `touchTranslationInParent`?
+    
+    /// Returns the total translation over time of the currently-tracked touch's location, in scene coordinates.
     ///
     /// - NOTE: This is *not* a delta value from the last time that the translation was reported.
     public var touchTranslationInScene: CGPoint? {
@@ -122,6 +127,33 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
             let scene = node.scene
             {
             return trackedTouch.location(in: scene) - initialTouchLocationInScene
+        }
+        else {
+            return nil
+        }
+    }
+    
+    /// The first observed location of the currently-tracked touch, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
+    ///
+    /// Other components can compare the current location of the touch with this value to obtain the total translation over time.
+    public fileprivate(set) var initialTouchLocationInParent: CGPoint? {
+        didSet {
+            #if LOGINPUT
+            if initialTouchLocationInParent != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: initialTouchLocationInParent))") }
+            #endif
+        }
+    }
+    
+    /// Returns the total translation over time of the currently-tracked touch's location, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
+    ///
+    /// - NOTE: This is *not* a delta value from the last time that the translation was reported.
+    public var touchTranslationInParent: CGPoint? {
+        if  let trackedTouch = self.trackedTouch,
+            let initialTouchLocationInParent = self.initialTouchLocationInParent,
+            let node = self.entityNode,
+            let parent = node.parent
+        {
+            return trackedTouch.location(in: parent) - initialTouchLocationInParent
         }
         else {
             return nil
@@ -138,7 +170,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
     private var previousTouchTimestamp: TimeInterval = 0 {
         didSet {
             #if LOGINPUT
-            if previousTouchTimestamp != oldValue { debugLog("\(oldValue) → \(previousTouchTimestamp)") }
+            if previousTouchTimestamp != oldValue { debugLog("= \(oldValue) → \(previousTouchTimestamp)") }
             #endif
         }
     }
@@ -149,7 +181,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
     public fileprivate(set) var trackedTouchTimestampDelta: TimeInterval = 0 {
         didSet {
             #if LOGINPUT
-            if trackedTouchTimestampDelta != oldValue { debugLog("\(oldValue) → \(trackedTouchTimestampDelta)") }
+            if trackedTouchTimestampDelta != oldValue { debugLog("= \(oldValue) → \(trackedTouchTimestampDelta)") }
             #endif
         }
     }
@@ -165,7 +197,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
         
         // Clear the state mutation flag until the state changes again.
         
-        stateChangedThisFrame = false
+        stateChangedThisFrame = false // NOTE: This may trigger the property observers multiple times if the state changes later on during this method.
         
         // CHECK: This component should be usable on an `OctopusScene.entity` as well as any other subentity. Should we find a better way to do this than making `parent` and `scene` equal to the `node`?
         
@@ -222,6 +254,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
                     self.previousTouchTimestamp = touch.timestamp
                     self.trackedTouchTimestampDelta = 0
                     self.initialTouchLocationInScene = touch.location(in: scene)
+                    self.initialTouchLocationInParent = touch.location(in: parent)
                     state = .touching
                     break touchesIteration
                 }
@@ -296,6 +329,9 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
         suppressCancelledState: Bool = false)
         -> TouchInteractionState
     {
+        #if LOGINPUT
+        debugLog()
+        #endif
         
         // If there's no touch being tracked, or no node or scene, just set the state to `ready`.
         
