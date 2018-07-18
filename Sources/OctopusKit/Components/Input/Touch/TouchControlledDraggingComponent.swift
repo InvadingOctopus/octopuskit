@@ -56,9 +56,21 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         }
     }
     
+    public override func didAddToEntity(withNode node: SKNode) {
+        super.didAddToEntity(withNode: node)
+        
+        // A scene itself is not really draggable, so...
+        
+        if node is SKScene {
+            OctopusKit.logForWarnings.add("A TouchControlledDraggingComponent cannot be added to the scene entity — Removing.")
+            OctopusKit.logForTips.add("See CameraPanComponent.")
+            self.removeFromEntity()
+        }
+    }
+    
     public override func update(deltaTime seconds: TimeInterval) {
         
-        // #1: Do we have a node, which has a parent, and are we tracking a touch?
+        // #1: Make sure we have a node, that has a parent, and a touch is being tracked.
         
         guard
             let node = self.entityNode,
@@ -147,18 +159,6 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
             suppressStateChangedFlag: false,
             suppressTappedState: true,
             suppressCancelledState: true)
-    }
-    
-    public override func didAddToEntity(withNode node: SKNode) {
-        super.didAddToEntity(withNode: node)
-        
-        // A scene itself is not really draggable, so...
-        
-        if node is SKScene {
-            OctopusKit.logForWarnings.add("A TouchControlledDraggingComponent cannot be added to the scene entity — Removing.")
-            OctopusKit.logForTips.add("See CameraPanComponent.")
-            self.removeFromEntity()
-        }
     }
     
     public override func willRemoveFromEntity() {
