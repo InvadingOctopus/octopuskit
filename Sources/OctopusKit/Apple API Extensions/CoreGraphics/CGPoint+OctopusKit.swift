@@ -54,7 +54,7 @@ extension CGPoint {
         
         // CHECK: Is there a difference in performance between `hypot` and the `sqrtf` formula?
         // The formula below results in a different value after 7 decimal digits.
-        
+        //
         // return CGFloat(sqrtf(
         //    Float(otherPoint.x - self.x) * Float(otherPoint.x - self.x) +
         //        Float(otherPoint.y - self.y) * Float(otherPoint.y - self.y)))
