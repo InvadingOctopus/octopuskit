@@ -6,16 +6,15 @@
 //  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: Test and verify
+// TODO: Tests.
 // CHECK: Potential 1-frame lag due to `SKScene.update(deltaTime:)` vs `SKPhysicsContactDelegate`?
+// CHECK: Warn if the entity's `OctopusScene.physicsWorld.contactDelegate` is not valid?
 
 import GameplayKit
 
 /// Stores the physics contact events from the scene to be used by other components, and clears the events every frame.
 ///
 /// - Important: For this component to function, the `OctopusScene.physicsWorld.contactDelegate` must be set to the scene.
-///
-/// As with input event components like `TouchEventComponent`, a SpriteKit scene calls its `SKPhysicsContactDelegate` handlers AFTER `update(deltaTime:)` has finished updating components and systems. So the data in `PhysicsContactEventComponent` is available to other components in the NEXT `update(deltaTime:)`.
 public final class PhysicsContactEventComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public final class ContactEvent: Equatable {
@@ -32,12 +31,12 @@ public final class PhysicsContactEventComponent: OctopusComponent, OctopusUpdata
         
         public static func == (left: ContactEvent, right: ContactEvent) -> Bool {
             return (left.contact === right.contact
-                && left.scene === right.scene)
+                &&  left.scene === right.scene)
         }
         
         public static func != (left: ContactEvent, right: ContactEvent) -> Bool {
             return (left.contact !== right.contact
-                && left.scene !== right.scene)
+                &&  left.scene !== right.scene)
         }
     }
     
