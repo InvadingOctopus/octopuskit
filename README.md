@@ -9,7 +9,7 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 4. [Getting Started](#getting-started)
 5. [Etcetera](#etcetera) (license, contact etc.)
 
-🚀 *Anxious to dive in? Download the [Quickstart project.][quickstart-project]* 
+🚀 *Eager to dive in? Download the [Quickstart project.][quickstart-project]* 
 
 > This is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own *(see Design Goals ahead.)*
 >
