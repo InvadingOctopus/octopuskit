@@ -8,7 +8,7 @@
 
 import GameplayKit
 
-/// A base class for components that act upon a physics contact event if it involves this component's entity. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.
+/// A base class for components that act upon a physics contact event if it involves the entity's `SpriteKitComponent` node. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.
 ///
 /// **Dependencies:** `PhysicsComponent`, `PhysicsContactEventComponent`
 public class PhysicsContactHandlerComponent: OctopusComponent, OctopusUpdatableComponent {
@@ -24,25 +24,45 @@ public class PhysicsContactHandlerComponent: OctopusComponent, OctopusUpdatableC
         let contactEventComponent = coComponent(PhysicsContactEventComponent.self)
         else { return }
         
+        // Handle the beginning of new contacts.
+        
         for event in contactEventComponent.contactBeginnings {
-            if event.contact.bodyA == physicsComponent.physicsBody
-                || event.contact.bodyB == physicsComponent.physicsBody {
-                didBegin(event.contact, in: event.scene)
+            
+            let contact = event.contact // PERFORMANCE? Does this help? CHECK: Better way to write this?
+            
+            if contact.bodyA == physicsComponent.physicsBody
+            || contact.bodyB == physicsComponent.physicsBody {
+                
+                #if LOGPHYSICS
+                debugLog("💢 \(contact) BEGAN. A: \"\(contact.bodyA.node?.name ?? "")\", B: \"\(contact.bodyB.node?.name ?? "")\", point: \(contact.contactPoint), impulse: \(contact.collisionImpulse), normal: \(contact.contactNormal)")
+                #endif
+                
+                didBegin(contact, in: event.scene)
             }
         }
         
+        // Handle contacts that have just ended.
+        
         for event in contactEventComponent.contactEndings {
-            if event.contact.bodyA == physicsComponent.physicsBody
-                || event.contact.bodyB == physicsComponent.physicsBody {
-                didEnd(event.contact, in: event.scene)
+            
+            let contact = event.contact // PERFORMANCE? Does this help? CHECK: Better way to write this?
+            
+            #if LOGPHYSICS
+            debugLog("💢 \(contact) ENDED. A: \"\(contact.bodyA.node?.name ?? "")\", B: \"\(contact.bodyB.node?.name ?? "")\", point: \(contact.contactPoint), impulse: \(contact.collisionImpulse), normal: \(contact.contactNormal)")
+            #endif
+            
+            if contact.bodyA == physicsComponent.physicsBody
+            || contact.bodyB == physicsComponent.physicsBody {
+                
+                didEnd(contact, in: event.scene)
             }
         }
     }
     
-    /// Abstract; to be implemented by subclass.
+    /// Abstract; to be implemented by a subclass.
     public func didBegin(_ contact: SKPhysicsContact, in scene: OctopusScene?) {}
     
-    /// Abstract; to be implemented by subclass.
+    /// Abstract; to be implemented by a subclass.
     public func didEnd(_ contact: SKPhysicsContact, in scene: OctopusScene?) {}
     
 }
