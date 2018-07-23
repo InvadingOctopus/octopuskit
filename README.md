@@ -194,13 +194,13 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ## Etcetera
 
-> **Skill Level: Intermediate**: OK does not attempt to present itself as a tool for "absolute beginners", mostly because I'm too lazy to write documentation from step zero, but it's not "advanced" level stuff either. If you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK. 
+- **Skill Level: Intermediate**: OK does not attempt to present itself as a tool for "absolute beginners", mostly because I'm too lazy to write documentation from step zero, but it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK. 
 > 
 > You should also read about the ["Composition over inheritance"][composition-over-inheritance] and ["Entity–component–system"][entity–component–system] patterns if you're not already familiar with those concepts, although OK's implementation of these may be different than what you expect.
 
-- Currently, API documentation is only provided via extensive source-code comments; there is no standalone documentation for the API, as I do not have the time and energy to write it alongside developing the engine. :(
+- Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
 
-    > The best way for learning how to make the most of this engine is to examine the [Quickstart project][quickstart-project] and read the engine source code. In the future I might build a demo game to serve as a tutorial.
+    > The best way to learn how to make the most of this engine is to examine the [Quickstart project][quickstart-project] and read the engine source code. In the future I might make a demo game to serve as a tutorial. There is no standalone reference for the API, as I don't have the time and energy to write that alongside developing the engine. :(
 
 - This project may be referred to as "OctopusKit", "OK" or "OKIO" (for "OctopusKit by Invading Octopus") but "IOOK" sounds weird.
 
@@ -210,7 +210,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 - **License: [Apache 2.0][license]**
 
-- *Not affiliated in any way with Apple.*
+- *This project is not affiliated in any way with Apple.*
 
 ----
 
@@ -223,11 +223,11 @@ OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
 [discord]: https://discord.gg/y3har7D
 [patreon]: https://www.patreon.com/invadingoctopus
 
-[quickstart-&-usage-guide]: ./Documentation/Usage%20Guide.md
-[quickstart-project]: ../../releases
-[tips-&-troubleshooting]: ./Documentation/Tips%20&%20Troubleshooting.md
-[coding-conventions-&-design-guide]: ./Documentation/Coding%20Conventions%20&%20Design%20Decisions.md
-[todo-&roadmap]: ./Documentation/TODO%20&%20Roadmap.md
+[quickstart-&-usage-guide]: Documentation/Usage%20Guide.html
+[quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
+[tips-&-troubleshooting]: Documentation/Tips%20&%20Troubleshooting.html
+[coding-conventions-&-design-guide]: Documentation/Coding%20Conventions%20&%20Design%20Decisions.html
+[todo-&roadmap]: Documentation/TODO%20&%20Roadmap.html
 
 [swift-book]: https://docs.swift.org/swift-book/GuidedTour/GuidedTour.html
 [swift-api-guidelines]: https://swift.org/documentation/api-design-guidelines/
