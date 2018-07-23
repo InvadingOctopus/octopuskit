@@ -282,9 +282,9 @@ OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
 [website]: https://invadingoctopus.io
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html
 
-[quickstart-project]: ../../../releases
-[octopuskit-github]: ../../../../
+[quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
+[octopuskit-github]: https://github.com/invadingoctopus/octopuskit
 
-[tips-&-troubleshooting]: Tips%20&%20Troubleshooting.md
+[tips-&-troubleshooting]: Tips%20&%20Troubleshooting.html
 
 [mvc]: https://en.wikipedia.org/wiki/Model–view–controller

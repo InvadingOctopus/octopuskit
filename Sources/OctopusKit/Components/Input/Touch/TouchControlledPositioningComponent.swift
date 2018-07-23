@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-/// Sets the position of the entity's `SpriteKitComponent` node to the location of the first touch received by the entity's `TouchEventComponent`.
+/// Sets the position of the entity's `SpriteKitComponent` node to the location of the first or latest touch received by the entity's `TouchEventComponent`.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
 public final class TouchControlledPositioningComponent: OctopusComponent, OctopusUpdatableComponent {
@@ -19,21 +19,34 @@ public final class TouchControlledPositioningComponent: OctopusComponent, Octopu
                 TouchEventComponent.self]
     }
     
+    public var trackLatestTouchInsteadOfFirst: Bool = false
+
+    public var trackedTouch: UITouch? {
+        return (trackLatestTouchInsteadOfFirst ? coComponent(ofType: TouchEventComponent.self)?.latestTouch :  coComponent(ofType: TouchEventComponent.self)?.firstTouch)
+    }
+    
+    public init(trackLatestTouchInsteadOfFirst: Bool = false) {
+        self.trackLatestTouchInsteadOfFirst = trackLatestTouchInsteadOfFirst
+        super.init()
+    }
+    
+    public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
     public override func update(deltaTime seconds: TimeInterval) {
         
         guard
             let node = self.entityNode,
             let parent = node.parent,
-            let firstTrackedTouch = coComponent(TouchEventComponent.self)?.firstTouch
+            let trackedTouch = self.trackedTouch
             else { return }
         
-        node.position = firstTrackedTouch.location(in: parent)
+        node.position = trackedTouch.location(in: parent)
         
-        // Update the `TouchStateComponent` for the new position if there is one.
+        // Update the state of a `NodeTouchComponent`, if present, for the new position.
         
         if let nodeTouchComponent = coComponent(NodeTouchComponent.self) {
             nodeTouchComponent.updateState(suppressTappedState: true,
-                                            suppressCancelledState: true)
+                                           suppressCancelledState: true)
         }
         
     }

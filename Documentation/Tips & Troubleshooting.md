@@ -73,6 +73,7 @@ If an entity needs multiple components of the same type but with different param
 > TODO: Instructions on where to enter these in Xcode
 
 * `LOGINPUT` - Logs all input events and related information.
+* `LOGPHYSICS` - Logs all physics contact events.
 
 ----
 

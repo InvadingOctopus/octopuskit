@@ -40,6 +40,14 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     
     public var isPaused: Bool = false
     
+    public var isPanning: Bool = false {
+        didSet {
+            #if LOGINPUT
+            if isPanning != oldValue { debugLog("= \(oldValue) → \(isPanning)") }
+            #endif
+        }
+    }
+    
     /// If `true`, the camera will slide for a distance depending on the panning velocity at the end of the gesture.
     public var isInertialScrollingEnabled: Bool
     
@@ -56,18 +64,18 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     private var initialCameraPosition: CGPoint? {
         didSet {
             #if LOGINPUT
-            if initialCameraPosition != oldValue { debugLog("\(String(optional: oldValue)) → \(String(optional: initialCameraPosition))") }
+            if initialCameraPosition != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: initialCameraPosition))") }
             #endif
         }
     }
     
-    /// A flag that indicates whether there is a gesture to process in the `update(deltaTime:)` method.
+    /// A flag that indicates whether there is a gesture to process for the `update(deltaTime:)` method.
     ///
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
     private var haveGestureToProcess: Bool = false {
         didSet {
             #if LOGINPUT
-            if haveGestureToProcess != oldValue { debugLog("\(oldValue) → \(haveGestureToProcess)") }
+            if haveGestureToProcess != oldValue { debugLog("= \(oldValue) → \(haveGestureToProcess)") }
             #endif
         }
     }
@@ -104,11 +112,15 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     
         guard panGestureRecognizer.numberOfTouches >= self.minimumNumberOfTouches else { return }
         haveGestureToProcess = true
+        
+        if panGestureRecognizer.state == .ended {
+            self.isPanning = false
+        }
     }
     
     public override func update(deltaTime seconds: TimeInterval) {
         
-        // Start by checking if we have a gesture to process, then clear the `haveGestureToProcess` flag regardless of any other conditions, so that the flag does not hold an stale state for future frames.
+        // Start by checking if we have a gesture to process, then clear the `haveGestureToProcess` flag regardless of any other conditions, so that the flag does not hold a stale state for future frames.
         
         guard haveGestureToProcess else { return }
         
@@ -125,7 +137,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
         
         // CHECK: Should we get the translation for the scene's view or the recognizer's view?
         
-        // ℹ️ DESIGN: The "natural" panning behavior is for the content to move in the direction of the pan, as in the OS's Photos app for example.
+        // ℹ️ DESIGN: The "natural" panning behavior is for the content to move in the direction of the pan, as in the system Photos app for example.
         
         // ⚠️ NOTE: "The x and y values report the total translation over time. They are not delta values from the last time that the translation was reported. Apply the translation value to the state of the view when the gesture is first recognized—do not concatenate the value each time the handler is called." https://developer.apple.com/documentation/uikit/uipangesturerecognizer/1621207-translation
         // This is why we use `initialCameraPosition`
@@ -140,6 +152,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
             #endif
             
             self.initialCameraPosition = camera.position
+            self.isPanning = true
             
         case .changed:
             #if LOGINPUT
@@ -158,6 +171,8 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
                 
                 camera.position = initialCameraPosition + translation
             }
+            
+            self.isPanning = true
             
             // CHECK: Useful? // panGestureRecognizer.setTranslation(CGPoint.zero, in: sceneView)
             
@@ -206,6 +221,11 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
         guard let panGestureRecognizer = coComponent(PanGestureRecognizerComponent.self)?.gestureRecognizer else { return }
         
         panGestureRecognizer.removeTarget(self, action: #selector(gestureEvent)) // CHECK: Should `action` be `nil`?
+        
+        // Reset flags.
+        
+        self.haveGestureToProcess = false
+        self.isPanning = false
     }
 }
 
