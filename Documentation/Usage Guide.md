@@ -23,7 +23,7 @@ permalink: documentation/usage.html
 
 2. Build and run the project.
 
-3. Modify the `TitleScene.swift` and `PlayScene.swift` files in the `Scenes` folders to customize them for your game.
+3. Modify the `TitleScene.swift` and `PlayScene.swift` files in the `Scenes` folder to customize them for your game.
 
     > The file names are prefixed with `Step #` so you can follow the flow of execution at a glance.
     >
@@ -83,7 +83,7 @@ permalink: documentation/usage.html
 
 ## Folder Organization
 
-- `Apple API Extensions`: Adds engine-specific functionality and general convenience features to classes provided by Apple.
+- `Apple API Extensions`: Adds engine-specific functionality and general convenience features to the classes provided by Apple.
 
 - `Assets`: A collection of basic images, shaders and sounds to get you started.
 

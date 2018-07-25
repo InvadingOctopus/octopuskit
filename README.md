@@ -104,33 +104,35 @@ if let editorScene = SKReferenceNode(fileNamed: "EditorScene.sks") {
     scene.addChild(editorScene)
 }
 
-// Search the entire node tree for all nodes named "Turret",
-// and give them properties of "tower defense" turrets
+// Search the entire tree for all nodes named "Turret",
+// and give them properties of "tower defense" turrets,
 // and make them independently draggable by the player.
 
-for namedNode in scene["//Turret"] {
-    scene.addEntity(OctopusEntity(components: [
-        SpriteKitComponent(node: namedNode),
-        RelayComponent(for: sharedTouchEventComponent),
-                
-        // Track the first touch that begins inside the sprite.
-        NodeTouchComponent(),
-                
-        // Let the player select and drag the sprite.
-        // This differs from the TouchControlledPositioningComponent in a previous example.
-        TouchControlledDraggingComponent()
-                
-        // A GameplayKit Agent directed by AI components.
-        OctopusAgent2D(),        
+for turretNode in scene["//Turret"] {
 
+    // Create a new entity for each node found.
+    scene.addEntity(OctopusEntity(components: [
+    
+        SpriteKitComponent(node: turretNode),
+        
+        RelayComponent(for: sharedTouchEventComponent),
+                        
         // Hypothetical game-specific components.
         HealthComponent(),
         AttackComponent(),
-        MonsterTargettingComponent()]))
+        MonsterTargettingComponent(),
+        
+        // Track the first touch that begins inside the sprite.
+        NodeTouchComponent(),
+                
+        // Let the player select and drag an individual sprite.
+        // This differs from the TouchControlledPositioningComponent in a previous example, 
+        // which repositions nodes regardless of where the touch began.
+        TouchControlledDraggingComponent() ]))
 }
 
 // Once the first monster wave starts, you could replace TouchControlledDraggingComponent 
-// with TouchControlledShootingComponent to make the turrets immovable but manually-triggered.
+// with TouchControlledShootingComponent to make the turrets immovable but manually-fired.
 ```
 
 ## Overview
@@ -143,15 +145,15 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 
 - ⚙️ **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game. They may be dynamically added to and removed from an entity to alter its appearance and behavior during runtime. The engine comes with a library of many customizable components for graphics, gameplay, physics and UI etc. 
 
-- ⛓ **Systems** are simply collections of components of a specific type. They do not perform any logic, but they are arranged by a **Scene** to execute components in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
+- ⛓ **Systems** are simply collections of components *of a specific type.* They do not perform any logic, but they are arranged by a **Scene** in an array to execute components from all entities in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
     > \* *These definitions may differ from other engines, like Unity.*  
     >
     > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
 
-Your primary workflow will be writing component classes for each "part" of visual appearance and gameplay logic, then combining them to build entities which appear onscreen or abstract entities that handle data in the "backend."
+Your primary workflow will mostly consist of writing component classes for each "part" of visual appearance and gameplay logic, then combining them to build entities which appear onscreen or abstract entities that handle data in the "backend."
 
-> e.g.: say a _SceneBackgroundEntity_ containing a _CloudsComponent_ and a *HillsComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.)
+> e.g.: say a _ParallaxBackgroundEntity_ containing a _CloudsComponent_, a *HillsComponent* and a *TreesComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.
 
 ## Design Goals
 
