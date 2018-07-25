@@ -65,12 +65,18 @@ permalink: documentation/usage.html
 
 #### Notes
 
-* Including the OctopusKit code as a part of your main project gives you the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker autocompletion, easier navigation etc.
+* Including the OctopusKit code in your main project provides the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker modification and autocompletion, easier navigation etc.
 
-* You can give each of your projects a separate copy of the OctopusKit code to let you modify the engine to suit each project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "**Copy items if needed**")
+* You can give each of your projects a separate copy of the OctopusKit code to let you customize the engine to suit each specific project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "**Copy items if needed**")
 
-* To add templates for quickly creating common OK classes, copy the files from the `Templates/Xcode` folder in the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
+* **Xcode Templates:** To quickly create new files for common OK classes such as scenes and components, copy the files from the `Templates/Xcode` folder in the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
 
+* Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
+
+    > This guide provides an overview of the engine architecture, but there is no standalone reference for the API, as I don't have the time and energy to write that alongside developing the engine. (´･_･`)  
+    >
+    > The best way to learn may be to examine the engine source code. In the future I might make a demo game to serve as a comprehensive tutorial.
+    
 ## Control Flow & Object Hierarchy
 
 | 🐙 |
