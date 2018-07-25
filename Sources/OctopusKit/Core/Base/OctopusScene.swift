@@ -756,19 +756,19 @@ public class OctopusScene: SKScene,
     
     // MARK: - Physics
     
-    /// Relay physics contact events to the scene's `PhysicsContactEventComponent`.
+    /// Relay physics contact events to the scene's `PhysicsEventComponent`.
     public func didBegin(_ contact: SKPhysicsContact) {
         
-        if let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsContactEventComponent.self) {
-            physicsEventComponent.contactBeginnings.append(PhysicsContactEventComponent.ContactEvent(contact: contact, scene: self))
+        if let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsEventComponent.self) {
+            physicsEventComponent.contactBeginnings.append(PhysicsEventComponent.ContactEvent(contact: contact, scene: self))
         }
     }
     
-    /// Relay physics contact events to the scene's `PhysicsContactEventComponent`.
+    /// Relay physics contact events to the scene's `PhysicsEventComponent`.
     public func didEnd(_ contact: SKPhysicsContact) {
         
-        if let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsContactEventComponent.self) {
-            physicsEventComponent.contactEndings.append(PhysicsContactEventComponent.ContactEvent(contact: contact, scene: self))
+        if let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsEventComponent.self) {
+            physicsEventComponent.contactEndings.append(PhysicsEventComponent.ContactEvent(contact: contact, scene: self))
         }
     }
     

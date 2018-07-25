@@ -10,18 +10,18 @@ import GameplayKit
 
 /// A base class for components that act upon a physics contact event if it involves the entity's `SpriteKitComponent` node. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.
 ///
-/// **Dependencies:** `PhysicsComponent`, `PhysicsContactEventComponent`
+/// **Dependencies:** `PhysicsComponent`, `PhysicsEventComponent`
 public class PhysicsContactHandlerComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         return [PhysicsComponent.self,
-                PhysicsContactEventComponent.self]
+                PhysicsEventComponent.self]
     }
     
     public override func update(deltaTime seconds: TimeInterval) {
         guard
         let physicsComponent = coComponent(PhysicsComponent.self),
-        let contactEventComponent = coComponent(PhysicsContactEventComponent.self)
+        let contactEventComponent = coComponent(PhysicsEventComponent.self)
         else { return }
         
         // Handle the beginning of new contacts.

@@ -1,5 +1,5 @@
 //
-//  PhysicsContactEventComponent.swift
+//  PhysicsEventComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/28.
@@ -12,10 +12,10 @@
 
 import GameplayKit
 
-/// Stores the physics contact events from the scene to be used by other components, and clears the events every frame.
+/// Stores events about contacts between physics bodies in a scene. The events may be observed by other components, and are cleared every frame.
 ///
 /// - Important: For this component to function, the `OctopusScene.physicsWorld.contactDelegate` must be set to the scene.
-public final class PhysicsContactEventComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public final class ContactEvent: Equatable {
         
