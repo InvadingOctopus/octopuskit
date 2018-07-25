@@ -80,7 +80,29 @@ permalink: documentation/usage.html
     > This guide provides a detailed overview of the engine architecture, but there is no standalone reference for the API, as I don't have the time and energy to write that alongside developing the engine. (´･_･`)  
     >
     > The best way to learn may be to examine the engine source code. In the future I might make a demo game to serve as a comprehensive tutorial.
-    
+
+## Folder Organization
+
+- `Apple API Extensions`: Adds engine-specific functionality and general convenience features to classes provided by Apple.
+
+- `Assets`: A collection of basic images, shaders and sounds to get you started.
+
+- `Components`: A wide library of components for graphics, gameplay, physics, UI and other aspects of a game. Although many are marked `final` by default (to improve performance, see [TODO LINK]), you can modify and extend them as needed.
+
+- `Core/Base`: The base classes for game states, scenes, entities, components and 
+systems.
+
+- `Core/Launch`: The objects that launch your game and manage the OctopusKit environment.  
+    > 💡 If your project crashes on startup, i.e. immediately returns to the home screen without showing anything, the classes in this folder are where you should look first.
+        
+- `Entities`: Provides classes to quickly construct entities for common tasks, such as UI buttons, from groups of standard components.
+
+- `Miscellaneous`: General types used by various components, such as compass directions.
+
+- `Scene Templates`: Some prebuilt scenes, such as the OctopusKit logo.
+
+- `Support & Utility`: Auxiliary classes that are required for common OctopusKit functionality, such as logging, but may not always be needed. Advanced projects may exclude these or use custom implementations.
+
 ## Control Flow & Object Hierarchy
 
 | 🐙 |
@@ -105,7 +127,7 @@ permalink: documentation/usage.html
 
 > ¹ `OctopusScene` may tell the game controller to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
 >
-> ² `OctopusEntity` need not always be subclassed; `OctopusEntity.init(name:components:)` may be enough for most cases.  
+> ² `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
 >
 > ³ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
 >
@@ -121,7 +143,7 @@ permalink: documentation/usage.html
 
 - At launch, the application delegate configures a **Game Controller** object, which is a "controller" in the [MVC][mvc] sense. A game controller is a **State Machine** with one or more **Game States**, each associated with a **Scene**. The controller may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
 
-	> *Advanced: A single application may have multiple "games" by using multiple game controllers, each with its own hierarchy of states and scenes.*
+	> 💡 *Advanced: A single application may have multiple "games" by using multiple game controllers, each with its own hierarchy of states and scenes.*
 
 ### Tier 2 
 
@@ -161,29 +183,7 @@ permalink: documentation/usage.html
 
 - Over the course of the gameplay, a scene, state or even a component may signal the **Game Controller** to enter a different **Game State** in response to certain game-specific conditions. The current game state's logic determines whether the transition is valid; if it is, the state then passes control to another state, which may then load a different scene.
 
-    > As noted above, a single scene may choose to handle multiple game states. In those cases, no scene transition occurs during a game state transition.
-    
-## Folder Organization
-
-- `Apple API Extensions`
-
-- `Assets`: Basic images, shaders and sounds to get you started.
-
-- `Components`: A wide library of components for graphics, gameplay, physics, UI and other aspects of a game. Although many are marked `final` by default (to improve performance, see [TODO LINK]), you can modify and extend them as needed.
-
-- `Core/Base`: The base classes for game states, scenes, entities, components and 
-systems.
-
-- `Core/Launch`: All the objects that are required for launching your app and initializing OctopusKit. 
-    > 💡 If your project crashes on launch, i.e. immediately returns to the home screen without showing anything, this folder is where you should look first.
-        
-- `Entities`: Contains groupings of components for common tasks, such as UI buttons.
-
-- `Miscellaneous`: General types used by various components.
-
-- `Scene Templates`: Some prebuilt scenes, such as the OctopusKit logo.
-
-- `Support & Utility`: Auxiliary classes that are required for common OctopusKit functionality, such as logging, but may not always be used. Advanced projects may exclude these and use custom implementations. 
+    > As noted above, a single scene may choose to handle multiple game states. In those cases, no scene transition occurs during a game state transition. 
 
 ## Scenes
 
