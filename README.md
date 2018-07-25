@@ -223,11 +223,11 @@ OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
 [discord]: https://discord.gg/y3har7D
 [patreon]: https://www.patreon.com/invadingoctopus
 
-[quickstart-&-usage-guide]: Documentation/Usage%20Guide.html
 [quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
-[tips-&-troubleshooting]: Documentation/Tips%20&%20Troubleshooting.html
-[coding-conventions-&-design-guide]: Documentation/Coding%20Conventions%20&%20Design%20Decisions.html
-[todo-&roadmap]: Documentation/TODO%20&%20Roadmap.html
+[quickstart-&-usage-guide]: documentation/usage.html
+[tips-&-troubleshooting]: documentation/tips.html
+[coding-conventions-&-design-guide]: documentation/conventions.html
+[todo-&roadmap]: documentation/todo.html
 
 [swift-book]: https://docs.swift.org/swift-book/GuidedTour/GuidedTour.html
 [swift-api-guidelines]: https://swift.org/documentation/api-design-guidelines/

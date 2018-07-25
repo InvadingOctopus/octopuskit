@@ -1,3 +1,7 @@
+---
+permalink: documentation/conventions.html
+---
+
 # OctopusKit Coding Conventions & Design Decisions
 
 [Developer Diary](#developer-diary)  
@@ -16,7 +20,7 @@
 
 - Sometimes a type may have both type methods and instance methods for the same operations, like the `CGFloat+OctopusKit` extension with `distance(between:and:)` and `distance(to:)?` It may usually be more natural to write `distance = CGPoint.distance(between: a, and: b)` than `distance = a.distance(to: b)`, but it wouldn't do to make that method available only on the type and not on instances, so OK provides both. However, to reduce duplication of code, the instance methods are the "primary" code (to improve performance by reducing extra calls, because calling these methods on an instance may be more "idiomatic") and the type methods call the instance versions.
 
-- `for each x in y` is cleaner and self-explanatory compared to `y.forEach { x in ... }` or `$0.z`
+- `for each x in y` may be cleaner and self-explanatory compared to `y.forEach { x in ... }` or `$0.z` in most cases.
 
 - In subclasses, try to prefix properties with `super.` or `self.` if there might be any ambiguity at the use site about where the property is defined.
     > TODO: example
