@@ -9,13 +9,13 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 4. [Getting Started](#getting-started)
 5. [Etcetera](#etcetera) (license, contact etc.)
 
-🚀 *Eager to dive in? Download the [Quickstart project.][quickstart-project]* 
+🚀 *Eager to dive in? Download the [Quickstart project.][quickstart-project] (Xcode 9.4+)*
 
 > This project is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own *(see Design Goals ahead.)*
 >
 > It's also my first ever open-source project and a **work in progress**; I'm still learning. If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it!
 >
-> *– ShinryakuTako* 
+> *– ShinryakuTako*  
 
 ## Examples
 
@@ -145,9 +145,9 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 
 - ⚙️ **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game. They may be dynamically added to and removed from an entity to alter its appearance and behavior during runtime. The engine comes with a library of many customizable components for graphics, gameplay, physics and UI etc. 
 
-- ⛓ **Systems** are simply collections of components *of a specific type.* They do not perform any logic, but they are arranged by a **Scene** in an array to execute components from all entities in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
+- ⛓ **Systems** are simply collections of components *of a specific type.* They do not perform any logic\*, but they are arranged by a **Scene** in an array to execute components from all entities in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
-    > \* *These definitions may differ from other engines, like Unity.*  
+    > \* *These definitions may differ from other engines, like Unity, where all the logic is contained within systems.*  
     >
     > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
 
@@ -157,21 +157,19 @@ Your primary workflow will mostly consist of writing component classes for each 
 
 ## Design Goals
 
-- **Tailored for Swift**: Swift, Swift, Swift! The framework must follow the [established guidelines][swift-api-guidelines] for Swift API design. Everything must make sense within Swift and flow effortlessly with Swift idioms, without any friction against the "Swift way of thinking."
+- **Tailored for Swift**: Swift, Swift, Swift! The framework must follow the [established guidelines][swift-api-guidelines] for Swift API design. Everything must make sense within Swift and flow seamlessly with Swift idioms as much as possible.
 
-- **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using SceneKit or other technologies to render 3D content in 2D space, and it can be used for non-game apps.
+- **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using technologies like SceneKit to render 3D content in 2D space, and it can be used for non-game apps.
 
-- **Shoulders of Giants**: The engine leverages SpriteKit, GameplayKit and their related technologies. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
-
+- **Shoulders of Giants**: The engine leverages SpriteKit, GameplayKit and other technologies provided by Apple. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
     > OK is mostly implemented through custom subclasses and extensions of the SpriteKit and GameplayKit classes, without "obscuring" them or blocking you from interacting with the base classes. This allows you to adopt this framework incrementally, and lets you integrate your game with the Xcode IDE tools such as the Scene Editor where possible.  
     >
-    > Most importantly, the tight coupling with Apple APIs ensures that your game is future-proof; whenever Apple improves these frameworks, OctopusKit and your games should also get some benefits "for free." For example, when Metal was introduced, SpriteKit was updated to automatically use Metal instead of OpenGL under the hood, giving many existing games a performance and efficiency boost. [(WWDC 2016, Session 610)][wwdc-610]    
-- **Code Comes First**: OK is primarily a "programmatical" engine; almost everything is done in code. This also helps with source control. The Xcode Scene Editor is relegated to "second-class citizen" status because of its incompleteness and bugs as of May 2018 (Xcode 9.4), but it is supported wherever convenient. See the next point.
+    > Most importantly, the tight coupling with Apple APIs ensures that your game is future-proof; whenever Apple improves these frameworks, OctopusKit and your games should also get some benefits "for free." For example, when Metal was introduced, SpriteKit was updated to automatically use Metal instead of OpenGL under the hood, giving many existing games a performance boost. [(WWDC 2016, Session 610)][wwdc-610]    
 
+- **Code Comes First**: OK is primarily a "programmatical" engine; almost everything is done in code. This also helps with source control. The Xcode Scene Editor is relegated to "second-class citizen" status because of its incompleteness and bugs as of May 2018 (Xcode 9.4), but it is supported wherever convenient. See the next point.
     > 💡 You can design high-level layouts/mockups in the Scene Editor, using placeholder nodes with names (identifiers.) You may then create entities from those nodes and add components to them in code.
 
 - **Customizability & Flexibility**: The engine strives to be flexible and gives you the freedom to structure your game in various ways. Since you have full access to the engine's source code, you can modify or extend anything to suit the exact needs of each project.   
-
     > You can use any of the following approaches to building your scenes, in order of engine support:  
     >
     > 1. Perform the creation and placement of nodes mostly in code. Use the Xcode Scene Editor infrequently, to design and preview a few individual elements such as UI HUDs etc., not entire scenes, and use `SKReferenceNode` to load them in code.  

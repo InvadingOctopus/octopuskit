@@ -43,9 +43,11 @@ permalink: documentation/usage.html
     OctopusKit(appName: "YourGame", gameController: YourGameControllerClass())
     ```
 
-    > "Game controller" refers to a "controller" in the Model-View-Controller sense here, not a gamepad or joystick.
+    > "Game controller" refers to a "controller" in the Model-View-Controller sense here, not a gamepad or joystick, and must be a subclass of `OctopusGameController`.
+    >
+    > If your game does not need to share any global logic or data across multiple scenes, you can simply call `OctopusGameController(states:initialStateClass:)` instead of creating a subclass.
     
-3. Your project must have custom classes that inherit from `OctopusGameController`, `OctopusGameState` and `OctopusScene`. The game controller must have at least one state that is associated with a scene.
+3. The game controller must have at least one state that is associated with a scene, so your project must have custom classes that inherit from `OctopusGameState` and `OctopusScene`. 
 
     > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow--object-hierarchy)
 
@@ -54,16 +56,17 @@ permalink: documentation/usage.html
     ```swift
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
-        guard !isPaused && !isPausedBySystem && !isPausedByPlayer && !isPausedBySubscene else { return }
+        guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
         
         OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)
         updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
     ```
 
-    > These steps are left for the subclass because each scene may need to handle these differently.
+    > Values such as `updateTimeDelta` are calculated when you call `super`.  
+    > `componentSystems` is the default array of systems in every scene.
     >
-    > Values such as `updateTimeDelta` are calculated when you call `super`.
+    > Other steps are left for the subclass because each scene may need to handle these differently.
 
 ----
 
@@ -111,29 +114,31 @@ systems.
 |↓|
 |📲 `YourAppDelegate: OctopusAppDelegate`|
 |↓|
-|🎬 `YourGameController: OctopusGameController`|
+|🎬 `YourGameController: OctopusGameController` ¹|
 |↓|
 |🚦 `YourGameState: OctopusGameState`|
 |↕|
-|🏞 `YourScene: OctopusScene` ¹|
+|🏞 `YourScene: OctopusScene` ²|
 |↓|
-|👾 `OctopusEntity` ²|
+|👾 `OctopusEntity` ³|
 |↓|
-|🚥 `YourEntityState: OctopusEntityState` ³|
+|🚥 `YourEntityState: OctopusEntityState` ⁴|
 |↕|
-|⚙️ `YourComponent: OctopusComponent` ⁴|
+|⚙️ `YourComponent: OctopusComponent` ⁵|
 |↑|
-|⛓ `OctopusComponentSystem` ⁵|
+|⛓ `OctopusComponentSystem` ⁶|
 
-> ¹ `OctopusScene` may tell the game controller to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
+> ¹ `OctopusGameController` need not always be subclassed; projects that do not require a custom controller may use `OctopusGameController(states:initialStateClass:)`.
+> 
+> ² `OctopusScene` may tell the game controller to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
 >
-> ² `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
+> ³ `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
 >
-> ³ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
+> ⁴ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
 >
-> ⁴ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
+> ⁵ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
 >
-> ⁵ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
+> ⁶ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
 
 ### Tier 1
 
