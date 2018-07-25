@@ -1,5 +1,5 @@
 //
-//  RepeatedClosureComponent.swift
+//  RepeatingClosureComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/25.
@@ -19,19 +19,19 @@ import GameplayKit
 ///
 /// **Example**
 ///
-///     RepeatedClosureComponent() {
+///     RepeatingClosureComponent() {
 ///         $0.coComponent(ofType: SpriteKitComponent.self)?.node
 ///     }
-class RepeatedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    /// The block of code to be executed every frame by a `RepeatedClosureComponent`.
+    /// The block of code to be executed every frame by a `RepeatingClosureComponent`.
     ///
-    /// - Parameter component: A reference to `self`; the instance of `RepeatedClosureComponent` that this closure will be a property of.
+    /// - Parameter component: A reference to `self`; the instance of `RepeatingClosureComponent` that this closure will be a property of.
     ///
     ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
     ///
     ///     **Example:** `component.coComponent(ofType: SpriteKitComponent.self)?.node`
-    public typealias ClosureType = (_ component: RepeatedClosureComponent) -> Void
+    public typealias ClosureType = (_ component: RepeatingClosureComponent) -> Void
     
     /// The block of code to execute every frame.
     ///
@@ -51,13 +51,13 @@ class RepeatedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public fileprivate(set) var repetitionCounter: UInt64 = 0
     
-    /// - Parameter framesToStopAfter: The number of frames to stop executing this closure after. If `nil`, the closure will be executed every frame until the `RepeatedClosureComponent` is removed from the entity or the scene's update cycle.
+    /// - Parameter framesToStopAfter: The number of frames to stop executing this closure after. If `nil`, the closure will be executed every frame until the `RepeatingClosureComponent` is removed from the entity or the scene's update cycle.
     ///
     ///     Frames are counted from when this component is first updated.
     ///
     /// - Parameter closure: The block of code to execute every frame.
     ///
-    ///     For a description of the closure's signature and parameters, see `RepeatedClosureComponent.ClosureType`.
+    ///     For a description of the closure's signature and parameters, see `RepeatingClosureComponent.ClosureType`.
     public init(framesToStopAfter: UInt64? = nil,
                 closure: @escaping ClosureType)
     {
