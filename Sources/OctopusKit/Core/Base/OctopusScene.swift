@@ -144,6 +144,23 @@ public class OctopusScene: SKScene,
     /// - Important: Adding a system does not automatically register the components from any of the scene's existing entities. Call either `self.componentSystems.addComponents(foundIn:)` to register components from a single entity, or `addAllComponentsFromAllEntities(to:)` to register components from all entities.
     public lazy var componentSystems = [OctopusComponentSystem]()
     
+    // MARK: Shared Components
+    
+    /// Creates a new `TouchEventComponent` when this property is first accessed, and returns that component on subsequent calls.
+    ///
+    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    public fileprivate(set) lazy var sharedTouchEventComponent = TouchEventComponent()
+    
+    /// Creates a new `PhysicsEventComponent` when this property is first accessed, and returns that component on subsequent calls.
+    ///
+    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    public fileprivate(set) lazy var sharedPhysicsEventComponent = PhysicsEventComponent()
+    
+    /// Creates a new `MotionManagerComponent` when this property is first accessed, and returns that component on subsequent calls.
+    ///
+    /// This is a convenience for cases such as adding a single motion manager to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    public fileprivate(set) lazy var sharedMotionManagerComponent = MotionManagerComponent()
+    
     // MARK: Other
     
     /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OctopusSceneController`.
