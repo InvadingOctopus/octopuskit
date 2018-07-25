@@ -46,11 +46,11 @@ scene.entity?.addComponent(sharedTouchEventComponent)
 
 character.addComponents([
     
-    // A relay component adds a reference to a component in another entity.
+    // A relay component adds a reference to a component from another entity.
     // This fulfills the dependencies of other components in this entity.
     RelayComponent(for: sharedTouchEventComponent),
     
-    // This component checks the entity for a TouchEventComponent (provided here by a relay)
+    // This component checks the entity's TouchEventComponent (provided here by a relay)
     // and syncs the entity's position to the touch location in every frame.
     TouchControlledPositioningComponent()])
 ```
@@ -68,7 +68,7 @@ character.addComponents([
     PhysicsComponent(),
     
     // Use a hypothetical shared component.
-    RelayComponent(for: scene.sharedJoystickEventComponent),
+    RelayComponent(for: sharedJoystickEventComponent),
     
     // Apply a force to the sprite's body based on joystick input in every frame.
     JoystickControlledForceComponent()])
@@ -147,11 +147,12 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 - ⛓ **Systems** are simply collections of components of a specific type. They do not perform any logic, but they are arranged by a **Scene** to execute components in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
     > \* *These definitions may differ from other engines, like Unity.*  
-    > *OK does not use "data-oriented design" but it does not prevent you from implementing that in your project.*
+    >
+    > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
 
-The primary workflow is writing component classes for each "unit" of visual appearance and gameplay logic, then combining them in entities that appear onscreen or handle game data in the "backend."
+Your primary workflow will be writing component classes for each "part" of visual appearance and gameplay logic, then combining them to build entities which appear onscreen or abstract entities that handle data in the "backend."
 
-> e.g.: Say a _SceneBackgroundEntity_ containing a _CloudsComponent_ and a *HillsComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.)
+> e.g.: say a _SceneBackgroundEntity_ containing a _CloudsComponent_ and a *HillsComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.)
 
 ## Design Goals
 

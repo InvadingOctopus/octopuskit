@@ -17,7 +17,7 @@ permalink: documentation/usage.html
 
 ## Quickstart
 
-### To begin from a template:
+### 🍰 **To begin from a template**:
 
 1. Download the [**OctopusKitQuickstart** Xcode project from the Releases page.][quickstart-project]
 
@@ -31,25 +31,25 @@ permalink: documentation/usage.html
     >
     > 💡 If something goes wrong, see [Tips & Troubleshooting.][tips-&-troubleshooting]  
 
-### To import OctopusKit into a new or existing project:
+### 🛠 **To import OctopusKit into a new or existing project**:
 
 1. Your storyboard should have an `SKView` whose controller is or inherits from `OctopusSceneController`.
 
     > XIB-based projects have not been tested.
 
-2. Your `AppDelegate` class must inherit from `OctopusAppDelegate`. It should implement (override) only one method: `applicationWillLaunchOctopusKit()`, where it must initialize the shared `OctopusKit` singleton instance by calling:
+2. Your `AppDelegate` class must inherit from `OctopusAppDelegate`. It needs to implement (override) only one method: `applicationWillLaunchOctopusKit()`, where it must initialize the shared `OctopusKit` singleton instance by calling:
 
     ```swift
     OctopusKit(appName: "YourGame", gameController: YourGameControllerClass())
     ```
 
-    > "Game controller" refers to a "controller" in the Model-View-Controller sense here; not a gamepad or joystick.
+    > "Game controller" refers to a "controller" in the Model-View-Controller sense here, not a gamepad or joystick.
     
 3. Your project must have custom classes that inherit from `OctopusGameController`, `OctopusGameState` and `OctopusScene`. The game controller must have at least one state that is associated with a scene.
 
-    > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow-&-object-hierarchy)
+    > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow--object-hierarchy)
 
-4. Your scenes should inherit from `OctopusScene` and they should implement (override) the `update(_:)` method that calls `super`, checks the paused state flags, and updates component systems:
+4. Your scenes should inherit from `OctopusScene` and they should implement (override) the `update(_:)` method. Your implementation must call `super`, check the paused state flags, and update component systems:
 
     ```swift
     override func update(_ currentTime: TimeInterval) {
@@ -61,19 +61,23 @@ permalink: documentation/usage.html
     }
     ```
 
-    > These steps are not automated because each scene may want to do these differently.
+    > These steps are not automated because each scene may need to do these differently.
+    >
+    > Values such as `updateTimeDelta` are automatically calculated by the superclass.
+
+-
 
 #### Notes
+
+* **Xcode Templates:** To quickly create new files for common OK classes such as scenes and components, copy the files from the `Templates/Xcode` folder in the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
 
 * Including the OctopusKit code in your main project provides the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker modification and autocompletion, easier navigation etc.
 
 * You can give each of your projects a separate copy of the OctopusKit code to let you customize the engine to suit each specific project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "**Copy items if needed**")
 
-* **Xcode Templates:** To quickly create new files for common OK classes such as scenes and components, copy the files from the `Templates/Xcode` folder in the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
-
 * Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
 
-    > This guide provides an overview of the engine architecture, but there is no standalone reference for the API, as I don't have the time and energy to write that alongside developing the engine. (´･_･`)  
+    > This guide provides a detailed overview of the engine architecture, but there is no standalone reference for the API, as I don't have the time and energy to write that alongside developing the engine. (´･_･`)  
     >
     > The best way to learn may be to examine the engine source code. In the future I might make a demo game to serve as a comprehensive tutorial.
     
@@ -99,11 +103,15 @@ permalink: documentation/usage.html
 |↑|
 |⛓ `OctopusComponentSystem` ⁵|
 
-¹ `OctopusScene` may tell the game controller to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
-² `OctopusEntity` need not always be subclassed; `OctopusEntity.init(name:components:)` may be enough for most cases.  
-³ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
-⁴ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
-⁵ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
+> ¹ `OctopusScene` may tell the game controller to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
+
+> ² `OctopusEntity` need not always be subclassed; `OctopusEntity.init(name:components:)` may be enough for most cases.  
+
+> ³ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
+
+> ⁴ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
+
+> ⁵ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
 
 ### Tier 1
 
