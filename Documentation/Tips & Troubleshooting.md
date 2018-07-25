@@ -1,3 +1,7 @@
+---
+permalink: documentation/tips.html
+---
+
 # OctopusKit Tips & Troubleshooting
 
 1. [Common Mistakes](#common-mistakes)

@@ -1,3 +1,7 @@
+---
+permalink: documentation/todo.html
+---
+
 # OctopusKit Roadmap
 
 > If you'd like to help with the development of the OK project, these are some of the areas that need to be implemented.
