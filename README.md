@@ -186,6 +186,10 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 1. **Read the [Quickstart and Usage Guide.][quickstart-&-usage-guide]** You will need Xcode 9.4 or 10.
 
+    > **Skill Level: Intermediate**: Although OK is not presented as a tool for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
+    > 
+    > You should also read about the ["Composition over inheritance"][composition-over-inheritance] and ["Entity–component–system"][entity–component–system] patterns if you're not already familiar with those concepts, although OK's implementation of these may be different than what you expect.
+
 2. Stuck? See [Tips & Troubleshooting.][tips-&-troubleshooting]
 
 3. Wondering whether something was intentionally done the way it is, or why? [Coding Conventions & Design Decisions][coding-conventions-&-design-guide] may have an explanation.
@@ -194,21 +198,13 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ## Etcetera
 
-- **Skill Level: Intermediate**: OK does not attempt to present itself as a tool for "absolute beginners", mostly because I'm too lazy to write documentation from step zero, but it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK. 
-> 
-> You should also read about the ["Composition over inheritance"][composition-over-inheritance] and ["Entity–component–system"][entity–component–system] patterns if you're not already familiar with those concepts, although OK's implementation of these may be different than what you expect.
-
-- Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
-
-    > The best way to learn how to make the most of this engine is to examine the [Quickstart project][quickstart-project] and read the engine source code. In the future I might make a demo game to serve as a tutorial. There is no standalone reference for the API, as I don't have the time and energy to write that alongside developing the engine. :(
-
 - This project may be referred to as "OctopusKit", "OK" or "OKIO" (for "OctopusKit by Invading Octopus") but "IOOK" sounds weird.
 
-- **Support** my decadent lifestyle so I can focus on making unsaleable stuff: [My Patreon][patreon]
+- **License: [Apache 2.0][license]**
 
 - **Tell** me how awesome or terrible everything is: [Discord][discord], [Twitter][twitter] or 🆂hinryaku🆃ako@🅘nvading🅞ctopus.ⓘⓞ
 
-- **License: [Apache 2.0][license]**
+- **Support** my decadent lifestyle so I can focus on making unsaleable stuff: [My Patreon][patreon]
 
 - *This project is not affiliated in any way with Apple.*
 
