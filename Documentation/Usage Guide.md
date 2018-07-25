@@ -27,7 +27,7 @@ permalink: documentation/usage.html
 
     > The file names are prefixed with `Step #` so you can follow the flow of execution at a glance.
     >
-    > 💡 Browse the `OctopusKit/Components` folder and try experimenting with the different components!
+    > 💡 Browse the `OctopusKit/Components` folder and try tinkering with different components!
     >
     > 💡 If something goes wrong, see [Tips & Troubleshooting.][tips-&-troubleshooting]  
 
@@ -61,11 +61,11 @@ permalink: documentation/usage.html
     }
     ```
 
-    > These steps are not automated because each scene may need to do these differently.
+    > These steps are left for the subclass because each scene may need to handle these differently.
     >
-    > Values such as `updateTimeDelta` are automatically calculated by the superclass.
+    > Values such as `updateTimeDelta` are calculated when you call `super`.
 
--
+----
 
 #### Notes
 
@@ -104,13 +104,13 @@ permalink: documentation/usage.html
 |⛓ `OctopusComponentSystem` ⁵|
 
 > ¹ `OctopusScene` may tell the game controller to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
-
+>
 > ² `OctopusEntity` need not always be subclassed; `OctopusEntity.init(name:components:)` may be enough for most cases.  
-
+>
 > ³ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
-
+>
 > ⁴ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
-
+>
 > ⁵ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
 
 ### Tier 1

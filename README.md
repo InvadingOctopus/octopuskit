@@ -11,9 +11,9 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 
 🚀 *Eager to dive in? Download the [Quickstart project.][quickstart-project]* 
 
-> This is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own *(see Design Goals ahead.)*
+> This project is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own *(see Design Goals ahead.)*
 >
-> It's also my first ever open-source project and a **work in progress**; I'm still learning. If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be thankful to hear it!
+> It's also my first ever open-source project and a **work in progress**; I'm still learning. If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it!
 >
 > *– ShinryakuTako* 
 
@@ -24,7 +24,7 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 ```swift
 let character = OctopusEntity(components:[
     
-    // Start with a blank sprite.
+    // Start with a blank texture.
     SpriteKitComponent(node: SKSpriteNode(color: .clear, size: CGSize(widthAndHeight: 42))),
     
     // Load texture resources.
@@ -74,11 +74,11 @@ character.addComponents([
     JoystickControlledForceComponent()])
 ```
 
-🎛 *Advanced: Using a custom "script" to change the animation based on player movement*
+🛠 *Advanced: Using a custom "script" to change the animation based on player movement*
 
 ```swift
 // Add a component that executes custom code every frame.
-character.addComponent(RepeatedClosureComponent { component in
+character.addComponent(RepeatingClosureComponent { component in
     
     // Check if the entity of this component has the required dependencies at runtime.
     // This approach allows dynamic behavior modification without hardcoding anything.
@@ -111,17 +111,16 @@ if let editorScene = SKReferenceNode(fileNamed: "EditorScene.sks") {
 for namedNode in scene["//Turret"] {
     scene.addEntity(OctopusEntity(components: [
         SpriteKitComponent(node: namedNode),
-        PhysicsComponent(),
         RelayComponent(for: sharedTouchEventComponent),
                 
         // Track the first touch that begins inside the sprite.
         NodeTouchComponent(),
                 
-        // Move the sprite along with the tracked touch.
+        // Let the player select and drag the sprite.
         // This differs from the TouchControlledPositioningComponent in a previous example.
         TouchControlledDraggingComponent()
                 
-        // A GameplayKit Agent used by AI components.
+        // A GameplayKit Agent directed by AI components.
         OctopusAgent2D(),        
 
         // Hypothetical game-specific components.
@@ -142,7 +141,7 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 
 - 👾 **Entities** are simply collections of **Components**. They contain no logic, except for convenience constructors which initialize groups of related components. 
 
-- ⚙️ **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game.They may be dynamically added to and removed from an entity to alter its appearance and behavior during runtime. OK comes with a library of many customizable components for graphics, gameplay, physics and UI etc. 
+- ⚙️ **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game. They may be dynamically added to and removed from an entity to alter its appearance and behavior during runtime. The engine comes with a library of many customizable components for graphics, gameplay, physics and UI etc. 
 
 - ⛓ **Systems** are simply collections of components of a specific type. They do not perform any logic, but they are arranged by a **Scene** to execute components in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
@@ -176,6 +175,7 @@ Your primary workflow will be writing component classes for each "part" of visua
     > 1. Perform the creation and placement of nodes mostly in code. Use the Xcode Scene Editor infrequently, to design and preview a few individual elements such as UI HUDs etc., not entire scenes, and use `SKReferenceNode` to load them in code.  
     >
     > 2. Use the Xcode Scene Editor as your starting point, to create template scenes that may be loaded as top-level `SKReferenceNode` instances of an `OctopusScene`. This approach allows a modicum of "WYSIWYG" visual design and previewing.  
+    >
     > 3. Create a scene almost entirely in the Xcode Scene Editor, adding any supported components, actions, physics bodies, navigation graphs and textures etc. right in the IDE.   
 Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusSceneController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
     >
