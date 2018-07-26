@@ -4,6 +4,8 @@ permalink: documentation/conventions.html
 
 # OctopusKit Coding Conventions & Design Decisions
 
+[TODO: Revise this page]
+
 [Developer Diary](#developer-diary)  
 [Comments Key](#comments-key)
 
@@ -23,9 +25,9 @@ permalink: documentation/conventions.html
 - `for each x in y` may be cleaner and self-explanatory compared to `y.forEach { x in ... }` or `$0.z` in most cases.
 
 - In subclasses, try to prefix properties with `super.` or `self.` if there might be any ambiguity at the use site about where the property is defined.
-    > TODO: example
+    > [TODO: example]
 
-- Say "player" instead of "user" whenever referring to the person playing the game. (^ ^)
+- Say "player" instead of "user" whenever referring to the person playing the game. (^ - ^")
 
 ## Developer Diary
 
@@ -34,13 +36,13 @@ permalink: documentation/conventions.html
 ## Comments Key
 
 - ℹ️ / DESIGN: A design decision or note.
-- ⚠️ A warning about potential undesirable behavior, or a previous undesirable situation that was learned and avoided or fixed. 
+- ⚠️ A warning about potential undesirable behavior, or a workaround for an undesirable situation that was avoided or fixed. 
 - 💬 General commentary/observations.
 - PERFORMANCE: Related to speed/efficiency/optimization.
 
 ----
 
-OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license] • [github.com/invadingoctopus/octopuskit][repository]
+[OctopusKit][repository] © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io

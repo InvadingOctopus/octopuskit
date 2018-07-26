@@ -90,7 +90,7 @@ permalink: documentation/usage.html
 
 - `Assets`: A collection of basic images, shaders and sounds to get you started.
 
-- `Components`: A wide library of components for graphics, gameplay, physics, UI and other aspects of a game. Although many are marked `final` by default (to improve performance, see [TODO LINK]), you can modify and extend them as needed.
+- `Components`: A wide library of components for graphics, gameplay, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing *dynamic dispatch*][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
 
 - `Core/Base`: The base classes for game states, scenes, entities, components and 
 systems.
@@ -159,7 +159,7 @@ systems.
     > A single scene may represent multiple game states.  
     > e.g.: for most games, it may not be necessary to have a separate scene for a "Paused" game state, and a single scene may handle both "Play" and "Paused" game states by displaying a dark overlay and some text in the paused state.
 
-- TODO: Explain Subscenes (used for displaying modal UI.)
+- [TODO: Explain Subscenes (used for displaying modal UI.)]
 
 ### Tier 3
 
@@ -192,8 +192,8 @@ systems.
 
 ## Scenes
 
-TODO: Incomplete section; to revise  
-TODO: OctopusScene API overview
+[TODO: Incomplete section]  
+[TODO: OctopusScene API overview]
 
 ### Scenes should:
 
@@ -201,8 +201,8 @@ TODO: OctopusScene API overview
 
 ## Entities
 
-TODO: Incomplete section; to revise  
-TODO: OctopusEntity API overview
+[TODO: Incomplete section]  
+[TODO: OctopusEntity API overview]
 
 - Contain components which are the primary block of game functionality.
 
@@ -226,8 +226,8 @@ TODO: OctopusEntity API overview
 
 ## Components
 
-TODO: Incomplete section; to revise  
-TODO: OctopusComponent API overview
+[TODO: Incomplete section]  
+[TODO: OctopusComponent API overview]
 
 - Ideally, components should have no methods/callbacks triggered by events, delegation or notifications. If a component needs to process events, then a parent object, such as a scene or view controller, should create a separate component for holding copies of events every frame. Components that rely on events should read that event-holding component every frame. An example would be an input events component.
 
@@ -255,7 +255,7 @@ Each component may be conceptually classified under one or more of the following
 
 - **Coordinator Component**: A logic component that observes one or more components and uses that information to act upon other components.
 
-    > TODO: example
+    > [TODO: example]
 
 - **Visual Component**: A logic component that mainly adds visual effects or child nodes to the SpriteKit node associated with the entity. 
 
@@ -277,9 +277,8 @@ Each component may be conceptually classified under one or more of the following
 
 ## State Machines
 
-TODO: Incomplete section; to revise  
-TODO: OctopusGameState/OctopusEntityState API overview  
-
+[TODO: Incomplete section]  
+[TODO: OctopusGameState/OctopusEntityState API overview]
 
 - If an entity can be in one of several conceptual states at a given time, it more makes sense to represent those states with a `GKStateMachine` (as encapsulated by a `StateMachineComponent`) instead of putting lots of conditional checks in multiple components.
 
@@ -293,13 +292,13 @@ TODO: OctopusGameState/OctopusEntityState API overview
 
 ### Using the Xcode Scene Editor as the primary design tool 
 
-TODO: Incomplete section; to revise
+[TODO: Incomplete section]
 
 Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusSceneController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
 
 ----
 
-OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license] • [github.com/invadingoctopus/octopuskit][repository]
+[OctopusKit][repository] © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io
@@ -307,7 +306,7 @@ OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
 [octopuskit-github]: https://github.com/invadingoctopus/octopuskit
-
 [tips-&-troubleshooting]: tips.html
 
 [mvc]: https://en.wikipedia.org/wiki/Model–view–controller
+[reducing-dynamic-dispatch]: https://developer.apple.com/swift/blog/?id=27

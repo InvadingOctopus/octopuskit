@@ -25,7 +25,7 @@ permalink: documentation/todo.html
 
 ## To Do
 
-- Tests.
+- Tests. Too lazy.
 - Improve coding conventions.
 - Write tutorials for common tasks.
 - Clarify `super` chaining where applicable – when an overridden method in a subclass *needs* to call the superclass method for the functionality to work correctly – and enforce it when it becomes possible through language support in a future version of Swift.
@@ -49,7 +49,7 @@ permalink: documentation/todo.html
 
 ----
 
-OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license] • [github.com/invadingoctopus/octopuskit][repository]
+[OctopusKit][repository] © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io

@@ -10,6 +10,8 @@ permalink: documentation/tips.html
 4. [Pitfalls & Gotchas](#pitfalls-&-gotchas)
 5. [Conditional Compilation Flags & Debugging Aids](#conditional-compilation-flags-&-debugging-aids)
 
+[TODO: Revise this page]
+
 ## Common Mistakes
 
 #### Components not having any effect? 
@@ -36,13 +38,13 @@ permalink: documentation/tips.html
 
 - In most cases, try to access the object hierarchy from the "bottom up" instead of "top down."
 
-	> TODO: Example
+	> [TODO: Example]
 
 ## Tips & Tricks
 
 - You can have multiple "games" within a single project, by using multiple `OctopusGameController`s (each with its own set of `OctopusGameState`s and associated scenes, etc.) and programmatically  choosing between them in `OctopusAppDelegate.configureOctopusEngine()`.
 
-- TODO: Tip for sharing "global" data via `RelayComponent`s.
+- [TODO: Tip for sharing "global" data via `RelayComponent`s.]
     
 ## Pitfalls & Gotchas
 
@@ -52,7 +54,7 @@ permalink: documentation/tips.html
 - Components should try to perform their logic only during the `didAdd(...)`, `willRemove(...)`, and `update(deltaTime:)` methods. If a component's behavior must be modified outside of those methods, use flags that are then acted upon in the component's update method.  
 This ensures that a component does not affect anything outside of a frame update and can be reliably paused/unpaused.  
     > Note that this does not mean that a component should not _define_ any other methods at all.  
-    > TODO: Example
+    > [TODO: Example]
 
     - Components that respond to asynchronous events, such as a component that moves a node based on input from a gesture recognizer, like `PanControlledRepositioningComponent`, or networking components, MUST perform their function inside their `update(deltaTime:)` method, and just use the event-handling action method to mark a flag to denote that an event was received.  
 This prevents the component from being active outside the frame-update cycle, or when it's [temporarily] removed from the entity or the scene's systems.
@@ -74,14 +76,14 @@ If an entity needs multiple components of the same type but with different param
     
 ## Conditional Compilation Flags & Debugging Aids
 
-> TODO: Instructions on where to enter these in Xcode
+> [TODO: Instructions for where to enter these in Xcode]
 
 * `LOGINPUT` - Logs all input events and related information.
 * `LOGPHYSICS` - Logs all physics contact events.
 
 ----
 
-OctopusKit © 2018 [Invading Octopus][website] • [Apache License 2.0][license] • [github.com/invadingoctopus/octopuskit][repository]
+[OctopusKit][repository] © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io
