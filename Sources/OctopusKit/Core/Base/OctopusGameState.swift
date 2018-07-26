@@ -49,13 +49,13 @@ public class OctopusGameState: GKState {
         // To programitically modify the `associatedSceneClass` at runtime, override and replace `didEnter(from:)` or `willExit(to:)`
         
         guard let sceneController = OctopusKit.shared?.sceneController else {
-            OctopusKit.logForErrors.add("OctopusKit.shared.sceneController is nil")
+            OctopusKit.logForErrors.add("OctopusKit.shared.sceneController is nil.")
             return }
     
-        // If this state does not have any scene assocaited with it, as might be the case for "abstract" states, log so and exit.
+        // If this state does not have any scene associated with it, as might be the case for "abstract" states, log so and exit.
         
         guard let associatedSceneClass = self.associatedSceneClass else {
-            OctopusKit.logForDebug.add("\(self) has no associated scene")
+            OctopusKit.logForDebug.add("\(self) has no associated scene.")
             return
         }
         
@@ -71,7 +71,7 @@ public class OctopusGameState: GKState {
             || type(of: OctopusKit.shared!.currentScene!) != associatedSceneClass
         {
             // ℹ️ DESIGN: It makes more sense for the outgoing state/scene to decide the transition effect, which may depend on their variables, rather than the incoming scene.
-
+            
             let transition = self.delegate?.transition(for: type(of: self))
             
             // Store the newly created scene in a variable so we can notify the incoming scene instead of the outgoing scene, in case there is a long visual `SKTransition` between the scenes.
@@ -87,10 +87,15 @@ public class OctopusGameState: GKState {
             OctopusKit.logForErrors.add("\(self) could not create \(associatedSceneClass)")
             return
         }
-
-        if
-            type(of: currentScene) != self.associatedSceneClass
-            && type(of: incomingScene) != self.associatedSceneClass
+        
+        // Check whether the current scene or incoming scene matches the scene class associated with this game state.
+        
+        // NOTE: Make sure to unwrap optionals before comparing types. :)
+        
+        debugLog("\(type(of: incomingScene))")
+        
+        if  type(of: currentScene) != associatedSceneClass,
+            (incomingScene != nil && type(of: incomingScene!) != associatedSceneClass)
         {
             OctopusKit.logForErrors.add("Neither \(currentScene) nor \(String(describing: incomingScene)) is \(String(describing: associatedSceneClass))")
         }
