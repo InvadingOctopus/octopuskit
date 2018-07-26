@@ -76,7 +76,7 @@ permalink: documentation/usage.html
 
 * Including the OctopusKit code in your main project provides the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker modification and autocompletion, easier navigation etc.
 
-* You can give each of your projects a separate copy of the OctopusKit code to let you customize the engine to suit each specific project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "**Copy items if needed**")
+* You can give each of your projects a separate copy of the OctopusKit code to let you customize the engine differently for each specific project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "**Copy items if needed**")
 
 * Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
 
@@ -148,7 +148,7 @@ systems.
 
 - At launch, the application delegate configures a **Game Controller** object, which is a "controller" in the [MVC][mvc] sense. A game controller is a **State Machine** with one or more **Game States**, each associated with a **Scene**. The controller may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
 
-	> 💡 *Advanced: A single application may have multiple "games" by using multiple game controllers, each with its own hierarchy of states and scenes.*
+	> 💡 *Advanced: A single application may contain multiple "games" by using multiple game controllers, each with its own hierarchy of states and scenes.*
 
 ### Tier 2 
 

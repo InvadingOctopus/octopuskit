@@ -584,17 +584,17 @@ public class OctopusScene: SKScene,
     ///
     /// The preferred pattern in OctopusKit is to simply add entities and components to the scene in a method like `prepareContents()` or `gameControllerDidEnterState(_:from:)`, and use this method to just update all component systems, letting all the per-frame game logic be handled by the `update(_:)` method of each individual component and state class.
     ///
-    /// - Important: `super.update(currentTime)` *must* be called for correct functionality (before any other code in most cases), and the `isPaused`, `isPausedBySystem`, `isPausedByPlayer` and `isPausedBySubscene` flags must be handled by the overiding implementation.
+    /// - Important: `super.update(currentTime)` *must* be called for correct functionality (before any other code in most cases), and the subclass should also recheck `isPaused`, `isPausedBySystem`, `isPausedByPlayer` and `isPausedBySubscene` flags.
     public override func update(_ currentTime: TimeInterval) {
         
-        // MARK: Reset Single-Frame Flags
+        // #1: Reset single-frame flags.
         
         didPresentSubsceneThisFrame = false
         didDismissSubsceneThisFrame = false
         
         // MARK: Entity Removal
         
-        // First of all, if any entities were marked for removal since the last update, remove them now.
+        // #2: If any entities were marked for removal since the last update, remove them now.
         // This delayed removal is done to avoid mutating the entities collection while it is being enumerated within the same frame update.
         
         for entityToRemove in entitiesToRemoveOnNextUpdate {
@@ -604,7 +604,8 @@ public class OctopusScene: SKScene,
         entitiesToRemoveOnNextUpdate.removeAll()
         
         // MARK: Timekeeping
-        // Track the time and handle pausing/unpausing so that components and states may be correctly updated.
+        
+        // #3: Track the time and handle pausing/unpausing so that components and states may be correctly updated.
         
         // THANKS: http://stackoverflow.com/questions/24728881/calculating-delta-in-spritekit-using-swift
         
@@ -672,12 +673,24 @@ public class OctopusScene: SKScene,
         
         // MARK: Subscene
         
-        // Update the most-recently-added subscene.
+        // #4: Update the most-recently-added subscene.
         
         if let subscene = self.subscenes.last {
             subscene.update(deltaTime: updateTimeDelta)
         }
         
+        // #5: Update components and systems in the subclass.
+        
+        // An `OctopusScene` subclass should override this method and call `super.update(currentTime)` so that all of the above tasks can be performed.
+        //
+        // The responsibility of updating components and systems is left to the subclass, as each scene may need to perform updates differently, especially in complex games.
+        //
+        // In most cases, a subclass will need the following code:
+        //
+        //    super.update(currentTime)
+        //    guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
+        //    OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)
+        //    updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
     
     /// Updates each of the component systems in the order they're listed in the specified array. If no `systemsCollection` is specified, then the scene's `componentSystems` property is used.
