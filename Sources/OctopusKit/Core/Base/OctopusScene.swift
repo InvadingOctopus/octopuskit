@@ -146,6 +146,8 @@ public class OctopusScene: SKScene,
     
     // MARK: Shared Components
     
+    // CHECKED: These properties do not seem to prevent the scene from deinit'ing if they're not optionals.
+    
     /// Creates a new `TouchEventComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
     /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
@@ -273,13 +275,17 @@ public class OctopusScene: SKScene,
         
         // CHECK: Should we delay the teardown of an outgoing scene to prevent any performance hiccups in the incoming scene?
         
+        // NOTE: `self.entities` includes `self.entity`, and `removeEntity(_:)` also calls `GKEntity.removeAllComponents()`
+        
         for entity in self.entities {
             removeEntity(entity)
         }
+        
+        // CHECKED: The shared component properties (`sharedTouchEventComponent` etc.) do not seem to prevent the scene from deinit'ing if they're not set to `nil` here.
     }
     
     deinit {
-        OctopusKit.logForFramework.add("\"\(String(optional: self.name))\" secondsElapsedSinceMovedToView = \(String(optional: secondsElapsedSinceMovedToView)), lastUpdateTime = \(String(optional: lastUpdateTime))")
+        OctopusKit.logForDeinits.add("\"\(String(optional: self.name))\" secondsElapsedSinceMovedToView = \(String(optional: secondsElapsedSinceMovedToView)), lastUpdateTime = \(String(optional: lastUpdateTime))")
     }
     
     // MARK: - Game State
