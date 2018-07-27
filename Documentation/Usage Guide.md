@@ -35,8 +35,6 @@ permalink: documentation/usage.html
 
 1. Your storyboard should have an `SKView` whose controller is or inherits from `OctopusSceneController`.
 
-    > XIB-based projects have not been tested.
-
 2. Your `AppDelegate` class must inherit from `OctopusAppDelegate`. It needs to implement (override) only one method: `applicationWillLaunchOctopusKit()`, where it must initialize the shared `OctopusKit` singleton instance by calling:
 
     ```swift
@@ -45,7 +43,7 @@ permalink: documentation/usage.html
 
     > "Game controller" refers to a "controller" in the Model-View-Controller sense here, not a gamepad or joystick, and must be a subclass of `OctopusGameController`.
     >
-    > If your game does not need to share any global logic or data across multiple scenes, you can simply call `OctopusGameController(states:initialStateClass:)` instead of creating a subclass.
+    > If your game does not need to share any complex logic or data across multiple scenes, you can simply call `OctopusGameController(states:initialStateClass:)` instead of creating a subclass.
     
 3. The game controller must have at least one state that is associated with a scene, so your project must have custom classes that inherit from `OctopusGameState` and `OctopusScene`. 
 
