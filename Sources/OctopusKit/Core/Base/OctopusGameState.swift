@@ -91,9 +91,7 @@ public class OctopusGameState: GKState {
         // Check whether the current scene or incoming scene matches the scene class associated with this game state.
         
         // NOTE: Make sure to unwrap optionals before comparing types. :)
-        
-        debugLog("\(type(of: incomingScene))")
-        
+                
         if  type(of: currentScene) != associatedSceneClass,
             (incomingScene != nil && type(of: incomingScene!) != associatedSceneClass)
         {
