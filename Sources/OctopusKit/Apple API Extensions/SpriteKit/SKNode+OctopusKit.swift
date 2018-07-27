@@ -17,6 +17,10 @@ extension SKNode {
     /// Attempts to unarchive the specified "sks" file from the main application bundle and returns it.
     public class func nodeWithName<T>(name: String) -> T? {
         // CREDIT: Apple Adventure Sample
+        
+        // TODO: Review for Swift 4.2 and iOS 12 when released.
+        // return (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [SKNode.self], from: Data(contentsOf: Bundle.main.url(forResource: name, withExtension: "sks")!))) as? T
+
         return NSKeyedUnarchiver.unarchiveObject(withFile: Bundle.main.path(forResource: name, ofType: "sks")!) as? T
     }
     
