@@ -23,6 +23,11 @@ public class OctopusGameState: GKState {
     
     // ℹ️ Even though there is a `OctopusGameStateDelegate` protocol, `OctopusGameState` only exposes a `delegate` for formality but it does not use it. The reason is that in certain situations, an `OctopusGameState` may have more than one "delegate" that it needs to send notifications to, e.g. both an outgoing scene and an incoming scene in the case of visual scene transition effects with a long duration. The `delegate` property may be opened as a future customization point.
     
+    // NOTE: Apple documentation for `isValidNextState(_:)`:
+    // Your implementation of this method should describe the static relationships between state classes that determine the set of edges in a state machine’s state graph.
+    // ⚠️ Do not use this method to conditionally control state transitions—instead, perform such conditional logic before calling a state machine’s `enter(_:)` method.
+    // By restricting the set of valid state transitions, you can use a state machine to enforce invariant conditions in your code. For example, if one state class can be entered only after a state machine has passed through a series of other states, code in that state class can safely assume that any actions performed by those other states have already occurred.
+    
     /// The scene that will be presented when the `OctopusGameController` (or your custom subclass) enters this state.
     ///
     /// - Important: Changing this property while the state machine is already in this state, will **not** present the new scene; this property takes effect only in `didEnter(from:)`.
@@ -45,7 +50,7 @@ public class OctopusGameState: GKState {
         super.didEnter(from: previousState)
         OctopusKit.logForStates.add("\(String(optional: previousState)) → \(self)")
     
-        // ℹ️ DESIGN: Should the scene presentation be an optional step to be decided by the sublass? — No: A state should always display its associated scene, but the logic for deciding when to enter an state should be made in `isValidNextState(_:)`.
+        // ℹ️ DESIGN: Should the scene presentation be an optional step to be decided by the sublass? — No: A state should always display its associated scene, but the logic for deciding whether to enter an state should be made in `isValidNextState(_:)`.
         // To programitically modify the `associatedSceneClass` at runtime, override and replace `didEnter(from:)` or `willExit(to:)`
         
         guard let sceneController = OctopusKit.shared?.sceneController else {
