@@ -178,7 +178,7 @@ systems.
 
 - A **Component** represents each onscreen object or unit of game logic. It may contain properties and execute logic at specific moments in its lifetime: when it's added to an entity, removed from an entity, and/or once every frame. A component may signal its entity to enter a different state, or request the entity's scene to spawn new entities, or even to remove the component's own entity from the scene. 
 
-    > Components may also access the game controller and its states. Nothing is "off limits" to a component; what a component may do is up to you. However, good programming practices dictate that a component only access its entity and its co-components.
+    > Components may also access the game controller and its states. Nothing is "off limits" to a component; what a component may do is up to you. However, good practices dictate that a component should be polite and only access its own entity and its co-components.
 
 ⛓ `OctopusComponentSystem:`[`GKComponentSystem`](https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem)
 
@@ -247,21 +247,27 @@ systems.
 
 ### Component Categories
 
-Each component may be conceptually classified under one or more of the following categories:
+A component may be conceptually classified under one or more of the following categories:
 
-- **Data Component**: Adds some properties to the entity.
+- **Data Component**: Adds some properties to the entity that other components may access and act upon.
 
-	> e.g.: A *PlayerInfoComponent* with "playerName" and "score" properties.
-		
-- **Logic Component**: Executes some code when added to an entity, during every frame, upon being removed from an entity, or in response to external/asynchronous events such as player input.
+	> e.g.: A *PlayerInfoComponent* with *name* and *score* properties.
+
+- **Visual Component**: A component that modifies the appearance of the SpriteKit node associated with its entity, or adds child nodes to it.
+
+	> e.g.: A *SpinComponent* that sets a sprite's color to green when added to the entity, changes the node's rotation in every frame, and sets the sprite's color to red when removed from the entity, or a *ThrustersEffectComponent* which draws a jet flame behind a spaceship.
+
+- **Logic Component**: Executes some code every frame or at specific moments during an entity's lifetime: when added to the entity, upon being removed from an entity, or in response to external/asynchronous events such as player input.
+
+    > e.g.: A `TimeComponent` that keeps track of the seconds that have elapsed since the component was added to an entity.
+    >
+    > Components such as these, which execute some logic in every frame, must be added to a component system or updated manually in a scene's `update(_:)` method, otherwise they cannot perform their task.
 
 - **Coordinator Component**: A logic component that observes one or more components and uses that information to act upon other components.
 
-    > [TODO: example]
-
-- **Visual Component**: A logic component that mainly adds visual effects or child nodes to the SpriteKit node associated with the entity. 
-
-	> e.g.: A *SpinComponent* that sets an entity's color to green when added to the entity, changes the entity's rotation a little in every frame, and sets the entity's color to red when removed from the entity.
+    > e.g.: A *PlayerInfoDisplayComponent* which is added to a scene, that searches the scene for an entity with a *PlayerInfoComponent*, and uses the properties of that data component to update the scene's *HUDComponent*.
+    >
+    > Such a design lets the *HUDComponent* remain a visual component which focuses on managing its graphics and labels, while letting other components decide what to display in the HUD, which may be player info, enemy info, or temporary alerts etc.
 		
 - **Support/Utility Component**: Performs no action upon the entity on its own, but provides a set of methods and data to assist other components.
 
@@ -275,7 +281,7 @@ Each component may be conceptually classified under one or more of the following
 
 ### What should be Entities and what should be Components?
 
-- An spaceship, or a monster, are not Components; they are Entities. A spaceship may have a *ThrusterComponent*, and a *GunComponent*. A monster may have a *MonsterSpeciesComponent*. Both will have a `SpriteKitComponent`, `PhysicsComponent` etc.
+- A spaceship, or a monster, are not components; they are entities. A spaceship may have a *ThrusterComponent*, and a *GunComponent*. A monster may have a *MonsterSpeciesComponent*. Both will have a `SpriteKitComponent`, `PhysicsComponent` etc.
 
 ## State Machines
 
