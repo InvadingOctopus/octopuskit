@@ -504,8 +504,20 @@ public class OctopusScene: SKScene,
         // Unregister the entity's components from systems first.
         componentSystems.removeComponents(foundIn: entityToRemove)
         
-        // Remove all components from the entity so they can properly dispose of their behavior, e.g. removing a SpriteKit node from the scene.
-        entityToRemove.removeAllComponents()
+        // Remove the entity's `SpriteKitComponent` node, if any, from the scene.
+        
+        if  let nodeToRemove = entityToRemove.node,
+            self.children.contains(nodeToRemove)
+        {
+            // CHECK: Does `self.children` only include top-level nodes or the entire node tree? Removing only top-level nodes would be the desirable behavior, and removing the entire tree may be unncessary and inefficient (especially if complex node sub-heirarchies may have to be rebuilt later.)
+            
+            nodeToRemove.removeFromParent()
+        }
+        
+        // CHECK: Should we remove all components from the entity so they can properly dispose of their behavior? e.g. removing a SpriteKit node from the scene.
+        // CHECKED: Not removing all components from every entity does NOT prevent the scene from deinit'ing.
+        // ⚠️ NOTE: Do not remove components from entities that are not owned by this scene! e.g., the global GameController entity.
+        // entityToRemove.removeAllComponents()
         
         // Clear the entity's delegate.
         // CHECK: Should this step be skipped if this scene is not the delegate?
