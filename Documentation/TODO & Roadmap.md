@@ -39,6 +39,16 @@ permalink: documentation/todo.html
 
 - Replace `Array` with `ContiguousArray` where applicable.
 
+## Outstanding Bugs & Known Issues 
+
+- Sending an array like `[GKComponent.Type]`, such the one at `OctopusComponent.requiredComponents?`, to `entity.componentOrRelay(ofType:)` does not use the actual metatypes, and so it can cause false warnings about missing components.
+
+- Nodes added via an `SKReferenceNode` that is loaded from a scene created in the Xcode Scene Editor, start with their `isPaused` set to `true` until Xcode pauses and resumes the program execution.
+
+- `UITouch.location(in:)` and `UITouch.previousLocation(in:)` are sometimes not updated for many frames, causing a node to "jump" many pixels after 10 or so frames. Same issue with `preciseLocation(in:)` and `precisePreviousLocation(in:)`.
+
+- `UITouch.location(in:)` and `UITouch.preciseLocation(in:)` for a touch "wobbles" when a 2nd touch moves near it, even if the tracked touch is stationary. Seems to be a problem since iOS 11.3 on all devices, in all apps, including system apps like Photos. RADAR: 39997859.
+
 ## To Decide
 
 - Shorten the prefix for engine types from "Octopus" to "OK"?
