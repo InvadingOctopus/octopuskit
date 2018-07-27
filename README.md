@@ -150,7 +150,7 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
     >
     > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
 
-Your primary workflow will mostly consist of writing component classes for each "part" of visual appearance and gameplay logic, then combining them to build entities which appear onscreen or abstract entities that handle data in the "backend."
+Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend."
 
 > e.g.: say a _ParallaxBackgroundEntity_ containing a _CloudsComponent_, a *HillsComponent* and a *TreesComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.
 

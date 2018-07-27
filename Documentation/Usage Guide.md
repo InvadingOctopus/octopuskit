@@ -159,6 +159,10 @@ systems.
     > A single scene may represent multiple game states.  
     > e.g.: for most games, it may not be necessary to have a separate scene for a "Paused" game state, and a single scene may handle both "Play" and "Paused" game states by displaying a dark overlay and some text in the paused state.
 
+- Once a scene is presented on screen, the system calls the scene's `update(_:)` method once every frame, which goes through the list of the scene's **Component Systems** and updates all the **Components** in each system.
+
+    > Each scene may handle the frame update differently; [TODO]
+    
 - [TODO: Explain Subscenes (used for displaying modal UI.)]
 
 ### Tier 3
@@ -168,7 +172,7 @@ systems.
 
 - An **Entity** is a group of **Components** that may interact with each other. It may also have an **Entity State Machine** which is a special component comprising different **Entity States**. Each state has logic that decides which components to add to the entity and which components to remove depending on different conditions, as well as when to transition to a different state.
 
-	> e.g.: A *GrueEntity* with a *SpawningState, NormalState, EatingState and DeadState.*
+	> e.g.: A *GrueEntity* with a *SleepingState, HuntingState, EatingState and DeadState.*
 
 ### Tier 4
 
