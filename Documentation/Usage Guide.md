@@ -25,7 +25,7 @@ permalink: documentation/usage.html
 
 3. Modify the `TitleScene.swift` and `PlayScene.swift` files in the `Scenes` folder to customize them for your game.
 
-    > The file names are prefixed with `Step #` so you can follow the flow of execution at a glance.
+    > The filenames and comments are prefixed with "Step #" so you can follow the flow of execution at a glance.
     >
     > 💡 Browse the `OctopusKit/Components` folder and try tinkering with different components!
     >
@@ -38,7 +38,7 @@ permalink: documentation/usage.html
 2. Your `AppDelegate` class must inherit from `OctopusAppDelegate`. It needs to implement (override) only one method: `applicationWillLaunchOctopusKit()`, where it must initialize the shared `OctopusKit` singleton instance by calling:
 
     ```swift
-    OctopusKit(appName: "YourGame", gameController: YourGameControllerClass())
+    OctopusKit(appName: "YourGame", gameController: YourGameController())
     ```
 
     > "Game controller" refers to a "controller" in the Model-View-Controller sense here, not a gamepad or joystick, and must be a subclass of `OctopusGameController`.
@@ -88,7 +88,7 @@ permalink: documentation/usage.html
 
 - `Assets`: A collection of basic images, shaders and sounds to get you started.
 
-- `Components`: A wide library of components for graphics, gameplay, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing *dynamic dispatch*][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
+- `Components`: A wide library of components for graphics, gameplay, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing dynamic dispatch][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
 
 - `Core/Base`: The base classes for game states, scenes, entities, components and 
 systems.
@@ -219,6 +219,22 @@ systems.
 - Contain `StateMachineComponent`s that add and remove groups of components to the entity depending on the state.
     
     > e.g.: a player character in a *SpawningState* may have a *BlinkingEffectComponent* but no *DamageComponent* as it must be invulnerable before it has fully spawned, but entering the *ReadyState* will add a *DamageComponent* as well as a *PlayerControlComponent* etc.
+
+### The Scene Entity
+
+- Every SpriteKit node has an optional `entity?` property. Since a scene also ultimately inherits from `SKNode`, it may also have an entity associated with it.
+
+- The `OctopusScene.entity?` property is initialized with a `SpriteKitComponent` and `SpriteKitSceneComponent` to represent the top of the node tree.
+
+- Other components may be added directly to the scene entity to represent elements such as background layers, HUD overlays, other high-level visual features or abstract logic that acts upon the scene as a whole.
+
+    > Very simple games may only consist of components which are added to the scene entity, without any "sub-entities."
+
+### The Game Controller Entity
+
+- `OctopusGameController` also has an `entity` property (not optional) which is initialized when the game is launched and is accessible from every scene.
+
+- Games which need to share data or logic across multiple states and scenes can add persistent components to the game controller entity.
 
 ### Entities should *not:*
 
