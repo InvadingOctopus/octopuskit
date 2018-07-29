@@ -364,40 +364,33 @@ public class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     }
     
     /// Override in subclass to implement more granular control over transitions between specific types of scenes.
+    ///
+    /// - Parameter transition: The transition animation to display between scenes.
+    ///
+    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
     public func octopusScene(
         _ outgoingScene: OctopusScene,
         didRequestTransitionTo nextSceneFileName: String,
         withTransition transition: SKTransition? = nil)
     {
-        OctopusKit.logForFramework.add("nextSceneFileName = \(nextSceneFileName)")
-        
-        guard let spriteKitView = self.view as? SKView else {
-            fatalError("OctopusSceneController's view is not an SpriteKit SKView.")
-        }
-        
-        guard let nextScene = loadScene(fileNamed: nextSceneFileName) else { return }
-        
-        nextScene.willMove(to: spriteKitView)
-        
-        if let transition = transition {
-            spriteKitView.presentScene(nextScene, transition: transition)
-        }
-        else {
-            spriteKitView.presentScene(nextScene)
-        }
-        
-        outgoingScene.isPaused = false // CHECK: Necessary?
+        OctopusKit.logForFramework.add("nextSceneFileName: \(nextSceneFileName)")
+        loadAndPresentScene(fileNamed: nextSceneFileName, withTransition: transition)
+        // outgoingScene.isPaused = false // CHECK: Necessary?
     }
     
     /// Override in subclass to implement more granular control over transitions between specific types of scenes.
+    ///
+    /// - Parameter transition: The transition animation to display between scenes.
+    ///
+    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
     public func octopusScene(
         _ outgoingScene: OctopusScene,
         didRequestTransitionTo nextSceneClass: OctopusScene.Type,
         withTransition transition: SKTransition? = nil)
     {
-        OctopusKit.logForFramework.add("nextSceneClass = \(nextSceneClass)")
-        self.createAndPresentScene(ofClass: nextSceneClass)
-        outgoingScene.isPaused = false // CHECK: Necessary?
+        OctopusKit.logForFramework.add("nextSceneClass: \(nextSceneClass)")
+        createAndPresentScene(ofClass: nextSceneClass, withTransition: transition)
+        // outgoingScene.isPaused = false // CHECK: Necessary?
     }
     
 }
