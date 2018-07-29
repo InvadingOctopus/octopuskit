@@ -249,29 +249,44 @@ public class OctopusSceneController: OSViewController, OctopusSceneDelegate {
         return newScene
     }
     
-    public func presentScene(
-        _ scene: SKScene,
-        withTransition transition: SKTransition? = nil)
+    /// - Parameter incomingScene: The scene to present.
+    /// - Parameter transitionOverride: The transition animation to display between scenes.
+    ///
+    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
+    public func presentScene(_ incomingScene: SKScene,
+                             withTransition transitionOverride: SKTransition? = nil)
     {
-        OctopusKit.logForFramework.add("\(String(optional: spriteKitView?.scene)) → [\(transition == nil ? "no transition" : String(optional: transition))] → \(scene)")
+        OctopusKit.logForFramework.add("\(String(optional: spriteKitView?.scene)) → [\(transitionOverride == nil ? "no transition override" : String(optional: transitionOverride))] → \(incomingScene)")
         
         guard let spriteKitView = self.view as? SKView else {
             fatalError("\(self) does not have an SpriteKit SKView.") // TODO: Add internationalization.
         }
         
-        if let octopusScene = scene as? OctopusScene {
-            octopusScene.octopusSceneDelegate = self
-            octopusScene.willMove(to: spriteKitView)
+        // If the incoming scene is an `OctopusScene`, notify it that it is about to be presented.
+        
+        if let incomingOctopusScene = incomingScene as? OctopusScene {
+            incomingOctopusScene.octopusSceneDelegate = self
+            incomingOctopusScene.willMove(to: spriteKitView)
         }
         
+        // If an overriding transition has not been specified, let the current scene decide the visual effect for the transition to the next scene.
+        
+        // ℹ️ DESIGN: It makes more sense for the outgoing state/scene to decide the transition effect, which may depend on their variables, rather than the incoming scene.
+        
+        let transition = transitionOverride ?? self.currentScene?.transition(for: type(of: incomingScene))
+        
         if let transition = transition {
-            spriteKitView.presentScene(scene, transition: transition)
+            spriteKitView.presentScene(incomingScene, transition: transition)
         }
         else {
-            spriteKitView.presentScene(scene)
+            spriteKitView.presentScene(incomingScene)
         }
     }
     
+    /// - Parameter sceneClass: The scene class to create an instance of.
+    /// - Parameter transition: The transition animation to display between scenes.
+    ///
+    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
     @discardableResult public func createAndPresentScene(
         ofClass sceneClass: OctopusScene.Type,
         withTransition transition: SKTransition? = nil)
@@ -286,6 +301,10 @@ public class OctopusSceneController: OSViewController, OctopusSceneDelegate {
         }
     }
     
+    /// - Parameter fileName: The filename of the scene to load.
+    /// - Parameter transition: The transition animation to display between scenes.
+    ///
+    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
     @discardableResult public func loadAndPresentScene(
         fileNamed fileName: String,
         withTransition transition: SKTransition? = nil)

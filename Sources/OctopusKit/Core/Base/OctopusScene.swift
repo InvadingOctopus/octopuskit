@@ -304,8 +304,8 @@ public class OctopusScene: SKScene,
         OctopusKit.logForStates.add("\(exitingState) → \(nextState)")
     }
     
-    /// Abstract; override in subclass to customize SpriteKit scene transitions.
-    public func transition(for nextStateClass: GKState.Type) -> SKTransition? {
+    /// Abstract; override in subclass to provide a visual transition effect between scenes.
+    public func transition(for nextSceneClass: SKScene.Type) -> SKTransition? {
         return nil
     }
     

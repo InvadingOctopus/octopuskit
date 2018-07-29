@@ -13,7 +13,6 @@ import GameplayKit
 public protocol OctopusGameStateDelegate: class {
     func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?)
     func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState)
-    func transition(for nextStateClass: GKState.Type) -> SKTransition?
 }
 
 /// Abstract base class for game states.
@@ -75,15 +74,9 @@ public class OctopusGameState: GKState {
         if OctopusKit.shared?.currentScene == nil // This check comes first, so we can safely force-unwrap the optional in the next
             || type(of: OctopusKit.shared!.currentScene!) != associatedSceneClass
         {
-            // ℹ️ DESIGN: It makes more sense for the outgoing state/scene to decide the transition effect, which may depend on their variables, rather than the incoming scene.
-            
-            let transition = self.delegate?.transition(for: type(of: self))
-            
             // Store the newly created scene in a variable so we can notify the incoming scene instead of the outgoing scene, in case there is a long visual `SKTransition` between the scenes.
             
-            incomingScene = sceneController.createAndPresentScene(
-                ofClass: associatedSceneClass,
-                withTransition: transition)
+            incomingScene = sceneController.createAndPresentScene(ofClass: associatedSceneClass)
         }
         
         // Make sure we have a scene by now before notifying it of the new state.
