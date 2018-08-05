@@ -13,7 +13,7 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 
 > This project is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 >
-> It's also my first ever open-source project and a **work in progress**; I'm still learning, and OctopusKit may rapidly change without maintaining backwards compatibility. If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it!
+> It's also my first ever open-source project and a **work in progress**; I'm still learning, and OctopusKit may change rapidly without maintaining backwards compatibility. If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it!
 >
 > *– ShinryakuTako*  
 
