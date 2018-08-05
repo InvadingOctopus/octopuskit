@@ -335,7 +335,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 [quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
 [octopuskit-github]: https://github.com/invadingoctopus/octopuskit
-[tips-&-troubleshooting]: tips.html
+[tips-&-troubleshooting]: https://invadingoctopus.io/octopuskit/documentation/tips.html
 
 [mvc]: https://en.wikipedia.org/wiki/Model–view–controller
 [reducing-dynamic-dispatch]: https://developer.apple.com/swift/blog/?id=27

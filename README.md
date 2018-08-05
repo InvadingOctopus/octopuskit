@@ -220,10 +220,10 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 [patreon]: https://www.patreon.com/invadingoctopus
 
 [quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
-[usage-guide]: documentation/usage.html
-[tips-&-troubleshooting]: documentation/tips.html
+[usage-guide]: https://invadingoctopus.io/octopuskit/documentation/usage.html
+[tips-&-troubleshooting]: https://invadingoctopus.io/octopuskit/documentation/tips.html
 [coding-conventions-&-design-guide]: documentation/conventions.html
-[todo-&roadmap]: documentation/todo.html
+[todo-&roadmap]: https://invadingoctopus.io/octopuskit/documentation/todo.html
 
 [swift-book]: https://docs.swift.org/swift-book/GuidedTour/GuidedTour.html
 [swift-api-guidelines]: https://swift.org/documentation/api-design-guidelines/
