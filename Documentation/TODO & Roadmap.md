@@ -56,6 +56,7 @@ permalink: documentation/todo.html
 - Change `public` access to `open` or `internal`?
 - Write standalone documentation for every API unit? (Currently, source comments are the primary API documentation.)
 - Write documentation and tutorials for absolute beginners? i.e. people who have no experience with Xcode or Swift?
+- Rework pausing/subscene system?
 
 ----
 

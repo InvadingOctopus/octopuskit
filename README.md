@@ -13,7 +13,7 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 
 > This project is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 >
-> It's also my first ever open-source project and a **work in progress**; I'm still learning. If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it!
+> It's also my first ever open-source project and a **work in progress**; I'm still learning, and OctopusKit may rapidly change without maintaining backwards compatibility. If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it!
 >
 > *– ShinryakuTako*  
 
@@ -184,7 +184,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ## Getting Started
 
-1. **Read the [Quickstart and Usage Guide.][quickstart-&-usage-guide]** You will need Xcode 9.4 or 10.
+1. **Read the [Quickstart and Usage Guide.][usage-guide]** You will need Xcode 9.4 or 10.
 
     > **Skill Level: Intermediate**: Although OK is not presented in a form suitable for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
     > 
@@ -220,7 +220,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 [patreon]: https://www.patreon.com/invadingoctopus
 
 [quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
-[quickstart-&-usage-guide]: documentation/usage.html
+[usage-guide]: documentation/usage.html
 [tips-&-troubleshooting]: documentation/tips.html
 [coding-conventions-&-design-guide]: documentation/conventions.html
 [todo-&roadmap]: documentation/todo.html

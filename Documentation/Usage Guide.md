@@ -1,5 +1,6 @@
 ---
 permalink: documentation/usage.html
+redirect_from: "/Documentation/Usage%2Guide.html"
 ---
 
 # OctopusKit Usage Guide
@@ -161,7 +162,11 @@ systems.
 
     > Each scene may handle the frame update differently; [TODO]
     
-- [TODO: Explain Subscenes (used for displaying modal UI.)]
+🌠 `OctopusSubscene:`[`SKNode`](https://developer.apple.com/documentation/spritekit/sknode)
+
+- A **Subscene** is a node which may be added to a scene, but maintains its own hierarchy of entities and components. When a subscene is presented, the scene sets a special flag to pause the entities in the scene itself and any previous subscenes. This allows subscenes to be used for modal UI and content which must be overlaid on top of the scene's content, while pausing the main action without pausing the engine, so that only the topmost subscene will be updated.
+
+ > e.g.: In a game where the player can rummage through the hero's inventory, subscenes may be used to display the inventory while pausing the gameplay. Multiple subscenes may be used to let the player open smaller containers in the inventory, such as pouches inside a backpack, each displaying its contents over the parent container's UI. The engine ensures that only the topmost container's UI can be interacted with.
 
 ### Tier 3
 
