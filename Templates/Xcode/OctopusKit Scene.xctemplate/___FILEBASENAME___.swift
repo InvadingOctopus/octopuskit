@@ -36,8 +36,8 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
             
             // 4: Custom code and anything else that depends on the final placement of nodes per frame.
             
-            PhysicsContactEventComponent.self,
-            RepeatedClosureComponent.self,
+            PhysicsEventComponent.self,
+            RepeatingClosureComponent.self,
             DelayedClosureComponent.self,
             CameraComponent.self
             ])

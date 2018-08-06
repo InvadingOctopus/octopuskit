@@ -10,7 +10,7 @@ import GameplayKit
 final class PlayableState: OctopusGameState {
     
     init() {
-        super.init(associatedSceneClass: GameScene.self)
+        super.init(associatedSceneClass: ___FILEBASENAMEASIDENTIFIER___.self)
     }
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -25,7 +25,7 @@ final class PlayableState: OctopusGameState {
 final class PausedState: OctopusGameState {
     
     init() {
-        super.init(associatedSceneClass: GameScene.self)
+        super.init(associatedSceneClass: ___FILEBASENAMEASIDENTIFIER___.self)
     }
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -37,21 +37,6 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         
     // MARK: - Life Cycle
     
-    override func willMove(to view: SKView) {
-        super.willMove(to: view)
-        // Set scaling and any other properties that need to be set before presenting in the view.
-        // self.scaleAndCropToFitLandscape(in: view) // Fill landscape orientation at the cost of cutting out some edges.
-        // self.halveSizeAndFit(in: view) // For a pixelated effect.
-    }
-    
-    /*
-    override func didMove(to view: SKView) {
-        super.didMove(to: view)
-        // view.setAllDebugStatsVisibility(to: true)
-        // view.showsPhysics = false
-    }
-    */
-    
     override func prepareContents() {
         super.prepareContents()
         createComponentSystems()
@@ -59,7 +44,6 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     }
     
     fileprivate func createComponentSystems() {
-        
         componentSystems.createSystems(forClasses: [ // Customize
             
             // 1: Time and state.
@@ -73,34 +57,37 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
             NodeTouchComponent.self,
             NodeTouchClosureComponent.self,
             MotionManagerComponent.self,
-            TouchControlledPositioningComponent.self,
             
             // 3: Movement and physics.
             
+            TouchControlledPositioningComponent.self,
             OctopusAgent2D.self,
             PhysicsComponent.self, // The physics component should come in after other components have modified node properties, so it can clamp the velocity etc. if such limits have been specified.
             
             // 4: Custom code and anything else that depends on the final placement of nodes per frame.
             
-            PhysicsContactEventComponent.self,
-            RepeatedClosureComponent.self,
+            PhysicsEventComponent.self,
+            RepeatingClosureComponent.self,
             DelayedClosureComponent.self,
             CameraComponent.self
             ])
     }
     
     fileprivate func createEntities() {
+        // Customize: This is where you build your scene.
+        //
+        // You may also perform scene construction and deconstruction in `gameControllerDidEnterState(_:from:)` and `gameControllerWillExitState(_:to:)`
     }
     
     // MARK: - Frame Update
     
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
-        guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedByModalInterface else { return }
+        guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
         
         // Update game state, entities and components.
         
-        OctopusEngine.shared?.gameController.update(deltaTime: updateTimeDelta)
+        OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)
         updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
     
@@ -110,70 +97,54 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     override func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?) {
         super.gameControllerDidEnterState(state, from: previousState)
         
-        // Common to every state, before state-specific
+        // If this scene needs to perform tasks which are common to every state, you may put that code outside the switch statement.
         
-        // ...
-        
-        // State-specific
-        
-        switch type(of: state) { // Can also use tuples: `(type(of: previousState), type(of: state))`
+        switch type(of: state) { // Tuples may be used here: `(type(of: previousState), type(of: state))`
             
-        case is PlayableState.Type: // Entering PlayableState
+        case is PlayableState.Type: // Entering `PlayableState`
             break
             
-        case is PausedState.Type: // Entering PausedState
+        case is PausedState.Type: // Entering `PausedState`
             physicsWorld.speed = 0
             
         default:
             break
         }
-        
-        // Common to every state, after state-specific
-        
-        // ...
     }
     
     /// Useful in games that use a single scene for multiple games states (e.g. removing overlays that were displaying during a paused state, menus, etc.)
     override func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState) {
         super.gameControllerWillExitState(exitingState, to: nextState)
         
-        // Common to every state, before state-specific
+        // If this scene needs to perform tasks which are common to every state, you may put that code outside the switch statement.
         
-        // ...
-        
-        // State-specific
-        
-        switch type(of: exitingState) { // Can also use tuples: `(type(of: exitingState), type(of: nextState))`
+        switch type(of: exitingState) { // Tuples may be used here: `(type(of: exitingState), type(of: nextState))`
             
-        case is PlayableState.Type: // Exiting PlayableState
+        case is PlayableState.Type: // Exiting `PlayableState`
             break
             
-        case is PausedState.Type: // Exiting PausedState
+        case is PausedState.Type: // Exiting `PausedState`
             physicsWorld.speed = 1
             
         default:
             break
         }
-        
-        // Common to every state, after state-specific
-        
-        // ...
     }
     
-    override func pausedBySystem() {
-        if
-            let currentState = OctopusEngine.shared?.gameController.currentState,
+    // MARK: - Pausing/Unpausing
+    
+    override func didPauseBySystem() {
+        if  let currentState = OctopusKit.shared?.gameController.currentState,
             type(of: currentState) is PlayableState.Type
         {
             self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PausedState.self)
         }
     }
     
-    override func unpausedBySystem() {
-        // Remain in the paused state so the player has to manually unpause when they are ready.
+    override func didUnpauseBySystem() {
+        // If we were in the paused game state, remain in that state so the player has to manually unpause when they are ready.
         
-        if
-            let currentState = OctopusEngine.shared?.gameController.currentState,
+        if  let currentState = OctopusKit.shared?.gameController.currentState,
             type(of: currentState) is PausedState.Type
         {
             // Since we are still in the paused state, keep the action paused, preventing `super.applicationDidBecomeActive()` from resuming it.
@@ -181,12 +152,12 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         }
     }
     
-    override func pausedByPlayer() {
+    override func didPauseByPlayer() {
         // This transition should be subject to the validation logic in the relevant `OctopusGameState` classes.
         self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PausedState.self)
     }
     
-    override func unpausedByPlayer() {
+    override func didUnpauseByPlayer() {
         // This transition should be subject to the validation logic in the relevant `OctopusGameState` classes.
         self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PlayableState.self)
     }
