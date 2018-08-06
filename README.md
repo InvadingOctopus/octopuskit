@@ -192,7 +192,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 2. Stuck? See [Tips & Troubleshooting.][tips-&-troubleshooting]
 
-3. Wondering whether something was intentionally done the way it is, or why? [Coding Conventions & Design Decisions][coding-conventions-&-design-guide] may have an explanation.
+3. Wondering whether something was intentionally done the way it is, or why? [Coding Conventions & Design Decisions][conventions-&-design] may have an explanation.
 
 4. Want to keep tabs on what's coming or help out with the development of missing features? See the [TODO & Roadmap.][todo-&roadmap]
 
@@ -222,7 +222,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 [quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
 [usage-guide]: https://invadingoctopus.io/octopuskit/documentation/usage.html
 [tips-&-troubleshooting]: https://invadingoctopus.io/octopuskit/documentation/tips.html
-[coding-conventions-&-design-guide]: documentation/conventions.html
+[conventions-&-design]: https://invadingoctopus.io/octopuskit/documentation/conventions.html
 [todo-&roadmap]: https://invadingoctopus.io/octopuskit/documentation/todo.html
 
 [swift-book]: https://docs.swift.org/swift-book/GuidedTour/GuidedTour.html
