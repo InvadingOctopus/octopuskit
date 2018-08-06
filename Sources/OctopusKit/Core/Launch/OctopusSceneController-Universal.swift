@@ -112,16 +112,9 @@ public class OctopusSceneController: OSViewController, OctopusSceneDelegate {
         didSet { self.setNeedsUpdateOfHomeIndicatorAutoHidden() }
     }
     
-    #if swift(>=4.2)
-    // TODO: Remove this conditional compilation flag and incorporate changes into main code after Swift 4.2 launches.
     public override var prefersHomeIndicatorAutoHidden: Bool {
         return prefersHomeIndicatorAutoHiddenOverride
     }
-    #else
-    public override func prefersHomeIndicatorAutoHidden() -> Bool {
-        return prefersHomeIndicatorAutoHiddenOverride
-    }
-    #endif
     
     /// Specifies whether whether the scene controller's contents should auto rotate.
     ///

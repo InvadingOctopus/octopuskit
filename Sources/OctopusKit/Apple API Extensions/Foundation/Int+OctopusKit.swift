@@ -14,22 +14,6 @@ extension Int {
 
     // MARK: - Random Numbers
     
-    /// Returns a random integer between the lower and upper bounds, **inclusive**.
-    ///
-    /// Uses `arc4random_uniform(_:)`. For GameplayKit-based randomization, use the extensions of `GKRandom`.
-    public static func random(from lowerBound: Int, to upperBound: Int) -> Int {
-        assert(lowerBound < upperBound, "`lowerBound` should be less than `upperBound`") // Assert instead of silently failing, because anything that relies on random numbers better get random numbers.
-        
-        #if swift(>=4.2)
-        // TODO: Remove `random(from:to:)` after Swift 4.2 is released.
-        return self.random(in: lowerBound...upperBound)
-        #else
-        let upperBoundInclusive = (upperBound + 1) - lowerBound // + 1 so the upper bound is included.
-        let randomNumber = Int(arc4random_uniform(UInt32(upperBoundInclusive)))
-        return randomNumber + lowerBound
-        #endif
-    }
-    
     /// Returns a random integer from `0` to `upperBound-1` (**not** including `upperBound`) that does not match any of the numbers provided in the exclusion list.
     ///
     /// This method repeatedly calls the random number generator until it returns a number that is not in the exclusions list. If no acceptable number can be generated in `maximumAttempts` then `nil` will returned.
@@ -60,31 +44,20 @@ extension Int {
         // If there are no exclusions, just return the first random number generated.
         
         if exclusions.isEmpty {
-            #if swift(>=4.2)
-            // TODO: Remove `arc4random` variant after Swift 4.2 is released.
             return self.random(in: 0 ..< upperBound)
-            #else
-            return Int(arc4random_uniform(UInt32(upperBound)))
-            #endif
         }
         else {
-            
             var randomNumber: Int
             var attempts = 0
             
             // Keep generating random numbers until we find one that's not in the exclusions list, or we've made the maximum number of attempts, so that we don't get stuck in an infinite loop.
             
             repeat {
-                
-                #if swift(>=4.2)
-                // TODO: Remove `arc4random` variant after Swift 4.2 is released.
                 randomNumber = self.random(in: 0 ..< upperBound)
-                #else
-                randomNumber = Int(arc4random_uniform(UInt32(upperBound)))
-                #endif
-                
                 attempts += 1
-            } while exclusions.contains(randomNumber) && attempts < maximumAttempts
+                
+            } while exclusions.contains(randomNumber)
+                 && attempts < maximumAttempts
             
             if !exclusions.contains(randomNumber) {
                 return randomNumber

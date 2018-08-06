@@ -6,20 +6,16 @@
 //  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import SpriteKit
 import GameplayKit
-
-#if swift(>=4.2)
-// TODO: Remove this temporary alias and incorporate changes into main code after Swift 4.2 launches.
-public typealias UIImpactFeedbackStyle = UIImpactFeedbackGenerator.FeedbackStyle
-#endif
 
 #if os(iOS)
     
 public final class ImpactVibrationComponent: VibrationComponent<UIImpactFeedbackGenerator> {
     
-    public var style: UIImpactFeedbackStyle
+    public var style: UIImpactFeedbackGenerator.FeedbackStyle
     
-    public init(style: UIImpactFeedbackStyle = .light) {
+    public init(style: UIImpactFeedbackGenerator.FeedbackStyle = .light) {
         self.style = style
         super.init()
     }

@@ -6,13 +6,12 @@
 //  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: `CaseIterable` in Swift 4.2
-// TODO: Support for degrees
+// TODO: Support for degrees?
 // CHECK: Internationalization for string representations?
 
 import SpriteKit
 
-public enum OctopusDirection: String, CustomStringConvertible {
+public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
     
     case north
     case northEast

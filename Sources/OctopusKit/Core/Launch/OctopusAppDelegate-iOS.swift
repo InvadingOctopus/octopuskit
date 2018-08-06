@@ -28,13 +28,8 @@ class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
     /// The Xcode project templates usually include a synthesized declaration of the property automatically for the app delegate. The default value of this synthesized property is `nil`, which causes the app to create a generic `UIWindow` object and assign it to the property. If you want to provide a custom window for your app, you must implement the getter method of this property and use it to create and return your custom window.
     var window: UIWindow?
     
-    #if swift(>=4.2)
-    // TODO: Remove this temporary alias and incorporate changes into main code after Swift 4.2 launches.
-    public typealias UIApplicationLaunchOptionsKey = UIApplication.LaunchOptionsKey
-    #endif
-    
     /// Override point for customization after game launch.
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         OctopusKit.logForFramework.add()
         

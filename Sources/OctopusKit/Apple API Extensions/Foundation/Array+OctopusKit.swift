@@ -15,20 +15,7 @@ import GameplayKit
 extension Array {
     
     // MARK: - Randomization
-    
-    #if swift(>=4.2)
-    // TODO: Remove `randomElement()` after Swift 4.2 is released.
-    #else
-    /// Returns a random element from this array.
-    ///
-    /// Uses `arc4random_uniform(_:)`.
-    ///
-    /// Can be used with array literals, e.g.: `[4, 8, 16, 42].randomElement()`
-    public func randomElement() -> Element {
-        return self[Int(arc4random_uniform(UInt32(self.count)))]
-    }
-    #endif
-    
+        
     /// Returns a random element from this array whose index is not in `skippingIndices`.
     ///
     /// If the array is empty or if the list of exclusions prevents any acceptable value within `maximumAttempts`, `nil` is returned.
