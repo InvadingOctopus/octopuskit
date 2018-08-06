@@ -20,7 +20,9 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 ### 🍰 **To begin from a template**:
 
-1. Download the [**OctopusKitQuickstart** Xcode project from the Releases page.][quickstart-project]
+1. Download the [**OctopusKitQuickstart** Xcode project from the Releases page.][quickstart-project] 
+
+    > You will require Xcode 10, and if you wish to run on a device, iOS 12 (both currently in beta.)
 
 2. Build and run the project.
 
@@ -57,7 +59,6 @@ redirect_from: "/Documentation/Usage%2Guide.html"
         super.update(currentTime)
         guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
         
-        OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)
         updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
     ```
@@ -66,6 +67,8 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     > `componentSystems` is the default array of systems in every scene.
     >
     > Other steps are left for the subclass because each scene may need to handle these differently.
+    >
+    > If your game states also perform per-frame updates, then you must also call `OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)`
 
 ----
 
@@ -166,7 +169,7 @@ systems.
 
 - A **Subscene** is a node which may be added to a scene, but maintains its own hierarchy of entities and components. When a subscene is presented, the scene sets a special flag to pause the entities in the scene itself and any previous subscenes. This allows subscenes to be used for modal UI and content which must be overlaid on top of the scene's content, while pausing the main action without pausing the engine, so that only the topmost subscene will be updated.
 
- > e.g.: In a game where the player can rummage through the hero's inventory, subscenes may be used to display the inventory while pausing the gameplay. Multiple subscenes may be used to let the player open smaller containers in the inventory, such as pouches inside a backpack, each displaying its contents over the parent container's UI. The engine ensures that only the topmost container's UI can be interacted with.
+    > e.g.: In a game where the player can rummage through the hero's inventory, subscenes may be used to display the inventory while pausing the gameplay. Multiple subscenes may be used to let the player open smaller containers in the inventory, such as pouches inside a backpack, each displaying its contents over the parent container's UI. The engine ensures that only the topmost container's UI can be interacted with.
 
 ### Tier 3
 
