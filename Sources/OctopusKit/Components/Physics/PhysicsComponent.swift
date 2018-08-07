@@ -47,16 +47,16 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
     /// Overrides this component's `physicsBody` property and creates a new rectangular `SKPhysicsBody` from the frame of the entity's `SpriteKitComponent` node.
     ///
     /// As creating physics bodies may be a costly runtime operation, this setting defaults to `false`.
-    public var shouldCreateBodyFromNodeWhenAddedToEntity: Bool = false
+    public var shouldCreateBodyFromNodeFrame: Bool = false
     
     public init(
         physicsBody: SKPhysicsBody? = nil,
         maxVelocity: CGFloat? = nil,
-        shouldCreateBodyFromNodeWhenAddedToEntity: Bool = false)
+        shouldCreateBodyFromNodeFrame: Bool = false)
     {
         self.physicsBody = physicsBody
         self.maxVelocity = maxVelocity
-        self.shouldCreateBodyFromNodeWhenAddedToEntity = shouldCreateBodyFromNodeWhenAddedToEntity
+        self.shouldCreateBodyFromNodeFrame = shouldCreateBodyFromNodeFrame
         super.init()
     }
     
@@ -65,12 +65,12 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
     public override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)
         
-        // If `shouldCreateBodyFromNodeWhenAddedToEntity` is set and neither this component nor the entity's node have a physics body, then create a new rectangular body from the node's frame.
+        // If `shouldCreateBodyFromNodeFrame` is set and neither this component nor the entity's node have a physics body, then create a new rectangular body from the node's frame.
         
-        if shouldCreateBodyFromNodeWhenAddedToEntity
+        if shouldCreateBodyFromNodeFrame
             && (self.physicsBody == nil && node.physicsBody == nil)
         {
-            // NOTE: CHECK: Is this a costly operation? Should `shouldCreateBodyFromNodeWhenAddedToEntity` be `true` or `false` by default?
+            // NOTE: CHECK: Is this a costly operation? Should `shouldCreateBodyFromNodeFrame` be `true` or `false` by default?
             
             OctopusKit.logForDebug.add("\(self) creating new physicsBody from the frame of \(String(describing: node))") // Not a warning because this would be the expected behavior of adding a `PhysicsComponent` with no arguments to a fresh entity/node.
             
