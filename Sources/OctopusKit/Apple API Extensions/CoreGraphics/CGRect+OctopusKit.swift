@@ -17,6 +17,11 @@ extension CGRect {
         return CGPoint(x: midX, y: midY)
     }
     
+    /// Returns a new rectangle with the same size as this rectangle, but with an origin of `(0,0)`.
+    public var withZeroOrigin: CGRect {
+        return CGRect(origin: CGPoint.zero, size: self.size)
+    }
+    
     /// Returns a new rectangle that is equivalent to this rectangle scaled by the specified factors.
     public func scaled(byX xScale: CGFloat, y yScale: CGFloat) -> CGRect {
         // CHECK: Use `applying(_:)` and `CGAffineTransform(scaleX:y:)`, or is this more efficient?
