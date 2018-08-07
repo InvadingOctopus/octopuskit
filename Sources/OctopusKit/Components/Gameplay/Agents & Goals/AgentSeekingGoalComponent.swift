@@ -17,7 +17,7 @@ public final class AgentSeekingGoalComponent: OctopusAgentGoalComponent {
     
     /// The target for the agent of this component's entity to seek.
     ///
-    /// When this value is modified, a new goal is created with the new target. If `targetAgent` is set to `nil` then the goal is removed from the agent associated with this component.
+    /// When this value is modified, a new goal is created with the new target. If `targetAgent` is set to `nil` then the goal is removed from the agent.
     public var targetAgent: OctopusAgent2D? {
         didSet {
             if targetAgent != oldValue { // Avoid redundancy.
