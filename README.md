@@ -9,7 +9,7 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 4. [Getting Started](#getting-started)
 5. [Etcetera](#etcetera) (license, contact)
 
-🚀 *Eager to dive in? Download the [Quickstart project][quickstart-project] (Xcode 10.)*
+🚀 *Eager to dive right in? Download the [Quickstart project.][quickstart-project]*
 
 > This project is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 >
@@ -46,8 +46,8 @@ scene.entity?.addComponent(sharedTouchEventComponent)
 
 character.addComponents([
     
-    // A relay component adds a reference to a component from another entity.
-    // This fulfills the dependencies of other components in this entity.
+    // A relay component adds a reference to a component from another entity,
+    // and also fulfills the dependencies of other components in this entity.
     RelayComponent(for: sharedTouchEventComponent),
     
     // This component checks the entity's TouchEventComponent (provided here by a relay)
@@ -77,11 +77,11 @@ character.addComponents([
 🛠 *Advanced: Using a custom "script" to change the animation based on player movement*
 
 ```swift
-// Add a component that executes custom code every frame.
+// Add a component that executes the supplied closure every frame.
 character.addComponent(RepeatingClosureComponent { component in
     
     // Check if the entity of this component has the required dependencies at runtime.
-    // This approach allows dynamic behavior modification without hardcoding anything.
+    // This approach allows dynamic behavior modification instead of halting the game.
     
     if  let physicsBody = component.coComponent(PhysicsComponent.self)?.physicsBody,
         let animationComponent = component.coComponent(TextureAnimationComponent.self)
@@ -124,7 +124,7 @@ for turretNode in scene["//Turret"] {
         // Track the first touch that begins inside the sprite.
         NodeTouchComponent(),
                 
-        // Let the player select and drag an individual sprite.
+        // Let the player select and drag a specific sprite.
         // This differs from the TouchControlledPositioningComponent in a previous example, 
         // which repositions nodes regardless of where the touch began.
         TouchControlledDraggingComponent() ]))
@@ -184,7 +184,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ## Getting Started
 
-1. **Read the [Quickstart and Usage Guide.][usage-guide]** You will need Xcode 10.
+1. **Read the [Quickstart and Usage Guide.][usage-guide]** You will need Xcode 10 (and iOS 12 if you wish to run on an iPhone or iPad.)
 
     > **Skill Level: Intermediate**: Although OK is not presented in a form suitable for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
     > 
