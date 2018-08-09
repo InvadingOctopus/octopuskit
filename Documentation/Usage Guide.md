@@ -78,7 +78,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 * Including the OctopusKit code in your main project provides the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker modification and autocompletion, easier navigation etc.
 
-* You can give each of your projects a separate copy of the OctopusKit code to let you customize the engine differently for each specific project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "**Copy items if needed**")
+* You can give each of your projects a separate copy of the OctopusKit code to let you customize the engine differently for each specific project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "Copy items if needed").
 
 * Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
 
