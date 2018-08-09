@@ -358,7 +358,9 @@ public class OctopusScene: SKScene,
         
         // NOTE: The subclass's implementation must also handle the `isPaused...` flags.
         
-        guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else {
+        // NOTE: The `isPausedBySubscene` flag is a special case, and should only be handled by the subclass. The engine itself should continue so that the subscenes can be updated.
+        
+        guard !isPaused, !isPausedBySystem, !isPausedByPlayer else {
             
             if pausedAtTime == nil {
                 pausedAtTime = currentTime
