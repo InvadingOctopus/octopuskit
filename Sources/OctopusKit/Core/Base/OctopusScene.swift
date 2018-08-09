@@ -313,64 +313,7 @@ public class OctopusScene: SKScene,
     
     // MARK: - Entities & Components
     
-    // Most of the entity management code is provided in the default implementation extensions of the `OctopusEntityContainer` protocol.
-    
-    // MARK: OctopusEntityDelegate
-    
-    /// Registers the new component with the scene's component systems, and if the component was a `SpriteKitComponent` or `GKSKNodeComponent`, adds the node to the scene if the node does not already have a parent.
-    /// This assists in cases such as dynamically adding a `SpriteKitComponent` or `GKSKNodeComponent` without knowing which scene or parent to add the node to.
-    public func entity(_ entity: GKEntity, didAddComponent component: GKComponent) {
-        guard entities.contains(entity) else {
-            OctopusKit.logForWarnings.add("\(entity) is not registered with \(self)")
-            return
-        }
-        
-        /// Register the component into our systems.
-        
-        for componentSystem in self.componentSystems {
-            if componentSystem.componentClass == type(of: component) {
-                componentSystem.addComponent(component)
-            }
-        }
-        
-        // If the component was a `SpriteKitComponent` or `GKSKNodeComponent` with an orphan node, adopt that node into this scene.
-        
-        if component is SpriteKitComponent || component is GKSKNodeComponent {
-            addChildFromOrphanSpriteKitComponent(in: entity)
-        }
-        
-    }
-    
-    public func entity(_ entity: GKEntity, willRemoveComponent component: GKComponent) {
-        guard entities.contains(entity) else {
-            OctopusKit.logForWarnings.add("\(entity) is not registered with \(self)")
-            return
-        }
-        
-        for componentSystem in self.componentSystems {
-            if componentSystem.componentClass == type(of: component) {
-                componentSystem.removeComponent(component)
-            }
-        }
-    }
-    
-    /// If the entity that sends this event is in the scene's `entities` array, add the newly-spawned entity to the array, and register its components to the default list of systems.
-    /// - Returns: `true` if the entity was accepted and added to the scene. `false` if the entity was rejected or otherwise could not be added to the scene.
-    @discardableResult public func entity(_ entity: GKEntity, didSpawn spawnedEntity: GKEntity) -> Bool {
-        guard entities.contains(entity) else {
-            OctopusKit.logForWarnings.add("\(entity) is not registered with \(self)")
-            return false
-        }
-        
-        addEntity(spawnedEntity)
-        // componentSystems.addComponents(foundIn: spawnedEntity) // NOTE: Not needed here because it should be done in addEntity(_:), for example in case addEntity(_:) cannot or chooses not to add the entity.
-        return true
-    }
-    
-    public func entityDidRequestRemoval(_ entity: GKEntity) {
-        // OctopusKit.logForComponents.add("\(entity)") // Already logging in `removeEntityOnNextUpdate(_:)`
-        removeEntityOnNextUpdate(entity)
-    }
+    // Most of the entity management code as well as `OctopusEntityDelegate` conformance is provided in the default implementation extensions of the `OctopusEntityContainer` protocol.
     
     // MARK: - Frame Update
     
