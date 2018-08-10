@@ -103,7 +103,7 @@ public class OctopusSubscene: SKNode,
     
     // MARK: - Entities & Components
     
-    // Most of the entity management code as well as `OctopusEntityDelegate` conformance is provided in the default implementation extensions of the `OctopusEntityContainer` protocol.
+    // Most of the entity management code as well as `OctopusEntityDelegate` conformance is provided by the default implementation extensions of the `OctopusEntityContainer` protocol.
     
     // MARK: - Frame Update
     
