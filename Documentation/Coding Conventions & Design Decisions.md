@@ -11,7 +11,7 @@ permalink: documentation/conventions.html
 
 - Git workflow: [http://nvie.com/posts/a-successful-git-branching-model/](http://nvie.com/posts/a-successful-git-branching-model/)
 
-- OctopusKit types are prefixed with the word "Octopus" instead of "OK" because I liked it that way, and it saved me from a lot of refactoring when I had to change the name of the engine a few times.
+- OctopusKit type names are prefixed with the word "Octopus" instead of "OK" because I like it that way, so far. I may rename everything to begin with "OK" in the future to follow the common convention.
 
 - Classes are marked `final` where possible to improve performance. If you need to subclass them in a specific project, you could create a copy of the class (or entire engine source) and modify it to suit your project. See: [Increasing Performance by Reducing Dynamic Dispatch](https://developer.apple.com/swift/blog/?id=27)
 
