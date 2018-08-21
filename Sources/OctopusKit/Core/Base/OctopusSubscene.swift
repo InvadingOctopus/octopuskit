@@ -37,7 +37,7 @@ public enum OctopusSubsceneResultType {
 
 /// Base class for special nodes that may contain entities and component subsystems of their own, to implement self-contained "pseudoscenes" inside the parent scene, such as paused-state overlays, modal dialogs, cutscenes or minigames.
 public class OctopusSubscene: SKNode,
-    OctopusEntityContainer,
+    OctopusEntityContainerNode,
     OctopusEntityDelegate,
     TouchEventComponentCompatible
 {

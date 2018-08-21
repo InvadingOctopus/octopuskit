@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-/// A protocol for sharing common code between `OctopusScene` and `OctopusSubscene` via Default Implementation Extensions.
+/// A protocol for sharing common code between `OctopusScene` and `OctopusSubscene` (or other types which manage entities) via Default Implementation Extensions.
 public protocol OctopusEntityContainer: class {
     
     // CHECK: Extract `createEntityFromChildNode(...)` and `addChildFromOrphanSpriteKitComponent(...)` out to an SKNode-specific protocol?
@@ -23,14 +23,7 @@ public protocol OctopusEntityContainer: class {
     func addEntity(_ entity: GKEntity)
     func addEntities(_ entities: [GKEntity])
     
-    @discardableResult func createEntityFromChildNode(
-        withName name: String,
-        addingComponents components: [GKComponent]?,
-        addEntityToScene: Bool)
-        -> OctopusEntity?
-    
     func addAllComponentsFromAllEntities(to systemsCollection: [OctopusComponentSystem]?)
-    func addChildFromOrphanSpriteKitComponent(in entity: GKEntity)
     
     func entities(withName name: String) -> [OctopusEntity]?
     func renameUnnamedEntitiesToNodeNames()
@@ -41,6 +34,18 @@ public protocol OctopusEntityContainer: class {
     // MARK: Frame Update
     
     func updateSystems(in systemsCollection: [OctopusComponentSystem]?, deltaTime seconds: TimeInterval)
+}
+
+/// A protocol for sharing common code between `OctopusScene` and `OctopusSubscene` (or other types which manage entities and nodes) via Default Implementation Extensions.
+public protocol OctopusEntityContainerNode: OctopusEntityContainer where Self: SKNode {
+    
+    @discardableResult func createEntityFromChildNode(
+        withName name: String,
+        addingComponents components: [GKComponent]?,
+        addEntityToScene: Bool)
+        -> OctopusEntity?
+    
+    func addChildFromOrphanSpriteKitComponent(in entity: GKEntity)
 }
 
 // MARK: - Default Implementation
@@ -64,14 +69,14 @@ public extension OctopusEntityContainer {
         // If it's an `OctopusEntity` (as opposed to a basic `GKEntity`) set this scene as its delegate.
         
         if let octopusEntity = entity as? OctopusEntity {
-            octopusEntity.delegate = self as? OctopusEntityDelegate
+            octopusEntity.delegate = self as? OctopusEntityDelegate // CHECK: Is this casting i
         }
         
         // If the entity has as `SpriteKitComponent` or `GKSKNodeComponent` whose node does not belong to any parent, add that node to this scene.
         
         // ℹ️ This lets `OctopusEntityDelegate` methods spawn new visual entities without explicitly specifying the scene, and also lets us conveniently add new entities by simply writing `self.addEntity(OctopusEntity(components: [SpriteKitComponent(node: someSprite)]))`
         
-        addChildFromOrphanSpriteKitComponent(in: entity)
+        (self as? OctopusEntityContainerNode)?.addChildFromOrphanSpriteKitComponent(in: entity) // CHECK: PERFORMANCE: Any Impact from casting?
         
         // In case the entity added components to itself before its `OctopusEntityDelegate` was set (which ensures that new components are automatically registered with the scene's component systems), add the entity's components to this scene's systems now to make sure we don't miss any.
         
@@ -180,7 +185,7 @@ public extension OctopusEntityContainer {
         // Remove the entity's `SpriteKitComponent` node, if any, from the scene.
         
         if  let nodeToRemove = entityToRemove.node,
-            (self as? SKNode)?.children.contains(nodeToRemove) ?? false // If the entity container is not an `SKNode` descendant, then let the entity's node remain in its parent. CHECK: Is this the intuitive behavior?
+            (self as? SKNode)?.children.contains(nodeToRemove) ?? false // If the entity container is not an `SKNode` descendant, then let the entity's node remain in its parent. CHECK: Is this intuitive? PERFORMANCE: Any impact from casting?
         {
             // CHECK: Does `self.children` only include top-level nodes or the entire node tree? Removing only top-level nodes would be the desirable behavior, and removing the entire tree may be unncessary and inefficient (especially if complex node sub-heirarchies may have to be rebuilt later.)
             
@@ -226,7 +231,7 @@ public extension OctopusEntityContainer {
 
 // MARK: Node-based Container
 
-public extension OctopusEntityContainer where Self: SKNode {
+public extension OctopusEntityContainerNode {
     
     /// Searches the scene for a child node matching the specified name, and creates a new entity associated with it, adding any specified components, and adds the entity to the scene unless choosing not to.
     ///
@@ -317,7 +322,7 @@ extension OctopusEntityDelegate where Self: OctopusEntityContainer {
         // If the component was a `SpriteKitComponent` or `GKSKNodeComponent` with an orphan node, adopt that node into this scene.
         
         if component is SpriteKitComponent || component is GKSKNodeComponent {
-            addChildFromOrphanSpriteKitComponent(in: entity)
+           (self as? OctopusEntityContainerNode)?.addChildFromOrphanSpriteKitComponent(in: entity) // CHECK: PERFORMANCE: Any impact from casting?
         }
         
     }

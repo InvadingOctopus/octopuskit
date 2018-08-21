@@ -54,7 +54,7 @@ public protocol OctopusSceneDelegate: class {
 ///
 /// Includes an entity to represent the scene itself.
 public class OctopusScene: SKScene,
-    OctopusEntityContainer,
+    OctopusEntityContainerNode,
     OctopusGameStateDelegate,
     OctopusEntityDelegate,
     OctopusSubsceneDelegate,
