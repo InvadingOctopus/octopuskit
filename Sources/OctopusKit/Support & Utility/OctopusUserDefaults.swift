@@ -17,7 +17,11 @@
 import Foundation
 
 /// Represents a key and value pair saved in `UserDefaults.standard`, for storing player preferences and settings, as well as providing a default value if a key has not been saved.
-/// If you prefer to manually specify a default value at every call site, make the type represented by this struct an `Optional` and supply a default value at the call site by chaining the `value` property with the `??` operator.
+///
+/// If you prefer to manually specify a default value at every call site, make the type represented by this struct an `Optional` and supply a default value at the call site by chaining the `value` property with the `??` operator:
+///
+///     var setting = OctopusUserSetting<Int?>(key: "someKey", defaultValue: nil)
+///     setting.value ?? 0
 public struct OctopusUserSetting<Type> {
     // CHECK: Should this be named OctopusUserDefault for consistency with the rest of the API?
     
@@ -26,7 +30,7 @@ public struct OctopusUserSetting<Type> {
     
     /// Sets the value for `key` in `UserDefaults.standard`, or gets the value if `key` exists in `UserDefaults.standard`, otherwise returns `defaultValue` (which may be `nil` for optionals.)
     var value: Type {
-
+        
         get {
             if let value = UserDefaults.standard.object(forKey: key) as? Type {
                 OctopusKit.logForDebug.add("\"\(key)\" \(Type.self) = \(value)")
