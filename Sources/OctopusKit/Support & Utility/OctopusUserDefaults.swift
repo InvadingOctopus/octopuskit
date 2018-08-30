@@ -55,14 +55,14 @@ public struct OctopusUserDefaults {
         // NOTE: It seems best to call this from `NSApplicationDelegate.applicationWillFinishLaunching(_:)`, not `...DidFinishLaunching`, at least in an `NSDocument`-based app..
         // TODO: Proper error handling.
         OctopusKit.logForFramework.add()
-        if
+        
+        guard
             let path = Bundle.main.path(forResource: plistName, ofType: "plist"),
             let defaultsDictionary = NSDictionary(contentsOfFile: path) as? [String: Any] // TODO: Use idiomatic Swift 4
-        {
-            UserDefaults.standard.register(defaults: defaultsDictionary)
-            return true
-        }
-        return false
+            else { return false }
+        
+        UserDefaults.standard.register(defaults: defaultsDictionary)
+        return true
     }
     
     /// - Returns: The user default (preference) for `key` if `key` exists in `UserDefaults.standard` and is of type `T`, otherwise `nil`. Calling this function can be chained with the `??` operator to provide a default value.
