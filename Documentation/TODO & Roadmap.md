@@ -28,7 +28,7 @@ permalink: documentation/todo.html
 - Tests. Too lazy.
 - Improve coding conventions.
 - Write tutorials for common tasks.
-- Clarify `super` chaining where applicable – when an overridden method in a subclass *needs* to call the superclass method for the functionality to work correctly – and enforce it when it becomes possible through language support in a future version of Swift.
+- Clarify `super` chaining where applicable – when an overridden method in a subclass *needs* to call the superclass method for the functionality to work correctly – and enforce it when it becomes possible through language support in a future version of Swift, similar to `NS_REQUIRES_SUPER` in Objective-C.
 - Eliminate the possibility of a `SKNode.physicsBody` being added to a scene more than once.
 - Internationalization/Localization
 - Implement configurable Xcode templates (single files with multiple variations based on options during file creation, e.g. single-state scenes vs. multi-state scenes.) 
