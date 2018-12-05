@@ -1,5 +1,5 @@
 //
-//  PhysicsContactHandlerComponent.swift
+//  PhysicsContactComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/28.
@@ -11,7 +11,7 @@ import GameplayKit
 /// A base class for components that act upon a physics contact event if it involves the entity's `SpriteKitComponent` node. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.
 ///
 /// **Dependencies:** `PhysicsComponent`, `PhysicsEventComponent`
-public class PhysicsContactHandlerComponent: OctopusComponent, OctopusUpdatableComponent {
+public class PhysicsContactComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         return [PhysicsComponent.self,
