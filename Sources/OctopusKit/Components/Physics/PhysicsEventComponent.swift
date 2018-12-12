@@ -6,15 +6,14 @@
 //  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: Tests.
+// TODO: Tests
 // CHECK: Potential 1-frame lag due to `SKScene.update(deltaTime:)` vs `SKPhysicsContactDelegate`?
-// CHECK: Warn if the entity's `OctopusScene.physicsWorld.contactDelegate` is not valid?
 
 import GameplayKit
 
 /// Stores events about contacts between physics bodies in a scene. The events may be observed by other components, and are cleared every frame.
 ///
-/// - Important: For this component to function, the `OctopusScene.physicsWorld.contactDelegate` must be set to the scene.
+/// - Note: Unless events are manually forwarded to another entity, this component should be added to an `OctopusScene.entity` and the `OctopusScene.physicsWorld.contactDelegate` must be set to the scene. This is automatically done when a `PhysicsWorldComponent` is added to the scene entity.
 public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public final class ContactEvent: Equatable {
@@ -44,6 +43,21 @@ public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComp
     public var contactEndings = [ContactEvent]()
     
     public fileprivate(set) var clearOnNextUpdate: Bool = false
+    
+    public override func didAddToEntity() {
+        super.didAddToEntity()
+        
+        guard let scene = self.entity?.node as? SKScene else {
+            OctopusKit.logForWarnings.add("Entity \(String(optional: self.entity)) is not a scene — This component may not automatically receive physics events!")
+            return
+        }
+        
+        guard scene.physicsWorld.contactDelegate === scene else { // NOTE: The `===` operator.
+            OctopusKit.logForWarnings.add("The scene's physicsWorld.contactDelegate is not set to the scene — This component may not automatically receive physics events!")
+            OctopusKit.logForTips.add("Add a PhysicsWorldComponent to the OctopusScene.entity")
+            return
+        }
+    }
     
     /// To be called every frame AFTER other components, if any, have had a chance to act upon the stored events during a given frame.
     public override func update(deltaTime seconds: TimeInterval) {

@@ -45,6 +45,10 @@ public final class TouchControlledSeekingComponent: OctopusComponent, OctopusUpd
             // }
             
             positionSeekingComponent.targetPosition = firstTouch.location(in: parent) // TODO: Verify with nested nodes etc.
+            
+            #if LOGINPUT
+            debugLog("\(String(optional: positionSeekingComponent.targetPosition))")
+            #endif
         }
         // If there is no `firstTouch` and there has been a `touchesEnded` or `touchesCancelled` event during this frame, then the `firstTouch` has just ended.
         else if touchEventComponent.touchesEnded != nil || touchEventComponent.touchesCancelled != nil {

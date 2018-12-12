@@ -18,6 +18,18 @@ public class PhysicsContactComponent: OctopusComponent, OctopusUpdatableComponen
                 PhysicsEventComponent.self]
     }
     
+    public override func didAddToEntity() {
+        super.didAddToEntity()
+        
+        // Log a warning if the entity's body does not have a `contactTestBitMask`
+        
+        if  let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody,
+            physicsBody.contactTestBitMask == 0
+        {
+            OctopusKit.logForWarnings.add("\(physicsBody) of \(String(optional: entity)) has contactTestBitMask == 0 so contact events may not be generated!")
+        }
+    }
+    
     public override func update(deltaTime seconds: TimeInterval) {
         guard
         let physicsComponent = coComponent(PhysicsComponent.self),
