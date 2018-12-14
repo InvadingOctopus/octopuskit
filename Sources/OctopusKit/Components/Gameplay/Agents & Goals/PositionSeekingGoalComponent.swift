@@ -32,10 +32,15 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
 
                 if let targetPosition = self.targetPosition {
                     targetAgent.position = float2(targetPosition)
+                    
+                    // ⚠️ NOTE: If this component is added with an initial `targetPosition == nil` then it is automatically paused. In that case, it must be manually unpaused before it can take effect!
+                    if isPaused && oldValue == nil {
+                        OctopusKit.logForDebug.add("Possible mistake: targetPosition was set but goal isPaused.")
+                    }
                 }
                 else {
-                    // If there is no position to track, then pause this goal.
-                    self.isPaused = true
+                    // If there is no position to track, then pause this goal, otherwise the agent may keep orbiting the last target.
+                    isPaused = true
                 }
             }
             
@@ -70,10 +75,12 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
     public override func didAddToEntity() {
         super.didAddToEntity()
         
-        // If we have no initial position to track, pause this goal.
+        // If we have no initial position to track, pause this goal, otherwise the agent may start with orbiting around the default of `(0,0)`.
         
-        if self.targetPosition == nil {
-            self.isPaused = true
+        if targetPosition == nil {
+            isPaused = true
+            // Log a warning in case this component is added with a `nil` position and a developer forgets to unpause.
+            OctopusKit.logForDebug.add("targetPosition is nil — This goal will be paused until manually unpaused.")
         }
     }
     
