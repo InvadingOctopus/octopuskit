@@ -20,36 +20,36 @@ public class OctopusAgentGoalComponent: OctopusComponent {
         return [OctopusAgent2D.self]
     }
     
+    /// Returns the entity's `OctopusAgent2D` component, if available.
+    public var agent: OctopusAgent2D? {
+        return coComponent(OctopusAgent2D.self)
+    }
+    
     public fileprivate(set) var goal: GKGoal?
     
     /// Modifies the goal's influence upon an agent in relation to the agent's other goals.
     public var goalWeight: Float {
         didSet {
-            if
-                let agent = coComponent(OctopusAgent2D.self),
+            if  let behavior = self.agent?.behavior,
                 let goal = self.goal,
                 goalWeight != oldValue // Avoid redundancy.
             {
-                agent.behavior?.setWeight(goalWeight, for: goal)
+                behavior.setWeight(goalWeight, for: goal)
             }
         }
     }
     
-    /// Temporarily sets the goal's weight to `0` to effectively pause the behavior associated with this component, without modifying the component's `goalWeight` property which is reapplied to the goal when `isPaused` is cleared.
+    /// Temporarily sets the goal's weight to `0` to effectively pause the behavior associated with this component, without modifying this component's `goalWeight` property (which is reapplied to the goal when `isPaused` is cleared.)
     public var isPaused: Bool {
         didSet {
-            
-            if
-                isPaused != oldValue, // Avoid redundancy.
-                let agent = coComponent(OctopusAgent2D.self),
+            if  isPaused != oldValue, // Avoid redundancy.
+                let behavior = self.agent?.behavior,
                 let goal = self.goal
             {
-                
                 if isPaused {
-                    agent.behavior?.setWeight(0, for: goal)
-                }
-                else {
-                    agent.behavior?.setWeight(goalWeight, for: goal)
+                    behavior.setWeight(0, for: goal)
+                } else {
+                    behavior.setWeight(goalWeight, for: goal)
                 }
             }
         }
@@ -79,7 +79,7 @@ public class OctopusAgentGoalComponent: OctopusComponent {
         self.goal = nil
         
         // Recreate the goal.
-        
+
         applyGoalToAgent()
     }
     
@@ -94,7 +94,7 @@ public class OctopusAgentGoalComponent: OctopusComponent {
     /// Creates the goal object if it's currently `nil`, via `createGoal()`.
     public func applyGoalToAgent() {
         
-        guard let agent = coComponent(OctopusAgent2D.self) else {
+        guard let agent = self.agent else {
             OctopusKit.logForWarnings.add("\(String(optional: entity)) missing OctopusAgent2D")
             return
         }
@@ -124,11 +124,11 @@ public class OctopusAgentGoalComponent: OctopusComponent {
     /// - NOTE: Does not delete this component's `goal` property.
     public func removeGoalFromAgent() {
         guard
-            let agent = coComponent(OctopusAgent2D.self),
+            let behavior = self.agent?.behavior,
             let goal = self.goal
             else { return }
         
-        agent.behavior?.remove(goal)
+        behavior.remove(goal)
     }
     
     public override func willRemoveFromEntity() {
@@ -136,11 +136,10 @@ public class OctopusAgentGoalComponent: OctopusComponent {
         
         // Just remove the goal from the agent's behavior; do not reset our properties here, in case this component is reused.
         
-        if
-            let agent = coComponent(OctopusAgent2D.self),
+        if  let behavior = self.agent?.behavior,
             let goal = self.goal
         {
-            agent.behavior?.remove(goal)
+            behavior.remove(goal)
         }
     }
 }
