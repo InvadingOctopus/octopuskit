@@ -6,7 +6,7 @@
 //  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: Add stopping behavior?
+// TODO: Tests
 
 import GameplayKit
 
@@ -27,7 +27,6 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
     /// If you want the agent to only face the target, set the agent's speed properties to `0`.
     public var targetPosition: CGPoint? {
         didSet {
-            
             if targetPosition != oldValue { // Avoid recursion or redundant calls.
 
                 if let targetPosition = self.targetPosition {
@@ -37,29 +36,50 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
                     if isPaused && oldValue == nil {
                         OctopusKit.logForDebug.add("Possible mistake: targetPosition was set but goal isPaused.")
                     }
+                    
+                    // CHECK: Should `unbrake()` depend on `isPaused` and/or `brakeOnNilTarget`, or always called?
+                    
+                    if !isPaused { unbrake() }
                 }
                 else {
                     // If there is no position to track, then pause this goal, otherwise the agent may keep orbiting the last target.
                     isPaused = true
+                    // If `brakeOnNilTarget` is set, then decrease the agent's speed towards `0`.
+                    if brakeOnNilTarget { brake() }
                 }
             }
-            
         }
     }
     
     /// If `true`, the `zRotation` of the entity's `SpriteKitComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
     public var shouldFaceTargetWhenAddedToEntity: Bool
     
+    /// A goal to "brake" the agent to a halt when there is no target position.
+    public let brakeGoal = GKGoal(toReachTargetSpeed: 0)
+    
+    /// If `true`, a goal to reach a target speed of `0` will be applied to the agent when `targetPosition` is set to `nil`.
+    public var brakeOnNilTarget: Bool = true
+    
+    /// The weight override for the braking goal. If specified, this value takes precedence over the value of `goalWeight`. If not specified, then the braking weight is set to `goalWeight + 1.0`.
+    ///
+    /// - Warning: Setting the value too high may "snap" the agent's heading/rotation erratically.
+    public var brakeGoalWeightOverride: Float? = nil
+    
     /// - Parameter shouldFaceTargetWhenAddedToEntity: If `true`, the `zRotation` of the entity's `SpriteKitComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
     public init(
         targetPosition: CGPoint? = nil,
         shouldFaceTargetWhenAddedToEntity: Bool = false,
+        brakeOnNilTarget: Bool = true,
         goalWeight: Float = 10.0,
+        brakeGoalWeightOverride: Float? = nil,
         isPaused: Bool = false)
     {
         self.targetAgent = GKAgent2D() // Create an `abstract` agent.
-        self.shouldFaceTargetWhenAddedToEntity = shouldFaceTargetWhenAddedToEntity
         self.targetPosition = targetPosition
+        self.shouldFaceTargetWhenAddedToEntity = shouldFaceTargetWhenAddedToEntity
+        self.brakeOnNilTarget = brakeOnNilTarget
+        self.brakeGoalWeightOverride = brakeGoalWeightOverride
+        
         super.init(goalWeight: goalWeight, isPaused: isPaused)
     }
     
@@ -93,4 +113,38 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
             node.zRotation = node.position.radians(to: targetPosition)
         }
     }
+    
+    /// Enables a goal to decrease the agent's speed towards `0`. If `brakeOnNilTarget` is set, this method is called when the `targetPosition` is set to `nil`.
+    public func brake() {
+        // DESIGN: We should allow braking even if the component `isPaused`. Indeed, the property observer for `targetPosition` calls this method after setting `isPaused`.
+        
+        guard let behavior = self.agent?.behavior else { return }
+        
+        // If there is no `brakeGoalWeightOverride`, then set the braking weight to slightly higher than `goalWeight` so that the braking is assured to take precedence over the seeking.
+        // CHECK: Is the `+ 1.0` necessary or helpful?
+        
+        behavior.setWeight(brakeGoalWeightOverride ?? goalWeight + 1.0, for: brakeGoal)
+    }
+    
+    /// Removes the braking goal that was added by `brake()`. This method is called when the `targetPosition` is set to a non-nil value.
+    ///
+    /// Does nothing if `isPaused`.
+    public func unbrake() {
+        guard
+            !isPaused,
+            let behavior = self.agent?.behavior
+            else { return }
+        
+        behavior.remove(brakeGoal)
+    }
+    
+    public override func willRemoveFromEntity() {
+        // Remove the extra goal we may have added.
+        if let behavior = self.agent?.behavior {
+            behavior.remove(brakeGoal)
+        }
+        
+        super.willRemoveFromEntity()
+    }
+    
 }
