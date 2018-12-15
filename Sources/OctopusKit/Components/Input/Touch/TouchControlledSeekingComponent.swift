@@ -24,7 +24,6 @@ public final class TouchControlledSeekingComponent: OctopusComponent, OctopusUpd
     }
     
     public override func update(deltaTime seconds: TimeInterval) {
-        
         guard
             let parent = self.entityNode?.parent,
             let positionSeekingComponent = coComponent(PositionSeekingGoalComponent.self),
@@ -44,21 +43,24 @@ public final class TouchControlledSeekingComponent: OctopusComponent, OctopusUpd
                 // positionSeekingComponent.isPaused = false
             // }
             
-            positionSeekingComponent.targetPosition = firstTouch.location(in: parent) // TODO: Verify with nested nodes etc.
+            let targetPosition = firstTouch.location(in: parent) // TODO: Verify with nested nodes etc.
             
             #if LOGINPUT
             debugLog("\(String(optional: positionSeekingComponent.targetPosition))")
             #endif
+            
+            positionSeekingComponent.isPaused = false // Unpause the component in case it was initially added with a `nil` position, which automatically pauses the goal otherwise it may orbit around `(0,0)`.
+            positionSeekingComponent.targetPosition = targetPosition
         }
-        // If there is no `firstTouch` and there has been a `touchesEnded` or `touchesCancelled` event during this frame, then the `firstTouch` has just ended.
+        // If there is no `firstTouch` and there has been a `touchesEnded` or `touchesCancelled` event during this frame, then that means the `firstTouch` has just ended.
         else if touchEventComponent.touchesEnded != nil || touchEventComponent.touchesCancelled != nil {
             // Remove the target position.
             positionSeekingComponent.targetPosition = nil
-            // positionSeekingComponent.isPaused = true
+            positionSeekingComponent.isPaused = true // Pause the component, otherwise the agent may orbit around the last `targetPosition`.
         }
         
     }
-    
+
 }
 
 #else
