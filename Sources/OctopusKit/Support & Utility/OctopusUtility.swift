@@ -54,4 +54,20 @@ public struct OctopusUtility {
         return results
     }
     
+    /// Creates a closure combined with the supplied argument, which you can then call without passing any arguments, and without capturing `self`.
+    ///
+    /// - Warning: The argument's value is captured when the closure is created. When the returned closure is called, it will use that captured value, and may not have the latest expected value even if the original variable is changed.
+    func combineClosure<A, B>(
+        with argument: A,
+        closure: @escaping (A) -> B)
+        -> () -> B
+    {
+        // CREDIT: https://github.com/JohnSundell/SwiftTips
+        // CREDIT: https://twitter.com/johnsundell/status/1055562781070684162
+        
+        // CHECK: Use and test, especially for leaks and the value of the argument when called, as mentioned at https://twitter.com/sprynmr/status/1055565658811973633
+        
+        return { closure(argument) }
+    }
+    
 }
