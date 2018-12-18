@@ -22,7 +22,7 @@ import Foundation
 ///
 ///     var setting = OctopusUserSetting<Int?>(key: "someKey", defaultValue: nil)
 ///     setting.value ?? 0
-public struct OctopusUserSetting<Type> {
+public struct OctopusUserSetting<Type>: CustomStringConvertible {
     
     // CHECK: Should this be named OctopusUserDefault for consistency with the rest of the API?
     
@@ -47,6 +47,10 @@ public struct OctopusUserSetting<Type> {
             UserDefaults.standard.set(newValue, forKey: key)
             // UserDefaults.standard.synchronize() // Not needed as of 2018-02? http://www.codingexplorer.com/nsuserdefaults-a-swift-introduction/
         }
+    }
+    
+    public var description: String {
+        return "UserDefault \"\(key)\" \(Type.self): \(value)"
     }
     
     /// Creates a representation of a user preference and registers the default value for the specified key in `UserDefaults.standard`.
