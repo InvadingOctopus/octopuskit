@@ -25,6 +25,9 @@ permalink: documentation/conventions.html
 - `for each x in y` may be cleaner and self-explanatory compared to `y.forEach { x in ... }` or `$0.z` in most cases.
 
 - In subclasses, try to prefix properties with `super.` or `self.` if there might be any ambiguity at the use site about where the property is defined.
+
+    - A strict convention may be adopted in the future to always write `self.` except for identifiers that are local to the method etc.
+
     > [TODO: example]
 
 - Say "player" instead of "user" whenever referring to the person playing the game. (^ - ^")

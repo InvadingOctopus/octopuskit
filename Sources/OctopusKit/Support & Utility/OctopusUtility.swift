@@ -14,9 +14,9 @@ public struct OctopusUtility {
     // CHECK: Should some of these be global functions?
     // CHECK: Rename `result...` to `return...`?
     
-    /// Calls a function or method with the specified tuple as its arguments.
+    /// Calls a function or method with the specified argument.
     ///
-    /// This lets you construct and re-use a single tuple of arguments in multiple calls to different functions that accept the same types of arguments.
+    /// This may be used with a single tuple of multiple values, in multiple calls to different functions which accept the same set of arguments.
     ///
     /// **Example**
     ///
@@ -24,14 +24,15 @@ public struct OctopusUtility {
     ///     let drizzt = call(Hero.init, with: arguments)
     ///     // Hero(name: "Drizzt", age: 100)
     ///
-    /// - NOTE: The tuple members must be of the same types in the same order as the function's expected parameters.
-    public static func call<Arguments, ResultType>(
-        _ function: (Arguments) -> ResultType,
-        with arguments: Arguments)
+    /// - Note: If a tuple is used, its members must be of the same types and in the same order as the function's parameters.
+    public static func call<ArgumentType, ResultType>(
+        _ function: (ArgumentType) -> ResultType,
+        with argument: ArgumentType)
         -> ResultType
     {
         // CREDIT: https://www.swiftbysundell.com/posts/using-tuples-as-lightweight-types-in-swift
-        return function(arguments)
+        // CREDIT: https://twitter.com/johnsundell/status/930103466294435840
+        return function(argument)
     }
     
     /// Repeats the supplied function for the specified number of times, and returns an array of the results.
@@ -57,7 +58,7 @@ public struct OctopusUtility {
     /// Creates a closure combined with the supplied argument, which you can then call without passing any arguments, and without capturing `self`.
     ///
     /// - Warning: The argument's value is captured when the closure is created. When the returned closure is called, it will use that captured value, and may not have the latest expected value even if the original variable is changed.
-    func combineClosure<A, B>(
+    public func combineClosure<A, B>(
         with argument: A,
         closure: @escaping (A) -> B)
         -> () -> B

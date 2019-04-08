@@ -12,7 +12,7 @@ public extension Optional {
     
     /// Returns the value of the optional if non-`nil`, otherwise throws the specified error expression.
     ///
-    /// Usage:
+    /// **Example**
     ///
     ///     try checkOptional(value).orThrow(SomeError())
     public func orThrow(_ errorExpression: @autoclosure () -> Error) throws -> Wrapped {
