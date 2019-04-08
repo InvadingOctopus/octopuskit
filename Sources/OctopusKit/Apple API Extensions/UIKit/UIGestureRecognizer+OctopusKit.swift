@@ -26,6 +26,9 @@ extension UIGestureRecognizer {
             
         case .possible, .cancelled, .failed, .ended:
             return false
+
+        @unknown default:
+            return false // CHECK: Is this the correct way to handle this, or 'fatalError()'?
         }
     }
 }

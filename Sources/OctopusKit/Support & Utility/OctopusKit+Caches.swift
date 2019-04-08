@@ -15,7 +15,7 @@ public extension OctopusKit {
 
     // MARK: - Graphics
     
-    public static var textureAtlases: OctopusCache<String, SKTextureAtlas> = {
+    static var textureAtlases: OctopusCache<String, SKTextureAtlas> = {
         
         let cache = OctopusCache<String, SKTextureAtlas> { key in
             
@@ -27,7 +27,7 @@ public extension OctopusKit {
         return cache
     }()
     
-    public static var textures: OctopusCache<String, SKTexture> = {
+    static var textures: OctopusCache<String, SKTexture> = {
         
         let cache = OctopusCache<String, SKTexture> { key in
             
@@ -39,7 +39,7 @@ public extension OctopusKit {
         return cache
     }()
     
-    public static var shaders: OctopusCache<String, SKShader> = {
+    static var shaders: OctopusCache<String, SKShader> = {
         
         let cache = OctopusCache<String, SKShader> { key in
             
@@ -90,7 +90,7 @@ public extension OctopusKit {
     
     // MARK: - Management
     
-    public static func clearAllCaches() {
+    static func clearAllCaches() {
         textureAtlases.removeAllAssets()
         textures.removeAllAssets()
         shaders.removeAllAssets()

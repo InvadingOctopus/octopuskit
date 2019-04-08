@@ -13,7 +13,7 @@ import GameplayKit
 public extension GKSKNodeComponent {
     
     /// Creates a `GKSKNodeComponent` or `SpriteKitComponent` to represent the specified node, and optionally adds the node to a parent node if specified.
-    public convenience init(node: SKNode,
+    convenience init(node: SKNode,
                             addToNode newParent: SKNode?)
     {
         // Warn if the node is already a part of another entity.
@@ -48,7 +48,7 @@ public extension GKSKNodeComponent {
     }
     
     /// Creates a `GKSKNodeComponent` or `SpriteKitComponent` to represent a new `SKNode` and adds it to the specified parent node at the specified position and z axis.
-    public convenience init(createNewNodeIn parent: SKNode,
+    convenience init(createNewNodeIn parent: SKNode,
                             position: CGPoint = CGPoint.zero,
                             zPosition: CGFloat = 0)
     {

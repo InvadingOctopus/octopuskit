@@ -749,7 +749,7 @@ public class OctopusScene: SKScene,
     {
         OctopusKit.logForFramework.add("\(subscene) result = \(String(optional: result))")
         
-        if let index = self.subscenes.index(of: subscene) {
+        if let index = self.subscenes.firstIndex(of: subscene) {
             self.subscenes.remove(at: index) // ⚠️ CHECK: Will this cause a mutating-while-enumerating exception?
         }
         else {

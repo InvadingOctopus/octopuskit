@@ -119,7 +119,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
             
             if let touchesEnded = self.touchesEnded {
                 for touch in touchesEnded.touches {
-                    if let indexToRemove = self.touches.index(of: touch) {
+                    if let indexToRemove = self.touches.firstIndex(of: touch) {
                         self.touches.remove(at: indexToRemove)
                     }
                 }
@@ -139,7 +139,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
             
             if let touchesEnded = self.touchesEnded {
                 for touch in touchesEnded.touches {
-                    if let indexToRemove = self.touches.index(of: touch) {
+                    if let indexToRemove = self.touches.firstIndex(of: touch) {
                         self.touches.remove(at: indexToRemove)
                     }
                 }

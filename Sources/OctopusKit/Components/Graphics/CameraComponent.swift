@@ -138,7 +138,7 @@ class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
         if
             let existingTrackingConstraint = self.trackingConstraint,
             var constraints = camera.constraints,
-            let indexToRemove = constraints.index(of: existingTrackingConstraint)
+            let indexToRemove = constraints.firstIndex(of: existingTrackingConstraint)
         {
             existingTrackingConstraint.enabled = false // CHECK: Necessary?
             constraints.remove(at: indexToRemove)
@@ -169,7 +169,7 @@ class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
         
         if  let existingBoundsConstraint = self.boundsConstraint,
             var constraints = camera.constraints,
-            let indexToRemove = constraints.index(of: existingBoundsConstraint)
+            let indexToRemove = constraints.firstIndex(of: existingBoundsConstraint)
         {
             existingBoundsConstraint.enabled = false // CHECK: Necessary?
             constraints.remove(at: indexToRemove)

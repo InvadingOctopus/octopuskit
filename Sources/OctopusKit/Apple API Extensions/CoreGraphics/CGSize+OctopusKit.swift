@@ -14,39 +14,39 @@ public extension CGSize {
     
     // MARK: - Initializers
     
-    public init(widthAndHeight: CGFloat) {
+    init(widthAndHeight: CGFloat) {
         self.init(width: widthAndHeight, height: widthAndHeight)
     }
     
-    public init(widthAndHeight: Double) {
+    init(widthAndHeight: Double) {
         self.init(width: widthAndHeight, height: widthAndHeight)
     }
     
-    public init(widthAndHeight: Int) {
+    init(widthAndHeight: Int) {
         self.init(width: widthAndHeight, height: widthAndHeight)
     }
     
     // MARK: - Common Tasks
     
     /// Returns a `CGSize` equal to the half of this size.
-    public var halved: CGSize {
+    var halved: CGSize {
         return CGSize(width: width / 2, height: height / 2)
     }
     
     /// Returns a `CGPoint` with a position equal to half the width and height of this size.
-    public var center: CGPoint {
+    var center: CGPoint {
         return CGPoint(x: width / 2, y: height / 2)
     }
     
     /// Returns a new `CGSize` that is equivalent to this size scaled by the specified factors.
-    public func scaled(byX xScale: CGFloat, y yScale: CGFloat) -> CGSize {
+    func scaled(byX xScale: CGFloat, y yScale: CGFloat) -> CGSize {
         return CGSize(
             width: self.width * xScale,
             height: self.height * yScale)
     }
     
     /// Scales this size by the specified factors.
-    public mutating func scale(byX xScale: CGFloat, y yScale: CGFloat) {
+    mutating func scale(byX xScale: CGFloat, y yScale: CGFloat) {
         self = self.scaled(byX: xScale, y: yScale)
     }
     
@@ -55,7 +55,7 @@ public extension CGSize {
     /// Represents the screen resolution of an iOS device in each orientation.
     ///
     /// The resolution is assumed to be in absolute pixels, not points.
-    public struct OrientationDependentSize {
+    struct OrientationDependentSize {
         public let portrait: CGSize
         public let landscape: CGSize
         
@@ -76,7 +76,7 @@ public extension CGSize {
     }
     
     /// A list of screen resolutions, in pixels, of iOS devices supported by OctopusKit.
-    public struct IOSDevice {
+    struct IOSDevice {
         // TODO: Pick a better place for these?
         
         /*
@@ -119,13 +119,13 @@ public extension CGSize {
     
     // MARK: CGSize with CGSize
     
-    public static func + (left: CGSize, right: CGSize) -> CGSize {
+    static func + (left: CGSize, right: CGSize) -> CGSize {
         return CGSize(
             width: left.width + right.width,
             height: left.height + right.height)
     }
     
-    public static func - (left: CGSize, right: CGSize) -> CGSize {
+    static func - (left: CGSize, right: CGSize) -> CGSize {
         return CGSize(
             width: left.width - right.width,
             height: left.height - right.height)
@@ -133,46 +133,46 @@ public extension CGSize {
     
     // MARK: CGSize with CGFloat
     
-    public static func + (left: CGSize, right: CGFloat) -> CGSize {
+    static func + (left: CGSize, right: CGFloat) -> CGSize {
         return CGSize(
             width: left.width + right,
             height: left.height + right)
     }
     
-    public static func += (left: inout CGSize, right: CGFloat) {
+    static func += (left: inout CGSize, right: CGFloat) {
         left.width += right
         left.height += right
     }
     
-    public static func - (left: CGSize, right: CGFloat) -> CGSize {
+    static func - (left: CGSize, right: CGFloat) -> CGSize {
         return CGSize(
             width: left.width - right,
             height: left.height - right)
     }
     
-    public static func -= (left: inout CGSize, right: CGFloat) {
+    static func -= (left: inout CGSize, right: CGFloat) {
         left.width -= right
         left.height -= right
     }
     
-    public static func * (left: CGSize, right: CGFloat) -> CGSize {
+    static func * (left: CGSize, right: CGFloat) -> CGSize {
         return CGSize(
             width: left.width * right,
             height: left.height * right)
     }
     
-    public static func *= (left: inout CGSize, right: CGFloat) {
+    static func *= (left: inout CGSize, right: CGFloat) {
         left.width *= right
         left.height *= right
     }
     
-    public static func / (left: CGSize, right: CGFloat) -> CGSize {
+    static func / (left: CGSize, right: CGFloat) -> CGSize {
         return CGSize(
             width: left.width / right,
             height: left.height / right)
     }
     
-    public static func /= (left: inout CGSize, right: CGFloat) {
+    static func /= (left: inout CGSize, right: CGFloat) {
         left.width /= right
         left.height /= right
     }

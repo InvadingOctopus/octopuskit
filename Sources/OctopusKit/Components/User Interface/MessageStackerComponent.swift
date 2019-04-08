@@ -161,6 +161,8 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
         case .left:     newLabel.position.x = 0
         case .right:    newLabel.position.x = parent.frame.maxX
         case .center:   newLabel.position.x = parent.frame.midX
+        
+        @unknown default: fatalError() // CHECK: Is this the correct way to handle this?
         }
         
         newLabel.position.y = initialY

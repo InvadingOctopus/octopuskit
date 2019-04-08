@@ -57,7 +57,7 @@ public extension OctopusEntityContainer {
     /// Adds an entity to the `entities` set, disallowing duplicate entities, and registers its components with the relevant systems.
     ///
     /// If the entity is an `OctopusEntity`, this scene is set as its delegate.
-    public func addEntity(_ entity: GKEntity) {
+    func addEntity(_ entity: GKEntity) {
         
         guard entities.insert(entity).inserted else {
             OctopusKit.logForWarnings.add("\(entity) is already in \(self) — Not re-adding")
@@ -89,7 +89,7 @@ public extension OctopusEntityContainer {
     /// Adds multiple entities to the `entities` set in the order they are listed in the specified array, disallowing duplicate entities, and registers their components with the relevant systems.
     ///
     /// If an entity is an `OctopusEntity`, this scene is set as its delegate.
-    public func addEntities(_ entities: [GKEntity]) {
+    func addEntities(_ entities: [GKEntity]) {
         for entity in entities {
             self.addEntity(entity)
         }
@@ -98,7 +98,7 @@ public extension OctopusEntityContainer {
     /// Attempts to add all of the components from all entities in the scene, to all of the systems in the specified array that match the types of the components.
     ///
     /// If no `systemsCollection` is specified, then `componentSystems` is used.
-    public func addAllComponentsFromAllEntities(to systemsCollection: [OctopusComponentSystem]? = nil) {
+    func addAllComponentsFromAllEntities(to systemsCollection: [OctopusComponentSystem]? = nil) {
         
         let systemsCollection = systemsCollection ?? self.componentSystems
         
@@ -110,7 +110,7 @@ public extension OctopusEntityContainer {
     }
     
     /// Returns an array of `OctopusEntity`s containing all the entities matching `name`, or `nil` if none were found.
-    public func entities(withName name: String) -> [OctopusEntity]? {
+    func entities(withName name: String) -> [OctopusEntity]? {
         
         let filteredSet = entities.filter {
             
@@ -134,7 +134,7 @@ public extension OctopusEntityContainer {
     }
     
     /// Sets the names of all unnamed entities to the name of their `SpriteKitComponent` or `GKSKNodeComponent` nodes.
-    public func renameUnnamedEntitiesToNodeNames() {
+    func renameUnnamedEntitiesToNodeNames() {
         for case let entity as (OctopusEntity & Nameable) in entities {
             if
                 let node = entity.node,
@@ -150,7 +150,7 @@ public extension OctopusEntityContainer {
     /// - Returns: `true` if the entry was in the `entities` set.
     ///
     /// This ensures that the list of entities is not mutated during a frame update, which would cause an exception/crash because of mutating a collection while it is being enumerated during the update
-    @discardableResult public func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool {
+    @discardableResult func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool {
         
         guard entities.contains(entityToRemove) else {
             // CHECK: Warn on missing entry if the entity is going to leave anyway?
@@ -171,7 +171,7 @@ public extension OctopusEntityContainer {
     /// - Returns: `true` if the entry was in the `entities` set and removed.
     ///
     /// - Important: Attempting to modify the list of entities during a frame update will cause an exception/crash, because of mutating a collection while it is being enumerated. To ensure safe removal, use `removeEntityOnNextUpdate(_:)`.
-    @discardableResult public func removeEntity(_ entityToRemove: GKEntity) -> Bool {
+    @discardableResult func removeEntity(_ entityToRemove: GKEntity) -> Bool {
         
         guard entities.contains(entityToRemove) else {
             // CHECK: Warn on missing entry if the entity is going to leave anyway?
@@ -218,7 +218,7 @@ public extension OctopusEntityContainer {
     /// Updates each of the component systems in the order they're listed in the specified array. If no `systemsCollection` is specified, then the scene's `componentSystems` property is used.
     ///
     /// A deterministic order of systems in the component systems array ensures that all components get updated after the other components they depend on.
-    public func updateSystems(in systemsCollection: [OctopusComponentSystem]? = nil, deltaTime seconds: TimeInterval) {
+    func updateSystems(in systemsCollection: [OctopusComponentSystem]? = nil, deltaTime seconds: TimeInterval) {
 
         let systemsCollection = systemsCollection ?? self.componentSystems
 
@@ -246,7 +246,7 @@ public extension OctopusEntityContainerNode {
     /// - NOTE: For processing multiple entities that share the same name, use `for node in scene[name]`
     ///
     /// - Parameter name: The name to search for. This may be either the literal name of the node or a customized search string. See [Searching the Node Tree](apple-reference-documentation://hsY9-_wZau) in Apple documentation.
-    @discardableResult public func createEntityFromChildNode(
+    @discardableResult func createEntityFromChildNode(
         withName name: String,
         addingComponents components: [GKComponent]? = nil,
         addEntityToScene: Bool = true)
@@ -275,7 +275,7 @@ public extension OctopusEntityContainerNode {
     /// Adds an `entity`'s `SpriteKitComponent` or `GKSKNodeComponent` node to the scene if that node does not currently have a parent.
     ///
     /// This is useful in cases like spawning sub-entities from a master/parent entity without explicitly specifying the scene.
-    public func addChildFromOrphanSpriteKitComponent(in entity: GKEntity) {
+    func addChildFromOrphanSpriteKitComponent(in entity: GKEntity) {
         guard
             let node = entity.node, // Either `SpriteKitComponent` or `GKSKNodeComponent` (in case the Scene Editor was used)
             node != self, // Tricky pitfall to avoid there! "A Node can't parent itself" :P

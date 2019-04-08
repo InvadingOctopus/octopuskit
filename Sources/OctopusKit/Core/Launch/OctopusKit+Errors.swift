@@ -10,7 +10,7 @@ import Foundation
 
 public extension OctopusKit {
     
-    public struct GenericError: Error {
+    struct GenericError: Error {
         let message: String
     }
     

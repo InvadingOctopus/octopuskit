@@ -15,12 +15,12 @@ public extension GKComponent {
     /// Convenient shorthand for accessing the SpriteKit node that is associated the `SpriteKitComponent` of this component's entity.
     ///
     /// If the entity does not have an `SpriteKitComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
-    public var entityNode: SKNode? {
+    var entityNode: SKNode? {
         return self.entity?.node
     }
     
     /// Returns the component of type `componentClass`, or a `RelayComponent` linked to a component of that type, if it's present in the entity that is associated with this component.
-    public func coComponent<ComponentType>(
+    func coComponent<ComponentType>(
         ofType componentClass: ComponentType.Type,
         ignoreRelayComponents: Bool = false)
         -> ComponentType? where ComponentType: GKComponent
@@ -35,7 +35,7 @@ public extension GKComponent {
     }
     
     /// A version of `coComponent(ofTYpe:)` without a parameter name to reduce text clutter.
-    public func coComponent<ComponentType>(
+    func coComponent<ComponentType>(
         _ componentClass: ComponentType.Type,
         ignoreRelayComponents: Bool = false)
         -> ComponentType? where ComponentType: GKComponent

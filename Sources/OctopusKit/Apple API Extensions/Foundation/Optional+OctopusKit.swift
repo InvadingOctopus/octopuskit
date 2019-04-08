@@ -15,7 +15,7 @@ public extension Optional {
     /// **Example**
     ///
     ///     try checkOptional(value).orThrow(SomeError())
-    public func orThrow(_ errorExpression: @autoclosure () -> Error) throws -> Wrapped {
+    func orThrow(_ errorExpression: @autoclosure () -> Error) throws -> Wrapped {
         
         // CREDIT: https://twitter.com/johnsundell/status/1047232852113412098
         // CREDIT: https://github.com/JohnSundell/SwiftTips
