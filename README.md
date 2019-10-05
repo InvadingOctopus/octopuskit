@@ -9,7 +9,7 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 4. [Getting Started](#getting-started)
 5. [Etcetera](#etcetera) (license, contact)
 
-🚀 *Eager to dive right in? Download the [Quickstart project.][quickstart-project]*
+🚀 *Eager to dive right in? Add OctopusKit as a Swift package dependency to a new Xcode game project and use the [**QuickStart** template.][quickstart]*
 
 > This project is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 >
@@ -221,7 +221,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 [discord]: https://discord.gg/y3har7D
 [patreon]: https://www.patreon.com/invadingoctopus
 
-[quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
+[quickstart]: https://github.com/InvadingOctopus/octopuskit/blob/master/QuickStart/README%20QuickStart.md
 [usage-guide]: https://invadingoctopus.io/octopuskit/documentation/usage.html
 [tips-&-troubleshooting]: https://invadingoctopus.io/octopuskit/documentation/tips.html
 [conventions-&-design]: https://invadingoctopus.io/octopuskit/documentation/conventions.html
