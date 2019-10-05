@@ -16,7 +16,7 @@ public typealias iOSExclusiveComponent = OctopusComponent
 #else
 
 /// A "dummy" base class for components that are not compatible with macOS.
-public class iOSExclusiveComponent: OctopusComponent {
+open class iOSExclusiveComponent: OctopusComponent {
     
     public override init() {
         OctopusKit.logForErrors.add("iOS only!")

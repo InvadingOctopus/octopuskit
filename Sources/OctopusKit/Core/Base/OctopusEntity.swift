@@ -21,7 +21,7 @@ public protocol OctopusEntityDelegate: class {
 /// An entity will usually have a visual representation on-screen via a `SpriteKitComponent` node.
 ///
 /// An `OctopusScene` is also represented by an entity via a `SpriteKitSceneComponent`.
-public class OctopusEntity: GKEntity {
+open class OctopusEntity: GKEntity {
     
     /// Identifies the entity. Can be non-unique and shared with other entities.
     ///
@@ -30,12 +30,12 @@ public class OctopusEntity: GKEntity {
     
     public weak var delegate: OctopusEntityDelegate? // CHECK: Should this be `weak`?
     
-    public override var description: String {
+    open override var description: String {
         // CHECK: Improve?
         return "\(super.description) \"\(self.name ?? "")\""
     }
     
-    public override var debugDescription: String {
+    open override var debugDescription: String {
         return "\(self.description)\(components.count > 0 ? " \(components.count) components = \(components)" : "")"
     }
     
@@ -86,7 +86,7 @@ public class OctopusEntity: GKEntity {
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     /// Adds a component to the entity and notifies the delegate, logging a warning if the entity already has another component of the same class, as the new component will replace the existing component.
-    public override func addComponent(_ component: GKComponent) {
+    open override func addComponent(_ component: GKComponent) {
         
         // Warn if we already have a component of the same class, as GameplayKit does not allow multiple components of the same type in the same entity.
         

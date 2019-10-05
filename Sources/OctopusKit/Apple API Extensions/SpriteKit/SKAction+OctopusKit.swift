@@ -31,7 +31,7 @@ extension SKAction {
     /// Sets the `timingMode` and returns self.
     ///
     /// Useful for chaining calls to an `SKAction` initializer.
-    public func withTimingMode(_ timingMode: SKActionTimingMode) -> SKAction {
+    open func withTimingMode(_ timingMode: SKActionTimingMode) -> SKAction {
         self.timingMode = timingMode
         return self
     }
@@ -39,7 +39,7 @@ extension SKAction {
     /// Creates an action that idles for a specified period of time then executes the supplied closure.
     ///
     /// - Important: Take care to use capture lists to avoid strong reference cycles in closures.
-    public func waitForDurationAndRunClosure(interval: TimeInterval,
+    open func waitForDurationAndRunClosure(interval: TimeInterval,
                                              closure: @escaping () -> Void)
         -> SKAction
     {
@@ -54,7 +54,7 @@ extension SKAction {
     /// Creates an action that cycles a node's hidden state between `true` and `false` with the specified delay in between.
     ///
     /// Makes the node visible before blinking it.
-    public class func blink(
+    open class func blink(
         withDelay delay: TimeInterval = 0.1)
         -> SKAction
     {
@@ -73,7 +73,7 @@ extension SKAction {
     }
     
     /// Creates an action that scales the node's size to the specified values then reverts it to `1.0`.
-    public class func bulge(
+    open class func bulge(
         xScale: CGFloat,
         yScale: CGFloat,
         scalingDuration: TimeInterval = 0.35,
@@ -90,21 +90,21 @@ extension SKAction {
     /// Creates an action that animates a sprite's blend factor to `1.0`.
     ///
     /// This action can only be executed by an `SKSpriteNode` object.
-    public class func colorizeIn(withDuration duration: TimeInterval = 0.25) -> SKAction {
+    open class func colorizeIn(withDuration duration: TimeInterval = 0.25) -> SKAction {
         return SKAction.colorize(withColorBlendFactor: 1.0, duration: duration)
     }
     
     /// Creates an action that animates a sprite's blend factor to `0.0`.
     ///
     /// This action can only be executed by an `SKSpriteNode` object.
-    public class func colorizeOut(withDuration duration: TimeInterval = 0.25) -> SKAction {
+    open class func colorizeOut(withDuration duration: TimeInterval = 0.25) -> SKAction {
         return SKAction.colorize(withColorBlendFactor: 0.0, duration: duration)
     }
     
     /// Creates an action that immediately changes the colorization of a sprite to the `initialColor` and `blendFactor`, then cycles the colorization once between the specifed target color then back to the initial color.
     ///
     /// This action can only be executed by an `SKSpriteNode` object.
-    public class func cycleColor(
+    open class func cycleColor(
         from initialColor: SKColor = .clear,
         to targetColor: SKColor,
         blendFactor: CGFloat = 1.0,
@@ -129,7 +129,7 @@ extension SKAction {
     /// Creates an action that immediately changes the alpha value of the node to `0.0` then increases it to `targetAlpha` if specified, otherwise `1.0`, over the specified duration.
     ///
     /// The `timingMode` affects the fade-in.
-    public class func fadeInFromZero(
+    open class func fadeInFromZero(
         to targetAlpha: CGFloat = 1.0,
         withDuration duration: TimeInterval = 1.0,
         timingMode: SKActionTimingMode = .linear)
@@ -146,7 +146,7 @@ extension SKAction {
     /// Creates an action that animates the alpha value of the node to `0.0` then removes the node from its parent.
     ///
     /// The `timingMode` affects the fade-out.
-    public class func fadeOutAndRemove(
+    open class func fadeOutAndRemove(
         withDuration duration: TimeInterval = 1.0,
         timingMode: SKActionTimingMode = .linear)
         -> SKAction
@@ -157,7 +157,7 @@ extension SKAction {
     }
     
     /// Creates an action that simultaneously animates the alpha value of the node to `0.0` and its scale to the specified target, then removes the node from its parent.
-    public class func fadeOutAndScaleAndRemove(
+    open class func fadeOutAndScaleAndRemove(
         to scale: CGFloat = 1.25,
         duration: TimeInterval = 0.15,
         scaleTimingMode: SKActionTimingMode = .easeOut,
@@ -174,7 +174,7 @@ extension SKAction {
     }
     
     /// Creates an action that immediately changes the alpha value of a node to `initialAlpha`, then repeatedly animates the alpha between `initialAlpha` and `targetAlpha` until the action is stopped.
-    public class func pulseAlpha(
+    open class func pulseAlpha(
         from initialAlpha: CGFloat = 0.1,
         to targetAlpha: CGFloat = 0.4,
         initialToTargetDuration: TimeInterval = 0.25,

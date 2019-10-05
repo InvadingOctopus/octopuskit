@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/11.
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 // CHECK: Should there be a way to mark components which have an `update` method, and automatically add them to a scene's component systems?
@@ -26,12 +26,12 @@ public protocol OctopusUpdatableComponent {
 /// Components may interact with other components and modify entities, and control game states.
 ///
 /// Components may also be purely abstract collections of data, without any logic.
-public class OctopusComponent: GKComponent {
+open class OctopusComponent: GKComponent {
     
     /// A list of co-component types that this component depends on.
     ///
     /// - NOTE: The component should not raise an application-halting error or exception if a dependency is missing, because components may be added to or removed from an entity during runtime to dynamically modify the entity's behavior. In the absence of a dependency, a component should fail gracefully and simply skip a part or all of its functionality, optionally logging a warning.
-    public var requiredComponents: [GKComponent.Type]? {
+    open var requiredComponents: [GKComponent.Type]? {
         // CHECK: Rename to `dependencies`?
         return nil
     }
@@ -62,7 +62,7 @@ public class OctopusComponent: GKComponent {
     }
     
     /// - Important: If a subclass overrides this method, then `super.didAddToEntity()` *MUST* be called to ensure proper functionality, e.g. to check for dependencies on other components and to set `shouldRemoveFromEntityOnDeinit = true`.
-    public override func didAddToEntity() {
+    open override func didAddToEntity() {
         OctopusKit.logForComponents.add("\(String(optional: entity)) ← \(self)")
         super.didAddToEntity()
         guard self.entity != nil else { fatalError("entity not set") }
@@ -114,20 +114,20 @@ public class OctopusComponent: GKComponent {
     }
     
     /// Abstract; To be implemented by subclass. Provides convenient access to the `SpriteKitComponent` node that the entity is associated with.
-    public func didAddToEntity(withNode node: SKNode) {}
+    open func didAddToEntity(withNode node: SKNode) {}
     
     /// Abstract; To be implemented by subclass. Provides convenient access to the `SpriteKitComponent` node that the entity is associated with.
-    public func willRemoveFromEntity(withNode node: SKNode) {}
+    open func willRemoveFromEntity(withNode node: SKNode) {}
     
     /// Tells the entity to remove components of this type, and clears the `shouldRemoveFromEntityOnDeinit` and `shouldWarnIfDeinitWithoutRemoving` flags.
-    public func removeFromEntity() {
+    open func removeFromEntity() {
         shouldRemoveFromEntityOnDeinit = false
         shouldWarnIfDeinitWithoutRemoving = false
         self.entity?.removeComponent(ofType: type(of: self))
     }
     
     /// - Important: If a subclass overrides this method, then `super.willRemoveFromEntity()` MUST be called to ensure proper functionality, including clearing `shouldRemoveFromEntityOnDeinit`.
-    public override func willRemoveFromEntity() {
+    open override func willRemoveFromEntity() {
         OctopusKit.logForComponents.add("\(String(optional: entity)) ~ \(self)")
         
         super.willRemoveFromEntity()

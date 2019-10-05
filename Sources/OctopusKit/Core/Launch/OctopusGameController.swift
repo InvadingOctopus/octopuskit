@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/11/07.
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 import GameplayKit
@@ -13,7 +13,7 @@ import GameplayKit
 /// This is a "controller" in the MVC sense; use this class to coordinate game states and scenes, and to manage global objects that must be shared across scenes, such as the game world, player data, and network connections etc.
 ///
 /// You may use `OctopusGameController` as-is or subclass it to add any global or top-level functionality that is specific to your game.
-public class OctopusGameController: GKStateMachine {
+open class OctopusGameController: GKStateMachine {
     
     public var sceneController: OctopusSceneController? {
         return OctopusKit.shared?.sceneController
@@ -45,7 +45,7 @@ public class OctopusGameController: GKStateMachine {
     }
     
     /// Attemtps to enter the state specified by `initialStateClass`.
-    @discardableResult public func enterInitialState() -> Bool {
+    @discardableResult open func enterInitialState() -> Bool {
         didEnterInitialState = enter(initialStateClass)
         return didEnterInitialState
     }

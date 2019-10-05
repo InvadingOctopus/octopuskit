@@ -36,7 +36,7 @@ public enum OctopusSubsceneResultType {
 }
 
 /// Base class for special nodes that may contain entities and component subsystems of their own, to implement self-contained "pseudoscenes" inside the parent scene, such as paused-state overlays, modal dialogs, cutscenes or minigames.
-public class OctopusSubscene: SKNode,
+open class OctopusSubscene: SKNode,
     OctopusEntityContainerNode,
     OctopusEntityDelegate,
     TouchEventComponentCompatible
@@ -95,7 +95,7 @@ public class OctopusSubscene: SKNode,
     /// Abstract method that subclasses can override to prepare their contents for the parent node that the subscene will be presented in.
     ///
     /// - Important: The overriding implementation must call `createContents(for: parentNode)` for `OctopusSubscene` to notify the delegate.
-    public func createContents(for parent: SKNode) {
+    open func createContents(for parent: SKNode) {
         OctopusKit.logForFramework.add()
         delegate?.subsceneWillAppear(self, on: parent)
         didCreateContents = true
@@ -110,7 +110,7 @@ public class OctopusSubscene: SKNode,
     /// Performs any scene-specific updates that need to occur before scene actions are evaluated. This method is the point for updating components, preferably via component systems.
     ///
     /// - Important: `super.update(currentTime)` *must* be called for correct functionality (before any other code in most cases.)
-    public func update(deltaTime seconds: TimeInterval) {
+    open func update(deltaTime seconds: TimeInterval) {
         
         // MARK: Entity Removal
         
@@ -137,7 +137,7 @@ public class OctopusSubscene: SKNode,
     #if os(iOS) // CHECK: Include tvOS?
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUT
         debugLog()
@@ -149,7 +149,7 @@ public class OctopusSubscene: SKNode,
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUT
         debugLog()
@@ -161,7 +161,7 @@ public class OctopusSubscene: SKNode,
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUT
         debugLog()
@@ -173,7 +173,7 @@ public class OctopusSubscene: SKNode,
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUT
         debugLog()
@@ -185,7 +185,7 @@ public class OctopusSubscene: SKNode,
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
+    open override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
         
         #if LOGINPUT
         debugLog()

@@ -11,7 +11,7 @@ import CoreMotion
 extension CMMotionManager {
     
     /// A convenience method that calls all of the "`stop-`" methods.
-    public func stopAllUpdates() {
+    open func stopAllUpdates() {
         self.stopDeviceMotionUpdates()
         self.stopAccelerometerUpdates()
         self.stopGyroUpdates()

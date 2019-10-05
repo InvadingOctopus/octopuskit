@@ -146,7 +146,7 @@ class OctopusAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     // MARK: - Core Data Saving support
     
-    public func saveContext () {
+    open func saveContext () {
         
         let context = persistentContainer.viewContext
         

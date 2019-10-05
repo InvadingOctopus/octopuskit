@@ -121,7 +121,7 @@ class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
     
     // MARK: - Constraints
     
-    public func resetConstraints() {
+    open func resetConstraints() {
         if self.nodeToTrack != nil {
             resetTrackingConstraint()
         }
@@ -131,7 +131,7 @@ class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
         }
     }
     
-    public func resetTrackingConstraint() {
+    open func resetTrackingConstraint() {
         
         // Remove existing tracking constraint, if any.
         
@@ -163,7 +163,7 @@ class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
     }
     
     /// - Important: If `bounds` are specified, this method must be called again if the camera's scale is later changed.
-    public func resetBoundsConstraint() {
+    open func resetBoundsConstraint() {
         
         // Remove existing bounds constraint, if any.
         
@@ -192,7 +192,7 @@ class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
         }
     }
     
-    public func createBoundsConstraint(to bounds: CGRect) -> SKConstraint {
+    open func createBoundsConstraint(to bounds: CGRect) -> SKConstraint {
         
         // TODO: Test and confirm various configurations.
         // TODO: Test `frame` vs. `size` etc.

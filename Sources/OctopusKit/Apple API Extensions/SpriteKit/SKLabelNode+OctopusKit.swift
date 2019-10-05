@@ -80,7 +80,7 @@ extension SKLabelNode {
         }
     }
     
-    public func setAlignment(horizontal: SKLabelHorizontalAlignmentMode,
+    open func setAlignment(horizontal: SKLabelHorizontalAlignmentMode,
                              vertical: SKLabelVerticalAlignmentMode) {
         self.horizontalAlignmentMode = horizontal
         self.verticalAlignmentMode = vertical

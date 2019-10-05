@@ -14,9 +14,9 @@ import GameplayKit
 /// The base class for components that apply a goal to the behavior of an `OctopusAgent2D`.
 ///
 /// **Dependencies:** `OctopusAgent2D`
-public class OctopusAgentGoalComponent: OctopusComponent {
+open class OctopusAgentGoalComponent: OctopusComponent {
     
-    public override var requiredComponents: [GKComponent.Type]? {
+    open override var requiredComponents: [GKComponent.Type]? {
         return [OctopusAgent2D.self]
     }
     
@@ -65,13 +65,13 @@ public class OctopusAgentGoalComponent: OctopusComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func didAddToEntity() {
+    open override func didAddToEntity() {
         super.didAddToEntity()
         applyGoalToAgent()
     }
     
     /// Removes the current `goal`, if any, from the agent and calls `applyGoalToAgent()` (which calls `createGoal()`) to reapply the goal. Call this when the component's properties have been changed.
-    public func recreateAndReapplyGoal() {
+    open func recreateAndReapplyGoal() {
         
         // Remove the goal, if any.
         
@@ -84,7 +84,7 @@ public class OctopusAgentGoalComponent: OctopusComponent {
     }
     
     /// Abstract; to be implemented by subclass.
-    public func createGoal() -> GKGoal? {
+    open func createGoal() -> GKGoal? {
         OctopusKit.logForWarnings.add("Not implemented by subclass")
         return nil
     }
@@ -92,7 +92,7 @@ public class OctopusAgentGoalComponent: OctopusComponent {
     /// Applies this component's goal to the entity's `OctopusAgent2D` component.
     ///
     /// Creates the goal object if it's currently `nil`, via `createGoal()`.
-    public func applyGoalToAgent() {
+    open func applyGoalToAgent() {
         
         guard let agent = self.agent else {
             OctopusKit.logForWarnings.add("\(String(optional: entity)) missing OctopusAgent2D")
@@ -122,7 +122,7 @@ public class OctopusAgentGoalComponent: OctopusComponent {
     /// Removes the goal from the entity's `OctopusAgent2D` component.
     ///
     /// - NOTE: Does not delete this component's `goal` property.
-    public func removeGoalFromAgent() {
+    open func removeGoalFromAgent() {
         guard
             let behavior = self.agent?.behavior,
             let goal = self.goal
@@ -131,7 +131,7 @@ public class OctopusAgentGoalComponent: OctopusComponent {
         behavior.remove(goal)
     }
     
-    public override func willRemoveFromEntity() {
+    open override func willRemoveFromEntity() {
         super.willRemoveFromEntity()
         
         // Just remove the goal from the agent's behavior; do not reset our properties here, in case this component is reused.

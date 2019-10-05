@@ -12,9 +12,9 @@ import GameplayKit
 /// Base class for components which handle tap gestures on the entity's `SpriteKitComponent` node.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TapGestureRecognizerComponent`
-public class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableComponent {
+open class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    public override var requiredComponents: [GKComponent.Type]? {
+    open override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self,
                 TapGestureRecognizerComponent.self]
     }
@@ -43,7 +43,7 @@ public class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableC
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func didAddToEntity() {
+    open override func didAddToEntity() {
         super.didAddToEntity()
         
         guard let tapGestureRecognizer = coComponent(TapGestureRecognizerComponent.self)?.gestureRecognizer else { return }
@@ -72,7 +72,7 @@ public class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableC
         }
     }
     
-    public override func update(deltaTime seconds: TimeInterval) {
+    open override func update(deltaTime seconds: TimeInterval) {
         
         // Clear the `haveGestureToProcess` when exiting this method.
         
@@ -93,9 +93,9 @@ public class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableC
     }
     
     /// Abstract method for subclasses to override where they can handle a tap on the entity's `SpriteKitComponent` node.
-    public func handleTap(deltaTime seconds: TimeInterval) {}
+    open func handleTap(deltaTime seconds: TimeInterval) {}
     
-    public override func willRemoveFromEntity() {
+    open override func willRemoveFromEntity() {
         super.willRemoveFromEntity()
         
         // Remove this component from the gesture notification targets.

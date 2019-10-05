@@ -208,10 +208,10 @@ open class OctopusScene: SKScene,
     /// An abstract method called by `OctopusSceneController` before the scene is presented in a view. Override this in a subclass to set up scaling etc. before the scene displays any content.
     ///
     /// - Important: This method has to be called manually (e.g. from the `SKView`'s view controller) before presenting the scene. It is not invoked by the system and is *not* guaranteed to be called.
-    public func willMove(to view: SKView) {}
+    open func willMove(to view: SKView) {}
     
     /// Calls `prepareContents()` which may be used by a subclass to create the scene's contents, then adds all components from each entity in the `entities` set to the relevant systems in the `componentSystems` array. If overriden then `super` must be called for proper initialization of the scene.
-    public override func didMove(to: SKView) {
+    open override func didMove(to: SKView) {
         // CHECK: Should this be moved to `sceneDidLoad()`?
         OctopusKit.logForFramework.add("name = \"\(name ?? "")\", size = \(size), view.frame.size = \(to.frame.size), scaleMode = \(scaleMode.rawValue)")
         
@@ -262,7 +262,7 @@ open class OctopusScene: SKScene,
         OctopusKit.logForFramework.add()
     }
     
-    public override func didChangeSize(_ oldSize: CGSize) {
+    open override func didChangeSize(_ oldSize: CGSize) {
         // CHECK: This is seemingly always called after `init`, before `sceneDidLoad()`, even when the `oldSize` and current `size` are the same.
         super.didChangeSize(oldSize)
         OctopusKit.logForFramework.add("\(self) — oldSize = \(oldSize) → \(self.size)")
@@ -271,7 +271,7 @@ open class OctopusScene: SKScene,
     /// By default, removes all entities from the scene when it is no longer in a view, so that the scene may be deinitialized and free up device memory.
     ///
     /// To prevent this behavior, for example in cases where a scene is expected to be presented again and should remain in memory, override this method.
-    public override func willMove(from view: SKView) {
+    open override func willMove(from view: SKView) {
         OctopusKit.logForFramework.add()
         super.willMove(from: view)
         
@@ -295,14 +295,14 @@ open class OctopusScene: SKScene,
     /// Called by `OctopusGameState`. To be overriden by a subclass if this same scene is used for different game states, e.g. to present different visual overlays for the paused or "game over" states.
     ///
     /// Call `super` to add default logging.
-    public func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?) {
+    open func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?) {
         OctopusKit.logForStates.add("\(String(optional: previousState)) → \(String(optional: state))")
     }
     
     /// Called by `OctopusGameState`. To be overriden by a subclass if this same scene is used for different game states, e.g. to remove visual overlays that were presented during a paused or "game over" state.
     ///
     /// Call `super` to add default logging.
-    public func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState) {
+    open func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState) {
         OctopusKit.logForStates.add("\(exitingState) → \(nextState)")
     }
     
@@ -518,7 +518,7 @@ open class OctopusScene: SKScene,
     // MARK: - Physics
     
     /// Relay physics contact events to the scene's `PhysicsEventComponent`.
-    public func didBegin(_ contact: SKPhysicsContact) {
+    open func didBegin(_ contact: SKPhysicsContact) {
         
         if let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsEventComponent.self) {
             physicsEventComponent.contactBeginnings.append(PhysicsEventComponent.ContactEvent(contact: contact, scene: self))
@@ -526,7 +526,7 @@ open class OctopusScene: SKScene,
     }
     
     /// Relay physics contact events to the scene's `PhysicsEventComponent`.
-    public func didEnd(_ contact: SKPhysicsContact) {
+    open func didEnd(_ contact: SKPhysicsContact) {
         
         if let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsEventComponent.self) {
             physicsEventComponent.contactEndings.append(PhysicsEventComponent.ContactEvent(contact: contact, scene: self))
@@ -538,7 +538,7 @@ open class OctopusScene: SKScene,
     /// Called by `OctopusAppDelegate.applicationWillEnterForeground(_:)`. Subclass to implement custom behavior such as going into a player-paused visual state.
     ///
     /// - Important: The overriding implementation must call `super.applicationWillEnterForeground()`.
-    public func applicationWillEnterForeground() {
+    open func applicationWillEnterForeground() {
         OctopusKit.logForFramework.add()
         
         if isPausedBySystem {
@@ -552,7 +552,7 @@ open class OctopusScene: SKScene,
     /// Called by `OctopusAppDelegate.applicationDidBecomeActive()` after the player has switched back into the app or interruptions such as a phone call or Control Center have ended.
     ///
     /// - Important: The overriding implementation must call `super.applicationDidBecomeActive()`.
-    public func applicationDidBecomeActive() {
+    open func applicationDidBecomeActive() {
         // NOTE: This method gets superfluously called twice after `OctopusAppDelegate.applicationWillEnterForeground(_:)` because of `OctopusScene.applicationWillEnterForeground()` and `OctopusAppDelegate.applicationDidBecomeActive(_:)`.
         
         OctopusKit.logForFramework.add("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? " → false" : "")")
@@ -569,7 +569,7 @@ open class OctopusScene: SKScene,
     }
     
     /// Called by `OctopusAppDelegate.applicationWillResignActive(_:)` when the player switches out of the app, or on interruptions such as a phone call, Control Center, Notification Center, or other system alerts.
-    public func applicationWillResignActive() {
+    open func applicationWillResignActive() {
         OctopusKit.logForFramework.add("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? "" : " → true")")
         
         pausedAtTime = lastUpdateTime // CHECK: Should we rely on the stored value instead of getting current time? Probably yes.
@@ -583,7 +583,7 @@ open class OctopusScene: SKScene,
     }
     
     /// Called by `OctopusAppDelegate.applicationDidEnterBackground(_:)`
-    public func applicationDidEnterBackground() {
+    open func applicationDidEnterBackground() {
         OctopusKit.logForFramework.add()
         
         if !isPausedBySystem {
@@ -598,19 +598,19 @@ open class OctopusScene: SKScene,
     /// Called from `OctopusScene.applicationWillResignActive()`.
     ///
     /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
-    public func didPauseBySystem() {}
+    open func didPauseBySystem() {}
     
     /// An abstract method for a subclass to customize scene behavior when the game is unpaused by an system event.
     ///
     /// Called from `OctopusScene.applicationDidBecomeActive()`.
     ///
     /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
-    public func didUnpauseBySystem() {}
+    open func didUnpauseBySystem() {}
     
     /// To be called when the player manually chooses to pause or unpause.
     ///
     /// When paused by the player, the gameplay and other game-specific logic is put on hold without preventing the scene from processing frame updates so the visual effects for a paused state can be shown and animated etc.
-    public func togglePauseByPlayer() {
+    open func togglePauseByPlayer() {
         OctopusKit.logForFramework.add("isPausedByPlayer = \(isPausedByPlayer) → \(!isPausedByPlayer)")
         
         isPausedByPlayer = !isPausedByPlayer
@@ -630,17 +630,17 @@ open class OctopusScene: SKScene,
     /// An abstract method for a subclass to customize scene behavior when the game is paused by the player.
     ///
     /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
-    public func didPauseByPlayer() {}
+    open func didPauseByPlayer() {}
     
     /// An abstract method for a subclass to customize scene behavior when the game is unpaused by the player.
     ///
     /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
-    public func didUnpauseByPlayer() {}
+    open func didUnpauseByPlayer() {}
     
     /// To be called when a modal user interface, such as an alert or other dialog which demands player attention, begins or finishes.
     ///
     /// When paused by modal UI, the gameplay and other game-specific logic is put on hold until the player completes the interaction, without preventing the scene from processing frame updates so that the user interface can continue to be displayed.
-    public func togglePauseBySubscene() {
+    open func togglePauseBySubscene() {
         OctopusKit.logForFramework.add("isPausedBySubscene = \(isPausedBySubscene) → (!isPausedBySubscene)")
         
         isPausedBySubscene = !isPausedBySubscene
@@ -659,13 +659,13 @@ open class OctopusScene: SKScene,
     /// Sets the size of the scene to half the size of the specified view, and sets the `scaleMode` to `aspectFit`.
     ///
     /// For "pixel-perfect" pixel art, you may want to decrease the scene's size by an even factor, then render your bitmaps at `1:1` and let the scene double their size.
-    public func halveSizeAndFit(in view: SKView) {
+    open func halveSizeAndFit(in view: SKView) {
         self.size = view.frame.size.halved
         self.scaleMode = .aspectFit
     }
     
     /// Modifies the scene's scale to match the scene's height to the height of the specified view, cropping the left and right edges of the scene if necessary.
-    public func cropAndScaleToFitLandscape(in view: SKView) {
+    open func cropAndScaleToFitLandscape(in view: SKView) {
         // CREDIT: Apple Dispenser sample, for landscape-fitted scaling.
         
         let scaleFactor = self.size.height / view.bounds.height // Resize the scene to better use the device aspect ratio.
@@ -674,7 +674,7 @@ open class OctopusScene: SKScene,
     }
     
     /// Modifies the scene's scale to match the scene's width to the width of the specified view, cropping the top and bottom edges of the scene if necessary.
-    public func cropAndScaleToFitPortrait(in view: SKView) {
+    open func cropAndScaleToFitPortrait(in view: SKView) {
         // CREDIT: Apple Dispenser sample, modified for portrait-fitted scaling.
         
         let scaleFactor = self.size.width / view.bounds.width // Resize the scene to better use the device aspect ratio.
@@ -685,7 +685,7 @@ open class OctopusScene: SKScene,
     // MARK: - Subscenes
     
     /// Presents a subscene and pauses the gameplay.
-    public func presentSubscene(
+    open func presentSubscene(
         _ subscene: OctopusSubscene,
         onNode parent: SKNode? = nil,
         zPosition: CGFloat? = nil)
@@ -739,12 +739,12 @@ open class OctopusScene: SKScene,
     // MARK: OctopusSubsceneDelegate
     
     /// A point where `OctopusScene` subclasses can prepare for presenting a subscene, such as dimming and pausing gameplay nodes.
-    public func subsceneWillAppear(_ subscene: OctopusSubscene, on parentNode: SKNode) {}
+    open func subsceneWillAppear(_ subscene: OctopusSubscene, on parentNode: SKNode) {}
     
     /// A point where `OctopusScene` subclasses can react to the disappearance of a subscene, such as resuming gameplay nodes, and handle its result if any.
     ///
     /// - Important: The overriding implementation must call `super.subsceneDidFinish(subscene, withResult: result)` for `OctopusScene` to correctly remove the subscene and unpause the game.
-    public func subsceneDidFinish(_ subscene: OctopusSubscene,
+    open func subsceneDidFinish(_ subscene: OctopusSubscene,
                                   withResult result: OctopusSubsceneResultType?)
     {
         OctopusKit.logForFramework.add("\(subscene) result = \(String(optional: result))")
@@ -769,7 +769,7 @@ open class OctopusScene: SKScene,
     
     // MARK: - Debugging
     
-    public func debugListEntitiesAndComponents() {
+    open func debugListEntitiesAndComponents() {
         debugLog("""
             🐙
             🔲 Scene = \(self)

@@ -41,7 +41,7 @@ public struct OctopusCShadow {
                   shadowRadius: layer.shadowRadius)
     }
     
-//    public func apply(toView view: NSView) {
+//    open func apply(toView view: NSView) {
 //        apply(toLayer: view.layer)
 //    }
     

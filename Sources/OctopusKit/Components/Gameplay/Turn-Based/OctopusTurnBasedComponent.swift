@@ -15,15 +15,15 @@ import GameplayKit
 /// An abstract base class for components in a turn-based game.
 ///
 /// Turn-based components may still have a per-frame `update(deltaTime:)` cycle and function like all other components, but they also have special turn-based methods that must be manually called to perform tasks during discrete game-defined turns.
-public class OctopusTurnBasedComponent: OctopusComponent {
+open class OctopusTurnBasedComponent: OctopusComponent {
 
     /// Abstract; override in subclass.
-    public func didBeginTurn() {}
+    open func didBeginTurn() {}
     
     /// Abstract; override in subclass.
-    public func executeTurn() {}
+    open func executeTurn() {}
     
     /// Abstract; override in subclass.
-    public func didEndTurn() {}
+    open func didEndTurn() {}
     
 }

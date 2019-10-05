@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/14.
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 import GameplayKit
@@ -13,11 +13,11 @@ import GameplayKit
 /// For example, a UI overlay on a base sprite or even sound effects. When this component is removed from an entity, it also removes the attached node(s) from the parent. To add multiple nodes, use the `SKNode(children:)` construction, as adding multiple components of the same type to an entity is not supported by GameplayKit.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-public class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponent {
+open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponent {
     
     // 💡 To use, simply subclass with the appropriate generic type, and implement (override) `createAttachment(for:)`.
     
-    public override var requiredComponents: [GKComponent.Type]? {
+    open override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self]
     }
     
@@ -61,7 +61,7 @@ public class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusCompon
     }
     
     /// `super` must be called by overriding subclass for proper functionality. Adds `attachment` as a child of the `node` specified by the `SpriteKitComponent`.
-    public override func didAddToEntity(withNode node: SKNode) {
+    open override func didAddToEntity(withNode node: SKNode) {
         OctopusKit.logForComponents.add("\(node) ← \(String(optional: attachment))")
         
         // Warn if the overriden parent is not a child of this component's entity's node.
@@ -89,14 +89,14 @@ public class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusCompon
     }
     
     /// Abstract; to be overriden by subclass. `didAddToEntity(withNode:)` calls this method and sets this component's `attachment` to its return value. If this method is not implemented by the subclass, then `didAddToEntity(withNode:)` will not replace any existing `attachment` with `nil`.
-    public func createAttachment(for parent: SKNode) -> AttachmentType? {
+    open func createAttachment(for parent: SKNode) -> AttachmentType? {
         return nil // CHECK: Should this be a `fatalError` if unimplemented?
     }
     
     /// Recreates the `attachment` for its current parent, if any.
     ///
     /// Sets `attachment` to `nil` then calls `createAttachment(for:)` with the previous parent of `attachment`.
-    public func recreateAttachmentForCurrentParent() {
+    open func recreateAttachmentForCurrentParent() {
         
         // Make sure we have a parent to begin with.
         
@@ -121,7 +121,7 @@ public class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusCompon
         self.attachment = newAttachment
     }
 
-    public func addAttachment(to targetParent: SKNode) {
+    open func addAttachment(to targetParent: SKNode) {
         
         guard let attachment = self.attachment else {
             OctopusKit.logForWarnings.add("\(self) missing attachment")
@@ -162,7 +162,7 @@ public class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusCompon
     }
     
     /// `super` must be called by overriding subclass for proper functionality. Removes `attachment` from its parent.
-    public override func willRemoveFromEntity(withNode node: SKNode) {
+    open override func willRemoveFromEntity(withNode node: SKNode) {
         guard
             let attachment = self.attachment,
             attachment.parent != nil

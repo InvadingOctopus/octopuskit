@@ -15,7 +15,7 @@ extension SKNode {
     /// - Type Methods
     
     /// Attempts to unarchive the specified "sks" file from the main application bundle and returns it.
-    public class func nodeWithName<T>(name: String) -> T? {
+    open class func nodeWithName<T>(name: String) -> T? {
         // CREDIT: Apple Adventure Sample
         
         // TODO: Verify the functionality of this Swift 4.2/iOS 12 update.
@@ -42,32 +42,32 @@ extension SKNode {
     /// MARK: - Common Tasks
     
     /// Convenient shorthand for multiple `addChild(_:)` calls.
-    public func addChildren(_ children: [SKNode]) {
+    open func addChildren(_ children: [SKNode]) {
         for child in children {
             self.addChild(child)
         }
     }
     
     /// Convenient shorthand for multiple `addChild(_:)` calls.
-    public func addChildren(_ children: SKNode...) {
+    open func addChildren(_ children: SKNode...) {
         self.addChildren(children)
     }
     
     /// Adds a node at the specified position, to the end of the receiver's list of child nodes.
-    public func addChild(_ node: SKNode, at position: CGPoint) {
+    open func addChild(_ node: SKNode, at position: CGPoint) {
         self.addChild(node)
         node.position = position
     }
     
     /// Returns this node's position in the coordinate system of another node in the node tree.
-    public func position(in node: SKNode) -> CGPoint {
+    open func position(in node: SKNode) -> CGPoint {
         return convert(position, to: node)
     }
     
     /// Converts a point from the coordinate system of this node's parent to the coordinate system of this node.
     ///
     /// Returns unconverted point if parent is `nil`.
-    public func convertPointFromParent(_ point: CGPoint) -> CGPoint {
+    open func convertPointFromParent(_ point: CGPoint) -> CGPoint {
         if let parent = self.parent {
             return convert(point, from: parent)
         } else {
@@ -78,7 +78,7 @@ extension SKNode {
     /// Converts a point in this node's coordinate system to the coordinate system of this node's parent.
     ///
     /// Returns unconverted point if parent is `nil`.
-    public func convertPointToParent(point: CGPoint) -> CGPoint {
+    open func convertPointToParent(point: CGPoint) -> CGPoint {
         if let parent = self.parent {
             return convert(point, to: parent)
         } else {
@@ -87,7 +87,7 @@ extension SKNode {
     }
     
     /// Returns the radians between this node's `zRotation` and the target angle in radians.
-    public func deltaBetweenRotation(and targetAngle: CGFloat) -> CGFloat {
+    open func deltaBetweenRotation(and targetAngle: CGFloat) -> CGFloat {
         // CREDIT: https://stackoverflow.com/a/2007279/1948215 by https://stackoverflow.com/users/210964/peter-b
         return atan2(sin(targetAngle - zRotation),
                      cos(targetAngle - zRotation))
@@ -96,7 +96,7 @@ extension SKNode {
     /// Removes a node and adds this node to the former parent of the removed node.
     ///
     /// This does not copy any attributes over from the placeholder node.
-    public func replaceNode(_ placeholder: SKNode) {
+    open func replaceNode(_ placeholder: SKNode) {
         
         if let placeholderParent = placeholder.parent {
             placeholder.removeAllActions() // CHECK: Is this necessary even with `removeFromParent()`?
@@ -112,7 +112,7 @@ extension SKNode {
     /// Searches a node for a child with the specified name, then removes that child node and adds this node to the former parent of the removed child node.
     ///
     /// This does not copy any attributes over from the placeholder node.
-    public func replaceNode(named name: String, in placeholderParent: SKNode) {
+    open func replaceNode(named name: String, in placeholderParent: SKNode) {
         if let placeholder = placeholderParent.childNode(withName: name) {
             self.replaceNode(placeholder)
         }
@@ -125,7 +125,7 @@ extension SKNode {
     /// - Important: This method simply performs an addition or subtraction on the `x` or `y` value; to properly ensure that the node is within the `safeAreaInsets`, use the `insetWithinSafeArea(edge:)` method.
     ///
     /// - Returns: The `safeAreaInsets` value at the corresponding `edge`
-    @discardableResult public func insetPositionBySafeArea(
+    @discardableResult open func insetPositionBySafeArea(
         at edge: OctopusDirection,
         forView view: SKView? = nil)
         -> CGFloat

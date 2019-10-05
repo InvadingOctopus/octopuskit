@@ -48,7 +48,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     
     // MARK: - Life Cycle
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         OctopusKit.logForFramework.add()
         super.viewDidLoad()
         
@@ -95,11 +95,11 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     /// Specifies whether the scene controller prefers the status bar to be hidden or shown.
     ///
     /// This property allows other objects to dynamically override the associated read-only computed property of this scene controller.
-    public var prefersStatusBarHiddenOverride: Bool = true {
+    open var prefersStatusBarHiddenOverride: Bool = true {
         didSet { self.setNeedsStatusBarAppearanceUpdate() }
     }
     
-    public override var prefersStatusBarHidden: Bool {
+    open override var prefersStatusBarHidden: Bool {
         return prefersStatusBarHiddenOverride
     }
     
@@ -108,43 +108,43 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     /// This property allows other objects to dynamically override the associated read-only computed property of this scene controller.
     ///
     /// - NOTE: The system takes your preference into account, but setting this property to `true` is no guarantee that the indicator will be hidden.
-    public var prefersHomeIndicatorAutoHiddenOverride: Bool = true {
+    open var prefersHomeIndicatorAutoHiddenOverride: Bool = true {
         didSet { self.setNeedsUpdateOfHomeIndicatorAutoHidden() }
     }
     
-    public override var prefersHomeIndicatorAutoHidden: Bool {
+    open override var prefersHomeIndicatorAutoHidden: Bool {
         return prefersHomeIndicatorAutoHiddenOverride
     }
     
     /// Specifies whether whether the scene controller's contents should auto rotate.
     ///
     /// This property allows other objects to dynamically override the associated read-only computed property of this scene controller.
-    public var shouldAutorotateOverride: Bool = false
+    open var shouldAutorotateOverride: Bool = false
     
-    public override var shouldAutorotate: Bool {
+    open override var shouldAutorotate: Bool {
         return shouldAutorotateOverride
     }
     
     /// Contains a dictionary of the interface orientations (rotations) that the scene controller supports.
     ///
     /// This property allows other objects to dynamically override the read-only `supportedInterfaceOrientations` computed property of this scene controller.
-    public var supportedInterfaceOrientationsOverride: [UIUserInterfaceIdiom : UIInterfaceOrientationMask] = [
+    open var supportedInterfaceOrientationsOverride: [UIUserInterfaceIdiom : UIInterfaceOrientationMask] = [
         .phone: .allButUpsideDown
     ]
     
-    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         // If the `interfaceOrientations` dictionary does not contain a list of orientations for the current `userInterfaceIdiom`, return `all`.
         return self.supportedInterfaceOrientationsOverride[UIDevice.current.userInterfaceIdiom] ?? .all
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         OctopusKit.logForFramework.add()
         super.viewWillAppear(animated)
         
         // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
     }
     
-    public override func viewWillLayoutSubviews() {
+    open override func viewWillLayoutSubviews() {
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         OctopusKit.logForFramework.add()
         super.viewWillLayoutSubviews()
@@ -159,7 +159,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
         // enterInitialState()
     }
     
-    public override func didReceiveMemoryWarning() {
+    open override func didReceiveMemoryWarning() {
         // Release any cached data, images, etc that aren't in use.
         OctopusKit.logForResources.add() // CHECK: Should the log be written to before freeing up some memory?
         super.didReceiveMemoryWarning()
@@ -171,14 +171,14 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     #if os(OSX)
     // MARK: macOS-specific
     
-    public override func viewWillAppear() {
+    open override func viewWillAppear() {
         OctopusKit.logForFramework.add()
         super.viewWillAppear()
         
         // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
     }
     
-    public override func viewWillLayout() {
+    open override func viewWillLayout() {
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         OctopusKit.logForFramework.add()
         super.viewWillLayout()
@@ -199,7 +199,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     
     /// Loads the `.sks` file as an OctopusScene.
     /// - Requires: In the Scene Editor, the scene must have its "Custom Class" set to `OctopusScene` or a subclass of `OctopusScene`.
-    public func loadScene(fileNamed fileName: String) -> OctopusScene? {
+    open func loadScene(fileNamed fileName: String) -> OctopusScene? {
         // TODO: Error handling
         
         OctopusKit.logForResources.add("fileName = \"\(fileName)\"")
@@ -228,7 +228,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
         return spriteKitScene
     }
     
-    public func createScene(ofClass sceneClass: OctopusScene.Type) -> OctopusScene?
+    open func createScene(ofClass sceneClass: OctopusScene.Type) -> OctopusScene?
     {
         OctopusKit.logForFramework.add("\(sceneClass)")
         
@@ -246,7 +246,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     /// - Parameter transitionOverride: The transition animation to display between scenes.
     ///
     ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
-    public func presentScene(_ incomingScene: SKScene,
+    open func presentScene(_ incomingScene: SKScene,
                              withTransition transitionOverride: SKTransition? = nil)
     {
         OctopusKit.logForFramework.add("\(String(optional: spriteKitView?.scene)) → [\(transitionOverride == nil ? "no transition override" : String(optional: transitionOverride))] → \(incomingScene)")
@@ -280,7 +280,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     /// - Parameter transition: The transition animation to display between scenes.
     ///
     ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
-    @discardableResult public func createAndPresentScene(
+    @discardableResult open func createAndPresentScene(
         ofClass sceneClass: OctopusScene.Type,
         withTransition transition: SKTransition? = nil)
         -> OctopusScene?
@@ -298,7 +298,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     /// - Parameter transition: The transition animation to display between scenes.
     ///
     ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
-    @discardableResult public func loadAndPresentScene(
+    @discardableResult open func loadAndPresentScene(
         fileNamed fileName: String,
         withTransition transition: SKTransition? = nil)
         -> OctopusScene?
@@ -314,7 +314,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     
     // MARK: - OctopusSceneDelegate
     
-    public func octopusSceneDidFinish(_ scene: OctopusScene) {
+    open func octopusSceneDidFinish(_ scene: OctopusScene) {
         // Let the current `OctopusGameState` handle this.
         
         if let currentState = OctopusKit.shared?.gameController.currentState as? OctopusGameState {
@@ -322,7 +322,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
         }
     }
     
-    @discardableResult public func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
+    @discardableResult open func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
         // Let the current `OctopusGameState` handle this.
         
         if let currentState = OctopusKit.shared?.gameController.currentState as? OctopusGameState {
@@ -333,7 +333,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
         }
     }
     
-    @discardableResult public func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
+    @discardableResult open func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
         // Let the current `OctopusGameState` handle this.
         
         if let currentState = OctopusKit.shared?.gameController.currentState as? OctopusGameState {
@@ -345,7 +345,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     }
     
     /// May be overriden in subclass to provide transition validation.
-    @discardableResult public func octopusScene(_ scene: OctopusScene, didRequestGameStateClass stateClass: OctopusGameState.Type) -> Bool {
+    @discardableResult open func octopusScene(_ scene: OctopusScene, didRequestGameStateClass stateClass: OctopusGameState.Type) -> Bool {
         // Let the current `OctopusGameState` handle this.
         
         if let currentState = OctopusKit.shared?.gameController.currentState as? OctopusGameState {
@@ -361,7 +361,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     /// - Parameter transition: The transition animation to display between scenes.
     ///
     ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
-    public func octopusScene(
+    open func octopusScene(
         _ outgoingScene: OctopusScene,
         didRequestTransitionTo nextSceneFileName: String,
         withTransition transition: SKTransition? = nil)
@@ -376,7 +376,7 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     /// - Parameter transition: The transition animation to display between scenes.
     ///
     ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
-    public func octopusScene(
+    open func octopusScene(
         _ outgoingScene: OctopusScene,
         didRequestTransitionTo nextSceneClass: OctopusScene.Type,
         withTransition transition: SKTransition? = nil)

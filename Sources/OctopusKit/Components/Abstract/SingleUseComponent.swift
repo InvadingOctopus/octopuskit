@@ -11,9 +11,9 @@ import GameplayKit
 /// An abstract base class for components that perform their task only once at the moment when they're added to an entity, and then remove themselves from their entity.
 ///
 /// - Important: Subclasses must call `super.didAddToEntity()` or `super.didAddToEntity(withNode:)` *after* they hve performed their task in their override of those methods.
-public class SingleUseComponent: OctopusComponent {
+open class SingleUseComponent: OctopusComponent {
     
-    public override func didAddToEntity() {
+    open override func didAddToEntity() {
         super.didAddToEntity() // Will also call `didAddToEntity(withNode:)` on the subclass.
         self.entity?.removeComponent(ofType: type(of: self))
     }

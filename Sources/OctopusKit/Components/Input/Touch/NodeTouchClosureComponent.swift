@@ -14,7 +14,7 @@ import GameplayKit
 /// This component calls the supplied closures with a reference to `self`, so that the component's user can refer to the instance properties of this component, such as its entity or co-components, at the calling site before it has finished initialization.
 ///
 /// Subclass this component to provide multiple, reusable sets of event handlers for the same entity (as an entity can only have one component of each concrete class.)
-public class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponent {
 
     // ℹ️ This class is not marked as `final` so that subclasses can be created, each providing a different set of event handlers for the same entity.
     
@@ -41,7 +41,7 @@ public class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableCompon
         _ node: SKNode)
         -> Void
     
-    public override var requiredComponents: [GKComponent.Type]? {
+    open override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self,
                 NodeTouchComponent.self]
     }
@@ -82,7 +82,7 @@ public class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableCompon
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func update(deltaTime seconds: TimeInterval) {
+    open override func update(deltaTime seconds: TimeInterval) {
         
         guard
             !isPaused,

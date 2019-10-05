@@ -44,7 +44,7 @@ open class OctopusGameState: GKState {
     }
     
     /// - Important: When overriding in a subclass, take care of when you call `super.didEnter(from:)` as that affects when the current `OctopusScene` is notified via `gameControllerDidEnterState(_:from:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
-    public override func didEnter(from previousState: GKState?) {
+    open override func didEnter(from previousState: GKState?) {
         
         super.didEnter(from: previousState)
         OctopusKit.logForStates.add("\(String(optional: previousState)) → \(self)")
@@ -104,7 +104,7 @@ open class OctopusGameState: GKState {
     }
     
     /// - Important: When overriding in a subclass, take care of when you call `super.willExit(to:)` as that affects when the current `OctopusScene` is notified via `currentScene.gameControllerWillExitState(_,to:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
-    public override func willExit(to nextState: GKState) {
+    open override func willExit(to nextState: GKState) {
         OctopusKit.logForStates.add("\(self) → \(nextState)")
         super.willExit(to: nextState)
         
@@ -126,28 +126,28 @@ open class OctopusGameState: GKState {
     // ℹ️ NOTE: This section should not be in an extension because "Declarations from extensions cannot be overridden yet."
     
     /// Abstract; To be implemented by subclass. Default behavior is to redirect to `octopusSceneDidChooseNextGameState(_)`.
-    public func octopusSceneDidFinish(_ scene: OctopusScene) {
+    open func octopusSceneDidFinish(_ scene: OctopusScene) {
         // CHECK: Should this be the default behavior? It may be helpful in showing a series of credits or intros/cutscenes etc.
         self.octopusSceneDidChooseNextGameState(scene)
     }
     
     /// Abstract; To be implemented by subclass.
-    @discardableResult public func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
+    @discardableResult open func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
         return false
     }
     
     /// Abstract; To be implemented by subclass.
-    @discardableResult public func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
+    @discardableResult open func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
         return false
     }
     
     /// Signals the `OctopusGameController` or its subclass to enter the requested state.
-    @discardableResult public func octopusScene(_ scene: OctopusScene, didRequestGameStateClass stateClass: OctopusGameState.Type) -> Bool {
+    @discardableResult open func octopusScene(_ scene: OctopusScene, didRequestGameStateClass stateClass: OctopusGameState.Type) -> Bool {
         return stateMachine?.enter(stateClass) ?? false
     }
     
     /// Not handled by `OctopusGameState`. Should be handled by `OctopusSceneController`.
-    public func octopusScene(_ outgoingScene: OctopusScene,
+    open func octopusScene(_ outgoingScene: OctopusScene,
                              didRequestTransitionTo nextSceneFileName: String,
                              withTransition transition: SKTransition?)
     {
@@ -155,7 +155,7 @@ open class OctopusGameState: GKState {
     }
     
     /// Not handled by `OctopusGameState`. Should be handled by `OctopusSceneController`.
-    public func octopusScene(_ outgoingScene: OctopusScene,
+    open func octopusScene(_ outgoingScene: OctopusScene,
                              didRequestTransitionTo nextSceneClass: OctopusScene.Type,
                              withTransition transition: SKTransition?)
     {

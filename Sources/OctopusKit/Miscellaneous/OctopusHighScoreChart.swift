@@ -14,7 +14,7 @@ import UIKit
 import CoreData
 
 /// TODO: Replace placeholder.
-public class HighScore: NSManagedObject {
+open class HighScore: NSManagedObject {
     var name: String? = ""
     var score: Int64 = 0
     var date: Date? = Date()

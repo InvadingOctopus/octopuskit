@@ -144,7 +144,7 @@ open class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Core Data Saving support
     
-    public func saveContext () {
+    open func saveContext () {
         
         let context = persistentContainer.viewContext
         

@@ -11,14 +11,14 @@ import GameplayKit
 #if os(iOS)
     
 /// Abstract. Use `ImpactVibrationComponent`.
-public class VibrationComponent<FeedbackGeneratorType: UIFeedbackGenerator>: OctopusComponent, OctopusUpdatableComponent {
+open class VibrationComponent<FeedbackGeneratorType: UIFeedbackGenerator>: OctopusComponent, OctopusUpdatableComponent {
     
     public var feedbackGenerator: FeedbackGeneratorType? // CHECK: Should this be weak?
     
     public var shouldVibrateOnNextFrame = false
     private var vibrateOnce = false
     
-    public override func update(deltaTime seconds: TimeInterval) {
+    open override func update(deltaTime seconds: TimeInterval) {
         
         if vibrateOnce {
             vibrate()
@@ -43,10 +43,10 @@ public class VibrationComponent<FeedbackGeneratorType: UIFeedbackGenerator>: Oct
     }
     
     /// Abstract; must be implemented by subclass.
-    public func createGenerator() {}
+    open func createGenerator() {}
     
     /// Abstract; must be implemented by subclass.
-    public func vibrate() {}
+    open func vibrate() {}
 }
 
 #else

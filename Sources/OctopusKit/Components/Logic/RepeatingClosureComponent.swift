@@ -85,7 +85,7 @@ class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     }
     
     /// Resets the repetition counter to `0`. Does not affect anything if `framesToStopAfter` is `nil`.
-    public func reset() {
+    open func reset() {
         self.repetitionCounter = 0
     }
 }

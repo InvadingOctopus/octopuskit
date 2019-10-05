@@ -61,7 +61,7 @@ class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func update(deltaTime seconds: TimeInterval) {
+    open override func update(deltaTime seconds: TimeInterval) {
 
         guard !didExecuteClosure else { return }
         
@@ -75,7 +75,7 @@ class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     }
     
     /// Resets the component's timer so that it executes the closure again after its specified delay.
-    public func reset() {
+    open func reset() {
         self.secondsElapsed = 0
         self.didExecuteClosure = false
     }

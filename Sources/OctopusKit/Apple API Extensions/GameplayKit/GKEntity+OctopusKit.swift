@@ -64,7 +64,7 @@ extension GKEntity {
     /// An overload of `addComponent(_:)` that allows optionally `nil` arguments.
     ///
     /// Useful for chaining calls with `coComponent(ofType:)` or other methods that may potentially return `nil`.
-    public func addComponent(_ component: GKComponent?) {
+    open func addComponent(_ component: GKComponent?) {
         if let component = component {
             self.addComponent(component)
         }
@@ -76,7 +76,7 @@ extension GKEntity {
     /// Adds the components in the specified order.
     ///
     /// - Note: The order in which the components are passed may be crucial to correctly resolving dependencies between different components.
-    public func addComponents(_ components: [GKComponent]) {
+    open func addComponents(_ components: [GKComponent]) {
         for component in components {
             self.addComponent(component)
         }
@@ -85,7 +85,7 @@ extension GKEntity {
     /// An overload of `addComponents(_:)` that allows optionally `nil` elements.
     ///
     /// Useful for chaining calls with `coComponent(ofType:)` or other methods that may potentially return `nil`.
-    public func addComponents(_ components: [GKComponent?]) {
+    open func addComponents(_ components: [GKComponent?]) {
         for case let component in components {
             self.addComponent(component)
         }
@@ -94,7 +94,7 @@ extension GKEntity {
     /// Returns the component matching `componentClass` or a `RelayComponent` linked to that type, if present in the entity.
     ///
     /// ⚠️ BUG: 201804029A: See method comments.
-    public func componentOrRelay<ComponentType>(ofType componentClass: ComponentType.Type) -> ComponentType? where ComponentType: GKComponent {
+    open func componentOrRelay<ComponentType>(ofType componentClass: ComponentType.Type) -> ComponentType? where ComponentType: GKComponent {
         // ⚠️
         // BUG: 201804029A: APPLEBUG: Sending an array like `[GKComponent.Type]`, such the one at `OctopusComponent.requiredComponents?`, to `entity.componentOrRelay(ofType:)` does not use the actual metatypes, and so it can cause false warnings about missing components.
         
@@ -105,14 +105,14 @@ extension GKEntity {
     }
     
     /// Removes components of the specified types.
-    public func removeComponents(ofTypes componentClasses: [GKComponent.Type]) {
+    open func removeComponents(ofTypes componentClasses: [GKComponent.Type]) {
         for componentClass in componentClasses {
             self.removeComponent(ofType: componentClass)
         }
     }
     
     /// Removes all components from this entity.
-    public func removeAllComponents() {
+    open func removeAllComponents() {
         
         // NOTE: Cannot modify a collection while it is being enumerated, so go the longer way around by using a second list of items to remove.
         

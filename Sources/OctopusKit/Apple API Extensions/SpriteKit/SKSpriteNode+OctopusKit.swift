@@ -36,7 +36,7 @@ extension SKSpriteNode {
     /// Creates a rectangular `SKPhysicsBody` equal to the sprite's size, ignoring its children if any.
     ///
     /// Does not assign the new physics body to the sprite.
-    @discardableResult public func makePhysicsBodyFromRect() -> SKPhysicsBody? {
+    @discardableResult open func makePhysicsBodyFromRect() -> SKPhysicsBody? {
         
         // ⚠️ This functionality cannot be added as an `SKPhysicsBody` extension, because of the usage of an inaccessible `PKPhysicsBody` superclass, as of 2017-10.
         
@@ -54,7 +54,7 @@ extension SKSpriteNode {
     }
     
     /// Creates a rectangular `SKPhysicsBody` equal to the sprite's size, ignoring its children if any, and assigns it to the sprite.
-    @discardableResult public func setPhysicsBodyToRect() -> SKPhysicsBody? {
+    @discardableResult open func setPhysicsBodyToRect() -> SKPhysicsBody? {
         
         guard let newPhysicsBody = self.makePhysicsBodyFromRect() else {
             // Let `makePhysicsBodyFromRect()` output any errors or warnings.
@@ -72,7 +72,7 @@ extension SKSpriteNode {
     /// Creates a `SKPhysicsBody` from the sprite's texture.
     ///
     /// Does not assign the new physics body to the sprite.
-    public func makePhysicsBodyFromTexture(withAlphaThreshold alphaThreshold: Float? = nil) -> SKPhysicsBody? {
+    open func makePhysicsBodyFromTexture(withAlphaThreshold alphaThreshold: Float? = nil) -> SKPhysicsBody? {
         
         // ⚠️ This functionality cannot be added as an `SKPhysicsBody` extension, because of the usage of an inaccessible `PKPhysicsBody` superclass, as of 2017-10.
         
@@ -94,7 +94,7 @@ extension SKSpriteNode {
     }
     
     /// Creates a `SKPhysicsBody` from the sprite's texture and assigns it to the sprite.
-    @discardableResult public func setPhysicsBodyToTexture(withAlphaThreshold alphaThreshold: Float? = nil) -> SKPhysicsBody? {
+    @discardableResult open func setPhysicsBodyToTexture(withAlphaThreshold alphaThreshold: Float? = nil) -> SKPhysicsBody? {
         
         guard let newPhysicsBody = self.makePhysicsBodyFromTexture(withAlphaThreshold: alphaThreshold) else {
             // Let `makePhysicsBodyFromTexture(withAlphaThreshold:)` output any errors or warnings.
@@ -116,7 +116,7 @@ extension SKSpriteNode {
     /// The following properties are copied: `alpha, anchorPoint, blendMode, color, colorBlendFactor, constraints, entity, isHidden, isPaused, lightingBitMask, physicsBody, position, reachConstraints, shadowedBitMask, shadowCastBitMask, size, speed, xScale, yScale, zPosition, zRotation`
     ///
     /// - Returns: `true` if a sprite matching `name` was found and replaced.
-    @discardableResult public func copyPropertiesFromNode(
+    @discardableResult open func copyPropertiesFromNode(
         named name: String,
         in placeholderParent: SKNode,
         replacingPlaceholder: Bool = false)

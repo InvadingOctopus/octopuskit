@@ -14,7 +14,7 @@ import SpriteKit
 extension SKShader {
     
     /// If channels are not specified, the function will attempt to load them from files following the pattern "filename0.png" to "filename3.png" (they are required to be PNG files.)
-    public class func shaderByUsingShadertoyUniforms(
+    open class func shaderByUsingShadertoyUniforms(
         fileNamed: String,
         channel0: SKTexture? = nil,
         channel1: SKTexture? = nil,

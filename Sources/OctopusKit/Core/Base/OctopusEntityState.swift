@@ -9,7 +9,7 @@
 import GameplayKit
 
 /// A logical state which may be associated with an entity's `StateMachineComponent`. Dictates the validity of state transitions and performs modifications to the entity upon entering from or exiting to specific states.
-public class OctopusEntityState: GKState {
+open class OctopusEntityState: GKState {
     
     public let entity: OctopusEntity
     
@@ -41,13 +41,13 @@ public class OctopusEntityState: GKState {
     /// Sets `componentTypesToRemoveOnExit` to the types of all the components in `componentsToAddOnEntry`
     ///
     /// If `componentsToAddOnEntry` is `nil` then `componentTypesToRemoveOnExit` is set to `nil` as well.
-    public func syncComponentTypesToRemoveOnExitWithComponentsToAddOnEntry() {
+    open func syncComponentTypesToRemoveOnExitWithComponentsToAddOnEntry() {
         // CHECK: Shorter name? ^^'
         componentTypesToRemoveOnExit = componentsToAddOnEntry?.map { type(of: $0) } ?? nil
     }
     
     /// Call `super.didEnter(from: previousState)` to add a log entry.
-    public override func didEnter(from previousState: GKState?) {
+    open override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
         OctopusKit.logForStates.add("\"\(String(optional: entity.name))\" \(String(optional: previousState)) → \(self)")
         
@@ -58,7 +58,7 @@ public class OctopusEntityState: GKState {
     }
     
     /// Call `super.willExit(to: nextState)` to add a log entry.
-    public override func willExit(to nextState: GKState) {
+    open override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
         OctopusKit.logForStates.add("\"\(String(optional: entity.name))\" \(self) → \(nextState)")
         

@@ -24,11 +24,11 @@ import GameplayKit
 /// - Note: Adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
 ///
 /// **Dependencies:** `SpriteKitSceneComponent`
-public class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComponent, UIGestureRecognizerDelegate
+open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComponent, UIGestureRecognizerDelegate
     where GestureRecognizerType: UIGestureRecognizer
 {
     
-    public override var requiredComponents: [GKComponent.Type]? {
+    open override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitSceneComponent.self]
     }
     
@@ -49,7 +49,7 @@ public class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusCo
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func didAddToEntity(withNode node: SKNode) {
+    open override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)
         
         guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene else {
@@ -67,7 +67,7 @@ public class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusCo
         view.addGestureRecognizer(gestureRecognizer)
     }
     
-    public override func willRemoveFromEntity(withNode node: SKNode) {
+    open override func willRemoveFromEntity(withNode node: SKNode) {
         super.willRemoveFromEntity(withNode: node)
         
         guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene else {
@@ -90,7 +90,7 @@ public class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusCo
     
     // MARK: - UIGestureRecognizerDelegate
     
-    public func gestureRecognizer(
+    open func gestureRecognizer(
         _ gestureRecognizer: UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)
         -> Bool
