@@ -16,7 +16,7 @@ public protocol OctopusGameStateDelegate: class {
 }
 
 /// Abstract base class for game states.
-public class OctopusGameState: GKState {
+open class OctopusGameState: GKState {
     
     // ℹ️ DESIGN: Not including a `gameController: OctopusGameController` property in `OctopusGameState`, so that subclasses may provide their own `gameController` property with their custom subclass of `OctopusGameController` if needed.
     

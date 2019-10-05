@@ -53,7 +53,7 @@ public protocol OctopusSceneDelegate: class {
 // The top-level unit of visual content in a game. Contains components grouped by entities to represent visual and behavorial elements in the scene. Manages component systems to update components in a deterministic order every frame.
 ///
 /// Includes an entity to represent the scene itself.
-public class OctopusScene: SKScene,
+open class OctopusScene: SKScene,
     OctopusEntityContainerNode,
     OctopusGameStateDelegate,
     OctopusEntityDelegate,
@@ -174,7 +174,7 @@ public class OctopusScene: SKScene,
     public var graphs: [String : GKGraph] = [:]
     
     /// Debugging information.
-    public override var description: String {
+    open override var description: String {
         return "\"\(name == nil ? "" : name!)\" frame = \(frame) size = \(size) anchor = \(anchorPoint) view.frame.size = \(String(optional: view?.frame.size))"
     }
     
@@ -191,7 +191,7 @@ public class OctopusScene: SKScene,
         // CHECK: Should we `fatalError()` here? // fatalError("init(coder:) has not been implemented")
     }
     
-    public override func sceneDidLoad() {
+    open override func sceneDidLoad() {
         OctopusKit.logForFramework.add("\(self)")
         super.sceneDidLoad()
         
@@ -258,7 +258,7 @@ public class OctopusScene: SKScene,
     /// - Note: If the scene requires the global `OctopusKit.shared.gameController.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
     ///
     /// - Note: A scene may choose to perform the tasks of this method in `gameControllerDidEnterState(_:from:)` instead.
-    public func prepareContents() {
+    open func prepareContents() {
         OctopusKit.logForFramework.add()
     }
     
@@ -307,7 +307,7 @@ public class OctopusScene: SKScene,
     }
     
     /// Abstract; override in subclass to provide a visual transition effect between scenes.
-    public func transition(for nextSceneClass: SKScene.Type) -> SKTransition? {
+    open func transition(for nextSceneClass: SKScene.Type) -> SKTransition? {
         return nil
     }
     
@@ -326,7 +326,7 @@ public class OctopusScene: SKScene,
     /// The preferred pattern in OctopusKit is to simply add entities and components to the scene in a method like `prepareContents()` or `gameControllerDidEnterState(_:from:)`, and use this method to just update all component systems, letting all the per-frame game logic be handled by the `update(_:)` method of each individual component and state class.
     ///
     /// - Important: `super.update(currentTime)` *must* be called for correct functionality (before any other code in most cases), and the subclass should also recheck `isPaused`, `isPausedBySystem`, `isPausedByPlayer` and `isPausedBySubscene` flags.
-    public override func update(_ currentTime: TimeInterval) {
+    open override func update(_ currentTime: TimeInterval) {
         
         // #1: Reset single-frame flags.
         
@@ -439,7 +439,7 @@ public class OctopusScene: SKScene,
     /// Increments the frame counter at the end of the current frame update.
     ///
     /// - IMPORTANT: A subclass that overrides this method must call `super.didFinishUpdate()` at the end of its implementation to properly increment the frame counter.
-    public override func didFinishUpdate() {
+    open override func didFinishUpdate() {
         // Increment the frame count for use in logging and debugging.
         
         // ℹ️ CHECK: PERFORMANCE: Although it makes more sense for `currentFrameNumber` to be incremended in `didFinishUpdate()` (which also eliminates the confusion from seemingly processing input events with a 1-frame lag, according to the logs, because they're received before `update(_:)` is called), we could increment it in `update(_:)` for more performance by calling one less method.
@@ -454,7 +454,7 @@ public class OctopusScene: SKScene,
     #if os(iOS) // CHECK: Include tvOS?
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
         #if LOGINPUT
         debugLog()
@@ -466,7 +466,7 @@ public class OctopusScene: SKScene,
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUT
         debugLog()
@@ -478,7 +478,7 @@ public class OctopusScene: SKScene,
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUT
         debugLog()
@@ -490,7 +490,7 @@ public class OctopusScene: SKScene,
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUT
         debugLog()
@@ -502,7 +502,7 @@ public class OctopusScene: SKScene,
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
-    public override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
+    open override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
         
         #if LOGINPUT
         debugLog()

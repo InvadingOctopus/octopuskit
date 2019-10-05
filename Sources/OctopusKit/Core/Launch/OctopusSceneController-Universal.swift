@@ -28,7 +28,7 @@ public typealias OSViewController = NSViewController
 /// Coordinates between the SpriteKit view and game scenes. Signals the `OctopusGameController` to enter its initial state when the view is ready to present the first scene.
 ///
 /// - Important: The view controller of your main SpriteKit view must be an `OctopusSceneController` or its subclass, for the OctopusKit to function.
-public class OctopusSceneController: OSViewController, OctopusSceneDelegate {
+open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     
     public fileprivate(set) var spriteKitView: SKView?
     
