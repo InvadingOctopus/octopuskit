@@ -1,12 +1,12 @@
 //
 //  PlayableState.swift
-//  OctopusKitQuickstart
+//  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/02/10.
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  STEP 7.1: The "gameplay" state for the Quickstart project, represented by the PlayScene (which also displays the content for the PausedState and GameOverState.)
+//  STEP 7.1: The "gameplay" state for the QuickStart project, represented by the PlayScene (which also displays the content for the PausedState and GameOverState.)
 
 import GameplayKit
 import OctopusKit

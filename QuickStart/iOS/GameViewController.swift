@@ -1,9 +1,9 @@
 //
 //  GameViewController.swift
-//  OctopusKitQuickstart
+//  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/06/04.
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 //  STEP 3.1: The view controller for the SpriteKit view (SKView) in your main storyboard must be the OctopusSceneController class (or a subclass of it that is specific to your game, like the GameViewController in this project.)

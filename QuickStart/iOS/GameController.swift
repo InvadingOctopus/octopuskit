@@ -1,6 +1,6 @@
 //
 //  GameController.swift
-//  OctopusKitQuickstart
+//  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/02/10.
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
@@ -17,7 +17,7 @@
 import GameplayKit
 import OctopusKit
 
-final class QuickstartGameController: OctopusGameController {
+final class QuickStartGameController: OctopusGameController {
     
     init() {
         super.init(states: [LogoState(),

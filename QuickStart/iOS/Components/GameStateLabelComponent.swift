@@ -1,9 +1,9 @@
 //
 //  GameStateLabelComponent.swift
-//  OctopusKitQuickstart
+//  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/06/22.
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 import SpriteKit

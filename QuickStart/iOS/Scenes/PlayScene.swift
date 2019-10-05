@@ -1,12 +1,12 @@
 //
 //  PlayScene.swift
-//  OctopusKitQuickstart
+//  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018-02-10
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  STEP 8.1: The "gameplay" scene for the Quickstart project.
+//  STEP 8.1: The "gameplay" scene for the QuickStart project.
 //
 //  This scene shows the content for multiple game states: PlayState, PausedState and GameOverState.
 //
@@ -27,7 +27,7 @@ final class PlayScene: OctopusScene {
         
         // Set the name of this scene at the earliest override-able point, for logging purposes.
         
-        self.name = "Quickstart Play Scene"
+        self.name = "QuickStart Play Scene"
         super.sceneDidLoad()
     }
     
@@ -61,7 +61,7 @@ final class PlayScene: OctopusScene {
             NodeTouchComponent.self,
             NodeTouchClosureComponent.self,
             
-            // Custom components which are specific to this Quickstart project.
+            // Custom components which are specific to this QuickStart project.
             
             GlobalDataComponent.self,
             GlobalDataLabelComponent.self,
@@ -137,7 +137,7 @@ final class PlayScene: OctopusScene {
         //
         // OctopusKit defers component updates to the OctopusScene subclass, because each specific scene may need to handle pausing, unpausing and other tasks differently.
         //
-        // In this Quickstart project, we keep updating components if the game has been paused by the player, so that the player can continue to interact with buttons to be able to unpause the game (in more complex projects this may be handled by Subscenes.)
+        // In this QuickStart project, we keep updating components if the game has been paused by the player, so that the player can continue to interact with buttons to be able to unpause the game (in more complex projects this may be handled by Subscenes.)
         //
         // The rest of the pausing and unpausing taks are handled in gameControllerDidEnterState(_:from:) and gameControllerWillExitState(_:to:)
 

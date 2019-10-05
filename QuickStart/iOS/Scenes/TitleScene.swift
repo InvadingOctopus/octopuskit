@@ -1,12 +1,12 @@
 //
 //  TitleScene.swift
-//  OctopusKitQuickstart
+//  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018-02-10
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  STEP 6.1: The title screen (aka "main menu") for the Quickstart project.
+//  STEP 6.1: The title screen (aka "main menu") for the QuickStart project.
 //
 //  This scene displays a button which signals the game controller to enter the PlayState when it's tapped.
 
@@ -23,7 +23,7 @@ final class TitleScene: OctopusScene {
         
         // Set the name of this scene at the earliest override-able point, for logging purposes.
         
-        self.name = "Quickstart Title Scene"
+        self.name = "QuickStart Title Scene"
         super.sceneDidLoad()
     }
     
@@ -55,7 +55,7 @@ final class TitleScene: OctopusScene {
             NodeTouchComponent.self,
             NodeTouchClosureComponent.self,
             
-            // Custom components which are specific to this Quickstart project.
+            // Custom components which are specific to this QuickStart project.
             
             GlobalDataComponent.self,
             GlobalDataLabelComponent.self,

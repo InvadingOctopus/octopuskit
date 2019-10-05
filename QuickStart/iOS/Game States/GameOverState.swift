@@ -1,12 +1,12 @@
 //
 //  GameOverState.swift
-//  OctopusKitQuickstart
+//  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/02/10.
-//  Copyright © 2018 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  STEP 10.1: The "game over" state for the Quickstart project, represented by the PlayScene (which also displays the content for the PlayState and PausedState.)
+//  STEP 10.1: The "game over" state for the QuickStart project, represented by the PlayScene (which also displays the content for the PlayState and PausedState.)
 //
 //  Cycles back to STEP 5.
 

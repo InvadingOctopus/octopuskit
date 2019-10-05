@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/12/19.
-//  Copyright © 2018 Invading Octopus. All rights reserved.
+//  Copyright © 2019 Invading Octopus. All rights reserved.
 //
 
 import Foundation
