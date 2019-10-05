@@ -23,8 +23,8 @@ extension CGVector {
                   dy: point.y)
     }
     
-    /// Converts a `float2` to `CGVector`.
-    public init(_ point: float2) {
+    /// Converts a `SIMD2<Float>` to `CGVector`.
+    public init(_ point: SIMD2<Float>) {
         self.init(dx: CGFloat(point.x),
                   dy: CGFloat(point.y))
     }

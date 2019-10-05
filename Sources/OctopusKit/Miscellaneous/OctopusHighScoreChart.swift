@@ -13,6 +13,13 @@
 import UIKit
 import CoreData
 
+/// TODO: Replace placeholder.
+public class HighScore: NSManagedObject {
+    var name: String? = ""
+    var score: Int64 = 0
+    var date: Date? = Date()
+}
+
 public struct OctopusHighScore: Equatable, Comparable {
     
     public let name: String

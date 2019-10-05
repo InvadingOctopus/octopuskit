@@ -29,21 +29,21 @@ class OctopusLogTests: XCTestCase {
     
     func testLog() {
         let logName = "Test Log"
-        var testLog = OctopusLog(name: logName, copyToNSLog: .no)
-        XCTAssert(testLog.name == logName, "Log name does not match string it was initialized with.")
+        var testLog = OctopusLog(title: logName, copiesToNSLog: false)
+        XCTAssert(testLog.title == logName, "Log name does not match string it was initialized with.")
         
         let firstEntry = "First Log Entry"
-        testLog.add(newEntry: firstEntry)
+        testLog.add(firstEntry)
         
-        XCTAssert(testLog.lastEntry?.string == firstEntry, "Logged entry does not match.")
-        XCTAssert(testLog.entries[0].string == firstEntry, "Logged entry does not match via subscript.")
+        XCTAssert(testLog.lastEntryText == firstEntry, "Logged entry does not match.")
+        XCTAssert(testLog.entries[0].text! == firstEntry, "Logged entry does not match via subscript.")
         XCTAssert(testLog.entries.count == 1, "Entries array does not have expected count.")
         
         let secondEntry = "Second Log Entry"
-        testLog.add(newEntry: secondEntry)
+        testLog.add(secondEntry)
         
-        XCTAssert(testLog.lastEntry?.string == secondEntry, "Logged entry does not match.")
-        XCTAssert(testLog.entries[1].string == secondEntry, "Logged entry does not match via subscript.")
+        XCTAssert(testLog.lastEntryText == secondEntry, "Logged entry does not match.")
+        XCTAssert(testLog.entries[1].text! == secondEntry, "Logged entry does not match via subscript.")
         XCTAssert(testLog.entries.count == 2, "Entries array does not have expected count.")
     }
     

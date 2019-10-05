@@ -1,6 +1,6 @@
 import XCTest
 
-#if !os(macOS)
+#if !canImport(ObjectiveC)
 public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(OctopusKitTests.allTests),

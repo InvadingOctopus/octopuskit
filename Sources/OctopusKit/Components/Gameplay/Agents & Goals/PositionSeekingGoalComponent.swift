@@ -30,7 +30,7 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
             if targetPosition != oldValue { // Avoid recursion or redundant calls.
 
                 if let targetPosition = self.targetPosition {
-                    targetAgent.position = float2(targetPosition)
+                    targetAgent.position = SIMD2<Float>(targetPosition)
                     
                     // ⚠️ NOTE: If this component is added with an initial `targetPosition == nil` then it is automatically paused. In that case, it must be manually unpaused before it can take effect!
                     if isPaused && oldValue == nil {
@@ -87,7 +87,7 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
     
     public override func createGoal() -> GKGoal? {
         if let targetPosition = self.targetPosition {
-            targetAgent.position = float2(targetPosition)
+            targetAgent.position = SIMD2<Float>(targetPosition)
         }
         return GKGoal(toSeekAgent: targetAgent)
     }

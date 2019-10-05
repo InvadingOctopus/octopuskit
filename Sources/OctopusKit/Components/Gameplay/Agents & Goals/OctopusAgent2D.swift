@@ -47,7 +47,7 @@ public final class OctopusAgent2D: GKAgent2D, OctopusUpdatableComponent {
         // CHECK: Is this necessary if we have set the delegate?
         
         if let node = super.entityNode {
-            self.position = float2(node.position)
+            self.position = SIMD2<Float>(node.position)
             self.rotation = Float(node.zRotation)
         }
         else {

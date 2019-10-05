@@ -30,8 +30,8 @@ extension CGPoint {
                   y: vector.dy)
     }
     
-    /// Converts a `float2` to `CGPoint`.
-    public init(_ point: float2) {
+    /// Converts a `SIMD2<Float>` to `CGPoint`.
+    public init(_ point: SIMD2<Float>) {
         self.init(x: CGFloat(point.x),
                   y: CGFloat(point.y))
     }

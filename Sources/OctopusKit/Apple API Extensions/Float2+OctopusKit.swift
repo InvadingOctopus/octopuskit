@@ -11,17 +11,17 @@
 import CoreGraphics
 import simd
 
-extension float2 {
+extension SIMD2 where Scalar == Float {
     
     // MARK: - Initializers
     
-    /// Converts a `CGPoint` to `float2`.
+    /// Converts a `CGPoint` to `SIMD2<Float>`.
     init(_ point: CGPoint) {
         self.init(x: Float(point.x),
                   y: Float(point.y))
     }
     
-    /// Converts a `CGVector` to `float2`.
+    /// Converts a `CGVector` to `SIMD2<Float>`.
     init(_ vector: CGVector) {
         self.init(x: Float(vector.dx),
                   y: Float(vector.dy))
@@ -30,7 +30,7 @@ extension float2 {
     // MARK: - Common Tasks
     
     /// Returns the nearest point to this point on a line from `startPoint` to `endPoint`.
-    func nearestPointOnLineSegment(lineSegment: (startPoint: float2, endPoint: float2)) -> float2 {
+    func nearestPointOnLineSegment(lineSegment: (startPoint: SIMD2<Float>, endPoint: SIMD2<Float>)) -> SIMD2<Float> {
         // CREDIT: Apple DemoBots Sample
         
         // A vector from this point to the line start.
