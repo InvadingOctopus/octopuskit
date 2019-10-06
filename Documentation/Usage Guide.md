@@ -22,7 +22,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 1. Download the [**OctopusKitQuickstart** Xcode project from the Releases page.][quickstart-project] 
 
-    > You will require Xcode 10, and if you wish to run on a device, iOS 12 (both currently in beta.)
+    > You will require Xcode 11, and if you wish to run on an iPhone or iPad, iOS/iPadOS 13.
 
 2. Build and run the project.
 

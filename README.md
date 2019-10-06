@@ -186,7 +186,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ## Getting Started
 
-1. **Read the [Quickstart and Usage Guide.][usage-guide]** You will need Xcode 10 (and iOS 12 if you wish to run on an iPhone or iPad.)
+1. **Read the [Quickstart and Usage Guide.][usage-guide]** You will need Xcode 11, iOS 13 and macOS Catalina (though OK may work on older versions with some manual modifications.)
 
     > **Skill Level: Intermediate**: Although OK is not presented in a form suitable for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
     > 
