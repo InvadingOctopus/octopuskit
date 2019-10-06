@@ -12,9 +12,9 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 🚀 *Eager to dive right in? Add OctopusKit as a Swift package dependency to a new Xcode game project and use the [**QuickStart** template.][quickstart]*
 
 > This project is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
->
+
 > It's also my first ever open-source project and a **work in progress**; I'm still learning, and OctopusKit may change rapidly without maintaining backwards compatibility. If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it!
->
+
 > *– ShinryakuTako*  
 
 ## Examples
@@ -147,7 +147,7 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 - ⛓ **Systems** are simply collections of components *of a specific type.* They do not perform any logic\*, but they are arranged by a **Scene** in an array to execute components from all entities in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
     > \* *These definitions may differ from other engines, like Unity, where all the logic is contained within systems.*  
-    >
+    
     > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
 
 Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend."
@@ -163,23 +163,28 @@ Your primary workflow will be writing component classes for each "part" of the g
 - **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using technologies like SceneKit to render 3D content in 2D space, and it can be used for non-game apps.
 
 - **Shoulders of Giants**: The engine leverages SpriteKit, GameplayKit and other technologies provided by Apple. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
+    
     > OK is mostly implemented through custom subclasses and extensions of the SpriteKit and GameplayKit classes, without "obscuring" them or blocking you from interacting with the base classes. This allows you to adopt this framework incrementally, and lets you integrate your game with the Xcode IDE tools such as the Scene Editor where possible.  
-    >
+    
     > Most importantly, the tight coupling with Apple APIs ensures that your game is future-proof; whenever Apple improves these frameworks, OctopusKit and your games should also get some benefits "for free." For example, when Metal was introduced, SpriteKit was updated to automatically use Metal instead of OpenGL under the hood, giving many existing games a performance boost. [(WWDC 2016, Session 610)][wwdc-610]    
 
-- **Code Comes First**: OK is primarily a "programmatical" engine; almost everything is done in code. This also helps with source control. The Xcode Scene Editor is relegated to "second-class citizen" status because of its incompleteness and bugs as of May 2018 (Xcode 9.4), but it is supported wherever convenient. See the next point.
+- **Code Comes First**: OK is primarily a "programmatical" engine; almost everything is done in code. This also helps with source control. The Xcode Scene Editor is relegated to "second-class citizen" status because of its incompleteness and bugs (as of  May 2018, Xcode 9.4), but it is supported wherever convenient. See the next point.
+
     > 💡 You can design high-level layouts/mockups in the Scene Editor, using placeholder nodes with names (identifiers.) You may then create entities from those nodes and add components to them in code.
+    
+    > Now with SwiftUI, programming is heading towards a focus code instead of visual editors anyway. 
 
 - **Customizability & Flexibility**: The engine strives to be flexible and gives you the freedom to structure your game in various ways. Since you have full access to the engine's source code, you can modify or extend anything to suit the exact needs of each project.   
+    
     > You can use any of the following approaches to building your scenes, in order of engine support:  
-    >
+    
     > 1. Perform the creation and placement of nodes mostly in code. Use the Xcode Scene Editor infrequently, to design and preview a few individual elements such as UI HUDs etc., not entire scenes, and use `SKReferenceNode` to load them in code.  
-    >
+    
     > 2. Use the Xcode Scene Editor as your starting point, to create template scenes that may be loaded as top-level `SKReferenceNode` instances of an `OctopusScene`. This approach allows a modicum of "WYSIWYG" visual design and previewing.  
-    >
+    
     > 3. Create a scene almost entirely in the Xcode Scene Editor, adding any supported components, actions, physics bodies, navigation graphs and textures etc. right in the IDE.   
 Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusSceneController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
-    >
+    
     > 4. You don't *have* to use any of the architectures and patterns suggested here; you don't have to use game states, and your game objects don't even have to inherit from any OK classes. You could use your own architecture, and just use OK for a few helper methods etc., keeping only what you need from this framework and excluding the rest from compilation.
 
 - **Self-Containment**: You should not need to download or keep up with any other third-party libraries if your own project does not require them; everything that OK uses is within OK or Apple frameworks, so it comes fully usable out-of-the-box.
@@ -188,8 +193,8 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 1. **Read the [Quickstart and Usage Guide.][usage-guide]** You will need Xcode 11, iOS 13 and macOS Catalina (though OK may work on older versions with some manual modifications.)
 
-    > **Skill Level: Intermediate**: Although OK is not presented in a form suitable for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
-    > 
+    > **Skill Level: Intermediate**: Although OK is not presented in a form designed for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
+     
     > You should also read about the ["Composition over inheritance"][composition-over-inheritance] and ["Entity–component–system"][entity–component–system] patterns if you're not already familiar with those concepts, although OK's implementation of these may be different than what you expect.
 
 2. Stuck? See [Tips & Troubleshooting.][tips-&-troubleshooting]
