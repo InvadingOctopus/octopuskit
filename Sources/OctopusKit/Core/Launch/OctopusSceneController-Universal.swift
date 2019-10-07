@@ -48,6 +48,15 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     
     // MARK: - Life Cycle
     
+    open override func loadView() {
+        OctopusKit.logForFramework.add()
+        
+        // ℹ️ APPLE: Your custom implementation of this method should not call super.
+        // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621454-loadview
+        
+        self.view = SKView()
+    }
+    
     open override func viewDidLoad() {
         OctopusKit.logForFramework.add()
         super.viewDidLoad()
@@ -139,6 +148,10 @@ open class OctopusSceneController: OSViewController, OctopusSceneDelegate {
     
     open override func viewWillAppear(_ animated: Bool) {
         OctopusKit.logForFramework.add()
+        
+        self.spriteKitView = SKView()
+        self.view.addSubview(self.spriteKitView!)
+        
         super.viewWillAppear(animated)
         
         // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
