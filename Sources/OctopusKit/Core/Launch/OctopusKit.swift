@@ -67,34 +67,7 @@ public final class OctopusKit {
     /// - Important: Must specify the first scene via its initial state.
     public let gameController: OctopusGameController
     
-    #if os(iOS)
-    public var sceneController: OctopusSceneController? {
-        // CHECK: Should we return as `OctopusSceneController`?
-        // CHECK: Should this be a stored property set by the `OctopusSceneController` instance?
-        if let sceneController = UIApplication.shared.delegate?.window??.rootViewController as? OctopusSceneController { // CHECK: Is there a better way? Storyboard/IB binding?
-            return sceneController
-        }
-        else {
-            OctopusKit.logForErrors.add("Cannot access UIApplication.shared.delegate.window.rootViewController as an OctopusSceneController.")
-            return nil
-        }
-    }
-    
-    #elseif os(OSX)
-    public var sceneController: OctopusSceneController? {
-        // CHECK: Should we return as `OctopusSceneController`?
-        // CHECK: Should this be a stored property set by the `OctopusSceneController` instance?
-        // TODO: Multi-window support?
-        if let sceneController = NSApplication.shared.keyWindow?.contentViewController as? OctopusSceneController { // CHECK: Is there a better way? Storyboard/IB binding?
-            return sceneController
-        }
-        else {
-            OctopusKit.logForErrors.add("Cannot access NSApplication.shared.mainWindow.contentViewController as an OctopusSceneController.")
-            return nil
-        }
-    }
-    
-    #endif
+    public var sceneController: OctopusSceneController?
     
     public var sceneControllerView: SKView? {
         // ⚠️ Trying to access this at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so users should delay it by checking something like `gameController.didEnterInitialState`
