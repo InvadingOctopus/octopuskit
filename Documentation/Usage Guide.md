@@ -20,15 +20,33 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 ### 🍰 **To begin from a template**:
 
-1. Download the [**OctopusKitQuickstart** Xcode project from the Releases page.][quickstart-project] 
+1. 🆕 Create a **new SpriteKit Game project** in Xcode.
 
-    > You will require Xcode 11, and if you wish to run on an iPhone or iPad, iOS/iPadOS 13.
+	> You will require Xcode 11, and if you wish to run on an iPhone or iPad, iOS/iPadOS 13.
 
-2. Build and run the project.
+2. 📦 Add OctopusKit as a **Swift Package** Dependency.
+    
+    > Xcode File menu » Swift Packages » Add Package Dependency...
 
-3. Modify the `TitleScene.swift` and `PlayScene.swift` files in the `Scenes` folder to customize them for your game.
+3. 🗑 **Delete** the following default files created by the Xcode template: 
 
-    > The filenames and comments are prefixed with "Step #" so you can follow the flow of execution at a glance.
+	Actions.sks  
+	AppDelegate.swift  
+	GameScene.sks  
+	GameScene.swift  
+	GameViewController.swift  
+
+4. 📥 **Copy** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package folder to your project's source folder. 
+
+5. 🗂 Include the copied files in your Xcode project. 
+
+	> By dragging the copies from your project's folder into the Project Navigator.
+	
+6. Build and run the project.
+
+7. Modify the `TitleScene.swift` and `PlayScene.swift` files in the `Scenes` folder to customize them for your game.
+
+    > Most of the comments are prefixed with "Step #" so you can follow the flow of execution at a glance.
     >
     > 💡 Browse the `OctopusKit/Components` folder and try tinkering with different components!
     >
