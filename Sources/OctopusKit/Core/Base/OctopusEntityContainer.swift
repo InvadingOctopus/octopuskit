@@ -285,8 +285,7 @@ public extension OctopusEntityContainerNode {
         // TODO: Validate 'physicsBody'
         // ⚠️ Before adding the node, handle cases like the node's 'physicsBody' already belong to some other child of this scene, etc. Apparently this does not seem very easy to achieve in SpriteKit and Swift as of 2018-03.
         
-        if
-            let physicsBody = node.physicsBody,
+        if  let physicsBody = node.physicsBody,
             physicsBody.node != nil && physicsBody.node! != node
         {
             // ⚠️ NOTE: Apparently this will never occur as SpriteKit replaces `physicsBody.node` when the `physicsBody` is added to a new node.

@@ -61,7 +61,7 @@ public final class OctopusLogoScene: OctopusScene {
         let shrinkAndFadeIn = SKAction.group([shrink, fadeIn])
         
         self.addChild(logo)
-        
+                 
         if let completion = completion {
             logo.run(.sequence([
                 shrinkAndFadeIn,
