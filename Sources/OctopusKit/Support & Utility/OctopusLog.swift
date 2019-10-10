@@ -31,8 +31,8 @@ public func debugLog(
 {
     // Trim and pad the calling file's name.
     
-    let callerFile = ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension
-    let paddedFile = (callerFile as NSString).padding(toLength: 35, withPad: " ", startingAt: 0)
+    let callerFile = ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension // ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension
+    let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
     
     print("\(OctopusLog.currentTimeAndFrame())\(separator)\(paddedFile)\(separator)\(callerFunction)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
 }
@@ -236,7 +236,8 @@ public struct OctopusLog {
             
             // TODO: Truncate filenames with "…"
             
-            let paddedFile = (callerFile as NSString).padding(toLength: 35, withPad: " ", startingAt: 0)
+            let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
+            let paddedTitle = title.padding(toLength: 5, withPad: "0", startingAt: 0)
             
             print("\(OctopusLog.currentTimeAndFrame()) \(title)\t \(paddedFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)")
         }
