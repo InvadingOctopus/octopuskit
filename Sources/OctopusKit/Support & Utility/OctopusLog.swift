@@ -237,7 +237,7 @@ public struct OctopusLog {
             // TODO: Truncate filenames with "…"
             
             let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
-            let paddedTitle = title.padding(toLength: 5, withPad: "0", startingAt: 0)
+            let paddedTitle = title.padding(toLength: 5, withPad: " ", startingAt: 0)
             
             print("\(OctopusLog.currentTimeAndFrame()) \(paddedTitle)\t \(paddedFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)")
         }
