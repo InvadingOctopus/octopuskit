@@ -23,20 +23,8 @@ import CoreData
 class OctopusAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-        
         OctopusKit.logForFramework.add()
-        
-        // CHECK: `registerUserDefaultsFromSettingsBundle()`?
-        self.applicationWillLaunchOctopusKit()
         OctopusKit.verifyConfiguration()
-        
-        if
-            let sceneController = OctopusKit.shared?.sceneController,
-            !sceneController.didEvokeGameControllerInitialState
-        {
-            sceneController.enterInitialState()
-        }
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -48,21 +36,10 @@ class OctopusAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         return true
     }
     
-    /// The launching point for the OctopusKit.
-    ///
-    /// - Important: Override this in your app-specific subclass of `OctopusAppDelegate` and call `OctopusKit(appName:gameController:)` to setup the engine.
-    func applicationWillLaunchOctopusKit() {
-        fatalError("OctopusKit: OctopusAppDelegate.applicationWillLaunchOctopusKit() not implemented by subclass.")
-    }
-    
     // MARK: - Pause/Unpause
     
     func applicationWillBecomeActive(_ notification: Notification) {
         OctopusKit.logForFramework.add()
-        
-        if let scene = OctopusKit.shared?.currentScene {
-            scene.applicationWillEnterForeground()
-        }
     }
     
     func applicationDidBecomeActive(_ notification: Notification) {
@@ -71,32 +48,14 @@ class OctopusAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         // NOTE: Call `scene.applicationDidBecomeActive()` before `enterInitialState()` so we don't issue a superfluous unpause event to the very first scene of the game.
         
         // CHECK: Compare launch performance between calling `OctopusSceneController.enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! versus `OctopusSceneController.viewWillLayoutSubviews()`
-        
-        if let scene = OctopusKit.shared?.currentScene {
-            scene.applicationDidBecomeActive()
-        }
-        else if
-            let sceneController = OctopusKit.shared?.sceneController,
-            !sceneController.didEvokeGameControllerInitialState
-        {
-            sceneController.enterInitialState()
-        }
     }
     
     func applicationWillResignActive(_ notification: Notification) {
         OctopusKit.logForFramework.add()
-        
-        if let scene = OctopusKit.shared?.currentScene {
-            scene.applicationWillResignActive()
-        }
     }
     
     func applicationDidResignActive(_ notification: Notification) {
         OctopusKit.logForFramework.add()
-        
-        if let scene = OctopusKit.shared?.currentScene {
-            scene.applicationDidEnterBackground()
-        }
     }
     
     /*

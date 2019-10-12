@@ -29,22 +29,12 @@ open class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
     public var window: UIWindow?
     
     /// Override point for customization after game launch.
-    open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+    open func application(_ application: UIApplication,
+                          didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
+    {
         OctopusKit.logForFramework.add()
-        
-        // CHECK: `registerUserDefaultsFromSettingsBundle()`?
-        self.applicationWillLaunchOctopusKit()
         OctopusKit.verifyConfiguration()
-
         return true
-    }
-    
-    /// The launching point for the OctopusKit.
-    ///
-    /// - IMPORTANT: Override this in your app-specific subclass of `OctopusAppDelegate` and call `OctopusKit(appName:gameController:)` to setup the engine.
-    open func applicationWillLaunchOctopusKit() {
-        fatalError("OctopusKit: OctopusAppDelegate.applicationWillLaunchOctopusKit() not implemented.")
     }
     
     // MARK: - Pause/Unpause
@@ -52,31 +42,11 @@ open class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
     /// Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     open func applicationWillEnterForeground(_ application: UIApplication) {
         OctopusKit.logForFramework.add()
-        
-        if let scene = OctopusKit.shared?.currentScene {
-            scene.applicationWillEnterForeground()
-        }
     }
     
+    /// Restart any tasks that were paused (or not yet started) while the game was inactive. If the game was previously in the background, optionally refresh the user interface.
     open func applicationDidBecomeActive(_ application: UIApplication) {
-        /// Restart any tasks that were paused (or not yet started) while the game was inactive. If the game was previously in the background, optionally refresh the user interface.
-        
         OctopusKit.logForFramework.add()
-        
-        // NOTE: Call `scene.applicationDidBecomeActive()` before `enterInitialState()` so we don't issue a superfluous unpause event to the very first scene of the game.
-        
-        // CHECK: Compare launch performance between calling `OctopusSceneController.enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! versus `OctopusSceneController.viewWillLayoutSubviews()`
-        
-        if let scene = OctopusKit.shared?.currentScene {
-            scene.applicationDidBecomeActive()
-        }
-        else if
-            let sceneController = OctopusKit.shared?.sceneController,
-            !sceneController.didEvokeGameControllerInitialState
-        {
-            sceneController.enterInitialState()
-        }
-        
     }
     
     /// Sent when the game is about to move from active to inactive state.
@@ -86,10 +56,6 @@ open class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
     /// Use this method to pause the gameplay, disable timers, and invalidate graphics rendering callbacks.
     open func applicationWillResignActive(_ application: UIApplication) {
         OctopusKit.logForFramework.add()
-        
-        if let scene = OctopusKit.shared?.currentScene {
-            scene.applicationWillResignActive()
-        }
     }
     
     /// Use this method to release shared resources, save player data, invalidate timers, and store enough game state information to restore your application to its current state in case it is terminated later.
@@ -97,10 +63,6 @@ open class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
     /// If your game supports background execution, this method is called instead of `applicationWillTerminate:` when the player quits.
     open func applicationDidEnterBackground(_ application: UIApplication) {
         OctopusKit.logForFramework.add()
-        
-        if let scene = OctopusKit.shared?.currentScene {
-            scene.applicationDidEnterBackground()
-        }
     }
     
     /// Called when the game is about to terminate. Save data if appropriate. See also `applicationDidEnterBackground:`.
