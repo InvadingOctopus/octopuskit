@@ -9,6 +9,12 @@
 import SpriteKit
 import CoreData
 
+#if canImport(AppKit)
+public typealias OSApplication = NSApplication
+#elseif canImport(UIKit)
+public typealias OSApplication = UIApplication
+#endif
+
 #if os(iOS) // CHECK: Include tvOS?
 
 import CoreMotion
@@ -50,11 +56,13 @@ public final class OctopusKit {
         }
     }
         
+    public static var initialized: Bool = false
+    
     // MARK: - App-specific Settings
     
     /// The name of the app bundle which this game will be deployed with.
     ///
-    /// - Note: Should be the same as the `CFBundleName` property in the `Info.plist` file.
+    /// - Important: Should be the same as the `CFBundleName` property in the `Info.plist` file.
     ///
     /// Used for alerts, logs and accessing the Core Data persistent container and other resources related to the bundle name.
     public let appName: String
@@ -64,35 +72,25 @@ public final class OctopusKit {
     // MARK: - Top-Level Objects
     
     /// The root controller object that manages the various states of the game, as well as any global objects that must be shared across states and scenes.
-    /// - Important: Must specify the first scene via its initial state.
+    ///
+    /// - Important: The game's first scene must be specified via the game controller's initial state.
     public let gameController: OctopusGameController
     
-    public var sceneController: OctopusSceneController?
-    
-    public var sceneControllerView: SKView? {
-        // ⚠️ Trying to access this at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so users should delay it by checking something like `gameController.didEnterInitialState`
-        if  let sceneController = self.sceneController,
-            let view = sceneController.view as? SKView
+    public var gameControllerView: SKView? {
+        // ⚠️ - Warning: Trying to access this at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so users should delay it by checking something like `gameController.didEnterInitialState`
+        if  let viewController = self.gameController.viewController,
+            let view = viewController.view as? SKView
         {
             return view
         }
         else {
-            OctopusKit.logForErrors.add("Cannot access UIApplication.shared.delegate.window.rootViewController.view as an SKView.")
+//            OctopusKit.logForErrors.add("Cannot access gameController.viewController?.view as an SKView.")
             return nil
         }
     }
     
     public var currentScene: OctopusScene? {
-        // CHECK: Should we return as `SKScene`?
-        if  let view = self.sceneControllerView,
-            let scene = view.scene as? OctopusScene
-        {
-            return scene
-        }
-        else {
-            //  OctopusKit.logForWarnings.add("Cannot access UIApplication.shared.delegate.window.rootViewController.view.scene as an OctopusScene")
-            return nil
-        }
+        gameController.currentScene
     }
     
     // MARK: - App-wide Singletons
@@ -128,20 +126,26 @@ public final class OctopusKit {
     ///
     /// - Important: Calling this initializer more than once will raise a fatal error.
     ///
-    /// - Parameter appName: The name of the app bundle. Should be the same as the `CFBundleName` property in the `Info.plist` file.
-    /// - Parameter gameController: An instance of `OctopusGameController` or its subclass, specifying the possible game states and their associated scenes.
+    /// - Parameter appNameOverride: The name of the app bundle. Used to retreive the Core Data store and for logs. If omitted or `nil` the `CFBundleName` property from the `Info.plist` file will be used.
     /// - Returns: Discardable; there is no need store the return value of this initializer.
-    @discardableResult public init(appName: String,
+    @discardableResult public init(appNameOverride: String? = nil,
                                    gameController: OctopusGameController)
     {
         guard OctopusKit.shared == nil else {
             fatalError("OctopusKit: OctopusKit(appName:gameController:) called again after OctopusKit.shared singleton has already been initialized.")
         }
         
+        guard   let appName = appNameOverride ??
+                (Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)
+        else {
+            fatalError("Cannot read CFBundleName from Info.plist as a String, and appNameOverride not provided.")
+        }
+            
         self.appName = appName
         self.gameController = gameController
         
         OctopusKit.shared = self
+        OctopusKit.initialized = true
     }
     
     /// Ensures that the OctopusKit has been correctly initialized.
