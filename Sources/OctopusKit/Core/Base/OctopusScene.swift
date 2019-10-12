@@ -17,39 +17,6 @@
 import SpriteKit
 import GameplayKit
 
-/// A protocol for types that control game state transitions and scene presentation based on input from the current scene, such as `OctopusSceneController`.
-public protocol OctopusSceneDelegate: class {
-    
-    /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide how to interpret the "completion" of a scene and which state to transition to, if any.
-    func octopusSceneDidFinish(_ scene: OctopusScene)
-    
-    /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide which state should be the "next" state and whether to transition.
-    ///
-    /// - Returns: `true` if the `OctopusGameController` did change its state, or `false` if the state could not be changed or if there was no "next" state.
-    @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool
-    
-    /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide which state should be the "previous" state and whether to transition.
-    ///
-    /// - Returns: `true` if the `OctopusGameController` did change its state, or `false` if the state could not be changed or if there was no "previous" state.
-    @discardableResult func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool
-    
-    /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide whether the requested transition is valid.
-    ///
-    /// - Returns: `true` if the `OctopusGameController` did change its state, or `false` if the state could not be changed.
-    @discardableResult func octopusScene(_ scene: OctopusScene,
-                      didRequestGameStateClass stateClass: OctopusGameState.Type) -> Bool
-    
-    /// Requests the scene controller to present the scene with the specified filename, without changing the current game state.
-    func octopusScene(_ outgoingScene: OctopusScene,
-                      didRequestTransitionTo nextSceneFileName: String,
-                      withTransition transition: SKTransition?)
-    
-    /// Requests the scene controller to present the scene of the specified class, without changing the current game state.
-    func octopusScene(_ outgoingScene: OctopusScene,
-                      didRequestTransitionTo nextSceneClass: OctopusScene.Type,
-                      withTransition transition: SKTransition?)
-}
-
 // The top-level unit of visual content in a game. Contains components grouped by entities to represent visual and behavorial elements in the scene. Manages component systems to update components in a deterministic order every frame.
 ///
 /// Includes an entity to represent the scene itself.
@@ -166,6 +133,8 @@ open class OctopusScene: SKScene,
     public fileprivate(set) lazy var sharedMotionManagerComponent = MotionManagerComponent()
     
     // MARK: Other
+    
+    public var gameController: OctopusGameController?
     
     /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OctopusSceneController`.
     public var octopusSceneDelegate: OctopusSceneDelegate?
@@ -307,7 +276,7 @@ open class OctopusScene: SKScene,
     }
     
     /// Abstract; override in subclass to provide a visual transition effect between scenes.
-    open func transition(for nextSceneClass: SKScene.Type) -> SKTransition? {
+    open func transition(for nextSceneClass: OctopusScene.Type) -> SKTransition? {
         return nil
     }
     
