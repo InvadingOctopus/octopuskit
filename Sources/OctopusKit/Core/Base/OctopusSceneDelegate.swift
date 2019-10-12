@@ -12,9 +12,6 @@ import GameplayKit
 /// A protocol for types that control game state transitions and scene presentation based on input from the current scene, such as `OctopusSceneController`.
 public protocol OctopusSceneDelegate: class {
     
-    var gameController: OctopusGameController?  { get } // TODO: Remove?
-    var currentGameState: OctopusGameState?     { get }
-    
     /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide how to interpret the "completion" of a scene and which state to transition to, if any.
     func octopusSceneDidFinish(_ scene: OctopusScene)
     
@@ -45,76 +42,23 @@ public protocol OctopusSceneDelegate: class {
                       withTransition transition: SKTransition?)
 }
 
-public extension OctopusSceneDelegate where Self: OctopusScenePresenter {
-    
-    func octopusSceneDidFinish(_ scene: OctopusScene) {
-        
-        if  let currentGameState = self.currentGameState {
-            currentGameState.octopusSceneDidFinish(scene)
-        }
-    }
-    
-    @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
-        
-        if  let currentGameState = self.currentGameState {
-            return currentGameState.octopusSceneDidChooseNextGameState(scene)
-        } else {
-            return false
-        }
-    }
-    
-    @discardableResult func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
-        
-        if  let currentGameState = self.currentGameState {
-            return currentGameState.octopusSceneDidChoosePreviousGameState(scene)
-        } else {
-            return false
-        }
-    }
-    
-    /// May be overriden in subclass to provide transition validation.
-    @discardableResult func octopusScene(_ scene: OctopusScene,
-                                         didRequestGameState stateClass: OctopusGameState.Type) -> Bool
-    {
-        if let currentGameState = currentGameState {
-            return currentGameState.octopusScene(scene, didRequestGameStateClass: stateClass)
-        } else {
-            return self.gameController?.enter(stateClass) ?? false
-        }
-    }
-    
-}
+// MARK: - Default Implementation
 
-public extension OctopusSceneDelegate where Self: OctopusScenePresenter {
+public extension OctopusSceneDelegate {
     
-    /// Override in subclass to implement more granular control over transitions between specific types of scenes.
-    ///
-    /// - Parameter transition: The transition animation to display between scenes.
-    ///
-    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
-    func octopusScene(
-        _ outgoingScene: OctopusScene,
-        didRequestTransitionTo nextSceneFileName: String,
-        withTransition transition: SKTransition? = nil)
-    {
-        OctopusKit.logForFramework.add("nextSceneFileName: \(nextSceneFileName)")
-        loadAndPresentScene(fileNamed: nextSceneFileName, withTransition: transition)
-        // outgoingScene.isPaused = false // CHECK: Necessary?
+    // Abstract; To be implemented by subclass. Default behavior is to redirect to `octopusSceneDidChooseNextGameState(_)`.
+    func octopusSceneDidFinish(_ scene: OctopusScene) {
+        // CHECK: Should this be the default behavior? It may be helpful in showing a series of credits or intros/cutscenes etc.
+        self.octopusSceneDidChooseNextGameState(scene)
     }
     
-    /// Override in subclass to implement more granular control over transitions between specific types of scenes.
-    ///
-    /// - Parameter transition: The transition animation to display between scenes.
-    ///
-    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
-    func octopusScene(
-        _ outgoingScene: OctopusScene,
-        didRequestTransitionTo nextSceneClass: OctopusScene.Type,
-        withTransition transition: SKTransition? = nil)
-    {
-        OctopusKit.logForFramework.add("nextSceneClass: \(nextSceneClass)")
-        createAndPresentScene(ofClass: nextSceneClass, withTransition: transition)
-        // outgoingScene.isPaused = false // CHECK: Necessary?
+    /// Abstract; To be implemented by subclass.
+    @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
+        return false
     }
     
+    /// Abstract; To be implemented by subclass.
+    @discardableResult func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
+        return false
+    }
 }

@@ -9,14 +9,14 @@
 import SpriteKit
 import GameplayKit
 
-/// A protocol for types that will recieve notifications about state transitions, and can provide visual effects for scene transitions.
+/// A protocol for types that will receive notifications about state transitions, and can provide visual effects for scene transitions.
 public protocol OctopusGameStateDelegate: class {
     func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?)
     func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState)
 }
 
 /// Abstract base class for game states.
-open class OctopusGameState: GKState {
+open class OctopusGameState: GKState, OctopusSceneDelegate {
     
     // ℹ️ DESIGN: Not including a `gameController: OctopusGameController` property in `OctopusGameState`, so that subclasses may provide their own `gameController` property with their custom subclass of `OctopusGameController` if needed.
     
@@ -41,7 +41,7 @@ open class OctopusGameState: GKState {
         }
     }
     
-    /// The object to inform about state transitions, and to recieve scene transition effects from. Generally set to the current scene.
+    /// The object to inform about state transitions, and to receive scene transition effects from. Generally set to the current scene.
     ///
     /// This is read-only and is dynamically set by `OctopusGameState` to the incoming or outgoing scene as appropriate.
     public fileprivate(set) weak var delegate: OctopusGameStateDelegate?
@@ -154,24 +154,47 @@ open class OctopusGameState: GKState {
     }
     
     /// Signals the `OctopusGameController` or its subclass to enter the requested state.
+    ///
+    /// May be overridden in subclass to provide transition validation.
     @discardableResult open func octopusScene(_ scene: OctopusScene, didRequestGameStateClass stateClass: OctopusGameState.Type) -> Bool {
         return stateMachine?.enter(stateClass) ?? false
     }
     
-    /// Not handled by `OctopusGameState`. Should be handled by `OctopusSceneController`.
+    /// Override in subclass to implement more granular control over transitions between specific types of scenes.
+    ///
+    /// - Parameter transition: The transition animation to display between scenes.
+    ///
+    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
     open func octopusScene(_ outgoingScene: OctopusScene,
                              didRequestTransitionTo nextSceneFileName: String,
                              withTransition transition: SKTransition?)
     {
-        OctopusKit.logForErrors.add("Not implemented — Implement in subclass or redirect to OctopusSceneController")
+        OctopusKit.logForFramework.add("nextSceneFileName: \(nextSceneFileName)")
+        self.gameController?.loadAndPresentScene(fileNamed: nextSceneFileName, withTransition: transition)
+        // outgoingScene.isPaused = false // CHECK: Necessary?
     }
     
-    /// Not handled by `OctopusGameState`. Should be handled by `OctopusSceneController`.
+    /// Override in subclass to implement more granular control over transitions between specific types of scenes.
+    ///
+    /// - Parameter transition: The transition animation to display between scenes.
+    ///
+    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
     open func octopusScene(_ outgoingScene: OctopusScene,
                              didRequestTransitionTo nextSceneClass: OctopusScene.Type,
                              withTransition transition: SKTransition?)
     {
-        OctopusKit.logForErrors.add("Not implemented — Implement in subclass or redirect to OctopusSceneController")
+        OctopusKit.logForFramework.add("nextSceneClass: \(nextSceneClass)")
+        self.gameController?.createAndPresentScene(ofClass: nextSceneClass, withTransition: transition)
+        // outgoingScene.isPaused = false // CHECK: Necessary?
+    }
+    
+    /// Signals the `OctopusGameController` or its subclass to enter the requested state.
+    ///
+    /// May be overridden in subclass to provide transition validation.
+    @discardableResult open func octopusScene(_ scene: OctopusScene,
+                                         didRequestGameState stateClass: OctopusGameState.Type) -> Bool
+    {
+        return stateMachine?.enter(stateClass) ?? false
     }
     
 }
