@@ -31,7 +31,9 @@ extension OctopusKit {
     public static var logForWarnings    = OctopusLog(title: "🐙⚠️", suffix: "⚠️")
     
     /// A log for severe, unexpected events that may prevent the continued execution of the game.
-    public static var logForErrors      = OctopusLog(title: "🐙🚫", suffix: "🚫")
+    ///
+    /// - Warning: Adding an entry to this log will raise a `fatalError` that terminates the application.
+    public static var logForErrors      = OctopusLog(title: "🐙🚫", suffix: "🚫", haltApplicationOnNewEntry: true)
     
     /// A log for verbose debugging information.
     public static var logForDebug       = OctopusLog(title: "🐙🐞")

@@ -82,7 +82,7 @@ public struct OctopusLogEntry: CustomStringConvertible {
     }
 }
 
-/// An object that keeps a list of log entries, prefixing each entry with a customizable time format and the name of the file and function that added the entry.
+/// An object that keeps a list of log entries, prefixing each entry with a customizable time format and the name of the file and function that added the entry. Designed to optimize readability in the Xcode debug console.
 ///
 /// Use multiple `OctopusLog`s to separate different concerns, such as warnings from errors, and to selectively enable or disable specific logs.
 ///
@@ -91,7 +91,17 @@ public struct OctopusLog {
     
     // MARK: Static properties & methods
     
+    /// If `true` then an empty line is printed between entries with different frame counts (e.g. F0 and F1).
     public static var printEmptyLineBetweenFrames: Bool = false
+    
+    /// If `true` then debug console output is printed in tab-delimited CSV format, that may then be copied into a spreadsheet table such as Numbers etc.
+    ///
+    /// The values are: currentTime, currentFrameNumber, title, callerFile, callerFunction, text, suffix.
+    public static var printAsCSV: Bool = false
+    
+    /// The separator to print between values when `printAsCSV` is `true`.
+    /// Default is `tab`.
+    public static var csvDelimiter: String = "\t"
     
     /// Stores the frame number during the most recent log entry, so we can mark the beginning of a new frame to make logs easier to read.
     public fileprivate(set) static var lastFrameLogged: UInt64 = 0
@@ -106,8 +116,8 @@ public struct OctopusLog {
         return timeFormatter
     }()
     
-    /// Returns a string with the current time formatted by the global `OctopusLog.timeFormatter` and the number of the frame being rendered by the current scene, if any.
-    public static func currentTimeAndFrame() -> String {
+    /// Returns a string with the current time formatted by the global `OctopusLog.timeFormatter`.
+    public static func currentTime() -> String {
         // TODO: A better way to get nanoseconds like `NSLog`
         
         let now = Date()
@@ -116,7 +126,11 @@ public struct OctopusLog {
         
         let timeWithNanoseconds = "\(time).\(nanoseconds)"
         
-        // Add the number of the current frame being rendered, if any.
+        return timeWithNanoseconds
+    }
+    
+    /// Returns a string with the number of the frame being rendered by the current scene, if any.
+    public static func currentFrame() -> String {
         
         var currentFrameNumber: UInt64 = 0
         
@@ -136,9 +150,16 @@ public struct OctopusLog {
         
         let currentFrameNumberString = " F" + "\(currentFrameNumber)".padding(toLength: 7, withPad: " ", startingAt: 0) + "\(currentFrameNumber > OctopusLog.lastFrameLogged ? "•" : " ")"
         
+        // Remember the last frame we logged (assuming that the output of this function will be logged) so that we can insert an empty line between future frames if `printEmptyLineBetweenFrames` is set.
+        
         lastFrameLogged = currentFrameNumber
         
-        return timeWithNanoseconds + currentFrameNumberString
+        return currentFrameNumberString
+    }
+    
+    /// Returns a string with the current time formatted by the global `OctopusLog.timeFormatter` and the number of the frame being rendered by the current scene, if any.
+    public static func currentTimeAndFrame() -> String {
+        return currentTime() + currentFrame()
     }
     
     // MARK: Instance properties and methods
@@ -147,13 +168,9 @@ public struct OctopusLog {
     public let title: String
     public fileprivate(set) var entries = [OctopusLogEntry]()
     
-    #if DEBUG
-    /// If `true`, uses `NSLog` to print new entries when they are logged. If `false`, prints new entries in a custom format.
-    public var copiesToNSLog: Bool = false // CHECK: Should this be true?
-    #else
-    /// If `true`, uses `NSLog` to print new entries when they are logged. If `false`, prints new entries in a custom format.
-    public var copiesToNSLog: Bool = false
-    #endif
+    /// If `true`, uses `NSLog` to print new entries to the debug console when they are added.
+    /// If `false`, prints new entries in a custom format. This is the default.
+    public var useNSLog: Bool = false
     
     /// A string to add at the end of all entries. Not printed if using `NSLog`.
     public let suffix: String?
@@ -162,7 +179,7 @@ public struct OctopusLog {
     public var printsSuffix: Bool = true
     
     /// If `true` then new log entries are ignored.
-    public var isDisabled: Bool = false
+    public var disabled: Bool = false
     
     /// - Returns: The `OctopusLogEntry` at `index`.
     public subscript(index: Int) -> OctopusLogEntry {
@@ -189,14 +206,23 @@ public struct OctopusLog {
         return entries.last?.description
     }
     
+    /// If `true` then a `fatalError` is raised when a new entry is added.
+    ///
+    /// Useful for logs that display critical errors.
+    public var haltApplicationOnNewEntry: Bool = false
+    
+    // MARK: -
+    
     public init(
         title: String = "OctopusLog",
         suffix: String? = nil,
-        copiesToNSLog: Bool = false)
+        useNSLog: Bool = false,
+        haltApplicationOnNewEntry: Bool = false)
     {
         self.title = title
         self.suffix = suffix
-        self.copiesToNSLog = copiesToNSLog
+        self.useNSLog = useNSLog
+        self.haltApplicationOnNewEntry = haltApplicationOnNewEntry
     }
     
     /// Prints a new entry and adds it to the log.
@@ -204,14 +230,14 @@ public struct OctopusLog {
         _ text: String? = nil,
         _ callerFile: String = #file,
         _ callerFunction: String = #function,
-        copyingToNSLog: Bool? = nil)
+        useNSLog: Bool? = nil)
     {
         // CHECK: Cocoa Notifications for log observers etc.?
         
-        guard !isDisabled else { return }
+        guard !disabled else { return }
         
-        // Override the `copyToNSLog` property if specified here.
-        let copyToNSLog = copyingToNSLog ?? self.copiesToNSLog
+        // Override the `useNSLog` instance property if specified here.
+        let useNSLog = useNSLog ?? self.useNSLog
         
         let callerFile = ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension
         
@@ -229,17 +255,34 @@ public struct OctopusLog {
         
         // Duplicate the entry to `NSLog()` if specified, otherwise just `print()` it to the console in our custom format.
         
-        if copyToNSLog {
+        var consoleText: String = ""
+        
+        if useNSLog {
             NSLog("\(title) \(callerFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)")
-        }
-        else {
+        } else {
+          
+            if OctopusLog.printAsCSV {
+                
+                consoleText = [
+                    OctopusLog.currentTime(),
+                    "\(OctopusKit.shared?.currentScene?.currentFrameNumber ?? 0)",
+                    #""\#(title)""#,
+                    #""\#(callerFile)""#,
+                    #""\#(callerFunction)""#,
+                    #""\#(text ?? "")""#,
+                    #""\#(suffix)""#
+                ].joined(separator: OctopusLog.csvDelimiter)
+                
+            } else {
+                // TODO: Truncate filenames with "…"
+                
+                let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
+                let paddedTitle = title.padding(toLength: 8, withPad: " ", startingAt: 0)
+                
+                consoleText = "\(OctopusLog.currentTimeAndFrame()) \(paddedTitle)\t \(paddedFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)"
+            }
             
-            // TODO: Truncate filenames with "…"
-            
-            let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
-            let paddedTitle = title.padding(toLength: 5, withPad: " ", startingAt: 0)
-            
-            print("\(OctopusLog.currentTimeAndFrame()) \(paddedTitle)\t \(paddedFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)")
+            print(consoleText)
         }
         
         // Add the entry to the log.
@@ -248,5 +291,11 @@ public struct OctopusLog {
                                        text: text,
                                        addedFromFile: callerFile,
                                        addedFromFunction: callerFunction))
+        
+        // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
+        
+        if haltApplicationOnNewEntry {
+            fatalError(consoleText)
+        }
     }
 }
