@@ -43,7 +43,7 @@ open class OctopusViewController: OSViewController {
     
     // MARK: - Life Cycle
     
-    public init(gameController: OctopusGameController? = nil) {
+    public required init(gameController: OctopusGameController? = nil) {
         
         // To support easy SwiftUI usage...
         
