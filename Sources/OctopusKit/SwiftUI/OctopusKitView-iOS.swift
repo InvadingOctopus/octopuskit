@@ -11,46 +11,31 @@ import SpriteKit
 
 #if canImport(UIKit)
 
-public struct OctopusKitView: UIViewControllerRepresentable {
-  
-    var gameControllerOverride: OctopusGameController?
-    var sceneController: OctopusSceneController?
+/// Displays OctopusKit content.
+public struct OctopusKitView<OctopusViewControllerType>: UIViewControllerRepresentable
+    where OctopusViewControllerType: OctopusViewController
+{
+    
+    let gameController: OctopusGameController
+    let viewController: OctopusViewControllerType
     
     public init(gameControllerOverride: OctopusGameController? = nil) {
-        self.gameControllerOverride = gameControllerOverride
+        self.gameController = gameControllerOverride!
+        self.viewController = OctopusViewControllerType(gameController: self.gameController)
     }
     
-    public func makeCoordinator() -> () {
-        OctopusKit(appName: "OctopusKit QuickStart",
-                   gameController: gameControllerOverride)
+    public func makeUIViewController(context: UIViewControllerRepresentableContext<OctopusKitView>) -> OctopusViewControllerType {
+        return viewController
     }
     
-    public func makeUIViewController(context: UIViewControllerRepresentableContext<OctopusKitView>) -> OctopusSceneController {
-        
-        self.sceneController = OctopusSceneController()
-        
-        if let self.sceneController = sceneController {
-            OctopusKit.shared?.sceneController = sceneController
-            sceneController.loadViewIfNeeded()
-            sceneController.enterInitialState()
-            return sceneController
-        }
-        else {
-            fatalError("Could not create OctopusSceneController")
-        }
-    }
-    
-    public func updateUIViewController(_ uiViewController: OctopusKitView.UIViewControllerType,
+    public func updateUIViewController(_ uiViewController: OctopusViewControllerType,
                                        context: UIViewControllerRepresentableContext<OctopusKitView>) {
-        
-    }
-    
-    public static func dismantleUIViewController(_ uiViewController: OctopusKitView.UIViewControllerType, coordinator: OctopusKitView.Coordinator) {
-        if  let sceneController = self.sceneController,
-            OctopusKit.shared?.sceneController === sceneController
-        {
-            OctopusKit.shared?.sceneController = nil
+        if !gameController.didEnterInitialState {
+            gameController.enterInitialState()
         }
+    }
+  
+    public static func dismantleUIViewController(_ uiViewController: OctopusViewControllerType, coordinator: OctopusKitView.Coordinator) {
     }
     
 }
