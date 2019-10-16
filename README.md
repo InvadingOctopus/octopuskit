@@ -24,11 +24,16 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies, with SwiftUI i
 ```swift
 import SwiftUI
 import OctopusKit
-
+                                                
 struct ContentView: View {
+
+    let gameCoordinator = OctopusGameController(
+        states: [TitleState(), PlayState()]
+        initialStateClass: TitleState.self)
+                                                
     var body: some View {
         OctopusKitView()
-            .environmentObject(MyGameController())
+            .environmentObject(gameCoordinator)
             .edgesIgnoringSafeArea(.all)
             .statusBar(hidden: true)
     }
