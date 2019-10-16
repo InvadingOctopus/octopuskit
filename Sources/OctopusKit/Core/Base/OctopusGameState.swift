@@ -36,7 +36,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
         if  let gameController = self.stateMachine as? OctopusGameController {
             return gameController
         } else {
-            OctopusKit.logForDebug.add("Cannot cast stateMachine as OctopusGameController")
+            OctopusKit.logForErrors.add("Cannot cast stateMachine as OctopusGameController")
             return nil
         }
     }
@@ -44,7 +44,11 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
     /// The object to inform about state transitions, and to receive scene transition effects from. Generally set to the current scene.
     ///
     /// This is read-only and is dynamically set by `OctopusGameState` to the incoming or outgoing scene as appropriate.
-    public fileprivate(set) weak var delegate: OctopusGameStateDelegate?
+    public fileprivate(set) weak var delegate: OctopusGameStateDelegate? {
+        didSet {
+            OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: delegate))")
+        }
+    }
     
     // MARK: - Life Cycle
     
@@ -57,9 +61,9 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
     /// - Important: When overriding in a subclass, take care of when you call `super.didEnter(from:)` as that affects when the current `OctopusScene` is notified via `gameControllerDidEnterState(_:from:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
     open override func didEnter(from previousState: GKState?) {
         
-        super.didEnter(from: previousState)
         OctopusKit.logForStates.add("\(String(optional: previousState)) → \(self)")
-    
+        super.didEnter(from: previousState)
+        
         // ℹ️ DESIGN: Should the scene presentation be an optional step to be decided by the subclass? — No: A state should always display its associated scene, but the logic for deciding whether to enter an state should be made in `isValidNextState(_:)`.
         // To programmatically modify the `associatedSceneClass` at runtime, override and replace `didEnter(from:)` or `willExit(to:)`
         
@@ -71,22 +75,18 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
         // If this state does not have any scene associated with it, as might be the case for "abstract" states, log so and exit.
         
         guard let associatedSceneClass = self.associatedSceneClass else {
-            OctopusKit.logForDebug.add("\(self) has no associated scene")
+            OctopusKit.logForDebug.add("\(self) has no associatedSceneClass — A new scene will not be displayed for this state.")
             return
         }
         
-        // Set the state's delegate to the current scene before the transition, so we can query it for the outgoing visual transition effect ahead.
-        
-        self.delegate = gameController.currentScene
-        
-        var incomingScene: OctopusScene? // Explained ahead.
-        
         // Present the scene class associated with this state, if we are the very first state of the game, or if it is not already the current scene (as is the case of scenes which handle multiple game states.)
         
-        if  gameController.currentScene == nil // This check comes first, so we can safely force-unwrap the optional in the next
+        var incomingScene: OctopusScene? // Explained below.
+        
+        if  gameController.currentScene == nil // This check comes first, so we can safely force-unwrap the optional in the next:
             || type(of: gameController.currentScene!) != associatedSceneClass
         {
-            // Store the newly created scene in a variable so we can notify the incoming scene instead of the outgoing scene, in case there is a long visual `SKTransition` between the scenes.
+            // ℹ️ Store the newly created scene in a variable so we can notify the incoming scene instead of the outgoing scene, in case there is a long visual `SKTransition` between the scenes.
             
             incomingScene = gameController.createAndPresentScene(ofClass: associatedSceneClass)
         }
@@ -94,7 +94,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
         // Make sure we have a scene by now before notifying it of the new state.
         
         guard let currentScene = gameController.currentScene else {
-            OctopusKit.logForErrors.add("\(self) could not create \(associatedSceneClass)")
+            OctopusKit.logForErrors.add("gameController does not have a currentScene")
             return
         }
         
@@ -106,11 +106,18 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
             (incomingScene != nil && type(of: incomingScene!) != associatedSceneClass)
         {
             OctopusKit.logForErrors.add("Neither \(currentScene) nor \(String(describing: incomingScene)) is \(String(describing: associatedSceneClass))")
+            // CHECK: Should this be a fatal error?
         }
         
         // ⚠️ NOTE: If there was a visual transition effect between scenes, then `OctopusKit.shared?.currentScene` may NOT point to the new scene if the transition is still ongoing by this time. To ensure that we notify the NEW scene, we stored it in a variable when we called `sceneController.createAndPresentScene`.
 
-        self.delegate = incomingScene ?? currentScene // CHECK: Is it a good idea to fall back to `currentScene` here?
+        // ℹ️ In case we skipped `createAndPresentScene` (in case of the current scene handling multiple states) then set the scene's delegate to this new game state. Not doing this caused a very hard-to-track bug. :)
+        
+        // CHECK: Should `self.delegate` be set first or `currentScene.octopusSceneDelegate`?
+        
+        currentScene.octopusSceneDelegate = self
+        
+        self.delegate = incomingScene ?? currentScene // Stay with `currentScene` if there is no new scene to be presented.
         
         self.delegate?.gameControllerDidEnterState(self, from: previousState)
     }
@@ -137,7 +144,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
     
     // ℹ️ NOTE: This section should not be in an extension because "Declarations from extensions cannot be overridden yet."
     
-    /// Abstract; To be implemented by subclass. Default behavior is to redirect to `octopusSceneDidChooseNextGameState(_)`.
+    /// Abstract; To be implemented by subclass. Default behavior is to redirect to `octopusSceneDidChooseNextGameState(_:)`.
     open func octopusSceneDidFinish(_ scene: OctopusScene) {
         // CHECK: Should this be the default behavior? It may be helpful in showing a series of credits or intros/cutscenes etc.
         self.octopusSceneDidChooseNextGameState(scene)
