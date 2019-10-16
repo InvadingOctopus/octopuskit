@@ -6,7 +6,7 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  STEP 8.1: The "gameplay" scene for the QuickStart project.
+//  🔶 STEP 8: The "gameplay" scene for the QuickStart project.
 //
 //  This scene shows the content for multiple game states: PlayState, PausedState and GameOverState.
 //
@@ -22,7 +22,7 @@ final class PlayScene: OctopusScene {
     
     // MARK: - Life Cycle
     
-    // MARK: STEP 8.2
+    // MARK: 🔶 STEP 8.1
     override func sceneDidLoad() {
         
         // Set the name of this scene at the earliest override-able point, for logging purposes.
@@ -31,7 +31,7 @@ final class PlayScene: OctopusScene {
         super.sceneDidLoad()
     }
     
-    // MARK: STEP 8.3
+    // MARK: 🔶 STEP 8.2
     override func prepareContents() {
         
         // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare its contents.
@@ -48,7 +48,7 @@ final class PlayScene: OctopusScene {
         createEntities()
     }
     
-    // MARK: STEP 8.4
+    // MARK: 🔶 STEP 8.3
     fileprivate func createComponentSystems() {
         
         // Create a list of systems for each component type that must be updated in every frame of this scene.
@@ -70,7 +70,7 @@ final class PlayScene: OctopusScene {
             ])
     }
     
-    // MARK: STEP 8.5
+    // MARK: 🔶 STEP 8.4
     fileprivate func createEntities() {
         
         // Create the entities to present in this scene.
@@ -128,7 +128,7 @@ final class PlayScene: OctopusScene {
     
     // MARK: - Frame Update
     
-    // MARK: STEP 8.6
+    // MARK: 🔶 STEP 8.5
     override func update(_ currentTime: TimeInterval) {
         
         // Update component systems every frame after checking the paused flags.
@@ -139,7 +139,7 @@ final class PlayScene: OctopusScene {
         //
         // In this QuickStart project, we keep updating components if the game has been paused by the player, so that the player can continue to interact with buttons to be able to unpause the game (in more complex projects this may be handled by Subscenes.)
         //
-        // The rest of the pausing and unpausing taks are handled in gameControllerDidEnterState(_:from:) and gameControllerWillExitState(_:to:)
+        // The rest of the pausing and unpausing tasks are handled in gameControllerDidEnterState(_:from:) and gameControllerWillExitState(_:to:)
 
         super.update(currentTime)
         guard !isPaused, !isPausedBySystem, !isPausedBySubscene else { return }
@@ -149,7 +149,7 @@ final class PlayScene: OctopusScene {
     
     // MARK: - State & Scene Transitions
     
-    // MARK: STEP 8.7
+    // MARK: 🔶 STEP 8.6
     override func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?) {
         
         // This method is called by the current game state to notify the current scene when a new state has been entered.
@@ -194,7 +194,7 @@ final class PlayScene: OctopusScene {
                 self.removeEntity(gameControllerEntity)
             }
             
-            // Set the scene's "paused by player" flag, because the PausedState is a state which is specific to this Quickstar project, not a feature of OctopusKit. When we manually enter this state, we must also notify OctopusKit that the player has chosen to pause the game.
+            // Set the scene's "paused by player" flag, because the PausedState is a state which is specific to this QuickStart project, not a feature of OctopusKit. When we manually enter this state, we must also notify OctopusKit that the player has chosen to pause the game.
             
             if !isPausedByPlayer { togglePauseByPlayer() }
             
@@ -206,7 +206,7 @@ final class PlayScene: OctopusScene {
         
     }
     
-    // MARK: STEP 8.9
+    // MARK: 🔶 STEP 8.7
     override func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState) {
         
         // This method is called by the current game state to notify the current scene when the state will transition to a new state.
@@ -234,14 +234,14 @@ final class PlayScene: OctopusScene {
         
     }
     
-    // MARK: STEP 8.10
-    override func transition(for nextStateClass: SKScene.Type) -> SKTransition? {
+    // MARK: 🔶 STEP 8.8
+    override func transition(for nextSceneClass: OctopusScene.Type) -> SKTransition? {
         
-        // STEP 8.10: This method is called by the scene controller to ask the current scene for a transition animation between the outgoing scene and the next scene.
+        // This method is called by the scene controller to ask the current scene for a transition animation between the outgoing scene and the next scene.
         //
         // Here we display transition effects if the next scene is the TitleScene.
         
-        guard nextStateClass is TitleScene.Type else { return nil }
+        guard nextSceneClass is TitleScene.Type else { return nil }
         
         // First, apply some effects to the current scene.
         
@@ -267,14 +267,14 @@ final class PlayScene: OctopusScene {
     
     override func didPauseBySystem() {
         
-        // STEP 8.?: This method is called when the player switches to a different application, or the device receives a phone call etc.
+        // 🔶 STEP 8.?: This method is called when the player switches to a different application, or the device receives a phone call etc.
         //
         // Here we enter the PausedState if the game was in the PlayState.
         
         if  let currentState = OctopusKit.shared?.gameController.currentState,
             type(of: currentState) is PlayState.Type
         {
-            self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PausedState.self)
+            self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)
         }
     }
     

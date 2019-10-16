@@ -6,7 +6,7 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  STEP 6.1: The title screen (aka "main menu") for the QuickStart project.
+//  🔶 STEP 6: The title screen (aka "main menu") for the QuickStart project.
 //
 //  This scene displays a button which signals the game controller to enter the PlayState when it's tapped.
 
@@ -18,7 +18,7 @@ final class TitleScene: OctopusScene {
     
     // MARK: - Life Cycle
     
-    // MARK: STEP 6.2
+    // MARK: 🔶 STEP 6.1
     override func sceneDidLoad() {
         
         // Set the name of this scene at the earliest override-able point, for logging purposes.
@@ -27,7 +27,7 @@ final class TitleScene: OctopusScene {
         super.sceneDidLoad()
     }
     
-    // MARK: STEP 6.3
+    // MARK: 🔶 STEP 6.2
     override func prepareContents() {
         
         // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare its contents.
@@ -42,7 +42,7 @@ final class TitleScene: OctopusScene {
         createEntities()
     }
     
-    // MARK: STEP 6.4
+    // MARK: 🔶 STEP 6.3
     fileprivate func createComponentSystems() {
         
         // Create a list of systems for each component type that must be updated in every frame of this scene.
@@ -63,7 +63,7 @@ final class TitleScene: OctopusScene {
             ])
     }
     
-    // MARK: STEP 6.5
+    // MARK: 🔶 STEP 6.4
     fileprivate func createEntities() {
         
         // Create the entities to present in this scene.
@@ -115,7 +115,7 @@ final class TitleScene: OctopusScene {
                 [unowned self] component, node in
                 
                 OctopusKit.logForDebug.add("Start button tapped!")
-                self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PlayState.self)
+                self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PlayState.self)
         }
         
         startButtonEntity.addComponent(TouchVisualFeedbackComponent())
@@ -131,7 +131,7 @@ final class TitleScene: OctopusScene {
     
     // MARK: - Frame Update
     
-    // MARK: STEP 6.6
+    // MARK: 🔶 STEP 6.5
     override func update(_ currentTime: TimeInterval) {
         
         // Update component systems every frame after checking the paused flags.
@@ -148,14 +148,14 @@ final class TitleScene: OctopusScene {
     
     // MARK: - State & Scene Transitions
     
-    // MARK: STEP 6.7
-    override func transition(for nextStateClass: SKScene.Type) -> SKTransition? {
+    // MARK: 🔶 STEP 6.6
+    override func transition(for nextSceneClass: OctopusScene.Type) -> SKTransition? {
         
         // This method is called by the scene controller to ask the current scene for a transition animation between the outgoing scene and the next scene.
         //
         // Here we display transition effects if the next scene is the PlayScene.
         
-        guard nextStateClass is PlayScene.Type else { return nil }
+        guard nextSceneClass is PlayScene.Type else { return nil }
         
         // First, apply some effects to the current scene.
         
