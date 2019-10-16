@@ -14,7 +14,7 @@ import GameplayKit
 /// This is a "controller" in the MVC sense; use this class to coordinate game states and scenes, and to manage global objects that must be shared across scenes, such as the game world, player data, and network connections etc.
 ///
 /// You may use `OctopusGameController` as-is or subclass it to add any global/top-level functionality that is specific to your game.
-open class OctopusGameController: GKStateMachine, OctopusScenePresenter {
+open class OctopusGameController: GKStateMachine, OctopusScenePresenter, ObservableObject {
     
     /// Invoked by the `OctopusSpriteKitViewController` to start the game after the system/application presents the view.
     ///
@@ -42,7 +42,7 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter {
         viewController?.spriteKitView
     }
 
-    public var currentScene: OctopusScene? {
+    @Published public var currentScene: OctopusScene? {
            didSet {
                OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: currentScene))")
            }
