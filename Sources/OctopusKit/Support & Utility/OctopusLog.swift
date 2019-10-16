@@ -33,7 +33,7 @@ public func debugLog(
     
     let callerFile = ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension // ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension
     let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
-    
+
     print("\(OctopusLog.currentTimeAndFrame())\(separator)\(paddedFile)\(separator)\(callerFunction)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
 }
 
@@ -89,10 +89,16 @@ public struct OctopusLogEntry: CustomStringConvertible {
 /// The log allows entries with no text, so you can simply log the time and name of function and method calls.
 public struct OctopusLog {
     
-    // MARK: Static properties & methods
+    // MARK: Static properties, methods & global options
+    
+    /// If `true` then an empty line is printed between each entry in the debug console.
+    public static var printEmptyLineBetweenEntries: Bool = false
     
     /// If `true` then an empty line is printed between entries with different frame counts (e.g. F0 and F1).
     public static var printEmptyLineBetweenFrames: Bool = false
+    
+    /// If `true` then an entry is printed on at least 2 lines in the debug console, where the time and calling file is on the first line and the text is on the second line.
+    public static var printTextOnSecondLine: Bool = false
     
     /// If `true` then debug console output is printed in tab-delimited CSV format, that may then be copied into a spreadsheet table such as Numbers etc.
     ///
@@ -276,13 +282,24 @@ public struct OctopusLog {
             } else {
                 // TODO: Truncate filenames with "…"
                 
-                let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
                 let paddedTitle = title.padding(toLength: 8, withPad: " ", startingAt: 0)
-                
-                consoleText = "\(OctopusLog.currentTimeAndFrame()) \(paddedTitle)\t \(paddedFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)"
+                let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
+                 
+                if OctopusLog.printTextOnSecondLine {
+                    consoleText = """
+                        \(OctopusLog.currentTimeAndFrame()) \(paddedTitle) \(callerFile)
+                        \(String(repeating: " ", count: 35))\(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)
+                        """
+                } else {
+                    consoleText = "\(OctopusLog.currentTimeAndFrame()) \(paddedTitle) \(paddedFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)"
+                }
             }
             
             print(consoleText)
+            
+            // NOTE: We cannot rely on the count of entries to determine whether to print an empty line, as there may be multiple logs printing to the debug console, so just add an empty line after all entries. :)
+            
+            if OctopusLog.printEmptyLineBetweenEntries { print() }
         }
         
         // Add the entry to the log.
