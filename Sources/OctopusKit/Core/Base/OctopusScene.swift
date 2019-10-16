@@ -17,7 +17,7 @@
 import SpriteKit
 import GameplayKit
 
-// The top-level unit of visual content in a game. Contains components grouped by entities to represent visual and behavorial elements in the scene. Manages component systems to update components in a deterministic order every frame.
+// The top-level unit of visual content in a game. Contains components grouped by entities to represent visual and behavioral elements in the scene. Manages component systems to update components in a deterministic order every frame.
 ///
 /// Includes an entity to represent the scene itself.
 open class OctopusScene: SKScene,
@@ -44,7 +44,7 @@ open class OctopusScene: SKScene,
     
     /// The number of the frame being rendered. The count of frames rendered so far, minus 1.
     ///
-    /// Incremeted at the beginning of every `update(_:)` call. Used for logging and debugging.
+    /// Incremented at the beginning of every `update(_:)` call. Used for logging and debugging.
     ///
     /// - NOTE: This property actually denotes the number of times the 'update(_:)' method has been called so far. The actual beginning of a "frame" may happen outside the 'update(_:)' method and may not align with the mutation of this property. 
     public fileprivate(set) var currentFrameNumber: UInt64 = 0
@@ -131,13 +131,19 @@ open class OctopusScene: SKScene,
     ///
     /// This is a convenience for cases such as adding a single motion manager to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
     public fileprivate(set) lazy var sharedMotionManagerComponent = MotionManagerComponent()
-    
+
     // MARK: Other
-    
-    public var gameController: OctopusGameController?
+
+    public var gameController: OctopusGameController? {
+        OctopusKit.shared?.gameController
+    }
     
     /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OctopusSceneController`.
-    public var octopusSceneDelegate: OctopusSceneDelegate?
+    public var octopusSceneDelegate: OctopusSceneDelegate? {
+        didSet {
+            OctopusKit.logForDebug.add("\(String(optional: oldValue)) → \(String(optional: octopusSceneDelegate))")
+        }
+    }
     
     /// The list of pathfinding graph objects managed by the scene.
     public var graphs: [String : GKGraph] = [:]
@@ -179,7 +185,7 @@ open class OctopusScene: SKScene,
     /// - Important: This method has to be called manually (e.g. from the `SKView`'s view controller) before presenting the scene. It is not invoked by the system and is *not* guaranteed to be called.
     open func willMove(to view: SKView) {}
     
-    /// Calls `prepareContents()` which may be used by a subclass to create the scene's contents, then adds all components from each entity in the `entities` set to the relevant systems in the `componentSystems` array. If overriden then `super` must be called for proper initialization of the scene.
+    /// Calls `prepareContents()` which may be used by a subclass to create the scene's contents, then adds all components from each entity in the `entities` set to the relevant systems in the `componentSystems` array. If overridden then `super` must be called for proper initialization of the scene.
     open override func didMove(to: SKView) {
         // CHECK: Should this be moved to `sceneDidLoad()`?
         OctopusKit.logForFramework.add("name = \"\(name ?? "")\", size = \(size), view.frame.size = \(to.frame.size), scaleMode = \(scaleMode.rawValue)")
@@ -218,7 +224,7 @@ open class OctopusScene: SKScene,
         assert(self.entity === sceneEntity, "Could not set scene's entity")
     }
     
-    /// An abstract method that is called after the scene is presented in a view. To be overriden by a subclass to prepare the scene's content, and set up entities, components and component systems.
+    /// An abstract method that is called after the scene is presented in a view. To be overridden by a subclass to prepare the scene's content, and set up entities, components and component systems.
     ///
     /// Called from `didMove(to:)`. Call `super.prepareContents()` to include a log entry.
     ///
@@ -261,14 +267,14 @@ open class OctopusScene: SKScene,
     
     // MARK: - Game State
     
-    /// Called by `OctopusGameState`. To be overriden by a subclass if this same scene is used for different game states, e.g. to present different visual overlays for the paused or "game over" states.
+    /// Called by `OctopusGameState`. To be overridden by a subclass if this same scene is used for different game states, e.g. to present different visual overlays for the paused or "game over" states.
     ///
     /// Call `super` to add default logging.
     open func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?) {
         OctopusKit.logForStates.add("\(String(optional: previousState)) → \(String(optional: state))")
     }
     
-    /// Called by `OctopusGameState`. To be overriden by a subclass if this same scene is used for different game states, e.g. to remove visual overlays that were presented during a paused or "game over" state.
+    /// Called by `OctopusGameState`. To be overridden by a subclass if this same scene is used for different game states, e.g. to remove visual overlays that were presented during a paused or "game over" state.
     ///
     /// Call `super` to add default logging.
     open func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState) {
@@ -321,7 +327,7 @@ open class OctopusScene: SKScene,
         
         // If the scene has been paused by the system, player or UI, just record the time and exit the method.
         
-        // ℹ️ Keeping track of the `pausedAtTime` lets us implement "soft" pauses, where the scene may still recieve calls to the `update(_:) method, in order to update visuals, audio and the user interface (e.g. via SpriteKit actions) but the game's logic remains paused.
+        // ℹ️ Keeping track of the `pausedAtTime` lets us implement "soft" pauses, where the scene may still receive calls to the `update(_:) method, in order to update visuals, audio and the user interface (e.g. via SpriteKit actions) but the game's logic remains paused.
         
         // ℹ️ The exact consequences of each of the `isPaused...` flags are specific to each game. Some games may choose to prevent the `update(_:)` method from being called at all during a paused state. Other games may simply stop the movement of game characters while continuing to update other elements.
         
@@ -334,7 +340,7 @@ open class OctopusScene: SKScene,
             if pausedAtTime == nil {
                 pausedAtTime = currentTime
                 
-                OctopusKit.logForFramework.add("pausedAtTime = \(pausedAtTime!), isPaused = \(isPaused), ispausedBySystem = \(isPausedBySystem), isPausedByPlayer = \(isPausedByPlayer), isPausedBySubscene = \(isPausedBySubscene)")
+                OctopusKit.logForFramework.add("pausedAtTime = \(pausedAtTime!), isPaused = \(isPaused), isPausedBySystem = \(isPausedBySystem), isPausedByPlayer = \(isPausedByPlayer), isPausedBySubscene = \(isPausedBySubscene)")
             }
             return
         }
@@ -360,7 +366,7 @@ open class OctopusScene: SKScene,
                 self.pausedAtTime = nil
             }
             else {
-                // If we were not paused, calculate the detla value as normal.
+                // If we were not paused, calculate the delta value as normal.
                 self.updateTimeDelta = currentTime - lastUpdateTime
             }
             
@@ -411,7 +417,7 @@ open class OctopusScene: SKScene,
     open override func didFinishUpdate() {
         // Increment the frame count for use in logging and debugging.
         
-        // ℹ️ CHECK: PERFORMANCE: Although it makes more sense for `currentFrameNumber` to be incremended in `didFinishUpdate()` (which also eliminates the confusion from seemingly processing input events with a 1-frame lag, according to the logs, because they're received before `update(_:)` is called), we could increment it in `update(_:)` for more performance by calling one less method.
+        // ℹ️ CHECK: PERFORMANCE: Although it makes more sense for `currentFrameNumber` to be incremented in `didFinishUpdate()` (which also eliminates the confusion from seemingly processing input events with a 1-frame lag, according to the logs, because they're received before `update(_:)` is called), we could increment it in `update(_:)` for more performance by calling one less method.
         
         // ℹ️ PERFORMANCE: Allow overflows for `currentFrameNumber` because a `UInt64` is large enough and it improves performance, and the `currentFrameNumber` should mostly be used for logging anyway so it doesn't matter much if it wraps around.
         
@@ -562,14 +568,14 @@ open class OctopusScene: SKScene,
         audioEngine.pause() // CHECK: Should the audio engine be paused here?
     }
     
-    /// An abstract method for a subclass to customize scene behavior when the game is paused by an system event.
+    /// An abstract method for a subclass to customize scene behavior when the game is paused by a system event.
     ///
     /// Called from `OctopusScene.applicationWillResignActive()`.
     ///
     /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
     open func didPauseBySystem() {}
     
-    /// An abstract method for a subclass to customize scene behavior when the game is unpaused by an system event.
+    /// An abstract method for a subclass to customize scene behavior when the game is unpaused by a system event.
     ///
     /// Called from `OctopusScene.applicationDidBecomeActive()`.
     ///
