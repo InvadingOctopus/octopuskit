@@ -13,7 +13,7 @@ extension OctopusKit {
     /// Encapsulates global constants that may be used by various parts of the OctopusKit.
     public struct Constants {
         
-        /// A collection of strings for the names of entities etc., to avoid hard-coding text and prevent typos during searchs or comparisons etc.
+        /// A collection of strings for the names of entities etc., to avoid hard-coding text and prevent typos during searches or comparisons etc.
         public struct Strings {
             static let gameControllerEntityName = "Game Controller Entity"
         }
