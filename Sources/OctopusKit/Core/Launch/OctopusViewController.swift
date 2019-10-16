@@ -45,9 +45,11 @@ open class OctopusViewController: OSViewController {
     
     public init(gameController: OctopusGameController? = nil) {
         
+        // To support easy SwiftUI usage...
+        
         if let gameController = gameController {
             
-            if let existingGameController = OctopusKit.shared?.gameController {
+            if  let existingGameController = OctopusKit.shared?.gameController {
                 fatalError("OctopusKit already initialized with \(existingGameController) — OctopusViewController initialized with \(gameController)")
             }
             
@@ -66,6 +68,7 @@ open class OctopusViewController: OSViewController {
         }
         
         super.init(nibName: nil, bundle: nil)
+        self.gameController?.viewController = self
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -73,10 +76,11 @@ open class OctopusViewController: OSViewController {
         if  let octopusKitSingleton = OctopusKit.shared {
             self.gameController = octopusKitSingleton.gameController
         } else {
-            OctopusKit.logForWarnings.add("OctopusKit.shared? singleton not initialized. OctopusKit(gameController:) must be called at application launch. Ignore this warning if a OctopusViewController was loaded via Interface Builder.")
+            OctopusKit.logForWarnings.add("OctopusKit.shared? singleton not initialized. OctopusKit(gameController:) must be called at application launch. Ignore this warning if this OctopusViewController was loaded via Interface Builder.")
         }
         
         super.init(coder: aDecoder)
+        self.gameController?.viewController = self
     }
     
 //    open override func loadView() {
@@ -98,6 +102,7 @@ open class OctopusViewController: OSViewController {
         
         if let rootView = self.view as? SKView {
             self.spriteKitView = rootView
+            
         } else {
             
             OctopusKit.logForFramework.add("Root view is nil or not an SpriteKit SKView — Creating child SKView")
@@ -115,7 +120,6 @@ open class OctopusViewController: OSViewController {
         
         // NOTE: CHECK: Configuring the view here as it may screw up the dimensions, according to http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions — CHECK: Still relevant?
         
-        self.spriteKitView = spriteKitView
         spriteKitView.ignoresSiblingOrder = true // SpriteKit applies additional optimizations to improve rendering performance.
         
         //        spriteKitView.isMultipleTouchEnabled = ?
@@ -182,18 +186,14 @@ open class OctopusViewController: OSViewController {
     }
     
     open override func viewWillLayoutSubviews() {
-        // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         OctopusKit.logForFramework.add()
         super.viewWillLayoutSubviews()
-        
-        // Configure the view.
-        
-        spriteKitView?.ignoresSiblingOrder = true // Sprite Kit applies additional optimizations to improve rendering performance
-        
+
+        // OBSOLETE?
         // NOTE: As the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
+        // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         // NOTE: Better yet, `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! :)
         // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OctopusSceneController.viewWillLayoutSubviews()`
-        // enterInitialState()
     }
     
     open override func didReceiveMemoryWarning() {
@@ -204,6 +204,7 @@ open class OctopusViewController: OSViewController {
     }
     
     #elseif os(OSX)
+    
     // MARK: macOS-specific
     
     open override func viewWillAppear() {
@@ -214,18 +215,14 @@ open class OctopusViewController: OSViewController {
     }
     
     open override func viewWillLayout() {
-        // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         OctopusKit.logForFramework.add()
         super.viewWillLayout()
         
-        // Configure the view.
-        
-        spriteKitView?.ignoresSiblingOrder = true // Sprite Kit applies additional optimizations to improve rendering performance
-        
+        // OBSOLETE?
         // NOTE: As the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
+        // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         // NOTE: Better yet, `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! :)
         // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OctopusSceneController.viewWillLayoutSubviews()`
-        // enterInitialState()
     }
     
     #endif
