@@ -14,9 +14,17 @@ import SwiftUI
 import OctopusKit
 
 struct OctopusKitQuickStartView: View {
- 
+    
+    let gameController = OctopusGameController(states: [LogoState(),
+                                                        TitleState(),
+                                                        PlayState(),
+                                                        PausedState(),
+                                                        GameOverState()],
+                                               initialStateClass: LogoState.self)
+    
     var body: some View {
-        OctopusKitView<MyGameViewController>(gameControllerOverride: QuickStartGameController())
+        OctopusKitView()
+            .environmentObject(gameController)
             .edgesIgnoringSafeArea(.all)
             .statusBar(hidden: true)
     }
