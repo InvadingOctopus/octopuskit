@@ -22,19 +22,7 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter {
     public let initialStateClass: OctopusGameState.Type
     
     public fileprivate(set) var didEnterInitialState: Bool = false
-    
-    public weak var viewController: OctopusViewController?
-    
-    public var spriteKitView: SKView? {
-        viewController?.spriteKitView
-    }
-
-    public var currentScene: OctopusScene? {
-        didSet {
-            // TODO: Set viewController scene
-        }
-    }
-    
+        
     public var currentGameState: OctopusGameState? {
         if  let currentGameState = self.currentState as? OctopusGameState {
             return currentGameState
@@ -44,6 +32,22 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter {
         }
     }
 
+    public weak var viewController: OctopusViewController? {
+        didSet {
+            OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: viewController))")
+        }
+    }
+    
+    public var spriteKitView: SKView? {
+        viewController?.spriteKitView
+    }
+
+    public var currentScene: OctopusScene? {
+           didSet {
+               OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: currentScene))")
+           }
+       }
+    
     /// A global entity for encapsulating components which manage data that must persist across scenes, such as the overall game world, active play session, or network connections etc.
     ///
     /// - Important: Must be manually added to scenes that require it.
@@ -56,6 +60,8 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter {
     public init(states: [OctopusGameState],
                 initialStateClass: OctopusGameState.Type)
     {
+        OctopusKit.logForFramework.add("states: \(states) — initial: \(initialStateClass)")
+        
         self.initialStateClass = initialStateClass
         self.entity = OctopusEntity(name: OctopusKit.Constants.Strings.gameControllerEntityName)
         super.init(states: states)
@@ -71,17 +77,17 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter {
         self.notifications = [
             
             NotificationCenter.default.publisher(for: OSApplication.didFinishLaunchingNotification)
-                .sink { _ in OctopusKit.logForFramework.add("🌼 OSApplication.didFinishLaunchingNotification") },
+                .sink { _ in OctopusKit.logForDebug.add("Application.didFinishLaunchingNotification") },
             
             NotificationCenter.default.publisher(for: OSApplication.willEnterForegroundNotification)
                 .sink { _ in
-                    OctopusKit.logForFramework.add("🌼 OSApplication.willEnterForegroundNotification")
+                    OctopusKit.logForDebug.add("Application.willEnterForegroundNotification")
                     self.currentScene?.applicationWillEnterForeground()
             },
             
             NotificationCenter.default.publisher(for: OSApplication.didBecomeActiveNotification)
                 .sink { _ in
-                    OctopusKit.logForFramework.add("🌼 OSApplication.didBecomeActiveNotification")
+                    OctopusKit.logForDebug.add("Application.didBecomeActiveNotification")
                     
                     // NOTE: Call `scene.applicationDidBecomeActive()` before `enterInitialState()` so we don't issue a superfluous unpause event to the very first scene of the game.
                     
@@ -97,13 +103,13 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter {
             
             NotificationCenter.default.publisher(for: OSApplication.willResignActiveNotification)
                 .sink { _ in
-                    OctopusKit.logForFramework.add("🌼 OSApplication.willResignActiveNotification")
+                    OctopusKit.logForDebug.add("Application.willResignActiveNotification")
                     self.currentScene?.applicationWillResignActive()
             },
             
             NotificationCenter.default.publisher(for: OSApplication.didEnterBackgroundNotification)
                 .sink { _ in
-                    OctopusKit.logForFramework.add("🌼 OSApplication.didEnterBackgroundNotification")
+                    OctopusKit.logForDebug.add("Application.didEnterBackgroundNotification")
                     self.currentScene?.applicationDidEnterBackground()
             }
         ]
@@ -124,92 +130,16 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter {
             return false
         }
         
+        if viewController == nil {
+            OctopusKit.logForDebug.add("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OctopusGameController was initialized early in the application life cycle.")
+        }
+        
         self.didEnterInitialState = enter(initialStateClass)
         return didEnterInitialState
     }
     
     deinit {
         OctopusKit.logForDeinits.add("\(self)")
-    }
-    
-    // MARK: - OctopusScenePresenter
-    
-    /// Loads an `.sks` file as an OctopusScene.
-    /// - Requires: In the Scene Editor, the scene must have its "Custom Class" set to `OctopusScene` or a subclass of `OctopusScene`.
-    open func loadScene(fileNamed fileName: String) -> OctopusScene? {
-        // TODO: Error handling
-        
-        OctopusKit.logForResources.add("fileName = \"\(fileName)\"")
-        
-        // Load the specified scene as a GKScene. This provides gameplay related content including entities and graphs.
-        
-        guard let gameplayKitScene = GKScene(fileNamed: fileName) else {
-            OctopusKit.logForErrors.add("Cannot load \"\(fileName)\" as GKScene")
-            return nil
-        }
-        
-        // Get the OctopusScene/SKScene from the loaded GKScene
-        guard let spriteKitScene = gameplayKitScene.rootNode as? OctopusScene else {
-            // TODO: Graceful failover to `SKScene(fileNamed:)`
-            OctopusKit.logForErrors.add("Cannot load \"\(fileName)\" as an OctopusScene")
-            return nil
-        }
-        
-        // Copy gameplay related content over to the scene
-        
-        spriteKitScene.addEntities(gameplayKitScene.entities)
-        spriteKitScene.renameUnnamedEntitiesToNodeNames() // TODO: FIX: ⚠️ Does not work when loading an `.sks` because Editor-created entities are not `OctopusEntity`
-        spriteKitScene.graphs = gameplayKitScene.graphs
-        spriteKitScene.octopusSceneDelegate = self.currentGameState
-        
-        return spriteKitScene
-    }
-    
-    open func createScene(ofClass sceneClass: OctopusScene.Type) -> OctopusScene?
-    {
-        OctopusKit.logForFramework.add("\(sceneClass)")
-        
-        guard let spriteKitView = self.spriteKitView else {
-            fatalError("\(self) does not have a spriteKitView?") // TODO: Add internationalization.
-        }
-        
-        let newScene = sceneClass.init(size: spriteKitView.frame.size)
-        newScene.octopusSceneDelegate = self.currentGameState
-        
-        return newScene
-    }
-    
-    /// - Parameter incomingScene: The scene to present.
-    /// - Parameter transitionOverride: The transition animation to display between scenes.
-    ///
-    ///     If `nil` or omitted, the transition is provided by the `transition(for:)` method of the current scene, if any.
-    open func presentScene(_ incomingScene: OctopusScene,
-                      withTransition transitionOverride: SKTransition? = nil)
-    {
-        OctopusKit.logForFramework.add("\(String(optional: self.spriteKitView?.scene)) → [\(transitionOverride == nil ? "no transition override" : String(optional: transitionOverride))] → \(incomingScene)")
-        
-        guard let spriteKitView = self.spriteKitView else {
-            fatalError("\(self) does not have an spriteKitView?") // TODO: Add internationalization.
-        }
-        
-        // Notify the incoming scene that it is about to be presented.
-        // CHECK: Casting `as? OctopusScene` not necessary anymore?
-        
-        incomingScene.octopusSceneDelegate = self.currentGameState
-        incomingScene.gameController = self
-        incomingScene.willMove(to: spriteKitView)
-        
-        // If an overriding transition has not been specified, let the current scene decide the visual effect for the transition to the next scene.
-        
-        // ℹ️ DESIGN: It makes more sense for the outgoing state/scene to decide the transition effect, which may depend on their variables, rather than the incoming scene.
-        
-        let transition = transitionOverride ?? self.currentScene?.transition(for: type(of: incomingScene))
-        
-        if let transition = transition {
-            spriteKitView.presentScene(incomingScene, transition: transition)
-        } else {
-            spriteKitView.presentScene(incomingScene)
-        }
     }
     
 }
