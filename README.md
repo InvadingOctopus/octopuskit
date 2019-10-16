@@ -26,12 +26,12 @@ import SwiftUI
 import OctopusKit
 
 struct ContentView: View {
-	var body: some View {
-		OctopusKitView()
-			.environmentObject(MyGameController())
-			.edgesIgnoringSafeArea(.all)
-			.statusBar(hidden: true)
-	}
+    var body: some View {
+        OctopusKitView()
+            .environmentObject(MyGameController())
+            .edgesIgnoringSafeArea(.all)
+            .statusBar(hidden: true)
+    }
 }
 ```
 

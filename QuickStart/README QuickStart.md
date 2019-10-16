@@ -6,7 +6,7 @@
 
 1. 🆕 In Xcode 11 or later, create a **new Single View App** project, and **set the User Interface to SwiftUI.**
 
-	> ❗️ **Do NOT** create a "Game" project, because that template does not use SwiftUI.
+    > ❗️ **Do NOT** create a "Game" project, because that template does not use SwiftUI.
 
 2. 📦 Add OctopusKit as a **Swift Package** Dependency.
     
@@ -20,21 +20,21 @@
 
 5. 🖼 Add an `OctopusKitQuickStartView` to the `ContentView.swift` file:
 
-	```
-	var body: some View {
-		OctopusKitQuickStartView()
-	}
+    ```
+    var body: some View {
+        OctopusKitQuickStartView()
+    }
     ```
 	
 6. 🚀 Build and run the project!
 
 7. 👓 Dig around in the QuickStart folder to see how everything works.
 
-	> 🏷 Filenames are prefixed with a number denoting the order they come in during the application's life cycle. 
+    > 🏷 Filenames are prefixed with a number denoting the order they come in during the application's life cycle. 
 	
-	> 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
+    > 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
 
-	> 💡 To customize this template for a simple game of your own, modify the `TitleScene.swift` and `PlayScene.swift` classes and try out different components from the `Sources/OctopusKit/Components` folder in the OK package.
+    > 💡 To customize this template for a simple game of your own, modify the `TitleScene.swift` and `PlayScene.swift` classes and try out different components from the `Sources/OctopusKit/Components` folder in the OK package.
 
 **For further details, see the [OctopusKit Usage Guide.][usage-guide]**
 
