@@ -1,7 +1,7 @@
 # OctopusKit 👾🐙⚙️
 
 A flexible composition-based game engine written in Swift for iOS, macOS and tvOS.  
-Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
+Built upon Apple's SpriteKit, GameplayKit and Metal technologies, with SwiftUI integration.
 
 1. [Examples](#examples)
 2. [Overview](#overview)
@@ -19,6 +19,23 @@ Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 
 ## Examples
 
+🎨 *Using with SwiftUI*
+
+```swift
+import SwiftUI
+import OctopusKit
+
+struct ContentView: View {
+	var body: some View {
+		OctopusKitView()
+			.environmentObject(MyGameController())
+			.edgesIgnoringSafeArea(.all)
+			.statusBar(hidden: true)
+	}
+}
+```
+
+
 👾 *Creating an animated sprite*
 
 ```swift
@@ -34,7 +51,7 @@ let character = OctopusEntity(components: [
     TextureAnimationComponent(initialAnimationTexturePrefix: "Idle") ])
 ```
 
-📱 *Adding player control*
+🕹 *Adding player control*
 
 ```swift
 // Add a component to the scene that will be updated with input events.

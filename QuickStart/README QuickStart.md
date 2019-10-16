@@ -18,27 +18,23 @@
 
 	> By dragging the copies from your project's folder into the Project Navigator.
 
-5. Add an `OctopusKitQuickStartView` to the `ContentView.swift` file:
+5. 🖼 Add an `OctopusKitQuickStartView` to the `ContentView.swift` file:
 
 	```
 	var body: some View {
 		OctopusKitQuickStartView()
 	}
     ```
-    
-	> This is actually a quick shortcut for:
-	
-	```
-	OctopusKitView<MyGameViewController>(gameControllerOverride: QuickStartGameController())
-		.edgesIgnoringSafeArea(.all)
-		.statusBar(hidden: true)
-```
 	
 6. 🚀 Build and run the project!
-	
-ℹ️ See comments prefixed with "Step #" for a quick overview of the flow of execution.
 
-💡 To customize this template for a simple game of your own, modify the `TitleScene.swift` and `PlayScene.swift` classes and try out different components from the `Sources/OctopusKit/Components` folder in the OK package.
+7. 👓 Dig around in the QuickStart folder to see how everything works.
+
+	> 🏷 Filenames are prefixed with a number denoting the order they come in during the application's life cycle. 
+	
+	> 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
+
+	> 💡 To customize this template for a simple game of your own, modify the `TitleScene.swift` and `PlayScene.swift` classes and try out different components from the `Sources/OctopusKit/Components` folder in the OK package.
 
 **For further details, see the [OctopusKit Usage Guide.][usage-guide]**
 
