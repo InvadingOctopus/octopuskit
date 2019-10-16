@@ -113,9 +113,10 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 - `Components`: A wide library of components for graphics, gameplay, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing dynamic dispatch][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
 
 - `Core/Base`: The base classes for game states, scenes, entities, components and 
-systems.
+systems. A typical game will create multiple instances of these objects.
 
-- `Core/Launch`: The objects that launch your game and manage the OctopusKit environment.  
+- `Core/Launch`: The objects that launch your game and manage the OctopusKit environment. These are mostly unique objects, which a game will generally have only one instance of.
+
     > 💡 If your project crashes on startup, i.e. immediately returns to the home screen without showing anything, the classes in this folder are where you should look first.
         
 - `Entities`: Provides classes to quickly construct entities for common tasks, such as UI buttons, from groups of standard components.
