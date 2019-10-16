@@ -151,7 +151,7 @@ public final class OctopusKit {
     /// Ensures that the OctopusKit has been correctly initialized.
     @discardableResult public static func verifyConfiguration() -> Bool {
         guard let singleton = OctopusKit.shared else {
-            fatalError("OctopusKit: OctopusKit.shared singleton not initialized.")
+            fatalError("OctopusKit: OctopusKit.shared singleton not initialized. Call OctopusKit(gameController:) or OctopusViewController(gameController:) during application launch.")
         }
         guard !singleton.appName.isEmpty else {
             // TODO: More rigorous verification; compare with `CFBundleName` in `Info.plist`?
