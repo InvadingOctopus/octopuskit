@@ -181,7 +181,7 @@ public struct OctopusLog {
     /// A string to add at the end of all entries. Not printed if using `NSLog`.
     public let suffix: String?
     
-    /// If `true` and `copiesToNSLog` is `false`, the log appends the `suffix` string to the end of all printed entries.
+    /// If `true` and `useNSLog` is `false`, the log appends the `suffix` string to the end of all printed entries.
     public var printsSuffix: Bool = true
     
     /// If `true` then new log entries are ignored.

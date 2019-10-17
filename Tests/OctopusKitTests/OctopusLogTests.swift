@@ -29,7 +29,7 @@ class OctopusLogTests: XCTestCase {
     
     func testLog() {
         let logName = "Test Log"
-        var testLog = OctopusLog(title: logName, copiesToNSLog: false)
+        var testLog = OctopusLog(title: logName, useNSLog: false)
         XCTAssert(testLog.title == logName, "Log name does not match string it was initialized with.")
         
         let firstEntry = "First Log Entry"
