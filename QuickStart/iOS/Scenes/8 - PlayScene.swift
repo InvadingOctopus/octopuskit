@@ -66,6 +66,7 @@ final class PlayScene: OctopusScene {
             GlobalDataComponent.self,
             GlobalDataLabelComponent.self,
             GameStateLabelComponent.self,
+            NodeSpawnerComponent.self,
             TouchVisualFeedbackComponent.self
             ])
     }
@@ -82,6 +83,9 @@ final class PlayScene: OctopusScene {
         // Add components to the scene entity.
         
         self.entity?.addComponents([sharedTouchEventComponent,
+                                    PhysicsWorldComponent(),
+                                    PhysicsComponent(physicsBody: SKPhysicsBody(edgeLoopFrom: self.frame)),
+                                    NodeSpawnerComponent(),
                                     GameStateLabelComponent(positionOffset: CGPoint(x: 0,
                                                                                     y: self.frame.size.halved.height - 50))])
         
@@ -91,33 +95,6 @@ final class PlayScene: OctopusScene {
                 RelayComponent(for: globalDataComponent),
                 GlobalDataLabelComponent() ])
         }
-        
-        // Create a button for entering the next game state.
-        
-        let nextStateButtonSize = CGSize(width: self.frame.width - 20,
-                                         height: 50)
-        
-        let nextStateButtonFrame = CGRect(origin: CGPoint(x: -nextStateButtonSize.halved.width,
-                                                          y: -self.frame.size.halved.height + nextStateButtonSize.height),
-                                          size: nextStateButtonSize)
-        
-        let nextStateButtonEntity = OctopusButtonEntity(
-            text: "Tap to enter next state",
-            frame: nextStateButtonFrame,
-            backgroundColor: .blue,
-            touchEventComponent: sharedTouchEventComponent) {
-                
-                // Request the game controller to enter the next state.
-                
-                [unowned self] component, node in
-                
-                OctopusKit.logForDebug.add("Next state button tapped!")
-                self.octopusSceneDelegate?.octopusSceneDidChooseNextGameState(self)
-        }
-        
-        nextStateButtonEntity.addComponent(TouchVisualFeedbackComponent())
-        
-        self.addEntity(nextStateButtonEntity)
         
         // Add the global game controller entity to this scene so that global components will be included in the update cycle.
         
@@ -199,6 +176,7 @@ final class PlayScene: OctopusScene {
             if !isPausedByPlayer { togglePauseByPlayer() }
             
         case is GameOverState.Type: // Entering `GameOverState`
+            
             self.backgroundColor = SKColor(red: 0.3, green: 0.1, blue: 0.1, alpha: 1.0)
             
         default: break
@@ -277,5 +255,5 @@ final class PlayScene: OctopusScene {
             self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)
         }
     }
-    
+
 }

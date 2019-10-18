@@ -95,33 +95,6 @@ final class TitleScene: OctopusScene {
             SpriteKitComponent(node: title)
             ]))
         
-        // Create a button for starting the game.
-        
-        let startButtonSize = CGSize(width: self.frame.width - 20,
-                                     height: 50)
-        
-        let startButtonFrame = CGRect(origin: CGPoint(x: -startButtonSize.halved.width,
-                                                      y: -self.frame.size.halved.height + startButtonSize.height),
-                                      size: startButtonSize)
-        
-        let startButtonEntity = OctopusButtonEntity(
-            text: "TAP TO START",
-            frame: startButtonFrame,
-            backgroundColor: .blue,
-            touchEventComponent: sharedTouchEventComponent) {
-                
-                // Request the game controller to enter the PlayState.
-                
-                [unowned self] component, node in
-                
-                OctopusKit.logForDebug.add("Start button tapped!")
-                self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PlayState.self)
-        }
-        
-        startButtonEntity.addComponent(TouchVisualFeedbackComponent())
-        
-        self.addEntity(startButtonEntity)
-        
         // Add the global game controller entity to this scene so that global components will be included in the update cycle.
         
         if let gameControllerEntity = OctopusKit.shared?.gameController.entity {

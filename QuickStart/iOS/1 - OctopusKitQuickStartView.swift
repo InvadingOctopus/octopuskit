@@ -12,20 +12,106 @@
 
 import SwiftUI
 import OctopusKit
+import Combine
 
 struct OctopusKitQuickStartView: View {
     
-    let gameController = OctopusGameController(states: [LogoState(),
-                                                        TitleState(),
-                                                        PlayState(),
-                                                        PausedState(),
-                                                        GameOverState()],
-                                               initialStateClass: LogoState.self)
+    var body: some View {
+        
+        ZStack {
+            OctopusKitView<QuickStartGameController, MyGameViewController>()
+            OctopusKitQuickStartUI()
+        }
+        .environmentObject(QuickStartGameController())
+        .edgesIgnoringSafeArea(.all)
+        .statusBar(hidden: true)
+    }
+    
+}
+
+struct OctopusKitQuickStartUI: View {
+    
+    @EnvironmentObject var gameController: QuickStartGameController
+    
+    var preview: Bool = false
+    
+//    var showStateCycleButton: Bool {
+//        gameController.currentGameState != nil
+//            && !(gameController.currentGameState! is LogoState)
+//    }
+    
+    @State var showStateCycleButton: Bool = false
     
     var body: some View {
-        OctopusKitView()
-            .environmentObject(gameController)
-            .edgesIgnoringSafeArea(.all)
-            .statusBar(hidden: true)
+    
+        gameController.$currentScene
+            .compactMap { $0 }
+            .receive(on: RunLoop.main)
+            .sink { (scene) in
+                print(scene)
+                withAnimation(.spring()) {
+                    self.showStateCycleButton = !(scene is OctopusLogoScene)
+                }
+        }
+        
+        return ZStack {
+            
+            if preview { Rectangle().foregroundColor(Color(red: 0.1, green: 0.1, blue: 0.5)) }
+            
+            if showStateCycleButton {
+                
+                VStack {
+                    
+                    Spacer()
+                    
+                    nextStateButton
+                    
+                    Text("☝️ This button is a SwiftUI control!")
+                        .font(.footnote)
+                        .foregroundColor(.white)
+                        .opacity(0.9)
+                        .padding(5)
+                        .background(Rectangle()
+                            .foregroundColor(.black)
+                            .cornerRadius(5)
+                            .opacity(0.6))
+                        .padding(.bottom, 15)
+                }
+                .transition(.move(edge: .bottom))
+            }
+            
+        }
+    }
+    
+    var nextStateButton: some View {
+        
+        Button(action: nextGameState) {
+            
+            VStack {
+                Text("TAP TO CYCLE GAME STATES")
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding()
+            }
+            .background(Rectangle()
+            .foregroundColor(.accentColor)
+            .cornerRadius(10)
+            .opacity(0.85)
+            .shadow(color: .black, radius: 10, x: 0, y: -10))
+            .padding()
+        }
+    }
+    
+    func nextGameState() {
+        if let currentScene = gameController.currentScene {
+            OctopusKit.logForDebug.add("Next state button tapped!")
+            currentScene.octopusSceneDelegate?.octopusSceneDidChooseNextGameState(currentScene)
+        }
+    }
+}
+
+struct COctopusKitQuickStartView_Previews: PreviewProvider {
+    static var previews: some View {
+        OctopusKitQuickStartUI(preview: true)
     }
 }
