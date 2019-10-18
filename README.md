@@ -1,15 +1,15 @@
 # OctopusKit 👾🐙⚙️
 
 A flexible composition-based game engine written in Swift for iOS, macOS and tvOS.  
-Built upon Apple's SpriteKit, GameplayKit and Metal technologies, with SwiftUI integration.
+Built upon Apple's SpriteKit, GameplayKit, Metal and SwiftUI technologies.
 
 1. [Examples](#examples)
 2. [Overview](#overview)
 3. [Design Goals](#design-goals)
 4. [Getting Started](#getting-started)
-5. [Etcetera](#etcetera) (license, contact)
+5. [Etcetera (license, contact)](#etcetera)
 
-🚀 *Eager to dive right in? Add OctopusKit as a Swift package dependency to a new Xcode game project and use the [**QuickStart** template.][quickstart]*
+🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
 
 > This project is a result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 
