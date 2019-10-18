@@ -40,7 +40,7 @@ struct ContentView: View {
 }
 ```
 
-> The game coordinator object manages your game's state and scenes, and can be observed and controlled from SwiftUI.
+> The coordinator object manages your game's state and scenes, and can be observed and controlled from SwiftUI.
 
 👾 *Creating an animated sprite*
 
@@ -172,6 +172,8 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
     > \* *These definitions may differ from other engines, like Unity, where all the logic is contained within systems.*  
     
     > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
+
+- 🎛 **User Interface** like buttons, lists, HUDs, is provided via SwiftUI. So you use SpriteKit + GameplayKit to describe scenes with physics and sound, and use a dynamic, declarative syntax to design a highly flexible UI.
 
 Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend."
 

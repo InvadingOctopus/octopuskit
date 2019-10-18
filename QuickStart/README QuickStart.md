@@ -18,7 +18,7 @@
 
 	> By dragging the copies from your project's folder into the Project Navigator.
 
-5. 🖼 Add an `OctopusKitQuickStartView` to the `ContentView.swift` file:
+5. 🖼 Add the `OctopusKitQuickStartView` to the `ContentView.swift` file:
 
     ```
     var body: some View {
@@ -28,7 +28,7 @@
 	
 6. 🚀 Build and run the project!
 
-7. 👓 Dig around in the QuickStart folder to see how everything works.
+7. 👓 Examine the OctopusKitQuickStartView.swift file and dig around in the QuickStart folder to see how everything works, then modify the template for your specific game.
 
     > 🏷 Filenames are prefixed with a number denoting the order they come in during the application's life cycle. 
 	
