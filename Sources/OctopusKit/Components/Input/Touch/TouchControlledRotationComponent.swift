@@ -124,7 +124,7 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
         
         let a = (targetRotation - node.zRotation)
         let b = (2 * CGFloat.pi)
-        let delta = a - b * floor(a / b) // `a modulo b` == `a - b * floor (a / b)` // PERFORMANCE: Should be more efficient than a lot of trignometery math. Right?
+        let delta = a - b * floor(a / b) // `a modulo b` == `a - b * floor (a / b)` // PERFORMANCE: Should be more efficient than a lot of trigonometry math. Right?
         
         if delta > CGFloat.pi {
             nodeRotationForThisFrame -= rotationAmountForThisFrame
