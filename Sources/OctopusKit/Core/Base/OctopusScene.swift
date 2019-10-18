@@ -573,6 +573,8 @@ open class OctopusScene: SKScene,
     /// Called from `OctopusScene.applicationWillResignActive()`.
     ///
     /// - NOTE: If the `OctopusGameCoordinator` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game coordinator to transition between those states here.
+    ///
+    /// - NOTE: Set the scene's `physicsWorld.speed = 0` in your implementation to pause physics if needed.
     open func didPauseBySystem() {}
     
     /// An abstract method for a subclass to customize scene behavior when the game is unpaused by a system event.
@@ -580,6 +582,8 @@ open class OctopusScene: SKScene,
     /// Called from `OctopusScene.applicationDidBecomeActive()`.
     ///
     /// - NOTE: If the `OctopusGameCoordinator` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game coordinator to transition between those states here.
+    ///
+    /// - NOTE: Set the scene's `physicsWorld.speed = 1` in your implementation to resume physics if needed.
     open func didUnpauseBySystem() {}
     
     /// To be called when the player manually chooses to pause or unpause.
@@ -605,16 +609,22 @@ open class OctopusScene: SKScene,
     /// An abstract method for a subclass to customize scene behavior when the game is paused by the player.
     ///
     /// - NOTE: If the `OctopusGameCoordinator` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game coordinator to transition between those states here.
+    ///
+    /// - NOTE: Set the scene's `physicsWorld.speed = 0` in your implementation to pause physics if needed.
     open func didPauseByPlayer() {}
     
     /// An abstract method for a subclass to customize scene behavior when the game is unpaused by the player.
     ///
     /// - NOTE: If the `OctopusGameCoordinator` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game coordinator to transition between those states here.
+    ///
+    /// - NOTE: Set the scene's `physicsWorld.speed = 1` in your implementation to resume physics if needed.
     open func didUnpauseByPlayer() {}
     
     /// To be called when a modal user interface, such as an alert or other dialog which demands player attention, begins or finishes.
     ///
     /// When paused by modal UI, the gameplay and other game-specific logic is put on hold until the player completes the interaction, without preventing the scene from processing frame updates so that the user interface can continue to be displayed.
+    ///
+    /// - NOTE: Set the scene's `physicsWorld.speed` to `0` or `1` in your implementation to pause and unpause physics if needed.
     open func togglePauseBySubscene() {
         OctopusKit.logForFramework.add("isPausedBySubscene = \(isPausedBySubscene) → (!isPausedBySubscene)")
         
