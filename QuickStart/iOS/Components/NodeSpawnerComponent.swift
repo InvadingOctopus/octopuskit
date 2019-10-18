@@ -40,10 +40,13 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
                     .rotate(byAngle: CGFloat(Double.pi), duration: 1)))
             
             spinnyNode.run(
-                .sequence([
-                    .wait(forDuration: 0.5),
-                    .fadeOut(withDuration: 0.5),
-                    .removeFromParent()]))
+                .group([
+                    .scale(by: 1.25, duration: 1.0),
+                    .sequence([
+                        .wait(forDuration: 0.5),
+                        .fadeOut(withDuration: 0.5),
+                        .removeFromParent()])
+                ]))
         }
     }
     
@@ -60,8 +63,10 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
         if let spinny = self.spinnyNode?.copy() as? SKShapeNode
         {
             spinny.position = touch.location(in: node)
-            spinny.strokeColor = SKColor.blue
-            spinny.zPosition = -20
+            spinny.zPosition = -20 // + CGFloat(Int.random(in: 1...10))
+            spinny.strokeColor = SKColor.brightColors.randomElement()!
+            spinny.alpha = 0.5
+//            spinny.blendMode = .add
             node.addChild(spinny)
         }
         
@@ -77,15 +82,13 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
     
     func createRandomEmojiNode(position: CGPoint) -> SKLabelNode {
         
-        let emojis = "🐙👾🕹🚀🎮📱⌚️💿📀🧲🧿🎲🧩🎨🎸⚽️🎱🍖🍑🍆🍩🍌⭐️🌈🌸🌺🌼🐹🦊🐼🐱🐶"
+        let emojis = "🐙👾🕹🚀🎮📱⌚️💿📀🧲🧿🎲🍏🥎🍄🧠👁💩😈👿👻💀👽🤖🎃👊🏻💧☁️🚗💣🧸🧩🎨🎸⚽️🎱🍖🍑🍆🍩🍌⭐️🌈🌸🌺🌼🐹🦊🐼🐱🐶❤️🧡💛💚💙💜💔🔶🔷♦️"
         let randomEmoji = String(emojis.randomElement()!)
         
         let emojiNode = SKLabelNode(text: randomEmoji)
-        
         emojiNode.fontSize = 32
         emojiNode.position = position
         emojiNode.zPosition = -10
-
         emojiNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(widthAndHeight: 30))
         
         let randomAdjustment = CGVector(dx: CGFloat(Int.random(in: -40 ... 40)),
