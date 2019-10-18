@@ -22,16 +22,28 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter, Observa
     public let initialStateClass: OctopusGameState.Type
     
     public fileprivate(set) var didEnterInitialState: Bool = false
-        
-    public var currentGameState: OctopusGameState? {
-        if  let currentGameState = self.currentState as? OctopusGameState {
-            return currentGameState
-        } else {
-            OctopusKit.logForWarnings.add("Cannot cast \(String(optional: currentState)) as OctopusGameState")
-            return nil
-        }
-    }
 
+    public var currentGameState: OctopusGameState? {
+
+        // NOTE: SWIFT LIMITATION: This property should be @Published but we cannot do that because
+        // "Property wrapper cannot be applied to a computed property" and
+        // "willSet cannot be provided together with a getter"
+        // and we cannot provide a `willSet` for `GKStateMachine.currentState` because
+        // "Cannot observe read-only property currentState; it can't change" :(
+        // Okay so we'll just use objectWillChange.send() in the enter(_:) override below.
+        // HOWEVER, even without objectWillChange.send() the derived properties in SwiftUI views depending on `currentGameState` seem to update just fine. Not sure about all this yet.
+
+        get {
+            if  let currentGameState = self.currentState as? OctopusGameState {
+                return currentGameState
+            } else {
+                OctopusKit.logForWarnings.add("Cannot cast \(String(optional: currentState)) as OctopusGameState")
+                return nil
+            }
+        }
+        
+    }
+        
     public weak var viewController: OctopusViewController? {
         didSet {
             OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: viewController))")
@@ -115,6 +127,18 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter, Observa
         ]
     }
     
+    open override func enter(_ stateClass: AnyClass) -> Bool {
+        
+        // We override this method to send `ObservableObject` updates for SwiftUI support.
+        // See comments for the `currentGameState` property for an explanation.
+        
+        if self.canEnterState(stateClass) {
+            self.objectWillChange.send()
+        }
+        
+        return super.enter(stateClass)
+    }
+    
     /// Attempts to enter the state specified by `initialStateClass`.
     @discardableResult internal func enterInitialState() -> Bool {
         OctopusKit.logForFramework.add()
@@ -137,9 +161,9 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter, Observa
         self.didEnterInitialState = enter(initialStateClass)
         return didEnterInitialState
     }
-    
+
     deinit {
         OctopusKit.logForDeinits.add("\(self)")
     }
-    
+
 }
