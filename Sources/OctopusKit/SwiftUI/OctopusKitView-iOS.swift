@@ -41,8 +41,6 @@ public struct OctopusKitView <OctopusGameCoordinatorType, OctopusViewControllerT
     public static func dismantleUIViewController(_ uiViewController: OctopusViewControllerType,
                                                  coordinator: OctopusKitView.Coordinator<OctopusViewControllerType>)
     {
-        // CHECK
-        coordinator.viewController.spriteKitView?.scene?.isPaused = true
         coordinator.viewController.gameCoordinator?.currentScene?.didPauseBySystem()
     }
     

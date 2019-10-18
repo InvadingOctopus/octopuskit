@@ -49,19 +49,29 @@ open class OctopusViewController: OSViewController {
         
         if let gameCoordinator = gameCoordinator {
             
-            if  let existingGameCoordinator = OctopusKit.shared?.gameCoordinator {
-                fatalError("OctopusKit already initialized with \(existingGameCoordinator) — OctopusViewController initialized with \(gameCoordinator)")
+            if  let existingGameCoordinator = OctopusKit.shared?.gameCoordinator,
+                gameCoordinator !== existingGameCoordinator
+            {
+                fatalError("OctopusKit already running with \(existingGameCoordinator) — OctopusViewController initialized with \(gameCoordinator)")
             }
             
-            OctopusKit(gameCoordinator: gameCoordinator)
+            // Initialize OctopusKit if we're the very first view controller.
+            // Putting this here reduces the boilerplate required by SwiftUI applications.
+            
+            if  OctopusKit.shared?.gameCoordinator == nil {
+                OctopusKit(gameCoordinator: gameCoordinator)
+            }
+            
             self.gameCoordinator = gameCoordinator
             
         } else {
             
+            // If no game coordinator was specified, try to retrieve it from the global OctopusKit environment. This may be the case if this view controller has been added to an ongoing game.
+            
             guard   OctopusKit.initialized,
                     let octopusKitSingleton = OctopusKit.shared
             else {
-                fatalError("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch.")
+                fatalError("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called during application launch or OctopusViewController must be initialized with a OctopusGameCoordinator")
             }
         
             self.gameCoordinator = octopusKitSingleton.gameCoordinator
@@ -76,7 +86,7 @@ open class OctopusViewController: OSViewController {
         if  let octopusKitSingleton = OctopusKit.shared {
             self.gameCoordinator = octopusKitSingleton.gameCoordinator
         } else {
-            OctopusKit.logForWarnings.add("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch. Ignore this warning if this OctopusViewController was loaded via Interface Builder.")
+            OctopusKit.logForWarnings.add("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch. Ignore this warning if this OctopusViewController was loaded via AppKit/UIKit Storyboards.")
         }
         
         super.init(coder: aDecoder)
@@ -125,9 +135,19 @@ open class OctopusViewController: OSViewController {
         //        spriteKitView.isMultipleTouchEnabled = ?
         //        audioEngine = OctopusAudioEngine()
         
-        // ⚠️ NOTE: Create a blank placeholder scene to prevent a jarring white screen on launch, because that's what `SKView` seems to default to as of 2018-03, until `OctopusGameCoordinator` and its initial state prepares the first scene prepare and presents its contents.
+        // If we are a new view controller being added to an ongoing game, such as when showing a new SwiftUI container view, present the ongoing scene.
         
-        spriteKitView.presentScene(SKScene(size: spriteKitView.frame.size))
+        if let ongoingScene = gameCoordinator?.currentScene {
+            
+            spriteKitView.presentScene(ongoingScene)
+            ongoingScene.didUnpauseBySystem()
+        
+        } else {
+            
+            // ⚠️ BUG? NOTE: If we are the first view controller, present a blank placeholder scene to prevent a jarring white screen on launch, because that's what `SKView` seems to default to as of 2018-03, before `OctopusGameCoordinator` and its initial state prepares the first scene.
+            
+            spriteKitView.presentScene(SKScene(size: spriteKitView.frame.size))
+        }
     }
     
     #if os(iOS)
