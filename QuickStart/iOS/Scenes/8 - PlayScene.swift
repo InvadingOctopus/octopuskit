@@ -66,8 +66,7 @@ final class PlayScene: OctopusScene {
             GlobalDataComponent.self,
             GlobalDataLabelComponent.self,
             GameStateLabelComponent.self,
-            NodeSpawnerComponent.self,
-            TouchVisualFeedbackComponent.self
+            NodeSpawnerComponent.self
             ])
     }
     

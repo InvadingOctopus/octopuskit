@@ -58,8 +58,7 @@ final class TitleScene: OctopusScene {
             // Custom components which are specific to this QuickStart project.
             
             GlobalDataComponent.self,
-            GlobalDataLabelComponent.self,
-            TouchVisualFeedbackComponent.self
+            GlobalDataLabelComponent.self
             ])
     }
     
