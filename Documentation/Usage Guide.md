@@ -59,14 +59,14 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 2. Your `AppDelegate` class must inherit from `OctopusAppDelegate`. It needs to implement (override) only one method: `applicationWillLaunchOctopusKit()`, where it must initialize the shared `OctopusKit` singleton instance by calling:
 
     ```swift
-    OctopusKit(appName: "YourGame", gameController: YourGameController())
+    OctopusKit(appName: "YourGame", gameCoordinator: YourGameCoordinator())
     ```
 
-    > "Game controller" refers to a "controller" in the Model-View-Controller sense here, not a gamepad or joystick, and must be a subclass of `OctopusGameController`.
+    > The game coordinator is a "controller" in the Model-View-Controller sense (not a controller as in gamepad or joystick) and must be a subclass of `OctopusGameCoordinator`.
     >
-    > If your game does not need to share any complex logic or data across multiple scenes, you can simply call `OctopusGameController(states:initialStateClass:)` instead of creating a subclass.
+    > If your game does not need to share any complex logic or data across multiple scenes, you can simply call `OctopusGameCoordinator(states:initialStateClass:)` instead of creating a subclass.
     
-3. The game controller must have at least one state that is associated with a scene, so your project must have custom classes that inherit from `OctopusGameState` and `OctopusScene`. 
+3. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes that inherit from `OctopusGameState` and `OctopusScene`. 
 
     > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow--object-hierarchy)
 
@@ -86,7 +86,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     >
     > Other steps are left for the subclass because each scene may need to handle these differently.
     >
-    > If your game states also perform per-frame updates, then you must also call `OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)`
+    > If your game states also perform per-frame updates, then you must also call `OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)`
 
 ----
 
@@ -135,7 +135,7 @@ systems. A typical game will create multiple instances of these objects.
 |↓|
 |📲 `YourAppDelegate: OctopusAppDelegate`|
 |↓|
-|🎬 `YourGameController: OctopusGameController` ¹|
+|🎬 `YourGameCoordinator: OctopusGameCoordinator` ¹|
 |↓|
 |🚦 `YourGameState: OctopusGameState`|
 |↕|
@@ -149,9 +149,9 @@ systems. A typical game will create multiple instances of these objects.
 |↑|
 |⛓ `OctopusComponentSystem` ⁶|
 
-> ¹ `OctopusGameController` need not always be subclassed; projects that do not require a custom controller may use `OctopusGameController(states:initialStateClass:)`.
+> ¹ `OctopusGameCoordinator` need not always be subclassed; projects that do not require a custom coordinator may simply use `OctopusGameCoordinator(states:initialStateClass:)`.
 > 
-> ² `OctopusScene` may tell the game controller to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
+> ² `OctopusScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
 >
 > ³ `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
 >
@@ -164,12 +164,12 @@ systems. A typical game will create multiple instances of these objects.
 ### Tier 1
 
 📱 `OctopusAppDelegate:`[`UIApplicationDelegate`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate) or [`NSApplicationDelegate`](https://developer.apple.com/documentation/appkit/nsapplicationdelegate)  
-🎬 `OctopusGameController:`[`GKStateMachine`](https://developer.apple.com/documentation/gameplaykit/gkstatemachine)  
+🎬 `OctopusGameCoordinator:`[`GKStateMachine`](https://developer.apple.com/documentation/gameplaykit/gkstatemachine)  
 🚦 `OctopusGameState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
 
-- At launch, the application delegate configures a **Game Controller** object, which is a "controller" in the [MVC][mvc] sense. A game controller is a **State Machine** with one or more **Game States**, each associated with a **Scene**. The controller may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
+- At launch, the application configures a **Game Coordinator** object (which is a "controller" in the [MVC][mvc] hierarchy). A game coordinator is a **State Machine** with one or more **Game States**, each associated with a **Scene**. The coordinator may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
 
-	> 💡 *Advanced: A single application may contain multiple "games" by using multiple game controllers, each with its own hierarchy of states and scenes.*
+	> 💡 *Advanced: A single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
 
 ### Tier 2 
 
@@ -205,7 +205,7 @@ systems. A typical game will create multiple instances of these objects.
 
 - A **Component** represents each onscreen object or unit of game logic. It may contain properties and execute logic at specific moments in its lifetime: when it's added to an entity, removed from an entity, and/or once every frame. A component may signal its entity to enter a different state, or request the entity's scene to spawn new entities, or even to remove the component's own entity from the scene. 
 
-    > Components may also access the game controller and its states. Nothing is "off limits" to a component; what a component may do is up to you. However, good practices dictate that a component should be polite and only access its own entity and its co-components.
+    > Components may also access the game coordinator and its states. Nothing is "off limits" to a component; what a component may do is up to you. However, good practices dictate that a component should be polite and only access its own entity and its co-components.
 
 ⛓ `OctopusComponentSystem:`[`GKComponentSystem`](https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem)
 
@@ -215,7 +215,7 @@ systems. A typical game will create multiple instances of these objects.
 
 	> e.g.: An entity's `TouchControlledPositioningComponent` must be executed after its `TouchEventComponent`, so a scene's component systems array should place the system for `TouchEventComponent`s before the system for `TouchControlledPositioningComponent`s.
 
-- Over the course of the gameplay, a scene, state or even a component may signal the **Game Controller** to enter a different **Game State** in response to certain game-specific conditions. The current game state's logic determines whether the transition is valid; if it is, the state then passes control to another state, which may then load a different scene.
+- Over the course of the gameplay, a scene, state or even a component may signal the **Game Coordinator** to enter a different **Game State** in response to certain game-specific conditions. The current game state's logic determines whether the transition is valid; if it is, the state then passes control to another state, which may then load a different scene.
 
     > As noted above, a single scene may choose to handle multiple game states. In those cases, no scene transition occurs during a game state transition. 
 
@@ -257,11 +257,11 @@ systems. A typical game will create multiple instances of these objects.
 
     > Very simple games may only consist of components which are added to the scene entity, without any "sub-entities."
 
-### The Game Controller Entity
+### The Game Coordinator Entity
 
-- `OctopusGameController` also has an `entity` property (not optional) which is initialized when the game is launched and is accessible from every scene.
+- `OctopusGameCoordinator` also has an `entity` property (not optional) which is initialized when the game is launched and is accessible from every scene.
 
-- Games which need to share data or logic across multiple states and scenes can add persistent components to the game controller entity.
+- Games which need to share data or logic across multiple states and scenes can add persistent components to the game coordinator entity.
 
 ### Entities should *not:*
 

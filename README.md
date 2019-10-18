@@ -27,7 +27,7 @@ import OctopusKit
                                                 
 struct ContentView: View {
 
-    var gameCoordinator = OctopusGameController(
+    var gameCoordinator = OctopusGameCoordinator(
         states: [TitleState(), PlayState()]
         initialStateClass: TitleState.self)
                                                 

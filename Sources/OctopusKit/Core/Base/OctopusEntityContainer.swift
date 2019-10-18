@@ -194,7 +194,7 @@ public extension OctopusEntityContainer {
         
         // CHECK: Should we remove all components from the entity so they can properly dispose of their behavior? e.g. removing a SpriteKit node from the scene.
         // CHECKED: Not removing all components from every entity does NOT prevent the scene from deinit'ing.
-        // ⚠️ NOTE: Do not remove components from entities that are not owned by this scene! e.g., the global GameController entity.
+        // ⚠️ NOTE: Do not remove components from entities that are not owned by this scene! e.g., the global GameCoordinator entity.
         // entityToRemove.removeAllComponents()
         
         // Clear the entity's delegate.

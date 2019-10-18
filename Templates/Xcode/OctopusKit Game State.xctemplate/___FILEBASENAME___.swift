@@ -6,7 +6,7 @@ import GameplayKit
 final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
     
     init() {
-        // NOTE: Game state classes are initialized when the game controller is initialized: on game launch.
+        // NOTE: Game state classes are initialized when the game coordinator is initialized: on game launch.
         super.init(associatedSceneClass: <#Scene for this state#>.self)
     }
     

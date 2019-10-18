@@ -11,7 +11,7 @@ import GameplayKit
 
 public protocol OctopusScenePresenter: class {
 
-    // DESIGN: This functionality is presented as a protocol so that it may be swapped between the view controller, game controller or game state, depending on the needs of the underlying system framework (such as SwiftUI or UIKit.)
+    // DESIGN: This functionality is presented as a protocol so that it may be swapped between the view controller, game coordinator or game state, depending on the needs of the underlying system framework (such as SwiftUI or UIKit.)
 
     var spriteKitView: SKView?              { get }
     var currentScene: OctopusScene?         { get set }

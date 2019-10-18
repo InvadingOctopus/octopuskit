@@ -19,10 +19,10 @@ struct OctopusKitQuickStartView: View {
     var body: some View {
         
         ZStack {
-            OctopusKitView<QuickStartGameController, MyGameViewController>()
+            OctopusKitView<QuickStartGameCoordinator, MyGameViewController>()
             OctopusKitQuickStartUI()
         }
-        .environmentObject(QuickStartGameController())
+        .environmentObject(QuickStartGameCoordinator())
         .edgesIgnoringSafeArea(.all)
         .statusBar(hidden: true)
     }
@@ -31,20 +31,20 @@ struct OctopusKitQuickStartView: View {
 
 struct OctopusKitQuickStartUI: View {
     
-    @EnvironmentObject var gameController: QuickStartGameController
+    @EnvironmentObject var gameCoordinator: QuickStartGameCoordinator
     
     var preview: Bool = false
     
 //    var showStateCycleButton: Bool {
-//        gameController.currentGameState != nil
-//            && !(gameController.currentGameState! is LogoState)
+//        gameCoordinator.currentGameState != nil
+//            && !(gameCoordinator.currentGameState! is LogoState)
 //    }
     
     @State var showStateCycleButton: Bool = false
     
     var body: some View {
     
-        gameController.$currentScene
+        gameCoordinator.$currentScene
             .compactMap { $0 }
             .receive(on: RunLoop.main)
             .sink { (scene) in
@@ -103,7 +103,7 @@ struct OctopusKitQuickStartUI: View {
     }
     
     func nextGameState() {
-        if let currentScene = gameController.currentScene {
+        if let currentScene = gameCoordinator.currentScene {
             OctopusKit.logForDebug.add("Next state button tapped!")
             currentScene.octopusSceneDelegate?.octopusSceneDidChooseNextGameState(currentScene)
         }

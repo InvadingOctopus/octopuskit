@@ -15,7 +15,7 @@ extension OctopusKit {
         
         /// A collection of strings for the names of entities etc., to avoid hard-coding text and prevent typos during searches or comparisons etc.
         public struct Strings {
-            static let gameControllerEntityName = "Game Controller Entity"
+            static let gameCoordinatorEntityName = "Game Coordinator Entity"
         }
         
     }

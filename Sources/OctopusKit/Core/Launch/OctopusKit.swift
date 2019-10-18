@@ -26,20 +26,16 @@ import CoreMotion
 /// ----
 ///
 /// **Usage:**
-/// Your `AppDelegate` class must inherit from `OctopusAppDelegate`, and it must only implement `applicationWillLaunchOctopusKit()` — other system events are handled by the engine.
+/// Your application must call `OctopusKit(appName:gameCoordinator:)` during launch to initialize the `OctopusKit.shared` singleton instance, specifying a `OctopusGameCoordinator` or its subclass, with a list of `OctopusGameState`s and their associated scenes.
 ///
-/// Your view controller for the SpriteKit view must inherit from `OctopusSceneController`, and your scenes must inherit from `OctopusScene`.
-///
-/// Your `AppDelegate` must call `OctopusKit(appName:gameController:)` to initialize the `OctopusKit.shared` singleton instance, specifying a `OctopusGameController` or its subclass, with a list of `OctopusGameState`s and their associated scenes.
-///
-/// - Note: The `OctopusKit` class contains the top-level objects common to launching all games based on the engine and interfacing with the operating system, but the functionality *specific to your game* is coordinated by `OctopusGameController` or your subclass of it.
+/// - Note: The `OctopusKit` class contains the top-level objects common to launching all games based on the engine and interfacing with the operating system, but the functionality *specific to your game* is coordinated by `OctopusGameCoordinator` or your subclass of it.
 public final class OctopusKit {
     
-    // ℹ️ Tried to make this a generic type for convenience in using different `OctopusGameController` subclasses, but it's not possible because "Static stored properties not supported in generic types" as of 2018-04-14.
+    // ℹ️ Tried to make this a generic type for convenience in using different `OctopusGameCoordinator` subclasses, but it's not possible because "Static stored properties not supported in generic types" as of 2018-04-14.
     
     // CHECK: PERFORMANCE: Make `shared` non-nil for better performance? Could just default it to a dummy `OctopusKit` instance.
     
-    /// Returns the singleton OctopusKit instance, which must be created via `initSharedInstance(gameName:gameController:)` during `AppDelegate.applicationWillLaunchOctopusKit()`.
+    /// Returns the singleton OctopusKit instance, which must be created via `initSharedInstance(gameName:gameCoordinator:)` during `AppDelegate.applicationWillLaunchOctopusKit()`.
     public fileprivate(set) static var shared: OctopusKit? {
         willSet {
             guard OctopusKit.shared == nil else {
@@ -71,26 +67,26 @@ public final class OctopusKit {
     
     // MARK: - Top-Level Objects
     
-    /// The root controller object that manages the various states of the game, as well as any global objects that must be shared across states and scenes.
+    /// The root coordinator object that manages the various states of the game, as well as any global objects that must be shared across states and scenes.
     ///
-    /// - Important: The game's first scene must be specified via the game controller's initial state.
-    public let gameController: OctopusGameController
+    /// - Important: The game's first scene must be specified via the game coordinator's initial state.
+    public let gameCoordinator: OctopusGameCoordinator
     
-    public var gameControllerView: SKView? {
-        // ⚠️ - Warning: Trying to access this at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so users should delay it by checking something like `gameController.didEnterInitialState`
-        if  let viewController = self.gameController.viewController,
+    public var gameCoordinatorView: SKView? {
+        // ⚠️ - Warning: Trying to access this at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so users should delay it by checking something like `gameCoordinator.didEnterInitialState`
+        if  let viewController = self.gameCoordinator.viewController,
             let view = viewController.view as? SKView
         {
             return view
         }
         else {
-//            OctopusKit.logForErrors.add("Cannot access gameController.viewController?.view as an SKView.")
+//            OctopusKit.logForErrors.add("Cannot access gameCoordinator.viewController?.view as an SKView.")
             return nil
         }
     }
     
     public var currentScene: OctopusScene? {
-        gameController.currentScene
+        gameCoordinator.currentScene
     }
     
     // MARK: - App-wide Singletons
@@ -129,10 +125,10 @@ public final class OctopusKit {
     /// - Parameter appNameOverride: The name of the app bundle. Used to retreive the Core Data store and for logs. If omitted or `nil` the `CFBundleName` property from the `Info.plist` file will be used.
     /// - Returns: Discardable; there is no need store the return value of this initializer.
     @discardableResult public init(appNameOverride: String? = nil,
-                                   gameController: OctopusGameController)
+                                   gameCoordinator: OctopusGameCoordinator)
     {
         guard OctopusKit.shared == nil else {
-            fatalError("OctopusKit: OctopusKit(appName:gameController:) called again after OctopusKit.shared singleton has already been initialized.")
+            fatalError("OctopusKit: OctopusKit(appName:gameCoordinator:) called again after OctopusKit.shared singleton has already been initialized.")
         }
         
         guard   let appName = appNameOverride ??
@@ -142,7 +138,7 @@ public final class OctopusKit {
         }
             
         self.appName = appName
-        self.gameController = gameController
+        self.gameCoordinator = gameCoordinator
         
         OctopusKit.shared = self
         OctopusKit.initialized = true
@@ -151,7 +147,7 @@ public final class OctopusKit {
     /// Ensures that the OctopusKit has been correctly initialized.
     @discardableResult public static func verifyConfiguration() -> Bool {
         guard let singleton = OctopusKit.shared else {
-            fatalError("OctopusKit: OctopusKit.shared singleton not initialized. Call OctopusKit(gameController:) or OctopusViewController(gameController:) during application launch.")
+            fatalError("OctopusKit: OctopusKit.shared singleton not initialized. Call OctopusKit(gameCoordinator:) or OctopusViewController(gameCoordinator:) during application launch.")
         }
         guard !singleton.appName.isEmpty else {
             // TODO: More rigorous verification; compare with `CFBundleName` in `Info.plist`?

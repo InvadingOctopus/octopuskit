@@ -25,10 +25,10 @@ final class PlayState: OctopusGameState {
         
         // 🔶 STEP 7.2: This method is called when a state begins.
         //
-        // Here we add a component to the global game controller entity (a property of OctopusGameController and its subclasses) which is available to all states and all scenes, to demonstrate how to hold data which will persist throughout the game.
+        // Here we add a component to the global game coordinator entity (a property of OctopusGameCoordinator and its subclasses) which is available to all states and all scenes, to demonstrate how to hold data which will persist throughout the game.
         
-        if OctopusKit.shared?.gameController.entity.component(ofType: GlobalDataComponent.self) == nil {
-            OctopusKit.shared?.gameController.entity.addComponent(GlobalDataComponent())
+        if OctopusKit.shared?.gameCoordinator.entity.component(ofType: GlobalDataComponent.self) == nil {
+            OctopusKit.shared?.gameCoordinator.entity.addComponent(GlobalDataComponent())
         }
         
         // Note that we pass control to the OctopusGameState superclass AFTER we've added the global component, so that it will be available to the PlayScene when it's presented by the code in the superclass.
@@ -45,7 +45,7 @@ final class PlayState: OctopusGameState {
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         
-        // 🔶 STEP 7.4: The game controller calls this method to check if the current state can transition to the specified state.
+        // 🔶 STEP 7.4: The game coordinator calls this method to check if the current state can transition to the specified state.
         //
         // The PlayState can only lead to either the PausedState or the GameOverState.
         

@@ -19,7 +19,7 @@ import CoreData
 ///
 /// Your `AppDelegate` should only implement `applicationWillLaunchOctopusKit()` as all other system events are handled by `OctopusAppDelegate`.
 ///
-/// Your `applicationWillLaunchOctopusKit()` method must call `OctopusKit(appName:gameController:)` to initialize the `OctopusKit.shared` singleton instance, specifying a `OctopusGameController` or its subclass, with a list of `OctopusGameState`s and their associated scenes.
+/// Your `applicationWillLaunchOctopusKit()` method must call `OctopusKit(appName:gameCoordinator:)` to initialize the `OctopusKit.shared` singleton instance, specifying a `OctopusGameCoordinator` or its subclass, with a list of `OctopusGameState`s and their associated scenes.
 class OctopusAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {

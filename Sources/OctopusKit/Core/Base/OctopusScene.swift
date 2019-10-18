@@ -9,8 +9,8 @@
 // TODO: Tests
 // CHECK: Implement a cached list of entities for each component type?
 
-// ℹ️ DESIGN: Pause/unpause should be handled by scene code rather than `OctopusGameController` or `OctopusGameState`, as the scene may be automatically paused by the system when the player receives a call or pulls up the iOS Control Center, for example, but that does not necessarily mean that the GAME has entered a different GAME STATE.
-// However, if the player manually pauses, then the scene may signal the `OctopusGameController` to enter a "Paused" state, which may or may not then cause a scene transition.
+// ℹ️ DESIGN: Pause/unpause should be handled by scene code rather than `OctopusGameCoordinator` or `OctopusGameState`, as the scene may be automatically paused by the system when the player receives a call or pulls up the iOS Control Center, for example, but that does not necessarily mean that the GAME has entered a different GAME STATE.
+// However, if the player manually pauses, then the scene may signal the `OctopusGameCoordinator` to enter a "Paused" state, which may or may not then cause a scene transition.
 
 // 🙁 NOTE: This is a large class, but we cannot break it up into multiple files because "Overriding non-@objc declarations from extensions is not supported" as of 2018/03, and other issues with organizing code via extensions: https://github.com/realm/SwiftLint/issues/1767
 
@@ -134,8 +134,8 @@ open class OctopusScene: SKScene,
 
     // MARK: Other
 
-    public var gameController: OctopusGameController? {
-        OctopusKit.shared?.gameController
+    public var gameCoordinator: OctopusGameCoordinator? {
+        OctopusKit.shared?.gameCoordinator
     }
     
     /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OctopusSceneController`.
@@ -230,9 +230,9 @@ open class OctopusScene: SKScene,
     ///
     /// - Important: Setup the list of component systems for this scene here, using `componentSystems.createSystems(forClasses:)`.
     ///
-    /// - Note: If the scene requires the global `OctopusKit.shared.gameController.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
+    /// - Note: If the scene requires the global `OctopusKit.shared.gameCoordinator.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
     ///
-    /// - Note: A scene may choose to perform the tasks of this method in `gameControllerDidEnterState(_:from:)` instead.
+    /// - Note: A scene may choose to perform the tasks of this method in `gameCoordinatorDidEnterState(_:from:)` instead.
     open func prepareContents() {
         OctopusKit.logForFramework.add()
     }
@@ -270,14 +270,14 @@ open class OctopusScene: SKScene,
     /// Called by `OctopusGameState`. To be overridden by a subclass if this same scene is used for different game states, e.g. to present different visual overlays for the paused or "game over" states.
     ///
     /// Call `super` to add default logging.
-    open func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?) {
+    open func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?) {
         OctopusKit.logForStates.add("\(String(optional: previousState)) → \(String(optional: state))")
     }
     
     /// Called by `OctopusGameState`. To be overridden by a subclass if this same scene is used for different game states, e.g. to remove visual overlays that were presented during a paused or "game over" state.
     ///
     /// Call `super` to add default logging.
-    open func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState) {
+    open func gameCoordinatorWillExitState(_ exitingState: GKState, to nextState: GKState) {
         OctopusKit.logForStates.add("\(exitingState) → \(nextState)")
     }
     
@@ -296,9 +296,9 @@ open class OctopusScene: SKScene,
     ///
     /// Also performs timer calculations and handles pausing/unpausing logic, entry removal and other preparations that are necessary for every frame.
     ///
-    /// - Note: Does not automatically update components or states. The subclass implementation must call `updateSystems(in: componentSystems, deltaTime: updateTimeDelta)` and `OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)` as applicable, or provide custom frame-update logic.
+    /// - Note: Does not automatically update components or states. The subclass implementation must call `updateSystems(in: componentSystems, deltaTime: updateTimeDelta)` and `OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)` as applicable, or provide custom frame-update logic.
     ///
-    /// The preferred pattern in OctopusKit is to simply add entities and components to the scene in a method like `prepareContents()` or `gameControllerDidEnterState(_:from:)`, and use this method to just update all component systems, letting all the per-frame game logic be handled by the `update(_:)` method of each individual component and state class.
+    /// The preferred pattern in OctopusKit is to simply add entities and components to the scene in a method like `prepareContents()` or `gameCoordinatorDidEnterState(_:from:)`, and use this method to just update all component systems, letting all the per-frame game logic be handled by the `update(_:)` method of each individual component and state class.
     ///
     /// - Important: `super.update(currentTime)` *must* be called for correct functionality (before any other code in most cases), and the subclass should also recheck `isPaused`, `isPausedBySystem`, `isPausedByPlayer` and `isPausedBySubscene` flags.
     open override func update(_ currentTime: TimeInterval) {
@@ -407,7 +407,7 @@ open class OctopusScene: SKScene,
         //
         //    super.update(currentTime)
         //    guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
-        //    OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)
+        //    OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)
         //    updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
     
@@ -572,14 +572,14 @@ open class OctopusScene: SKScene,
     ///
     /// Called from `OctopusScene.applicationWillResignActive()`.
     ///
-    /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
+    /// - NOTE: If the `OctopusGameCoordinator` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game coordinator to transition between those states here.
     open func didPauseBySystem() {}
     
     /// An abstract method for a subclass to customize scene behavior when the game is unpaused by a system event.
     ///
     /// Called from `OctopusScene.applicationDidBecomeActive()`.
     ///
-    /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
+    /// - NOTE: If the `OctopusGameCoordinator` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game coordinator to transition between those states here.
     open func didUnpauseBySystem() {}
     
     /// To be called when the player manually chooses to pause or unpause.
@@ -604,12 +604,12 @@ open class OctopusScene: SKScene,
     
     /// An abstract method for a subclass to customize scene behavior when the game is paused by the player.
     ///
-    /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
+    /// - NOTE: If the `OctopusGameCoordinator` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game coordinator to transition between those states here.
     open func didPauseByPlayer() {}
     
     /// An abstract method for a subclass to customize scene behavior when the game is unpaused by the player.
     ///
-    /// - NOTE: If the `OctopusGameController` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game controller to transition between those states here.
+    /// - NOTE: If the `OctopusGameCoordinator` includes paused/unpaused game states, an `OctopusScene` subclass should manually signal the game coordinator to transition between those states here.
     open func didUnpauseByPlayer() {}
     
     /// To be called when a modal user interface, such as an alert or other dialog which demands player attention, begins or finishes.

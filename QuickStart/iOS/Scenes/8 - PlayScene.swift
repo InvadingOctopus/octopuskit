@@ -12,7 +12,7 @@
 //
 //  It displays a button which signals the current game state to transition to the next state when it's tapped.
 //
-//  It also displays the data from a "global" component which is part of the game controller entity, so it persists across all states and scenes.
+//  It also displays the data from a "global" component which is part of the game coordinator entity, so it persists across all states and scenes.
 
 import SpriteKit
 import GameplayKit
@@ -89,17 +89,17 @@ final class PlayScene: OctopusScene {
                                     GameStateLabelComponent(positionOffset: CGPoint(x: 0,
                                                                                     y: self.frame.size.halved.height - 50))])
         
-        if let globalDataComponent = OctopusKit.shared?.gameController.entity.component(ofType: GlobalDataComponent.self) {
+        if let globalDataComponent = OctopusKit.shared?.gameCoordinator.entity.component(ofType: GlobalDataComponent.self) {
             
             self.entity?.addComponents([
                 RelayComponent(for: globalDataComponent),
                 GlobalDataLabelComponent() ])
         }
         
-        // Add the global game controller entity to this scene so that global components will be included in the update cycle.
+        // Add the global game coordinator entity to this scene so that global components will be included in the update cycle.
         
-        if let gameControllerEntity = OctopusKit.shared?.gameController.entity {
-            self.addEntity(gameControllerEntity)
+        if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+            self.addEntity(gameCoordinatorEntity)
         }
     }
     
@@ -116,7 +116,7 @@ final class PlayScene: OctopusScene {
         //
         // In this QuickStart project, we keep updating components if the game has been paused by the player, so that the player can continue to interact with buttons to be able to unpause the game (in more complex projects this may be handled by Subscenes.)
         //
-        // The rest of the pausing and unpausing tasks are handled in gameControllerDidEnterState(_:from:) and gameControllerWillExitState(_:to:)
+        // The rest of the pausing and unpausing tasks are handled in gameCoordinatorDidEnterState(_:from:) and gameCoordinatorWillExitState(_:to:)
 
         super.update(currentTime)
         guard !isPaused, !isPausedBySystem, !isPausedBySubscene else { return }
@@ -127,13 +127,13 @@ final class PlayScene: OctopusScene {
     // MARK: - State & Scene Transitions
     
     // MARK: 🔶 STEP 8.6
-    override func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?) {
+    override func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?) {
         
         // This method is called by the current game state to notify the current scene when a new state has been entered.
         //
         // Calling super for this method is not necessary; it only adds a log entry.
         
-        super.gameControllerDidEnterState(state, from: previousState)
+        super.gameCoordinatorDidEnterState(state, from: previousState)
         
         // If this scene needs to perform tasks which are common to every state, you may put that code outside the switch statement.
         
@@ -167,8 +167,8 @@ final class PlayScene: OctopusScene {
             
             // Remove the global entity from this scene so we do not update it until the game is unpaused.
             
-            if let gameControllerEntity = OctopusKit.shared?.gameController.entity {
-                self.removeEntity(gameControllerEntity)
+            if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+                self.removeEntity(gameCoordinatorEntity)
             }
             
             // Set the scene's "paused by player" flag, because the PausedState is a state which is specific to this QuickStart project, not a feature of OctopusKit. When we manually enter this state, we must also notify OctopusKit that the player has chosen to pause the game.
@@ -185,11 +185,11 @@ final class PlayScene: OctopusScene {
     }
     
     // MARK: 🔶 STEP 8.7
-    override func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState) {
+    override func gameCoordinatorWillExitState(_ exitingState: GKState, to nextState: GKState) {
         
         // This method is called by the current game state to notify the current scene when the state will transition to a new state.
         
-        super.gameControllerWillExitState(exitingState, to: nextState)
+        super.gameCoordinatorWillExitState(exitingState, to: nextState)
         
         // If this scene needs to perform tasks which are common to every state, you may put that code outside the switch statement.
         
@@ -199,8 +199,8 @@ final class PlayScene: OctopusScene {
             
             // Add the global entity back to this scene so we can resume updating it.
             
-            if let gameControllerEntity = OctopusKit.shared?.gameController.entity {
-                self.addEntity(gameControllerEntity)
+            if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+                self.addEntity(gameCoordinatorEntity)
             }
             
             // Clear the scene's "paused by player" flag,
@@ -249,7 +249,7 @@ final class PlayScene: OctopusScene {
         //
         // Here we enter the PausedState if the game was in the PlayState.
         
-        if  let currentState = OctopusKit.shared?.gameController.currentState,
+        if  let currentState = OctopusKit.shared?.gameCoordinator.currentState,
             type(of: currentState) is PlayState.Type
         {
             self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)

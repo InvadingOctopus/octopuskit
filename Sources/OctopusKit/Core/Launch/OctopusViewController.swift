@@ -25,15 +25,15 @@ public typealias OSViewController = NSViewController
 
 #endif
 
-/// Coordinates between the SpriteKit view and game scenes. Signals the `OctopusGameController` to enter its initial state when the view is ready to present the first scene.
+/// Coordinates between the SpriteKit view and game scenes. Signals the `OctopusGameCoordinator` to enter its initial state when the view is ready to present the first scene.
 ///
 /// - Important: The view controller of your main SpriteKit view must be an `OctopusSpriteKitViewController` or its subclass, for the OctopusKit to function.
 open class OctopusViewController: OSViewController {
     
-    public unowned var gameController: OctopusGameController? {
+    public unowned var gameCoordinator: OctopusGameCoordinator? {
         didSet {
-            // Display the new game controller's current scene.
-            if oldValue !== gameController {
+            // Display the new game coordinator's current scene.
+            if oldValue !== gameCoordinator {
                 // TODO
             }
         }
@@ -43,44 +43,44 @@ open class OctopusViewController: OSViewController {
     
     // MARK: - Life Cycle
     
-    public required init(gameController: OctopusGameController? = nil) {
+    public required init(gameCoordinator: OctopusGameCoordinator? = nil) {
         
         // To support easy SwiftUI usage...
         
-        if let gameController = gameController {
+        if let gameCoordinator = gameCoordinator {
             
-            if  let existingGameController = OctopusKit.shared?.gameController {
-                fatalError("OctopusKit already initialized with \(existingGameController) — OctopusViewController initialized with \(gameController)")
+            if  let existingGameCoordinator = OctopusKit.shared?.gameCoordinator {
+                fatalError("OctopusKit already initialized with \(existingGameCoordinator) — OctopusViewController initialized with \(gameCoordinator)")
             }
             
-            OctopusKit(gameController: gameController)
-            self.gameController = gameController
+            OctopusKit(gameCoordinator: gameCoordinator)
+            self.gameCoordinator = gameCoordinator
             
         } else {
             
             guard   OctopusKit.initialized,
                     let octopusKitSingleton = OctopusKit.shared
             else {
-                fatalError("OctopusKit.shared? singleton not initialized. OctopusKit(gameController:) must be called at application launch.")
+                fatalError("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch.")
             }
         
-            self.gameController = octopusKitSingleton.gameController
+            self.gameCoordinator = octopusKitSingleton.gameCoordinator
         }
         
         super.init(nibName: nil, bundle: nil)
-        self.gameController?.viewController = self
+        self.gameCoordinator?.viewController = self
     }
     
     public required init?(coder aDecoder: NSCoder) {
         
         if  let octopusKitSingleton = OctopusKit.shared {
-            self.gameController = octopusKitSingleton.gameController
+            self.gameCoordinator = octopusKitSingleton.gameCoordinator
         } else {
-            OctopusKit.logForWarnings.add("OctopusKit.shared? singleton not initialized. OctopusKit(gameController:) must be called at application launch. Ignore this warning if this OctopusViewController was loaded via Interface Builder.")
+            OctopusKit.logForWarnings.add("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch. Ignore this warning if this OctopusViewController was loaded via Interface Builder.")
         }
         
         super.init(coder: aDecoder)
-        self.gameController?.viewController = self
+        self.gameCoordinator?.viewController = self
     }
     
 //    open override func loadView() {
@@ -125,7 +125,7 @@ open class OctopusViewController: OSViewController {
         //        spriteKitView.isMultipleTouchEnabled = ?
         //        audioEngine = OctopusAudioEngine()
         
-        // ⚠️ NOTE: Create a blank placeholder scene to prevent a jarring white screen on launch, because that's what `SKView` seems to default to as of 2018-03, until `OctopusGameController` and its initial state prepares the first scene prepare and presents its contents.
+        // ⚠️ NOTE: Create a blank placeholder scene to prevent a jarring white screen on launch, because that's what `SKView` seems to default to as of 2018-03, until `OctopusGameCoordinator` and its initial state prepares the first scene prepare and presents its contents.
         
         spriteKitView.presentScene(SKScene(size: spriteKitView.frame.size))
     }

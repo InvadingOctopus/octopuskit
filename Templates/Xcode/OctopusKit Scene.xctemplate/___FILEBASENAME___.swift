@@ -55,7 +55,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         
         // Update game state, entities and components.
         
-        OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)
+        OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)
         updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
 

@@ -1,5 +1,5 @@
 //
-//  OctopusGameController.swift
+//  OctopusGameCoordinator.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/11/07.
@@ -13,8 +13,8 @@ import GameplayKit
 ///
 /// This is a "controller" in the MVC sense; use this class to coordinate game states and scenes, and to manage global objects that must be shared across scenes, such as the game world, player data, and network connections etc.
 ///
-/// You may use `OctopusGameController` as-is or subclass it to add any global/top-level functionality that is specific to your game.
-open class OctopusGameController: GKStateMachine, OctopusScenePresenter, ObservableObject {
+/// You may use `OctopusGameCoordinator` as-is or subclass it to add any global/top-level functionality that is specific to your game.
+open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, ObservableObject {
     
     /// Invoked by the `OctopusSpriteKitViewController` to start the game after the system/application presents the view.
     ///
@@ -75,14 +75,14 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter, Observa
         OctopusKit.logForFramework.add("states: \(states) — initial: \(initialStateClass)")
         
         self.initialStateClass = initialStateClass
-        self.entity = OctopusEntity(name: OctopusKit.Constants.Strings.gameControllerEntityName)
+        self.entity = OctopusEntity(name: OctopusKit.Constants.Strings.gameCoordinatorEntityName)
         super.init(states: states)
         registerForNotifications()
     }
     
     private override init(states: [GKState]) {
         // The default initializer is hidden so that only `OctopusGameState` is accepted.
-        fatalError("OctopusGameController(states:) not implemented. Initialize with OctopusGameController(states:initialStateClass:)")
+        fatalError("OctopusGameCoordinator(states:) not implemented. Initialize with OctopusGameCoordinator(states:initialStateClass:)")
     }
     
     fileprivate func registerForNotifications() {
@@ -147,7 +147,7 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter, Observa
             fatalError("OctopusKit not initialized")
         }
         
-        // Even though GKStateMachine should handle the correct transitions between states, this controller should only initiate the initial state only once, just to be extra safe, and also as a flag for other classes to refer to if needed.
+        // Even though GKStateMachine should handle the correct transitions between states, this coordinator should only initiate the initial state only once, just to be extra safe, and also as a flag for other classes to refer to if needed.
         
         guard !didEnterInitialState else {
             OctopusKit.logForFramework.add("didEnterInitialState already set. currentState: \(String(optional: currentState))")
@@ -155,7 +155,7 @@ open class OctopusGameController: GKStateMachine, OctopusScenePresenter, Observa
         }
         
         if viewController == nil {
-            OctopusKit.logForDebug.add("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OctopusGameController was initialized early in the application life cycle.")
+            OctopusKit.logForDebug.add("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OctopusGameCoordinator was initialized early in the application life cycle.")
         }
         
         self.didEnterInitialState = enter(initialStateClass)

@@ -12,22 +12,22 @@ import GameplayKit
 /// A protocol for types that control game state transitions and scene presentation based on input from the current scene, such as `OctopusSceneController`.
 public protocol OctopusSceneDelegate: class {
     
-    /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide how to interpret the "completion" of a scene and which state to transition to, if any.
+    /// Notifies the current `OctopusGameState` of the `OctopusGameCoordinator` state machine. The state's logic should decide how to interpret the "completion" of a scene and which state to transition to, if any.
     func octopusSceneDidFinish(_ scene: OctopusScene)
     
-    /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide which state should be the "next" state and whether to transition.
+    /// Notifies the current `OctopusGameState` of the `OctopusGameCoordinator` state machine. The state's logic should decide which state should be the "next" state and whether to transition.
     ///
-    /// - Returns: `true` if the `OctopusGameController` did change its state, or `false` if the state could not be changed or if there was no "next" state.
+    /// - Returns: `true` if the `OctopusGameCoordinator` did change its state, or `false` if the state could not be changed or if there was no "next" state.
     @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool
     
-    /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide which state should be the "previous" state and whether to transition.
+    /// Notifies the current `OctopusGameState` of the `OctopusGameCoordinator` state machine. The state's logic should decide which state should be the "previous" state and whether to transition.
     ///
-    /// - Returns: `true` if the `OctopusGameController` did change its state, or `false` if the state could not be changed or if there was no "previous" state.
+    /// - Returns: `true` if the `OctopusGameCoordinator` did change its state, or `false` if the state could not be changed or if there was no "previous" state.
     @discardableResult func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool
     
-    /// Notifies the current `OctopusGameState` of the `OctopusGameController` state machine. The state's logic should decide whether the requested transition is valid.
+    /// Notifies the current `OctopusGameState` of the `OctopusGameCoordinator` state machine. The state's logic should decide whether the requested transition is valid.
     ///
-    /// - Returns: `true` if the `OctopusGameController` did change its state, or `false` if the state could not be changed.
+    /// - Returns: `true` if the `OctopusGameCoordinator` did change its state, or `false` if the state could not be changed.
     @discardableResult func octopusScene(_ scene: OctopusScene,
                                          didRequestGameState stateClass: OctopusGameState.Type) -> Bool
     

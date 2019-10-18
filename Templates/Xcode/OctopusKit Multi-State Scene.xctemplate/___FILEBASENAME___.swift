@@ -5,7 +5,7 @@ import GameplayKit
 
 // MARK: - PlayableState
 
-// A placeholder provided as an example of a possible state for the game. Include this state when initializing the `OctopusGameController` state machine. This class may be moved out to a separate file and extended.
+// A placeholder provided as an example of a possible state for the game. Include this state when initializing the `OctopusGameCoordinator` state machine. This class may be moved out to a separate file and extended.
 
 final class PlayableState: OctopusGameState {
     
@@ -20,7 +20,7 @@ final class PlayableState: OctopusGameState {
 
 // MARK: - PausedState
 
-// A placeholder provided as an example of a possible state for the game. Include this state when initializing the `OctopusGameController` state machine. This class may be moved out to a separate file and extended.
+// A placeholder provided as an example of a possible state for the game. Include this state when initializing the `OctopusGameCoordinator` state machine. This class may be moved out to a separate file and extended.
 
 final class PausedState: OctopusGameState {
     
@@ -76,7 +76,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     fileprivate func createEntities() {
         // Customize: This is where you build your scene.
         //
-        // You may also perform scene construction and deconstruction in `gameControllerDidEnterState(_:from:)` and `gameControllerWillExitState(_:to:)`
+        // You may also perform scene construction and deconstruction in `gameCoordinatorDidEnterState(_:from:)` and `gameCoordinatorWillExitState(_:to:)`
     }
     
     // MARK: - Frame Update
@@ -87,15 +87,15 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         
         // Update game state, entities and components.
         
-        OctopusKit.shared?.gameController.update(deltaTime: updateTimeDelta)
+        OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)
         updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
     
     // MARK: - States
     
     /// Useful in games that use a single scene for multiple games states (e.g. displaying an overlay for the paused state, menus, etc. on the gameplay view.)
-    override func gameControllerDidEnterState(_ state: GKState, from previousState: GKState?) {
-        super.gameControllerDidEnterState(state, from: previousState)
+    override func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?) {
+        super.gameCoordinatorDidEnterState(state, from: previousState)
         
         // If this scene needs to perform tasks which are common to every state, you may put that code outside the switch statement.
         
@@ -113,8 +113,8 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     }
     
     /// Useful in games that use a single scene for multiple games states (e.g. removing overlays that were displaying during a paused state, menus, etc.)
-    override func gameControllerWillExitState(_ exitingState: GKState, to nextState: GKState) {
-        super.gameControllerWillExitState(exitingState, to: nextState)
+    override func gameCoordinatorWillExitState(_ exitingState: GKState, to nextState: GKState) {
+        super.gameCoordinatorWillExitState(exitingState, to: nextState)
         
         // If this scene needs to perform tasks which are common to every state, you may put that code outside the switch statement.
         
@@ -134,7 +134,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     // MARK: - Pausing/Unpausing
     
     override func didPauseBySystem() {
-        if  let currentState = OctopusKit.shared?.gameController.currentState,
+        if  let currentState = OctopusKit.shared?.gameCoordinator.currentState,
             type(of: currentState) is PlayableState.Type
         {
             self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PausedState.self)
@@ -144,7 +144,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     override func didUnpauseBySystem() {
         // If we were in the paused game state, remain in that state so the player has to manually unpause when they are ready.
         
-        if  let currentState = OctopusKit.shared?.gameController.currentState,
+        if  let currentState = OctopusKit.shared?.gameCoordinator.currentState,
             type(of: currentState) is PausedState.Type
         {
             // Since we are still in the paused state, keep the action paused, preventing `super.applicationDidBecomeActive()` from resuming it.

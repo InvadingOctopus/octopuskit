@@ -16,7 +16,7 @@ final class GameStateLabelComponent: SpriteKitAttachmentComponent<SKLabelNode>, 
     var stateLabel: SKLabelNode?
     
     var stateName: String {
-        switch OctopusKit.shared?.gameController.currentState {
+        switch OctopusKit.shared?.gameCoordinator.currentState {
         case is LogoState:      return "LogoState"
         case is TitleState:     return "TitleState"
         case is PlayState:      return "PlayState"

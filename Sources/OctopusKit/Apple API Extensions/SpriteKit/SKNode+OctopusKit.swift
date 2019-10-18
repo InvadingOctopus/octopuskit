@@ -120,7 +120,7 @@ extension SKNode {
     
     /// Offsets the `position` by the `safeAreaInsets` of the parent scene's view. May be necessary for correct placement of visual elements on iPhone X and other devices where the edges of the display are not uniformly visible.
     ///
-    /// - Important: This method should generally be called after this node is added to a scene, as it uses the scene's `view` property. If a node needs to be offset before it's added to a scene, then provide the optional `forView` argument. It may be convenient to use `OctopusKit.shared?.gameControllerView`.
+    /// - Important: This method should generally be called after this node is added to a scene, as it uses the scene's `view` property. If a node needs to be offset before it's added to a scene, then provide the optional `forView` argument. It may be convenient to use `OctopusKit.shared?.gameCoordinatorView`.
     ///
     /// - Important: This method simply performs an addition or subtraction on the `x` or `y` value; to properly ensure that the node is within the `safeAreaInsets`, use the `insetWithinSafeArea(edge:)` method.
     ///

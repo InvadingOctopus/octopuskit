@@ -32,7 +32,7 @@ final class GameOverState: OctopusGameState {
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         
-        // 🔶 STEP 10.3: The game controller calls this method to check if the current state can transition to the specified state.
+        // 🔶 STEP 10.3: The game coordinator calls this method to check if the current state can transition to the specified state.
         //
         // The GameOverState can only lead to either the TitleState or the PlayState.
         

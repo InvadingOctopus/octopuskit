@@ -8,7 +8,7 @@
 
 //  🔶 STEP 6: The title screen (aka "main menu") for the QuickStart project.
 //
-//  This scene displays a button which signals the game controller to enter the PlayState when it's tapped.
+//  This scene displays a button which signals the game coordinator to enter the PlayState when it's tapped.
 
 import SpriteKit
 import GameplayKit
@@ -95,10 +95,10 @@ final class TitleScene: OctopusScene {
             SpriteKitComponent(node: title)
             ]))
         
-        // Add the global game controller entity to this scene so that global components will be included in the update cycle.
+        // Add the global game coordinator entity to this scene so that global components will be included in the update cycle.
         
-        if let gameControllerEntity = OctopusKit.shared?.gameController.entity {
-            self.addEntity(gameControllerEntity)
+        if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+            self.addEntity(gameCoordinatorEntity)
         }
     }
     

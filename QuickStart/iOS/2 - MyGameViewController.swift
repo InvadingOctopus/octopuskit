@@ -12,7 +12,7 @@
 //
 //  If you are using SwiftUI, then simply create an OctopusKitView:
 //
-//  OctopusKitView<MyGameViewController>(gameControllerOverride: QuickStartGameController())
+//  OctopusKitView<MyGameViewController>(gameCoordinatorOverride: QuickStartGameCoordinator())
 //
 //  If you are using AppKit or UIKit, then the view controller for the SKView in your main storyboard must be the OctopusViewController class, or a subclass of it that is specific to your game, like the MyGameViewController in this project.
 

@@ -140,9 +140,9 @@ public struct OctopusLog {
         
         var currentFrameNumber: UInt64 = 0
         
-        // ⚠️ Trying to access `OctopusKit.shared.currentScene` at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so we delay it by checking something like `gameController.didEnterInitialState`
+        // ⚠️ Trying to access `OctopusKit.shared.currentScene` at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so we delay it by checking something like `gameCoordinator.didEnterInitialState`
         
-        if OctopusKit.shared?.gameController.didEnterInitialState ?? false {
+        if OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false {
             currentFrameNumber = OctopusKit.shared?.currentScene?.currentFrameNumber ?? 0
         }
         else {

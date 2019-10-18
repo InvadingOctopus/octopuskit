@@ -42,7 +42,7 @@ permalink: documentation/tips.html
 
 ## Tips & Tricks
 
-- You can have multiple "games" within a single project, by using multiple `OctopusGameController`s (each with its own set of `OctopusGameState`s and associated scenes, etc.) and programmatically  choosing between them in `OctopusAppDelegate.configureOctopusEngine()`.
+- You can have multiple "games" within a single project, by using multiple `OctopusGameCoordinator`s (each with its own set of `OctopusGameState`s and associated scenes, etc.) and programmatically  choosing between them in `OctopusAppDelegate.configureOctopusEngine()`.
 
 - [TODO: Tip for sharing "global" data via `RelayComponent`s.]
     
