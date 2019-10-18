@@ -122,8 +122,8 @@ public extension OctopusScenePresenter {
         }
         
         // ⚠️ BUG? NOTE: Set `currentScene` to `incomingScene`, because the `spriteKitView.scene` will still be the previous (outgoing) scene at this point for some reason.
-        
-        if let presentedScene = spriteKitView.scene as? OctopusScene {
+                
+        if spriteKitView.scene is OctopusScene {
             self.currentScene = incomingScene
         } else {
             OctopusKit.logForErrors.add("Cannot cast spriteKitView.scene as OctopusScene: \(String(optional: spriteKitView.scene))")
