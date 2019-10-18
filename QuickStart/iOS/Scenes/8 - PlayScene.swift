@@ -255,4 +255,13 @@ final class PlayScene: OctopusScene {
         }
     }
 
+    override func didPauseByPlayer() {
+        super.didPauseByPlayer()
+        self.physicsWorld.speed = 0.0
+    }
+    
+    override func didUnpauseByPlayer() {
+        super.didUnpauseByPlayer()
+        self.physicsWorld.speed = 1.0
+    }
 }
