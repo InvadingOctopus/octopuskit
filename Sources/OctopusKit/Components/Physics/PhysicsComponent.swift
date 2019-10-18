@@ -33,7 +33,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
                     assignBody(to: node)
                 }
                     
-                // Otherise, if our body was set to `nil`, then set the node's body to `nil` as well, as this would be the expected behavior of modifying the `PhysicsComponent` of an entity with an existing node.
+                // Otherwise, if our body was set to `nil`, then set the node's body to `nil` as well, as this would be the expected behavior of modifying the `PhysicsComponent` of an entity with an existing node.
                 else if self.physicsBody == nil {
                     node.physicsBody = nil
                 }
@@ -84,7 +84,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
     }
     
     public func assignBody(to node: SKNode) {
-        // This is a seprate method so that the `physicsBody` `didSet` can call it without superfluously logging a `didAddToEntity(withNode:)` call.
+        // This is a separate method so that the `physicsBody` `didSet` can call it without superfluously logging a `didAddToEntity(withNode:)` call.
         
         // TODO: Test all scenarios! (component's body, node's body, body's node, etc.)
         
