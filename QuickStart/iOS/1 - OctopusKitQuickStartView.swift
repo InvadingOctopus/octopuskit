@@ -44,7 +44,7 @@ struct OctopusKitQuickStartUI: View {
     
     var body: some View {
     
-        gameCoordinator.$currentScene
+        _ = gameCoordinator.$currentScene
             .compactMap { $0 }
             .receive(on: RunLoop.main)
             .sink { (scene) in
