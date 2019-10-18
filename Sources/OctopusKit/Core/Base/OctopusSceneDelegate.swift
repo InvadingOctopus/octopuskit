@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-/// A protocol for types that control game state transitions and scene presentation based on input from the current scene, such as `OctopusSceneController`.
+/// A protocol for types that control game state transitions and scene presentation based on input from the current scene, such as `OctopusGameState`.
 public protocol OctopusSceneDelegate: class {
     
     /// Notifies the current `OctopusGameState` of the `OctopusGameCoordinator` state machine. The state's logic should decide how to interpret the "completion" of a scene and which state to transition to, if any.
@@ -31,12 +31,12 @@ public protocol OctopusSceneDelegate: class {
     @discardableResult func octopusScene(_ scene: OctopusScene,
                                          didRequestGameState stateClass: OctopusGameState.Type) -> Bool
     
-    /// Requests the scene controller to present the scene with the specified filename, without changing the current game state.
+    /// Requests the OctopusScenePresenter to present the scene with the specified filename, without changing the current game state.
     func octopusScene(_ outgoingScene: OctopusScene,
                       didRequestTransitionTo nextSceneFileName: String,
                       withTransition transition: SKTransition?)
     
-    /// Requests the scene controller to present the scene of the specified class, without changing the current game state.
+    /// Requests the OctopusScenePresenter to present the scene of the specified class, without changing the current game state.
     func octopusScene(_ outgoingScene: OctopusScene,
                       didRequestTransitionTo nextSceneClass: OctopusScene.Type,
                       withTransition transition: SKTransition?)
