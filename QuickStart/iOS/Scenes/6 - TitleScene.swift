@@ -123,7 +123,7 @@ final class TitleScene: OctopusScene {
     // MARK: 🔶 STEP 6.6
     override func transition(for nextSceneClass: OctopusScene.Type) -> SKTransition? {
         
-        // This method is called by the scene controller to ask the current scene for a transition animation between the outgoing scene and the next scene.
+        // This method is called by the OctopusScenePresenter to ask the current scene for a transition animation between the outgoing scene and the next scene.
         //
         // Here we display transition effects if the next scene is the PlayScene.
         
@@ -139,7 +139,7 @@ final class TitleScene: OctopusScene {
         let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 1.0).withTimingMode(.easeIn)
         colorFill.run(fadeIn)
         
-        // Next, provide the scene controller with an animation to apply between the contents of this scene and the upcoming scene.
+        // Next, provide the OctopusScenePresenter with an animation to apply between the contents of this scene and the upcoming scene.
         
         let transition = SKTransition.doorsOpenVertical(withDuration: 2.0)
         

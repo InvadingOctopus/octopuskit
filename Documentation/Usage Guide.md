@@ -54,7 +54,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 ### 🛠 **To import OctopusKit into a new or existing project**:
 
-1. Your storyboard should have an `SKView` whose controller is or inherits from `OctopusSceneController`.
+1. Your storyboard should have an `SKView` whose controller is or inherits from `OctopusViewController`.
 
 2. Your `AppDelegate` class must inherit from `OctopusAppDelegate`. It needs to implement (override) only one method: `applicationWillLaunchOctopusKit()`, where it must initialize the shared `OctopusKit` singleton instance by calling:
 
@@ -345,7 +345,7 @@ A component may be conceptually classified under one or more of the following ca
 
 [TODO: Incomplete section]
 
-Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusSceneController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
+Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusViewController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
 
 ----
 

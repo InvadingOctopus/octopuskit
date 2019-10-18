@@ -206,7 +206,7 @@ Your primary workflow will be writing component classes for each "part" of the g
     > 2. Use the Xcode Scene Editor as your starting point, to create template scenes that may be loaded as top-level `SKReferenceNode` instances of an `OctopusScene`. This approach allows a modicum of "WYSIWYG" visual design and previewing.  
     
     > 3. Create a scene almost entirely in the Xcode Scene Editor, adding any supported components, actions, physics bodies, navigation graphs and textures etc. right in the IDE.   
-Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusSceneController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
+Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusViewController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
     
     > 4. You don't *have* to use any of the architectures and patterns suggested here; you don't have to use game states, and your game objects don't even have to inherit from any OK classes. You could use your own architecture, and just use OK for a few helper methods etc., keeping only what you need from this framework and excluding the rest from compilation.
 

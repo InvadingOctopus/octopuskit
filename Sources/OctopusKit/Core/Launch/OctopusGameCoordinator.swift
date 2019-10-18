@@ -103,7 +103,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
                     
                     // NOTE: Call `scene.applicationDidBecomeActive()` before `enterInitialState()` so we don't issue a superfluous unpause event to the very first scene of the game.
                     
-                    // CHECK: Compare launch performance between calling `OctopusSceneController.enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! versus `OctopusSceneController.viewWillLayoutSubviews()`
+                    // CHECK: Compare launch performance between calling `OctopusViewController.enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! versus `OctopusViewController.viewWillLayoutSubviews()`
                     
                     if  let scene = self.currentScene {
                         scene.applicationDidBecomeActive()

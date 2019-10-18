@@ -107,14 +107,14 @@ open class OctopusViewController: OSViewController {
             
             OctopusKit.logForFramework.add("Root view is nil or not an SpriteKit SKView — Creating child SKView")
             
-            guard let rootView = self.view else { fatalError("OctopusSceneController has no root view!") }
+            guard let rootView = self.view else { fatalError("OctopusViewController has no root view!") }
             
             let childView = SKView(frame: rootView.frame)
             rootView.addSubview(childView)
             self.spriteKitView = childView
         }
         
-        guard let spriteKitView = self.spriteKitView else { fatalError("OctopusSceneController's spriteKitView is nil") }
+        guard let spriteKitView = self.spriteKitView else { fatalError("OctopusViewController's spriteKitView is nil") }
         
         // Configure the view...
         
@@ -133,9 +133,9 @@ open class OctopusViewController: OSViewController {
     #if os(iOS)
     // MARK: iOS-Specific
     
-    /// Specifies whether the scene controller prefers the status bar to be hidden or shown.
+    /// Specifies whether the view controller prefers the status bar to be hidden or shown.
     ///
-    /// This property allows other objects to dynamically override the associated read-only computed property of this scene controller.
+    /// This property allows other objects to dynamically override the associated read-only computed property of this view controller.
     open var prefersStatusBarHiddenOverride: Bool = true {
         didSet { self.setNeedsStatusBarAppearanceUpdate() }
     }
@@ -146,7 +146,7 @@ open class OctopusViewController: OSViewController {
     
     /// Specifies whether the system is allowed to hide the visual indicator for returning to the Home screen.
     ///
-    /// This property allows other objects to dynamically override the associated read-only computed property of this scene controller.
+    /// This property allows other objects to dynamically override the associated read-only computed property of this view controller.
     ///
     /// - NOTE: The system takes your preference into account, but setting this property to `true` is no guarantee that the indicator will be hidden.
     open var prefersHomeIndicatorAutoHiddenOverride: Bool = true {
@@ -157,18 +157,18 @@ open class OctopusViewController: OSViewController {
         return prefersHomeIndicatorAutoHiddenOverride
     }
     
-    /// Specifies whether whether the scene controller's contents should auto rotate.
+    /// Specifies whether whether the view controller's contents should auto rotate.
     ///
-    /// This property allows other objects to dynamically override the associated read-only computed property of this scene controller.
+    /// This property allows other objects to dynamically override the associated read-only computed property of this view controller.
     open var shouldAutorotateOverride: Bool = false
     
     open override var shouldAutorotate: Bool {
         return shouldAutorotateOverride
     }
     
-    /// Contains a dictionary of the interface orientations (rotations) that the scene controller supports.
+    /// Contains a dictionary of the interface orientations (rotations) that the view controller supports.
     ///
-    /// This property allows other objects to dynamically override the read-only `supportedInterfaceOrientations` computed property of this scene controller.
+    /// This property allows other objects to dynamically override the read-only `supportedInterfaceOrientations` computed property of this view controller.
     open var supportedInterfaceOrientationsOverride: [UIUserInterfaceIdiom : UIInterfaceOrientationMask] = [
         .phone: .allButUpsideDown
     ]
@@ -193,7 +193,7 @@ open class OctopusViewController: OSViewController {
         // NOTE: As the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         // NOTE: Better yet, `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! :)
-        // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OctopusSceneController.viewWillLayoutSubviews()`
+        // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OctopusViewController.viewWillLayoutSubviews()`
     }
     
     open override func didReceiveMemoryWarning() {
@@ -222,7 +222,7 @@ open class OctopusViewController: OSViewController {
         // NOTE: As the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         // NOTE: Better yet, `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! :)
-        // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OctopusSceneController.viewWillLayoutSubviews()`
+        // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OctopusViewController.viewWillLayoutSubviews()`
     }
     
     #endif

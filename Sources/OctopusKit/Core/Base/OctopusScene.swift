@@ -138,7 +138,7 @@ open class OctopusScene: SKScene,
         OctopusKit.shared?.gameCoordinator
     }
     
-    /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OctopusSceneController`.
+    /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OctopusViewController`.
     public var octopusSceneDelegate: OctopusSceneDelegate? {
         didSet {
             OctopusKit.logForDebug.add("\(String(optional: oldValue)) → \(String(optional: octopusSceneDelegate))")
@@ -180,7 +180,7 @@ open class OctopusScene: SKScene,
         self.lastUpdateTime = 0 // CHECK: nil?
     }
     
-    /// An abstract method called by `OctopusSceneController` before the scene is presented in a view. Override this in a subclass to set up scaling etc. before the scene displays any content.
+    /// An abstract method called by `OctopusViewController` before the scene is presented in a view. Override this in a subclass to set up scaling etc. before the scene displays any content.
     ///
     /// - Important: This method has to be called manually (e.g. from the `SKView`'s view controller) before presenting the scene. It is not invoked by the system and is *not* guaranteed to be called.
     open func willMove(to view: SKView) {}
@@ -198,7 +198,7 @@ open class OctopusScene: SKScene,
             didPrepareContents = true // Take care of this flag here so that subclass does not have to do so in `prepareContents()`.
         }
         
-        currentFrameNumber = 1 // Set the frame counter to 1 here because it is incremented in `didFinishUpdate()`, so that logs correctly say the first frame number during the first `update(_:)` method. ⚠️ NOTE: There is still a call to `OctopusSceneController-Universal.viewWillLayoutSubviews()` after this, before the first `update(_:)`. CHECK: Fix?
+        currentFrameNumber = 1 // Set the frame counter to 1 here because it is incremented in `didFinishUpdate()`, so that logs correctly say the first frame number during the first `update(_:)` method. ⚠️ NOTE: There is still a call to `OctopusViewController-Universal.viewWillLayoutSubviews()` after this, before the first `update(_:)`. CHECK: Fix?
     }
     
     /// Creates an entity to represent the scene itself (the root node.)
