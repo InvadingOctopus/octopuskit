@@ -2,17 +2,15 @@
 //  PlayScene.swift
 //  OctopusKitQuickStart
 //
-//  Created by ShinryakuTako@invadingoctopus.io on 2018-02-10
+//  Created by ShinryakuTako@invadingoctopus.io on 2018-02-10.
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  🔶 STEP 8: The "gameplay" scene for the QuickStart project.
+//  🔶 STEP 6B: The "gameplay" scene for the QuickStart project.
 //
 //  This scene shows the content for multiple game states: PlayState, PausedState and GameOverState.
 //
-//  It displays a button which signals the current game state to transition to the next state when it's tapped.
-//
-//  It also displays the data from a "global" component which is part of the game coordinator entity, so it persists across all states and scenes.
+//  It also displays the data from a "global" component which is part of the game coordinator entity (see OctopusGameCoordinator.entity) and persists across all states and scenes.
 
 import SpriteKit
 import GameplayKit
@@ -22,7 +20,7 @@ final class PlayScene: OctopusScene {
     
     // MARK: - Life Cycle
     
-    // MARK: 🔶 STEP 8.1
+    // MARK: 🔶 STEP 6B.1
     override func sceneDidLoad() {
         
         // Set the name of this scene at the earliest override-able point, for logging purposes.
@@ -31,12 +29,12 @@ final class PlayScene: OctopusScene {
         super.sceneDidLoad()
     }
     
-    // MARK: 🔶 STEP 8.2
+    // MARK: 🔶 STEP 6B.2
     override func prepareContents() {
         
-        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare its contents.
+        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
         //
-        // The most common tasks for every scene are to prepare list of the component systems that the scene will update every frame, and to add entities to the scene.
+        // The most common tasks for every scene are to prepare the order of the component systems which the scene will update every frame, and to add entities to the scene.
         //
         // For clarity, this subclass divides those steps into two functions: createComponentSystems() and createEntities()
         //
@@ -48,18 +46,20 @@ final class PlayScene: OctopusScene {
         createEntities()
     }
     
-    // MARK: 🔶 STEP 8.3
+    // MARK: 🔶 STEP 6B.3
     fileprivate func createComponentSystems() {
         
         // Create a list of systems for each component type that must be updated in every frame of this scene.
+        //
+        // ❗️ The order of components is important. The functionality of some components depends on the output of other components.
+        //
+        // See the code and documentation for each component to check its requirements.
         
         componentSystems.createSystems(forClasses: [
             
-            // Player input components provided by OctopusKit.
+            // Components that process player input, provided by OctopusKit.
             
             TouchEventComponent.self,
-            NodeTouchComponent.self,
-            NodeTouchClosureComponent.self,
             
             // Custom components which are specific to this QuickStart project.
             
@@ -70,7 +70,7 @@ final class PlayScene: OctopusScene {
             ])
     }
     
-    // MARK: 🔶 STEP 8.4
+    // MARK: 🔶 STEP 6B.4
     fileprivate func createEntities() {
         
         // Create the entities to present in this scene.
@@ -84,7 +84,6 @@ final class PlayScene: OctopusScene {
         self.entity?.addComponents([sharedTouchEventComponent,
                                     PhysicsWorldComponent(),
                                     PhysicsComponent(physicsBody: SKPhysicsBody(edgeLoopFrom: self.frame)),
-                                    NodeSpawnerComponent(),
                                     GameStateLabelComponent(positionOffset: CGPoint(x: 0,
                                                                                     y: self.frame.size.halved.height - 50))])
         
@@ -104,7 +103,7 @@ final class PlayScene: OctopusScene {
     
     // MARK: - Frame Update
     
-    // MARK: 🔶 STEP 8.5
+    // MARK: 🔶 STEP 6B.5
     override func update(_ currentTime: TimeInterval) {
         
         // Update component systems every frame after checking the paused flags.
@@ -113,19 +112,17 @@ final class PlayScene: OctopusScene {
         //
         // OctopusKit defers component updates to the OctopusScene subclass, because each specific scene may need to handle pausing, unpausing and other tasks differently.
         //
-        // In this QuickStart project, we keep updating components if the game has been paused by the player, so that the player can continue to interact with buttons to be able to unpause the game (in more complex projects this may be handled by Subscenes.)
-        //
         // The rest of the pausing and unpausing tasks are handled in gameCoordinatorDidEnterState(_:from:) and gameCoordinatorWillExitState(_:to:)
 
         super.update(currentTime)
-        guard !isPaused, !isPausedBySystem, !isPausedBySubscene else { return }
+        guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
         
         updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
     }
     
     // MARK: - State & Scene Transitions
     
-    // MARK: 🔶 STEP 8.6
+    // MARK: 🔶 STEP 6B.6
     override func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?) {
         
         // This method is called by the current game state to notify the current scene when a new state has been entered.
@@ -141,6 +138,8 @@ final class PlayScene: OctopusScene {
         case is PlayState.Type: // Entering `PlayState`
             
             self.backgroundColor = SKColor(red: 0.1, green: 0.3, blue: 0.1, alpha: 1.0)
+            
+            self.entity?.addComponent(NodeSpawnerComponent())
             
             // Add a fade-in effect if the previous state and scene was the title screen.
             
@@ -183,7 +182,7 @@ final class PlayScene: OctopusScene {
         
     }
     
-    // MARK: 🔶 STEP 8.7
+    // MARK: 🔶 STEP 6B.7
     override func gameCoordinatorWillExitState(_ exitingState: GKState, to nextState: GKState) {
         
         // This method is called by the current game state to notify the current scene when the state will transition to a new state.
@@ -193,6 +192,10 @@ final class PlayScene: OctopusScene {
         // If this scene needs to perform tasks which are common to every state, you may put that code outside the switch statement.
         
         switch type(of: exitingState) {
+        
+        case is PlayState.Type: // Exiting `PlayState`
+            
+            self.entity?.removeComponent(ofType: NodeSpawnerComponent.self)
             
         case is PausedState.Type: // Exiting `PausedState`
             
@@ -211,7 +214,7 @@ final class PlayScene: OctopusScene {
         
     }
     
-    // MARK: 🔶 STEP 8.8
+    // MARK: 🔶 STEP 6B.8
     override func transition(for nextSceneClass: OctopusScene.Type) -> SKTransition? {
         
         // This method is called by the OctopusScenePresenter to ask the current scene for a transition animation between the outgoing scene and the next scene.
@@ -244,7 +247,7 @@ final class PlayScene: OctopusScene {
     
     override func didPauseBySystem() {
         
-        // 🔶 STEP 8.?: This method is called when the player switches to a different application, or the device receives a phone call etc.
+        // 🔶 STEP 6B.?: This method is called when the player switches to a different application, or the device receives a phone call etc.
         //
         // Here we enter the PausedState if the game was in the PlayState.
         
@@ -263,3 +266,5 @@ final class PlayScene: OctopusScene {
         self.physicsWorld.speed = 1.0
     }
 }
+
+// NEXT: See PausedState (STEP 7)
