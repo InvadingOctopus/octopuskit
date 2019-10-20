@@ -23,10 +23,7 @@ struct TitleUI: View {
             
             Spacer()
             
-            nextStateButton
-                .buttonStyle(QuickStartButtonStyle(color: .accentColor))
-            
-            Text("☝️ These buttons are SwiftUI controls!")
+            Text("👇 This button is a SwiftUI control!")
                 .font(.footnote)
                 .foregroundColor(.white)
                 .opacity(0.9)
@@ -35,16 +32,16 @@ struct TitleUI: View {
                     .foregroundColor(.black)
                     .opacity(0.6))
                 .padding(.bottom, 15)
+            
+            nextStateButton
         }
-        //            .transition(.move(edge: .bottom))
-        
+        .padding(.bottom, 20)
     }
     
     var nextStateButton: some View {
         
         Button(action: nextGameState) {
-            Text("CYCLE GAME STATES")
-                .fontWeight(.bold)
+            QuickStartButtonLabel(text: "CYCLE GAME STATES", color: .accentColor)
         }
     }
     

@@ -26,16 +26,14 @@ struct OctopusKitQuickStartView: View {
 }
 
 /// A custom style for buttons to reduce redundant view modifier code.
-struct QuickStartButtonStyle: ButtonStyle {
+struct QuickStartButtonLabel: View {
     
+    var text: String
     var color: Color
     
-    init(color: Color = .accentColor) {
-        self.color = color
-    }
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
+    var body: some View {
+        Text(text)
+        .fontWeight(.bold)
             .foregroundColor(.white)
             .padding()
             .background(RoundedRectangle(cornerRadius: 10)
