@@ -83,7 +83,7 @@ final class TitleScene: OctopusScene {
         
         // First we create a SpriteKit node.
         
-        let title = SKLabelNode(text: "EPIC NEW NAME™",
+        let title = SKLabelNode(text: "EPIC NEW GAME™",
                                 font: OctopusFont(name: "AvenirNextCondensed-Bold",
                                                   size: 25,
                                                   color: .white))
