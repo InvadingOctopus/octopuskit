@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import SwiftUI
 
 /// A protocol for types that will receive notifications about state transitions, and can provide visual effects for scene transitions.
 public protocol OctopusGameStateDelegate: class {
@@ -16,7 +17,7 @@ public protocol OctopusGameStateDelegate: class {
 }
 
 /// Abstract base class for game states.
-open class OctopusGameState: GKState, OctopusSceneDelegate {
+open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     
     // ℹ️ DESIGN: Not including a `gameCoordinator: OctopusGameCoordinator` property in `OctopusGameState`, so that subclasses may provide their own `gameCoordinator` property with their custom subclass of `OctopusGameCoordinator` if needed.
     
@@ -29,8 +30,15 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
     
     /// The scene that will be presented when the `OctopusGameCoordinator` (or your custom subclass) enters this state.
     ///
-    /// - Important: Changing this property while the state machine is already in this state, will **not** present the new scene; this property takes effect only in `didEnter(from:)`.
+    /// - IMPORTANT: Changing this property while the state machine is already in this state, will **not** present the new scene; this property takes effect only in `didEnter(from:)`.
     public var associatedSceneClass: OctopusScene.Type?
+    
+    // TODO: SWIFT LIMITATION: `associatedSwiftUIView` is an `AnyView` until we can figure out how to pass views conveniently and efficiently.
+    // Casting to `AnyView` may decrease performance, according to:
+    // https://www.hackingwithswift.com/quick-start/swiftui/how-to-return-different-view-types
+    
+    /// The SwiftUI layer to display over the game's SpriteKit view.
+    @Published public var associatedSwiftUIView: AnyView
     
     public var gameCoordinator: OctopusGameCoordinator? {
         if  let gameCoordinator = self.stateMachine as? OctopusGameCoordinator {
@@ -52,10 +60,25 @@ open class OctopusGameState: GKState, OctopusSceneDelegate {
     
     // MARK: - Life Cycle
     
-    /// Creates a game state and associates it with the specified scene class.
-    public init(associatedSceneClass: OctopusScene.Type?) {
-        super.init()
+    /// Creates a game state and associates it with the specified scene class and UI overlay.
+    public init(associatedSceneClass: OctopusScene.Type? = nil,
+                associatedSwiftUIView: AnyView = AnyView(EmptyView()))
+    {
         self.associatedSceneClass = associatedSceneClass
+        self.associatedSwiftUIView = associatedSwiftUIView
+        super.init()
+    }
+    
+    /// Creates a game state and associates it with the specified scene class and UI overlay.
+    ///
+    /// You may construct a SwiftUI view as a trailing closure to this initializer.
+    public init <ViewType: View>
+        (associatedSceneClass: OctopusScene.Type? = nil,
+         @ViewBuilder associatedSwiftUIView: () -> ViewType)
+    {
+        self.associatedSceneClass = associatedSceneClass
+        self.associatedSwiftUIView = AnyView(associatedSwiftUIView())
+        super.init()
     }
     
     /// - Important: When overriding in a subclass, take care of when you call `super.didEnter(from:)` as that affects when the current `OctopusScene` is notified via `gameCoordinatorDidEnterState(_:from:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
