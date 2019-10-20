@@ -1,6 +1,6 @@
 #  OctopusKit QuickStart (iOS)
 
-#### Xcode game project replacement files and rudimentary tutorial for the [OctopusKit][repository] game engine.
+#### Template and tutorial for the [OctopusKit][repository] game engine.
 
 ## How To Use
 
@@ -12,11 +12,11 @@
     
     > Xcode File menu » Swift Packages » Add Package Dependency...
 
-3. 📥 **Copy** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package folder to your project's source folder. 
+3. 📥 **Copy** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package to your project's source folder. 
 
 4. 🗂 **Include** the copied files in your Xcode project. 
 
-	> By dragging the copies from your project's folder into the Project Navigator.
+	> By dragging the copies from your project's folder into the Project Navigator sidebar.
 
 5. 🖼 Add the `OctopusKitQuickStartView` to the `ContentView.swift` file:
 
