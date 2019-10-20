@@ -1,5 +1,5 @@
 //
-//  OctopusKitView-iOS.swift
+//  OctopusViewControllerRepresentable-iOS.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019-10-07
@@ -11,8 +11,8 @@ import SpriteKit
 
 #if canImport(UIKit)
 
-/// Displays OctopusKit content.
-public struct OctopusKitView <OctopusGameCoordinatorType, OctopusViewControllerType> : UIViewControllerRepresentable
+/// Encapsulates an OctopusViewController for presenting SpriteKit/SceneKit/Metal content in a SwiftUI application.
+public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, OctopusViewControllerType> : UIViewControllerRepresentable
     where OctopusGameCoordinatorType: OctopusGameCoordinator,
     OctopusViewControllerType: OctopusViewController
 {
@@ -21,17 +21,17 @@ public struct OctopusKitView <OctopusGameCoordinatorType, OctopusViewControllerT
     
     public init() {}
     
-    public func makeCoordinator() -> OctopusKitView.Coordinator<OctopusViewControllerType> {
-        OctopusKitView.Coordinator() //(gameCoordinator: gameCoordinator)
+    public func makeCoordinator() -> OctopusViewControllerRepresentable.Coordinator<OctopusViewControllerType> {
+        OctopusViewControllerRepresentable.Coordinator()
     }
     
-    public func makeUIViewController(context: UIViewControllerRepresentableContext<OctopusKitView>) -> OctopusViewControllerType {
+    public func makeUIViewController(context: UIViewControllerRepresentableContext<OctopusViewControllerRepresentable>) -> OctopusViewControllerType {
         return context.coordinator.createViewController(with: self.gameCoordinator)
         //return context.coordinator.viewController
     }
     
     public func updateUIViewController(_ uiViewController: OctopusViewControllerType,
-                                       context: UIViewControllerRepresentableContext<OctopusKitView>)
+                                       context: UIViewControllerRepresentableContext<OctopusViewControllerRepresentable>)
     {
         if !gameCoordinator.didEnterInitialState {
             gameCoordinator.enterInitialState()
@@ -39,7 +39,7 @@ public struct OctopusKitView <OctopusGameCoordinatorType, OctopusViewControllerT
     }
   
     public static func dismantleUIViewController(_ uiViewController: OctopusViewControllerType,
-                                                 coordinator: OctopusKitView.Coordinator<OctopusViewControllerType>)
+                                                 coordinator: OctopusViewControllerRepresentable.Coordinator<OctopusViewControllerType>)
     {
         coordinator.viewController.gameCoordinator?.currentScene?.didPauseBySystem()
     }
@@ -48,7 +48,7 @@ public struct OctopusKitView <OctopusGameCoordinatorType, OctopusViewControllerT
 
 #endif
 
-extension OctopusKitView {
+extension OctopusViewControllerRepresentable {
     
     public class Coordinator <OctopusViewControllerType> : NSObject
     where OctopusViewControllerType: OctopusViewController
@@ -56,8 +56,6 @@ extension OctopusKitView {
 
         var viewController: OctopusViewControllerType!
         
-//        var parent: OctopusKitView
-
         override init() { super.init() }
         
         init(gameCoordinator: OctopusGameCoordinator) {
