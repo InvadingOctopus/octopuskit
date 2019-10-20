@@ -26,7 +26,7 @@ import CoreMotion
 /// ----
 ///
 /// **Usage:**
-/// Your application must call `OctopusKit(appName:gameCoordinator:)` during launch to initialize the `OctopusKit.shared` singleton instance, specifying a `OctopusGameCoordinator` or its subclass, with a list of `OctopusGameState`s and their associated scenes.
+/// Your application must call `OctopusKit(gameCoordinator:)` during launch to initialize the `OctopusKit.shared` singleton instance, specifying a `OctopusGameCoordinator` or its subclass, with a list of `OctopusGameState`s and their associated scenes.
 ///
 /// - Note: The `OctopusKit` class contains the top-level objects common to launching all games based on the engine and interfacing with the operating system, but the functionality *specific to your game* is coordinated by `OctopusGameCoordinator` or your subclass of it.
 public final class OctopusKit {
