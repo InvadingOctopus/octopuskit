@@ -12,11 +12,13 @@ Use a flexible Entity-Component-System architecture to dynamically compose game 
 
 🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
 
-> This project is a constant **work in progess** and my first ever open-source project. I'm still learning as I go, so OctopusKit may change rapidly without maintaining backwards compatibility.
+> This project is a constant **work in progess** and my first ever open-source project. I'm still learning as I go, so OctopusKit may change rapidly without maintaining backwards compatibility or updating the documentation.
 
 > OK is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 
-> If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it! *– ShinryakuTako*  
+> If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it! 
+ 
+> *– ShinryakuTako*  
  
 ## Examples
 
@@ -33,7 +35,7 @@ struct ContentView: View {
         initialStateClass: TitleState.self)
                                                 
     var body: some View {
-        OctopusKitView()
+        OctopusKitContainerView()
             .environmentObject(gameCoordinator)
             .edgesIgnoringSafeArea(.all)
             .statusBar(hidden: true)
@@ -41,7 +43,7 @@ struct ContentView: View {
 }
 ```
 
-> The coordinator object manages your game's state and scenes, and can be observed and controlled from SwiftUI.
+> The coordinator object manages your game's scenes and global state, and can be observed and controlled from SwiftUI.
 
 👾 *Creating an animated sprite*
 
@@ -174,9 +176,9 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
     
     > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
 
-- 🎛 **User Interface** like buttons, lists, HUDs, is provided via SwiftUI. So you use SpriteKit + GameplayKit to describe scenes with physics and sound, and use a dynamic, declarative syntax to design a highly flexible UI.
+- 🎛 **User Interface** like buttons, lists, HUDs, is designed in **SwiftUI**. This allows fluid animations, vector shapes, live previews, automatic data-driven updates, and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
 
-Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend."
+Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend", while SwiftUI lets you design slick HUDs and other UI in declarative code.
 
 > e.g.: say a _ParallaxBackgroundEntity_ containing a _CloudsComponent_, a *HillsComponent* and a *TreesComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.
 
@@ -188,7 +190,7 @@ Your primary workflow will be writing component classes for each "part" of the g
 
 - **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using technologies like SceneKit to render 3D content in 2D space, and it can be used for non-game apps.
 
-- **Shoulders of Giants**: The engine leverages SpriteKit, GameplayKit and other technologies provided by Apple. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
+- **Shoulders of Giants**: The engine leverages SpriteKit, GameplayKit, SwiftUI and other technologies provided by Apple. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
     
     > OK is mostly implemented through custom subclasses and extensions of the SpriteKit and GameplayKit classes, without "obscuring" them or blocking you from interacting with the base classes. This allows you to adopt this framework incrementally, and lets you integrate your game with the Xcode IDE tools such as the Scene Editor where possible.  
     
@@ -198,13 +200,13 @@ Your primary workflow will be writing component classes for each "part" of the g
 
     > 💡 You can design high-level layouts/mockups in the Scene Editor, using placeholder nodes with names (identifiers.) You may then create entities from those nodes and add components to them in code.
     
-    > Now with SwiftUI, programming is heading towards a focus code instead of visual editors anyway. 
+    > Now with SwiftUI, programming for Apple platforms is heading towards a focus on code instead of visual editors anyway. 
 
 - **Customizability & Flexibility**: The engine strives to be flexible and gives you the freedom to structure your game in various ways. Since you have full access to the engine's source code, you can modify or extend anything to suit the exact needs of each project.   
     
     > You can use any of the following approaches to building your scenes, in order of engine support:  
     
-    > 1. Perform the creation and placement of nodes mostly in code. Use the Xcode Scene Editor infrequently, to design and preview a few individual elements such as UI HUDs etc., not entire scenes, and use `SKReferenceNode` to load them in code.  
+    > 1. Perform the creation and placement of nodes mostly in code. Use the Xcode Scene Editor infrequently, to design and preview a few individual elements such as entities with specific positions etc., not entire scenes, and use `SKReferenceNode` to load them in code.  
     
     > 2. Use the Xcode Scene Editor as your starting point, to create template scenes that may be loaded as top-level `SKReferenceNode` instances of an `OctopusScene`. This approach allows a modicum of "WYSIWYG" visual design and previewing.  
     
@@ -222,6 +224,8 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
     > **Skill Level: Intermediate**: Although OK is not presented in a form designed for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
      
     > You should also read about the ["Composition over inheritance"][composition-over-inheritance] and ["Entity–component–system"][entity–component–system] patterns if you're not already familiar with those concepts, although OK's implementation of these may be different than what you expect.
+    
+    > Also see Apple's tutorials for [SwiftUI.][swiftui]
 
 2. Stuck? See [Tips & Troubleshooting.][tips-&-troubleshooting]
 
@@ -267,4 +271,5 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 [wwdc-610]: https://developer.apple.com/videos/play/wwdc2016-610/?time=137
 [composition-over-inheritance]: https://en.wikipedia.org/wiki/Composition_over_inheritance
 [entity–component–system]: https://en.wikipedia.org/wiki/Entity–component–system
-
+[swiftui]: https://developer.apple.com/tutorials/swiftui/
+[sf-symbols]: https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/
