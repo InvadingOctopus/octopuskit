@@ -17,29 +17,41 @@ struct TitleUI: View {
     
     @EnvironmentObject var gameCoordinator: MyGameCoordinator
     
+    @State var didAppear = false
+    
     var body: some View {
         
         VStack {
             
             Spacer()
             
-            Text("👇 This button is a SwiftUI control!")
-                .font(.footnote)
-                .foregroundColor(.white)
-                .opacity(0.9)
-                .padding(5)
-                .background(RoundedRectangle(cornerRadius: 5)
-                    .foregroundColor(.black)
-                    .opacity(0.6))
-                .padding(.bottom, 15)
-            
-            nextStateButton
+            if didAppear {
+                VStack {
+                    
+                    nextStateButton
+                    
+                    Text("👆 This button is a SwiftUI control!")
+                        .font(.footnote)
+                        .foregroundColor(.white)
+                        .opacity(0.9)
+                        .padding(5)
+                        .background(RoundedRectangle(cornerRadius: 5)
+                            .foregroundColor(.black)
+                            .opacity(0.6))
+                        .padding(.bottom, 15)
+                }
+                .transition(.move(edge: .bottom))
+            }
         }
         .padding(.bottom, 20)
+        .onAppear {
+            withAnimation(.spring()) {
+                self.didAppear = true
+            }
+        }
     }
     
     var nextStateButton: some View {
-        
         Button(action: nextGameState) {
             QuickStartButtonLabel(text: "CYCLE GAME STATES", color: .accentColor)
         }
