@@ -12,14 +12,12 @@ Use a flexible Entity-Component-System architecture to dynamically compose game 
 
 🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
 
-> This project is a constant **work in progess** and my first ever open-source project. I'm still learning; OctopusKit may change rapidly without maintaining backwards compatibility.
+> This project is a constant **work in progess** and my first ever open-source project. I'm still learning as I go, so OctopusKit may change rapidly without maintaining backwards compatibility.
 
-> It's the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
+> OK is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 
-> If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it!
-
-> *– ShinryakuTako*  
-
+> If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it! *– ShinryakuTako*  
+ 
 ## Examples
 
 🎨 *Using with SwiftUI*
@@ -235,9 +233,13 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 - This project may be referred to as "OctopusKit", "OK" or "OKIO" (for "OctopusKit by Invading Octopus") but "IOOK" sounds weird.
 
+- The naming is a combination of inspiration from companies like Rogue Amoeba, the .io domain, and the anime *Shinryaku! Ika Musume*.
+
 - **License: [Apache 2.0][license]**
 
 - **Tell** me how awesome or terrible everything is: [Discord][discord], [Twitter][twitter] or 🆂hinryaku🆃ako@🅘nvading🅞ctopus.ⓘⓞ
+
+    > I rarely check these though, so the best way to message may be to post something on this GitHub project.
 
 - **Support** my decadent lifestyle so I can focus on making unsaleable stuff: [My Patreon][patreon]
 
