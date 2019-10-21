@@ -17,56 +17,49 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
     OctopusViewControllerType: OctopusViewController
 {
     
+    // typealias Context = UIViewControllerRepresentableContext<Self> // Defined in UIViewControllerRepresentable
+    
     @EnvironmentObject var gameCoordinator: OctopusGameCoordinatorType
     
     public init() {}
     
-    public func makeCoordinator() -> OctopusViewControllerRepresentable.Coordinator<OctopusViewControllerType> {
-        OctopusViewControllerRepresentable.Coordinator()
+    public func makeCoordinator() -> Coordinator<OctopusViewControllerType> {
+        OctopusViewControllerRepresentable.Coordinator(gameCoordinator: self.gameCoordinator)
     }
     
-    public func makeUIViewController(context: UIViewControllerRepresentableContext<OctopusViewControllerRepresentable>) -> OctopusViewControllerType {
-        return context.coordinator.createViewController(with: self.gameCoordinator)
-        //return context.coordinator.viewController
+    public func makeUIViewController(context: Context) -> OctopusViewControllerType {
+        return context.coordinator.viewController
     }
     
     public func updateUIViewController(_ uiViewController: OctopusViewControllerType,
-                                       context: UIViewControllerRepresentableContext<OctopusViewControllerRepresentable>)
+                                       context: Context)
     {
+        // Enter the first game state if the game coordinator has not already done so.
         if !gameCoordinator.didEnterInitialState {
             gameCoordinator.enterInitialState()
         }
     }
   
     public static func dismantleUIViewController(_ uiViewController: OctopusViewControllerType,
-                                                 coordinator: OctopusViewControllerRepresentable.Coordinator<OctopusViewControllerType>)
+                                                 coordinator: Coordinator<OctopusViewControllerType>)
     {
-        coordinator.viewController.gameCoordinator?.currentScene?.didPauseBySystem()
+        uiViewController.gameCoordinator?.currentScene?.didPauseBySystem()
     }
     
 }
 
 #endif
 
-extension OctopusViewControllerRepresentable {
+public extension OctopusViewControllerRepresentable { // CHECK: Should this be public?
     
-    public class Coordinator <OctopusViewControllerType> : NSObject
-    where OctopusViewControllerType: OctopusViewController
+    class Coordinator <OctopusViewControllerType> : NSObject
+        where OctopusViewControllerType: OctopusViewController
     {
-
-        var viewController: OctopusViewControllerType!
-        
-        override init() { super.init() }
+        var viewController: OctopusViewControllerType
         
         init(gameCoordinator: OctopusGameCoordinator) {
             self.viewController = OctopusViewControllerType(gameCoordinator: gameCoordinator)
             super.init()
-        }
-
-        func createViewController(with gameCoordinator: OctopusGameCoordinator) -> OctopusViewControllerType {
-            self.viewController = OctopusViewControllerType(gameCoordinator: gameCoordinator)
-//                self.viewController = viewController
-            return viewController!
         }
     }
 }
