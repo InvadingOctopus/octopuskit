@@ -260,10 +260,12 @@ final class PlayScene: OctopusScene {
 
     override func didPauseByPlayer() {
         self.physicsWorld.speed = 0.0
+        self.isPaused = true
     }
     
     override func didUnpauseByPlayer() {
         self.physicsWorld.speed = 1.0
+        self.isPaused = false
     }
 }
 
