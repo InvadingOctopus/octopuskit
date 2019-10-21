@@ -16,9 +16,13 @@ public struct OctopusUIOverlay <OctopusGameCoordinatorType> : View
     
     @EnvironmentObject var gameCoordinator: OctopusGameCoordinatorType
     
+    private var gameStateAssociatedUIView: AnyView {
+        gameCoordinator.currentGameState?.associatedSwiftUIView ?? AnyView(EmptyView())
+    }
+    
     public init() {}
     
     public var body: some View {
-        gameCoordinator.currentGameState?.associatedSwiftUIView ?? AnyView(EmptyView())
+        gameStateAssociatedUIView
     }
 }
