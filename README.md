@@ -1,9 +1,9 @@
 # OctopusKit 👾🐙⚙️
 
-A composition-based game engine written in Swift for iOS, macOS and tvOS.  
+A game engine written in Swift for iOS, macOS and tvOS.  
 Built upon Apple's SpriteKit, GameplayKit, Metal and SwiftUI technologies.
 
-Use a flexible Entity-Component-System architecture to dynamically modify game behavior, and use the declarative SwiftUI syntax to quickly design a fluid, scalable user interface. 
+Use a flexible Entity-Component-System architecture to dynamically compose game behavior, and use the declarative SwiftUI syntax to quickly design a fluid, scalable user interface. 
 
 1. [Examples](#examples)
 2. [Overview](#overview)
