@@ -22,7 +22,7 @@ final class GameOverState: OctopusGameState {
         // The PlayScene is also associated with the PlayState and PausedState.
         
         super.init(associatedSceneClass: PlayScene.self,
-                   associatedSwiftUIView: AnyView(TitleUI()))
+                   associatedSwiftUIView: AnyView(PlayUI()))
     }
     
     @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {

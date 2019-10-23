@@ -23,11 +23,11 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
     
     override func didAddToEntity(withNode node: SKNode) {
         
-        guard let nodeSize = (node as? SKNodeWithDimensions)?.size else { return }
+        guard let parentSize = (node as? SKNodeWithDimensions)?.size else { return }
         
         // Create an initial spinny here that will be copied later, because we can conveniently access the parent node's dimensions in this method.
         
-        let w = (nodeSize.width + nodeSize.height) * CGFloat(0.05)
+        let w = (parentSize.width + parentSize.height) * CGFloat(0.05)
         
         self.spinnyNode = SKShapeNode(rectOf: CGSize(width: w, height: w), cornerRadius: w * 0.3)
         
@@ -70,9 +70,17 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
             node.addChild(spinny)
         }
         
-        if touchedFramesCount == 0 || touchedFramesCount.isMultiple(of: 2) {
+        if  touchedFramesCount == 0
+            || touchedFramesCount.isMultiple(of: 2)
+        {
             let emojiNode = createRandomEmojiNode(position: touch.location(in: node))
             node.addChild(emojiNode)
+            
+            //
+            
+            if  let globalDataComponent = OctopusKit.shared?.gameCoordinator.entity.component(ofType: GlobalDataComponent.self) {
+                globalDataComponent.emojiCount += 1
+            }
         }
         
         touchedFramesCount += 1

@@ -11,12 +11,13 @@ import GameplayKit
 import OctopusKit
 
 /// A custom component for the QuickStart project that holds some simple data to be shared across multiple game states and scenes.
-final class GlobalDataComponent: OctopusComponent, OctopusUpdatableComponent {
+final class GlobalDataComponent: OctopusComponent, OctopusUpdatableComponent, ObservableObject {
     
-    public var secondsElapsed: TimeInterval = 0
+    @Published public var secondsElapsed: TimeInterval = 0
+    @Published public var emojiCount: Int = 0
     
-    public var dataString: String {
-        return "\(String(secondsElapsed).prefix(6))"
+    public var secondsElapsedTrimmed: String {
+        String(secondsElapsed).prefix(6).padding(toLength: 7, withPad: " ", startingAt: 0)
     }
     
     override func update(deltaTime seconds: TimeInterval) {

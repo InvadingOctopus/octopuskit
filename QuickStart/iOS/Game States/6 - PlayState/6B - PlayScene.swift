@@ -10,7 +10,7 @@
 //
 //  This scene shows the content for multiple game states: PlayState, PausedState and GameOverState.
 //
-//  It also displays the data from a "global" component which is part of the game coordinator entity (see OctopusGameCoordinator.entity) and persists across all states and scenes.
+//  The UI is handled by the PlayUI view designed with SwiftUI.
 
 import SpriteKit
 import GameplayKit
@@ -64,8 +64,6 @@ final class PlayScene: OctopusScene {
             // Custom components which are specific to this QuickStart project.
             
             GlobalDataComponent.self,
-            GlobalDataLabelComponent.self,
-            GameStateLabelComponent.self,
             NodeSpawnerComponent.self
             ])
     }
@@ -83,17 +81,8 @@ final class PlayScene: OctopusScene {
         
         self.entity?.addComponents([sharedTouchEventComponent,
                                     PhysicsWorldComponent(),
-                                    PhysicsComponent(physicsBody: SKPhysicsBody(edgeLoopFrom: self.frame)),
-                                    GameStateLabelComponent(positionOffset: CGPoint(x: 0,
-                                                                                    y: self.frame.size.halved.height - 50))])
-        
-        if let globalDataComponent = OctopusKit.shared?.gameCoordinator.entity.component(ofType: GlobalDataComponent.self) {
-            
-            self.entity?.addComponents([
-                RelayComponent(for: globalDataComponent),
-                GlobalDataLabelComponent() ])
-        }
-        
+                                    PhysicsComponent(physicsBody: SKPhysicsBody(edgeLoopFrom: self.frame))])
+                
         // Add the global game coordinator entity to this scene so that global components will be included in the update cycle.
         
         if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
@@ -137,7 +126,7 @@ final class PlayScene: OctopusScene {
             
         case is PlayState.Type: // Entering `PlayState`
             
-            self.backgroundColor = SKColor(red: 0.1, green: 0.3, blue: 0.1, alpha: 1.0)
+            self.backgroundColor = SKColor(red: 0.1, green: 0.2, blue: 0.2, alpha: 1.0)
             
             self.entity?.addComponent(NodeSpawnerComponent())
             

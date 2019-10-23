@@ -62,6 +62,7 @@ final class TitleScene: OctopusScene {
             // Custom components which are specific to this QuickStart project.
             
             GlobalDataComponent.self,
+            TitleEffectsComponent.self
             ])
     }
     
@@ -73,19 +74,20 @@ final class TitleScene: OctopusScene {
         // Set the permanent visual properties of the scene itself.
         
         self.anchorPoint = CGPoint.half
-        self.backgroundColor = SKColor(red: 0.1, green: 0.1, blue: 0.2, alpha: 1.0)
+        self.backgroundColor = SKColor(red: 0.2, green: 0.1, blue: 0.5, alpha: 1.0)
             
         // Add components to the scene entity.
         
-        self.entity?.addComponent(sharedTouchEventComponent)
+        self.entity?.addComponents([sharedTouchEventComponent,
+                                   TitleEffectsComponent()])
         
         // Create a label to display the game's title.
         
         // First we create a SpriteKit node.
         
-        let title = SKLabelNode(text: "EPIC NEW GAME™",
+        let title = SKLabelNode(text: "TOTALLY RAD GAME™",
                                 font: OctopusFont(name: "AvenirNextCondensed-Bold",
-                                                  size: 25,
+                                                  size: 40,
                                                   color: .white))
         
         title.setAlignment(horizontal: .center, vertical: .top)
@@ -95,10 +97,32 @@ final class TitleScene: OctopusScene {
         
         title.insetPositionBySafeArea(at: .top, forView: self.view)
         
-        // Then we create an entity with that node.
+        // Create a SKEffectNode so we can add a cool shader effect to the title to make it funky, otherwise we should just have used a SwiftUI text view. :)
+        
+        let effectNode = SKEffectNode(children: [title])
+        effectNode.alpha = 0.8
+        effectNode.blendMode = .screen
+        
+        let shader = SKShader(source: """
+            void main() {
+                vec2 uv = v_tex_coord;
+                float xTimeFactor = 1.0;
+                float yTimeFactor = 1.0;
+
+                uv.x += (sin((uv.y + (u_time * xTimeFactor)) * 15.0) * 0.0029) +
+                (sin((uv.y + (u_time * 0.1)) * 15.0) * 0.002);
+
+                uv.y += (cos((uv.y + (u_time * yTimeFactor)) * 45.0) * 0.0019) +
+                (cos((uv.y + (u_time * 0.1)) * 10.0) * 0.002);
+
+                gl_FragColor = texture2D(u_texture, uv); }
+            """)
+        
+        // Then we create an entity with the effect node (which contains the label node.)
         
         self.addEntity(OctopusEntity(name: "TitleEntity", components: [
-            SpriteKitComponent(node: title)
+            SpriteKitComponent(node: effectNode),
+            ShaderComponent(shader: shader)
             ]))
         
         // Add the global game coordinator entity to this scene so that global components will be included in the update cycle.
