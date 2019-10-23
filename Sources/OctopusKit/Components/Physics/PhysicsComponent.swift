@@ -16,18 +16,18 @@ import GameplayKit
 public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self]
+        [SpriteKitComponent.self]
     }
     
     public var physicsBody: SKPhysicsBody? {
         // CHECK: Should this be weak?
         
         didSet {
-            // If we're part of an entity that has a SpriteKit node,
-            if let node = entityNode {
+            //  If we're part of an entity that has a SpriteKit node,
+            if  let node = entityNode {
                 
-                // And this component was supplied with a new physics body,
-                if self.physicsBody != nil {
+                //  And this component was supplied with a new physics body,
+                if  self.physicsBody != nil {
 
                     // Then use existing logic (which makes sure to avoid conflicts such as the body already being associated with a different node) to try to assign our body to the node.
                     assignBody(to: node)
@@ -67,7 +67,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
         
         // If `shouldCreateBodyFromNodeFrame` is set and neither this component nor the entity's node have a physics body, then create a new rectangular body from the node's frame.
         
-        if shouldCreateBodyFromNodeFrame
+        if  shouldCreateBodyFromNodeFrame
             && (self.physicsBody == nil && node.physicsBody == nil)
         {
             // NOTE: CHECK: Is this a costly operation? Should `shouldCreateBodyFromNodeFrame` be `true` or `false` by default?
@@ -77,8 +77,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
             self.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
             
             // Setting our `physicsBody` should call `assignBody(to: node)` via the property observer.
-        }
-        else {
+        } else {
             assignBody(to: node)
         }
     }
@@ -96,7 +95,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
         
         // Next check: Does the node already have a body and this component doesn't?
             
-        if self.physicsBody == nil && node.physicsBody != nil {
+        if  self.physicsBody == nil && node.physicsBody != nil {
             
             // Then adopt the node's body as this component's body.
             
@@ -105,13 +104,13 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
             self.physicsBody = node.physicsBody
         }
             
-            // Otherwise, if we have a body and the node doesn't, try to assign our body to the node.
+        // Otherwise, if we have a body and the node doesn't, try to assign our body to the node.
             
         else if let physicsBody = self.physicsBody, node.physicsBody == nil {
             
             // NOTE: ONLY IF our body is not already associated with a different node in the scene!
             
-            if physicsBody.node == nil {
+            if  physicsBody.node == nil {
                 node.physicsBody = self.physicsBody
             }
             else if physicsBody.node! != node {
@@ -122,7 +121,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
             }
         }
             
-            // If this component has a body and the node also has a body, and they're different, log a warning, then replace the node's body with this component's body, as that would be the expected behavior of adding a `PhysicsComponent` to an entity with an existing node.
+        // If this component has a body and the node also has a body, and they're different, log a warning, then replace the node's body with this component's body, as that would be the expected behavior of adding a `PhysicsComponent` to an entity with an existing node.
             
         else if self.physicsBody != nil && node.physicsBody != nil && self.physicsBody !== node.physicsBody {
             
@@ -134,7 +133,9 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
     
     public override func willRemoveFromEntity(withNode node: SKNode) {
         
-        if let nodePhysicsBody = node.physicsBody, nodePhysicsBody !== self.physicsBody {
+        if  let nodePhysicsBody = node.physicsBody,
+            nodePhysicsBody !== self.physicsBody
+        {
             OctopusKit.logForWarnings.add("\(node.name ?? String(describing: node)) had a different physicsBody than this component – Removing")
         }
         
@@ -146,7 +147,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
         super.update(deltaTime: seconds)
         guard let physicsBody = self.physicsBody else { return }
         
-        if let maxVelocity = self.maxVelocity {
+        if  let maxVelocity = self.maxVelocity {
             physicsBody.velocity.clampMagnitude(to: maxVelocity)
         }
         
