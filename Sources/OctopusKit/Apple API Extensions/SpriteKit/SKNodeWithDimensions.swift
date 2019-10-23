@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-/// A protocol for types that have a `width` and `height`.
+/// A protocol for types that have `width` and `height` properties.
 ///
 /// Useful for passing around `SKNode`-based classes to functions that need to work with width or height.
 public protocol SKNodeWithDimensions { // where Self: SKNode { // ⚠️ Crashes.
@@ -16,26 +16,27 @@ public protocol SKNodeWithDimensions { // where Self: SKNode { // ⚠️ Crashes
     var size: CGSize { get }
 }
 
+// NOTE: `public' modifier cannot be used with extensions that declare protocol conformances :)
+
 extension SKCameraNode: SKNodeWithDimensions {
     
     /// Returns the `size` of the parent (scene.)
     public var size: CGSize {
         // TODO: Verify and check compatibility with scaling etc.
-        if let parent = self.parent as? SKNodeWithDimensions {
+        if  let parent = self.parent as? SKNodeWithDimensions {
             return parent.size
-        }
-        else {
+        } else {
             return CGSize.zero
         }
     }
 }
 
-extension SKScene: SKNodeWithDimensions {}
+extension SKScene:          SKNodeWithDimensions {}
 
-extension SKSpriteNode: SKNodeWithDimensions {}
+extension SKSpriteNode:     SKNodeWithDimensions {}
 
-extension SKTileMapNode: SKNodeWithDimensions {
-    public var size: CGSize { return self.mapSize }
+extension SKTileMapNode:    SKNodeWithDimensions {
+    public var size: CGSize { self.mapSize }
 }
 
-extension SKVideoNode: SKNodeWithDimensions {}
+extension SKVideoNode:      SKNodeWithDimensions {}
