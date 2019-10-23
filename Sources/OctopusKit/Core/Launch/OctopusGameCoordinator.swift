@@ -186,7 +186,13 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
             OctopusKit.logForDebug.add("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OctopusGameCoordinator was initialized early in the application life cycle.")
         }
         
+        if self.canEnterState(initialStateClass) {
+            // Customization point for subclasses.
+            self.willEnterInitialState()
+        }
+        
         self.didEnterInitialState = enter(initialStateClass)
+        
         return didEnterInitialState
     }
 
@@ -194,4 +200,9 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         OctopusKit.logForDeinits.add("\(self)")
     }
 
+    // MARK: - Abstract Methods
+    
+    /// Abstract; to be implemented by a subclass. Override this to add any global components etc.
+    open func willEnterInitialState() {}
+    
 }
