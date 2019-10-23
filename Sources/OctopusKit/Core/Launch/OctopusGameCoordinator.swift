@@ -23,7 +23,13 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     
     public fileprivate(set) var didEnterInitialState: Bool = false
 
-    public var currentGameState: OctopusGameState? {
+    @Published public var currentGameState: OctopusGameState? = nil {
+        didSet {
+            OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: currentGameState))")
+        }
+    }
+    
+    public var currentGameState0: OctopusGameState? {
 
         // NOTE: SWIFT LIMITATION: This property should be @Published but we cannot do that because
         // "Property wrapper cannot be applied to a computed property" and
@@ -101,10 +107,8 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
                 .sink { _ in
                     OctopusKit.logForDebug.add("Application.didBecomeActiveNotification")
                     
-                    // NOTE: Call `scene.applicationDidBecomeActive()` before `enterInitialState()` so we don't issue a superfluous unpause event to the very first scene of the game.
-                    
-                    // CHECK: Compare launch performance between calling `OctopusViewController.enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! versus `OctopusViewController.viewWillLayoutSubviews()`
-                    
+                    // NOTE: If there is already an ongoing scene (maybe the application launch cycle was customized), call `scene.applicationDidBecomeActive()` before `enterInitialState()` so we don't issue a superfluous unpause event.
+                                        
                     if  let scene = self.currentScene {
                         scene.applicationDidBecomeActive()
                     }
@@ -129,14 +133,38 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     
     open override func enter(_ stateClass: AnyClass) -> Bool {
         
-        // We override this method to send `ObservableObject` updates for SwiftUI support.
-        // See comments for the `currentGameState` property for an explanation.
+        // We override this method to send `ObservableObject` updates for `currentGameState` to support SwiftUI.
         
-        if self.canEnterState(stateClass) {
+        // NOTE: SWIFT LIMITATION: `currentGameState` should be a @Published property with a simple getter that casts `GKStateMachine.currentState as? OctopusGameState`, but we cannot do that because:
+        // "Property wrapper cannot be applied to a computed property"
+        // and we cannot remove @Published and use objectWillChange.send() in a `willSet` because:
+        // "willSet cannot be provided together with a getter"
+        // and we cannot provide a `willSet` for `GKStateMachine.currentState` because:
+        // "Cannot observe read-only property currentState; it can't change" :(
+        
+        // Okay, so we'll just use objectWillChange.send() in the enter(_:) override below.
+        
+        // CHECK: HOWEVER, even without objectWillChange.send() the derived properties in SwiftUI views depending on `currentGameState` seem to update just fine. Not sure about all this yet.
+        
+        // CHECK: There are two conditions before `currentGameState` is actually changed; when should we emit the `objectWillChange`?
+        
+        if  self.canEnterState(stateClass) {
             self.objectWillChange.send()
         }
         
-        return super.enter(stateClass)
+        let didEnterRequestedState = super.enter(stateClass)
+        
+        if  didEnterRequestedState {
+            
+            if  let stateClass = stateClass as? OctopusGameState.Type {
+                self.currentGameState = self.state(forClass: stateClass)
+            } else {
+                OctopusKit.logForWarnings.add("Cannot cast \(stateClass) as OctopusGameState")
+            }
+            
+        }
+        
+        return didEnterRequestedState
     }
     
     /// Attempts to enter the state specified by `initialStateClass`.
