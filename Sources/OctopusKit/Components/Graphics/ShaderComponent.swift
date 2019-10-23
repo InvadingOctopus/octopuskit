@@ -2,7 +2,7 @@
 //  ShaderComponent.swift
 //  OctopusKit
 //
-//  Created by ShinryakuTako@invadingoctopus.io on 2018/10/24.
+//  Created by ShinryakuTako@invadingoctopus.io on 2019/10/24.
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
