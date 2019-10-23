@@ -23,8 +23,8 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
     
     public init() {}
     
-    public func makeCoordinator() -> Coordinator<OctopusViewControllerType> {
-        OctopusViewControllerRepresentable.Coordinator(gameCoordinator: self.gameCoordinator)
+    public func makeCoordinator() -> ViewControllerCoordinator<OctopusViewControllerType> {
+        OctopusViewControllerRepresentable.ViewControllerCoordinator(gameCoordinator: self.gameCoordinator)
     }
     
     public func makeUIViewController(context: Context) -> OctopusViewControllerType {
@@ -41,7 +41,7 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
     }
   
     public static func dismantleUIViewController(_ uiViewController: OctopusViewControllerType,
-                                                 coordinator: Coordinator<OctopusViewControllerType>)
+                                                 coordinator: ViewControllerCoordinator<OctopusViewControllerType>)
     {
         uiViewController.gameCoordinator?.currentScene?.didPauseBySystem()
     }
@@ -52,7 +52,7 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
 
 public extension OctopusViewControllerRepresentable { // CHECK: Should this be public?
     
-    class Coordinator <OctopusViewControllerType> : NSObject
+    class ViewControllerCoordinator <OctopusViewControllerType> : NSObject
         where OctopusViewControllerType: OctopusViewController
     {
         var viewController: OctopusViewControllerType
