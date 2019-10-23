@@ -2,7 +2,7 @@
 
 A 2.5D game engine that combines ECS with SwiftUI, for iOS, macOS and tvOS. Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 
-A flexible Entity-Component-System architecture lets you dynamically compose game behavior, while SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs with crisp text. Full access to GPU shaders + A vector UI overlay.
+The flexible Entity-Component-System architecture lets you dynamically compose game behavior, while SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs with crisp text. Full access to GPU shaders + vector UI.
 
 1. [Examples](#examples)
 2. [Overview](#overview)
