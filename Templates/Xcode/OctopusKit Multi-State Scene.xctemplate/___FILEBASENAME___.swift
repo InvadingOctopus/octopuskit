@@ -2,6 +2,7 @@
 
 import SpriteKit
 import GameplayKit
+import OctopusKit
 
 // MARK: - PlayableState
 

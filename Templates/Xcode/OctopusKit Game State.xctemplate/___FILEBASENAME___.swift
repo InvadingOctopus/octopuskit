@@ -2,12 +2,14 @@
 
 import SpriteKit
 import GameplayKit
+import OctopusKit
 
 final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
     
     init() {
         // NOTE: Game state classes are initialized when the game coordinator is initialized: on game launch.
-        super.init(associatedSceneClass: <#Scene for this state#>.self)
+        super.init(associatedSceneClass:  <#SceneForThisState#>.self,
+                   associatedSwiftUIView: <#UIForThisState#>())
     }
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -29,13 +31,13 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
     @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
         // Enter the state that logically follows this state, if applicable. e.g.: `PlayState` after a `PausedState`.
         // You may perform game-specific checks here to choose different states based on different conditions.
-        return stateMachine?.enter(<#Next game state#>.self) ?? false
+        return stateMachine?.enter(<#NextGameState#>.self) ?? false
     }
 
     @discardableResult override func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
         // Enter the state that logically precedes this state, if applicable. e.g.: `PlayState` before a `GameOverState`.
         // You may perform game-specific checks here to choose different states based on different conditions.
-        return stateMachine?.enter(<#Previous game state#>.self) ?? false
+        return stateMachine?.enter(<#PreviousGameState#>.self) ?? false
     }
     
 }

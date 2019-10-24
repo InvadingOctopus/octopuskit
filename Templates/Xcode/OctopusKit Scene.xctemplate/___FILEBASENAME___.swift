@@ -2,6 +2,7 @@
 
 import SpriteKit
 import GameplayKit
+import OctopusKit
 
 final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         

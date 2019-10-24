@@ -2,6 +2,7 @@
 
 import SpriteKit
 import GameplayKit
+import OctopusKit
 
 final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntity {
     
@@ -47,7 +48,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntity {
         
     }
     
-    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
     
 }
 

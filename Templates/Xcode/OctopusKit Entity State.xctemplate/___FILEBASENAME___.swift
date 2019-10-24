@@ -2,6 +2,7 @@
 
 import SpriteKit
 import GameplayKit
+import OctopusKit
 
 final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntityState {
     
@@ -13,7 +14,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntityState {
         self.componentTypesToRemoveOnExit = [] // Customize
     }
     
-    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
     
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
@@ -23,8 +24,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntityState {
         case is OctopusEntityState: // Customize
             break
             
-        default:
-            break
+        default: break
         }
     }
     
@@ -36,8 +36,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntityState {
         case is OctopusEntityState: // Customize
             break
             
-        default:
-            break
+        default: break
         }
     }
     
