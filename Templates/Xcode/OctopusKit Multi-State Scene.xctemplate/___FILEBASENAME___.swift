@@ -38,14 +38,9 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         
     // MARK: - Life Cycle
     
-    override func prepareContents() {
-        super.prepareContents()
-        createComponentSystems()
-        createEntities()
-    }
-    
-    fileprivate func createComponentSystems() {
-        componentSystems.createSystems(forClasses: [ // Customize
+    override func createComponentSystems() -> [GKComponent.Type] {
+        [
+            // Customize
             
             // 1: Time and state.
             
@@ -71,10 +66,11 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
             RepeatingClosureComponent.self,
             DelayedClosureComponent.self,
             CameraComponent.self
-            ])
+        ]
     }
     
-    fileprivate func createEntities() {
+    override func prepareContents() {
+        super.prepareContents()
         // Customize: This is where you build your scene.
         //
         // You may also perform scene construction and deconstruction in `gameCoordinatorDidEnterState(_:from:)` and `gameCoordinatorWillExitState(_:to:)`
@@ -138,7 +134,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         if  let currentState = OctopusKit.shared?.gameCoordinator.currentState,
             type(of: currentState) is PlayableState.Type
         {
-            self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PausedState.self)
+            self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)
         }
     }
     
@@ -155,12 +151,12 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     
     override func didPauseByPlayer() {
         // This transition should be subject to the validation logic in the relevant `OctopusGameState` classes.
-        self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PausedState.self)
+        self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)
     }
     
     override func didUnpauseByPlayer() {
         // This transition should be subject to the validation logic in the relevant `OctopusGameState` classes.
-        self.octopusSceneDelegate?.octopusScene(self, didRequestGameStateClass: PlayableState.self)
+        self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PlayableState.self)
     }
     
 }

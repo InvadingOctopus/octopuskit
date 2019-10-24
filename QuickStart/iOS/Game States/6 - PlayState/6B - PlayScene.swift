@@ -30,33 +30,15 @@ final class PlayScene: OctopusScene {
     }
     
     // MARK: 🔶 STEP 6B.2
-    override func prepareContents() {
+    override func createComponentSystems() -> [GKComponent.Type] {
         
-        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
+        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to create a list of systems for each component type that must be updated in every frame of this scene.
         //
-        // The most common tasks for every scene are to prepare the order of the component systems which the scene will update every frame, and to add entities to the scene.
-        //
-        // For clarity, this subclass divides those steps into two functions: createComponentSystems() and createEntities()
-        //
-        // Calling super for this method is not necessary; it only adds a log entry.
-        
-        super.prepareContents()
-        
-        createComponentSystems()
-        createEntities()
-    }
-    
-    // MARK: 🔶 STEP 6B.3
-    fileprivate func createComponentSystems() {
-        
-        // Create a list of systems for each component type that must be updated in every frame of this scene.
-        //
-        // ❗️ The order of components is important. The functionality of some components depends on the output of other components.
+        // ❗️ The order of components is important, as the functionality of some components depends on the output of other components.
         //
         // See the code and documentation for each component to check its requirements.
         
-        componentSystems.createSystems(forClasses: [
-            
+        [
             // Components that process player input, provided by OctopusKit.
             
             TouchEventComponent.self,
@@ -65,12 +47,20 @@ final class PlayScene: OctopusScene {
             
             GlobalDataComponent.self,
             NodeSpawnerComponent.self
-            ])
+        ]
     }
     
-    // MARK: 🔶 STEP 6B.4
-    fileprivate func createEntities() {
+    // MARK: 🔶 STEP 6B.3
+    override func prepareContents() {
         
+        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
+        //
+        // The most common tasks for every scene are to prepare the order of the component systems which the scene will update every frame, and to add entities to the scene.
+        //
+        // Calling super for this method is not necessary; it only adds a log entry.
+        
+        super.prepareContents()
+                
         // Create the entities to present in this scene.
         
         // Set the permanent visual properties of the scene itself.
@@ -92,7 +82,7 @@ final class PlayScene: OctopusScene {
     
     // MARK: - Frame Update
     
-    // MARK: 🔶 STEP 6B.5
+    // MARK: 🔶 STEP 6B.4
     override func update(_ currentTime: TimeInterval) {
         
         // Update component systems every frame after checking the paused flags.
@@ -111,7 +101,7 @@ final class PlayScene: OctopusScene {
     
     // MARK: - State & Scene Transitions
     
-    // MARK: 🔶 STEP 6B.6
+    // MARK: 🔶 STEP 6B.5
     override func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?) {
         
         // This method is called by the current game state to notify the current scene when a new state has been entered.
@@ -171,7 +161,7 @@ final class PlayScene: OctopusScene {
         
     }
     
-    // MARK: 🔶 STEP 6B.7
+    // MARK: 🔶 STEP 6B.6
     override func gameCoordinatorWillExitState(_ exitingState: GKState, to nextState: GKState) {
         
         // This method is called by the current game state to notify the current scene when the state will transition to a new state.
@@ -203,7 +193,7 @@ final class PlayScene: OctopusScene {
         
     }
     
-    // MARK: 🔶 STEP 6B.8
+    // MARK: 🔶 STEP 6B.7
     override func transition(for nextSceneClass: OctopusScene.Type) -> SKTransition? {
         
         // This method is called by the OctopusScenePresenter to ask the current scene for a transition animation between the outgoing scene and the next scene.

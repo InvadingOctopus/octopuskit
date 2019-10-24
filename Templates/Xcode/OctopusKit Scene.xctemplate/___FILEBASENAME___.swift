@@ -8,14 +8,9 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         
     // MARK: - Life Cycle
     
-    override func prepareContents() {
-        super.prepareContents()
-        createComponentSystems()
-        createEntities()
-    }
-    
-    fileprivate func createComponentSystems() {
-        componentSystems.createSystems(forClasses: [ // Customize
+    override func createComponentSystems() -> [GKComponent.Type] {
+        [
+            // Customize
             
             // 1: Time and state.
             
@@ -41,10 +36,11 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
             RepeatingClosureComponent.self,
             DelayedClosureComponent.self,
             CameraComponent.self
-            ])
+        ]
     }
     
-    fileprivate func createEntities() {
+    override func prepareContents() {
+        super.prepareContents()
         // Customize: This is where you build your scene.
     }
     

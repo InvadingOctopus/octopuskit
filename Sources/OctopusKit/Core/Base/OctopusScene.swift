@@ -111,7 +111,7 @@ open class OctopusScene: SKScene,
     /// - Important: The `OctopusScene` subclass must call `updateSystems(in:deltaTime:)` at some point in the `update(_ currentTime: TimeInterval)` method, usually after handling pause/unpause logic.
     ///
     /// - Important: Adding a system does not automatically register the components from any of the scene's existing entities. Call either `self.componentSystems.addComponents(foundIn:)` to register components from a single entity, or `addAllComponentsFromAllEntities(to:)` to register components from all entities.
-    public lazy var componentSystems = [OctopusComponentSystem]()
+    public lazy var componentSystems: [OctopusComponentSystem] = []
     
     // MARK: Shared Components
     
@@ -193,8 +193,14 @@ open class OctopusScene: SKScene,
         secondsElapsedSinceMovedToView = 0
         
         if !didPrepareContents {
+            
+            // Convenient customization point for subclasses, so they can have a standard method for setting up the initial list of component systems.
+            componentSystems.createSystems(forClasses: createComponentSystems())
+            
             prepareContents()
+            
             // addAllComponentsFromAllEntities(to: self.componentSystems) // CHECK: Necessary? Should we just rely on OctopusEntityDelegate?
+            
             didPrepareContents = true // Take care of this flag here so that subclass does not have to do so in `prepareContents()`.
         }
         
@@ -224,13 +230,20 @@ open class OctopusScene: SKScene,
         assert(self.entity === sceneEntity, "Could not set scene's entity")
     }
     
-    /// An abstract method that is called after the scene is presented in a view. To be overridden by a subclass to prepare the scene's content, and set up entities, components and component systems.
+    /// An abstract method that is called after the scene is presented in a view, before `prepareContents()` is called. Subclasses must override this to return an array of component classes, from which the scene's component systems will be created.
+    ///
+    /// - IMPORTANT: Components will be updated every frame in the exact order that is specified here, so a component must be listed after its dependencies.
+    ///
+    /// The `componentSystems` property can be modified again at any time.
+    open func createComponentSystems() -> [GKComponent.Type] {
+        []
+    }
+    
+    /// An abstract method that is called after the scene is presented in a view. To be overridden by a subclass to prepare the scene's content, and set up entities and components.
     ///
     /// Called from `didMove(to:)`. Call `super.prepareContents()` to include a log entry.
     ///
-    /// - Important: Setup the list of component systems for this scene here, using `componentSystems.createSystems(forClasses:)`.
-    ///
-    /// - Note: If the scene requires the global `OctopusKit.shared.gameCoordinator.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
+    /// - NOTE: If the scene requires the global `OctopusKit.shared.gameCoordinator.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
     ///
     /// - Note: A scene may choose to perform the tasks of this method in `gameCoordinatorDidEnterState(_:from:)` instead.
     open func prepareContents() {
