@@ -7,7 +7,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 > *This documentation assumes that the reader has some prior experience with developing for Apple platforms in the Swift programming language.*
 
-1. [Quickstart](#quickstart)
+1. [Start](#start)
 2. [Control Flow & Object Hierarchy](#control-flow--object-hierarchy)
 3. [Folder Organization](#folder-organization)
 4. [Scenes](#scenes)
@@ -16,61 +16,109 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 7. [State Machines](#state-machines)
 8. [Advanced Stuff](#advanced-stuff)
 
-## Quickstart
+## Start
 
 ### 🍰 **To begin from a template**:
 
-1. 🆕 Create a **new SpriteKit Game project** in Xcode.
+1. 🆕 Create a new **Single View App** project, and choose **User Interface: SwiftUI.**
 
 	> You will require Xcode 11, and if you wish to run on an iPhone or iPad, iOS/iPadOS 13.
 
 2. 📦 Add OctopusKit as a **Swift Package** Dependency.
     
-    > Xcode File menu » Swift Packages » Add Package Dependency...
+3. 📥 **Copy** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package to your project's source folder. 
 
-3. 🗑 **Delete** the following default files created by the Xcode template: 
+    > In the Xcode Project Navigator, menu-click on the OctopusKit/QuickStart folder and select "Show in Finder" 
 
-	Actions.sks  
-	AppDelegate.swift  
-	GameScene.sks  
-	GameScene.swift  
-	GameViewController.swift  
+4. 🗂 **Include** the copied files in your Xcode project. 
 
-4. 📥 **Copy** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package folder to your project's source folder. 
+5. 🖼 Add the `OctopusKitQuickStartView` to the `ContentView.swift` file:
 
-5. 🗂 Include the copied files in your Xcode project. 
+    ```
+    var body: some View {
+        OctopusKitQuickStartView()
+    }
+    ```
+    	
+6. Build and run the project to verify that the template works.
 
-	> By dragging the copies from your project's folder into the Project Navigator.
+7. Modify the files in the `TitleState` and `	PlayState` folders to customize them for your game.
+
+    > 🏷 Filenames are prefixed with a number denoting the order they come in during the application's life cycle. 
 	
-6. Build and run the project.
+    > 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
 
-7. Modify the `TitleScene.swift` and `PlayScene.swift` files in the `Scenes` folder to customize them for your game.
+    > 💡 To customize this template for a simple game of your own, modify the files in the `TitleState` and `PlayState` folders, and try out different components from the `Sources/OctopusKit/Components` folder in the OK package.
 
-    > Most of the comments are prefixed with "Step #" so you can follow the flow of execution at a glance.
-    >
-    > 💡 Browse the `OctopusKit/Components` folder and try tinkering with different components!
-    >
-    > 💡 If something goes wrong, see [Tips & Troubleshooting.][tips-&-troubleshooting]  
 
-### 🛠 **To import OctopusKit into a new or existing project**:
+### 🛠 **To import OctopusKit into a new or existing project:**
 
-1. Your storyboard should have an `SKView` whose controller is or inherits from `OctopusViewController`.
+1. 📦 Add OctopusKit as a **Swift Package** Dependency.
 
-2. Your `AppDelegate` class must inherit from `OctopusAppDelegate`. It needs to implement (override) only one method: `applicationWillLaunchOctopusKit()`, where it must initialize the shared `OctopusKit` singleton instance by calling:
+2. Create an instance of `OctopusGameCoordinator`.
 
-    ```swift
-    OctopusKit(appName: "YourGame", gameCoordinator: YourGameCoordinator())
+    ```
+    let gameCoordinator = OctopusGameCoordinator(
+        states: [OctopusGameState()], // A placeholder for now.
+        initialStateClass: OctopusGameState.self)
     ```
 
-    > The game coordinator is a "controller" in the Model-View-Controller sense (not a controller as in gamepad or joystick) and must be a subclass of `OctopusGameCoordinator`.
-    >
-    > If your game does not need to share any complex logic or data across multiple scenes, you can simply call `OctopusGameCoordinator(states:initialStateClass:)` instead of creating a subclass.
+    > The game coordinator is the top-level "controller" (in the Model-View-Controller sense, not a gamepad or joystick) that manages the global state of your game.
     
-3. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes that inherit from `OctopusGameState` and `OctopusScene`. 
+    > If your game needs to share complex logic or data across multiple scenes, you may create a subclass of `OctopusGameCoordinator`.
+
+3. Displaying OctopusKit content in your view hierarchy is handled differently depending on whether you use SwiftUI or AppKit/UIKit:
+
+    * **SwiftUI:** Add a `OctopusKitContainerView` pass it the game coordinator as an `environmentObject`:
+    
+        ```
+        import OctopusKit
+    
+        struct ContentView: View {
+            var body: some View {
+                OctopusKitContainerView()
+                    .environmentObject(gameCoordinator)
+            }
+        }
+        ```
+        
+        > The `OctopusKitContainerView` combines a SpriteKit `SKView` with a SwiftUI overlay.
+        
+        > ❗️ If you created a subclass of `OctopusGameCoordinator`, then you must provide a generic type parameter: `OctopusKitContainerView<MyGameCoordinator>()`
+    
+        > 💡 It's best to pass the game coordinator `environmentObject` to the top level content view created in the `SceneDelegate.swift` file, which will make it available to your entire view hierarchy.
+    
+    * **AppKit or UIKit:** Your storyboard should have an `SKView` whose controller is or inherits from `OctopusViewController`. 
+        
+        * If you use `OctopusViewController` directly, then you must initialize OctopusKit early in your application launch cycle: 
+
+            ```
+            func application(_ application: UIApplication,
+            didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
+            {
+                OctopusKit(gameCoordinator: coordinator)
+                return true
+            }
+            ```
+        
+        * If you create your own subclass, it must implement these initializers:
+    
+            ```
+            required init?(coder aDecoder: NSCoder) {
+                OctopusKit(gameCoordinator: gameCoordinator)
+                super.init(coder: aDecoder)
+            }
+            
+            required init(gameCoordinator: OctopusGameCoordinator? = nil) {
+                super.init(gameCoordinator: gameCoordinator)
+            }
+            ``` 
+        
+4. Build the states, scenes and UI for your game. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes that inherit from `OctopusGameState` and `OctopusScene`. 
 
     > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow--object-hierarchy)
 
-4. Your scenes should inherit from `OctopusScene` and they should implement (override) the `update(_:)` method. Your implementation must call `super`, check the paused state flags, and update component systems:
+5. Your scenes should inherit from `OctopusScene` and they should implement (override) the `update(_:)` method. Your implementation must call `super`, check the paused state flags, and update component systems:
 
     ```swift
     override func update(_ currentTime: TimeInterval) {
@@ -88,15 +136,15 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     >
     > If your game states also perform per-frame updates, then you must also call `OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)`
 
+6. Each of your game states can have a SwiftUI view associated with them to provide the user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass the `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
+
 ----
 
 #### Notes
 
 * **Xcode Templates:** To quickly create new files for common OK classes such as scenes and components, copy the files from the `Templates/Xcode` folder in the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
 
-* Including the OctopusKit code in your main project provides the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker modification and autocompletion, easier navigation etc.
-
-* You can give each of your projects a separate copy of the OctopusKit code to let you customize the engine differently for each specific project, or you can keep a single copy of the engine code and share it between projects (via git, or by dragging the OK package folder into your project *without* checking "Copy items if needed").
+* Including the OctopusKit code in your main project (instead of as a package dependency) provides the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker modification and autocompletion, easier navigation etc.
 
 * Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
 
@@ -127,39 +175,44 @@ systems. A typical game will create multiple instances of these objects.
 
 - `Support & Utility`: Auxiliary classes that are required for common OctopusKit functionality, such as logging, but may not always be needed. Advanced projects may exclude these or use custom implementations.
 
+- `SwiftUI`: User interface elements.
+
 ## Control Flow & Object Hierarchy
 
 | 🐙 |
 | :-: |
 |📱 *Operating System*|
 |↓|
-|📲 `YourAppDelegate: OctopusAppDelegate`|
+|📲 `AppDelegate` + `SceneDelegate`|
 |↓|
 |🎬 `YourGameCoordinator: OctopusGameCoordinator` ¹|
 |↓|
 |🚦 `YourGameState: OctopusGameState`|
 |↕|
-|🏞 `YourScene: OctopusScene` ²|
+|🎛 `YourUI: SwiftUI.View` ²|
+|🏞 `YourScene: OctopusScene` ³|  
 |↓|
-|👾 `OctopusEntity` ³|
+|👾 `OctopusEntity` ⁴|
 |↓|
-|🚥 `YourEntityState: OctopusEntityState` ⁴|
+|🚥 `YourEntityState: OctopusEntityState` ⁵|
 |↕|
-|⚙️ `YourComponent: OctopusComponent` ⁵|
+|⚙️ `YourComponent: OctopusComponent` ⁶|
 |↑|
-|⛓ `OctopusComponentSystem` ⁶|
+|⛓ `OctopusComponentSystem` ⁷|
 
 > ¹ `OctopusGameCoordinator` need not always be subclassed; projects that do not require a custom coordinator may simply use `OctopusGameCoordinator(states:initialStateClass:)`.
-> 
-> ² `OctopusScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
->
-> ³ `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
->
-> ⁴ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
->
-> ⁵ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
->
-> ⁶ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
+
+> ² `SwiftUI` presents a UI overlay on top of the `OctopusScene` contents. 
+ 
+> ³ `OctopusScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
+
+> ⁴ `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
+
+> ⁵ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
+
+> ⁶ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
+
+> ⁷ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
 
 ### Tier 1
 
@@ -172,6 +225,14 @@ systems. A typical game will create multiple instances of these objects.
 	> 💡 *Advanced: A single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
 
 ### Tier 2 
+
+🎛 [`SwiftUI.View`](https://developer.apple.com/documentation/swiftui)
+
+- SwiftUI lets you easily and quickly create complex user interfaces with a declarative syntax. Fluid animations, crisp text with advanced formatting, vector shapes, live previews and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
+
+- Multiple states can share the same SwiftUI view, and a SwiftUI view may include the UIs of other states as child views or overlays, thanks to the power of SwiftUI's composability.
+
+- Through the `OctopusGameCoordinator` passed as an `environmentObject`, the SwiftUI views can inspect and modify the state of your game. An `OctopusComponent` may adopt the `ObservableObject` protocol to provide automatic data-driven updates for labels and HUD elements.
 
 🏞 `OctopusScene:`[`SKScene`](https://developer.apple.com/documentation/spritekit/skscene)
 
@@ -361,3 +422,4 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 [mvc]: https://en.wikipedia.org/wiki/Model–view–controller
 [reducing-dynamic-dispatch]: https://developer.apple.com/swift/blog/?id=27
+[sf-symbols]: https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/

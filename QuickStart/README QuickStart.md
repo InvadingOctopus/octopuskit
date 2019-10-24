@@ -36,7 +36,7 @@
 	
     > 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
 
-    > 💡 To customize this template for a simple game of your own, modify the `TitleScene.swift` and `PlayScene.swift` classes and try out different components from the `Sources/OctopusKit/Components` folder in the OK package.
+    > 💡 To customize this template for a simple game of your own, modify the files in the `TitleState` and `PlayState` folders, and try out different components from the `Sources/OctopusKit/Components` folder in the OK package.
 
 **For further details, see the [OctopusKit Usage Guide.][usage-guide]**
 
