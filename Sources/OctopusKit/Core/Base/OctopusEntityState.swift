@@ -46,7 +46,7 @@ open class OctopusEntityState: GKState {
         componentTypesToRemoveOnExit = componentsToAddOnEntry?.map { type(of: $0) } ?? nil
     }
     
-    /// Call `super.didEnter(from: previousState)` to add a log entry.
+    /// - IMPORTANT: `super.didEnter(from: previousState)` must be called to add `componentsToAddOnEntry`.
     open override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
         OctopusKit.logForStates.add("\"\(String(optional: entity.name))\" \(String(optional: previousState)) → \(self)")
@@ -57,7 +57,7 @@ open class OctopusEntityState: GKState {
         }
     }
     
-    /// Call `super.willExit(to: nextState)` to add a log entry.
+    /// - IMPORTANT: `super.willExit(to: nextState)` must be called to remove `componentTypesToRemoveOnExit`.
     open override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
         OctopusKit.logForStates.add("\"\(String(optional: entity.name))\" \(self) → \(nextState)")
