@@ -21,7 +21,7 @@ public protocol OctopusUpdatableComponent {
     func update(deltaTime seconds: TimeInterval)
 }
 
-/// An object which adds a discrete visual or behavorial effect to an entity or scene. The core concept of the OctopusKit.
+/// An object which adds a discrete visual or behavioral effect to an entity or scene. The core concept of the OctopusKit.
 ///
 /// Components may interact with other components and modify entities, and control game states.
 ///
@@ -140,7 +140,7 @@ open class OctopusComponent: GKComponent {
         shouldRemoveFromEntityOnDeinit = false
         shouldWarnIfDeinitWithoutRemoving = false
         
-        // NOTE: Since removeComponent(ofType:) CANNOT be overriden in a GKEntity subclass (because "Declarations from extensions cannot be overridden yet" and "Overriding non-open instance method outside of its defining module") as of 2017-11-14, use this method to notify the OctopusEntityDelegate about component removal.
+        // NOTE: Since removeComponent(ofType:) CANNOT be overridden in a GKEntity subclass (because "Declarations from extensions cannot be overridden yet" and "Overriding non-open instance method outside of its defining module") as of 2017-11-14, use this method to notify the OctopusEntityDelegate about component removal.
         if let entity = self.entity as? OctopusEntity {
             entity.delegate?.entity(entity, willRemoveComponent: self)
         }
