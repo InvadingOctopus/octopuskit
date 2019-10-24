@@ -168,19 +168,23 @@ for turretNode in scene["//Turret"] {
 
 OctopusKit uses an ["Entity-Component-System"][entity–component–system] architecture, where:
 
-- 🎬 A game is organized into **States** (such as "MainMenu", "Playing" and "Paused") and **Scenes** that display the content for those states using **Entities**, **Components** and **Systems**.
+- 🎬 A game is organized into **States** such as *MainMenu*, *Playing* and *Paused*. Each state is associated with a **SwiftUI** view which displays the user interface, and a **SpriteKit Scene** that presents the gameplay for that state using **Entities**, **Components** and **Systems**.
+
+    > You can divide your game into as many or as few states as you want. e.g.: A single "PlayState" which also handles the main menu, pausing, cutscenes etc.
+    
+    > States, Scenes, and SwiftUI views may have many-to-many relationships that can be changed at runtime.
 
 - 👾 **Entities** are simply collections of **Components**. They contain no logic, except for convenience constructors which initialize groups of related components. 
 
 - ⚙️ **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game. They may be dynamically added to and removed from an entity to alter its appearance and behavior during runtime. The engine comes with a library of many customizable components for graphics, gameplay, physics and UI etc. 
 
-- ⛓ **Systems** are simply collections of components *of a specific type.* They do not perform any logic\*, but they are arranged by a **Scene** in an array to execute components from all entities in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
+- ⛓ **Systems** are simply collections of components *of a specific class.* They don't perform any logic\*, but they're arranged by a **Scene** in an array to execute components from all entities in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
     > \* *These definitions may differ from other engines, like Unity, where all the logic is contained within systems.*  
     
     > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
 
-- 🎛 **User Interfaces** like buttons, lists, HUDs, are designed in **SwiftUI**. This allows fluid animations, sharp text, vector shapes, live previews, automatic data-driven updates, and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
+- 🎛 **User Interface** elements like buttons, lists and HUDs are designed in **SwiftUI**. This allows fluid animations, sharp text, vector shapes, live previews, automatic data-driven updates, and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
 
 Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend", while SwiftUI lets you design slick HUDs and other UI in declarative code.
 
