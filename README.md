@@ -2,7 +2,7 @@
 
 A 2.5D game engine that combines ECS with SwiftUI, for iOS, macOS and tvOS. Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 
-The flexible Entity-Component-System architecture lets you dynamically compose game behavior, while SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs with crisp text. Full access to GPU shaders + vector UI.
+The flexible Entity-Component-System architecture lets you dynamically compose game behavior, SpriteKit gives you full access to GPU shaders, while SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs with crisp text and vector shapes.
 
 1. [Examples](#examples)
 2. [Overview](#overview)
@@ -16,11 +16,11 @@ The flexible Entity-Component-System architecture lets you dynamically compose g
 
 🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
 
-> This project is a constant **work in progess** and my first ever open-source project. I'm still learning as I go, so OctopusKit may change rapidly without maintaining backwards compatibility or updating the documentation.
+> This project is a constant **work in progress** and my first ever open-source project. I'm still learning as I go, so OctopusKit may change rapidly without maintaining backwards compatibility or updating the documentation.
 
 > OK is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 
-> If you have any advice on how to improve the API, coding style, git workflow, or open-source best-practices, I'll be grateful to hear it! 
+> Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated! 
  
 > *– ShinryakuTako*  
  
@@ -35,7 +35,7 @@ import OctopusKit
 struct ContentView: View {
 
     var gameCoordinator = OctopusGameCoordinator(
-        states: [MainMenuState(), GamePlayState()],
+        states: [MainMenuState(), GameplayState()],
         initialStateClass: MainMenuState.self)
                                                 
     var body: some View {
