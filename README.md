@@ -10,6 +10,10 @@ The flexible Entity-Component-System architecture lets you dynamically compose g
 4. [Getting Started](#getting-started)
 5. [Etcetera (license, contact)](#etcetera)
 
+<p align="center">
+    <img src="https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo20191024.gif?raw=true" alt="OctopusKit Demo"/>
+</p>
+
 🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
 
 > This project is a constant **work in progess** and my first ever open-source project. I'm still learning as I go, so OctopusKit may change rapidly without maintaining backwards compatibility or updating the documentation.
@@ -273,3 +277,5 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 [entity–component–system]: https://en.wikipedia.org/wiki/Entity–component–system
 [swiftui]: https://developer.apple.com/tutorials/swiftui/
 [sf-symbols]: https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/
+
+[demo-gif]: QuickStart/Images/OctopusKitQuickStartDemo20191024.gif "QuickStart Demo"
