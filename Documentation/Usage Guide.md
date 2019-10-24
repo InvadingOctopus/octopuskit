@@ -144,6 +144,8 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 * **Xcode Templates:** To quickly create new files for common OK classes such as scenes and components, copy the files from the `Templates/Xcode` folder in the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
 
+    > 💡 Advanced: Create a symbolic link to keep the templates in sync.
+
 * Including the OctopusKit code in your main project (instead of as a package dependency) provides the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker modification and autocompletion, easier navigation etc.
 
 * Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
