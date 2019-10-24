@@ -48,7 +48,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 	
     > 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
 
-    > 💡 To customize this template for a simple game of your own, modify the files in the `TitleState` and `PlayState` folders, and try out different components from the `Sources/OctopusKit/Components` folder in the OK package.
+    > 💡 To customize this template for a simple game of your own, modify the files in the `TitleState` and `PlayState` folders, and try out different components from the `Sources/OctopusKit/Components` folder.
 
 
 ### 🛠 **To import OctopusKit into a new or existing project:**
@@ -88,7 +88,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     
         > 💡 It's best to pass the game coordinator `environmentObject` to the top level content view created in the `SceneDelegate.swift` file, which will make it available to your entire view hierarchy.
     
-    * **AppKit or UIKit:** Your storyboard should have an `SKView` whose view controller's custom class is `OctopusViewController` or inherits from it.
+    * **AppKit or UIKit:** Your storyboard should have an `SKView` whose controller class is set to `OctopusViewController` or its subclass.
         
         * If you use `OctopusViewController` directly, then you must initialize OctopusKit early in your application launch cycle: 
 
@@ -409,7 +409,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ----
 
-[OctopusKit][repository] © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
+[OctopusKit][repository] © 2019 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io

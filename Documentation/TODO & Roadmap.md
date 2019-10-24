@@ -53,14 +53,13 @@ permalink: documentation/todo.html
 
 - Shorten the prefix for engine types from "Octopus" to "OK"?
 - Use variadic parameters (`...`) instead of arrays in certain places, like `GKEntity.addComponent(_:)`?
-- Change `public` access to `open` or `internal`?
 - Write standalone documentation for every API unit? (Currently, source comments are the primary API documentation.)
 - Write documentation and tutorials for absolute beginners? i.e. people who have no experience with Xcode or Swift?
 - Rework pausing/subscene system?
 
 ----
 
-[OctopusKit][repository] © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
+[OctopusKit][repository] © 2019 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io

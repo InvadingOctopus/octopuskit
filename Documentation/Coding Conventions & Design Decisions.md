@@ -45,7 +45,7 @@ permalink: documentation/conventions.html
 
 ----
 
-[OctopusKit][repository] © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
+[OctopusKit][repository] © 2019 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io
