@@ -35,7 +35,7 @@ import OctopusKit
 struct ContentView: View {
 
     var gameCoordinator = OctopusGameCoordinator(
-        states: [TitleState(), PlayState()]
+        states: [TitleState(), PlayState()],
         initialStateClass: TitleState.self)
                                                 
     var body: some View {
