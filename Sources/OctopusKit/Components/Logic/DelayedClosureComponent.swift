@@ -23,7 +23,7 @@ import GameplayKit
 ///     DelayedClosureComponent(executionDelay: 60.0) {
 ///         $0.coComponent(ofType: SpriteKitComponent.self)?.node
 ///     }
-class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+open class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     
     /// The block of code to be executed by a `DelayedClosureComponent`.
     ///
@@ -39,13 +39,13 @@ class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     /// The closure is executed only once. It may be repeated by calling `reset()`.
     ///
      /// For a description of the closure's signature and parameters, see `DelayedCustomClosureComponent.ClosureType`.
-    public var closure: ClosureType
+    open var closure: ClosureType
     
     // The duration in seconds to wait before executing the closure.
-    public var executionDelay: TimeInterval
+    open var executionDelay: TimeInterval
     
-    public fileprivate(set) var secondsElapsed: TimeInterval = 0
-    public fileprivate(set) var didExecuteClosure = false
+    open fileprivate(set) var secondsElapsed: TimeInterval = 0
+    open fileprivate(set) var didExecuteClosure = false
     
     /// - Parameter executionDelay: The duration in seconds (or fractions of seconds) to wait before executing the closure.
     /// - Parameter closure: The block of code to execute after the time specified by `executionDelay` has passed.
@@ -67,7 +67,7 @@ class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
         
         secondsElapsed += seconds
         
-        if secondsElapsed >= executionDelay {
+        if  secondsElapsed >= executionDelay {
             closure(self)
             didExecuteClosure = true
             // CHECK: Remove this component from entity after execution?

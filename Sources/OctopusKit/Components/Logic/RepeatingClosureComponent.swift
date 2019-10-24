@@ -9,7 +9,7 @@
 // THANKS: eskimo1@apple.com https://forums.developer.apple.com/message/272878
 
 // TODO: Check for strong reference cycles!
-// CHECK: Handle tnteger overflow?
+// CHECK: Handle integer overflow?
 
 import GameplayKit
 
@@ -22,7 +22,7 @@ import GameplayKit
 ///     RepeatingClosureComponent() {
 ///         $0.coComponent(ofType: SpriteKitComponent.self)?.node
 ///     }
-class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+open class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     
     /// The block of code to be executed every frame by a `RepeatingClosureComponent`.
     ///
@@ -36,12 +36,12 @@ class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     /// The block of code to execute every frame.
     ///
     /// For a description of the closure's signature and parameters, see `RepeatedClosureComponent.ClosureType`.
-    public var closure: ClosureType
+    open var closure: ClosureType
 
     /// The number of frames to execute the `closure` for. If `nil`, the `closure` is executed every frame until the `RepeatedClosureComponent` is removed from the entity or the scene's update cycle.
     ///
     /// - NOTE: When this property is modified, the repetition counter is reset to `0`.
-    public var framesToStopAfter: UInt64? {
+    open var framesToStopAfter: UInt64? {
         didSet {
             if framesToStopAfter != oldValue { // Reset only when the value actually changes.
                 self.repetitionCounter = 0
@@ -49,7 +49,7 @@ class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
         }
     }
     
-    public fileprivate(set) var repetitionCounter: UInt64 = 0
+    open fileprivate(set) var repetitionCounter: UInt64 = 0
     
     /// - Parameter framesToStopAfter: The number of frames to stop executing this closure after. If `nil`, the closure will be executed every frame until the `RepeatingClosureComponent` is removed from the entity or the scene's update cycle.
     ///
@@ -68,7 +68,7 @@ class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    override func update(deltaTime seconds: TimeInterval) {
+    open override func update(deltaTime seconds: TimeInterval) {
         
         // Have we been specified a limit on the number of repetitions?
         
@@ -76,8 +76,7 @@ class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
             repetitionCounter >= framesToStopAfter
         {
             return
-        }
-        else {
+        } else {
             closure(self)
             repetitionCounter += 1
         }
