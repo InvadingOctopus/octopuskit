@@ -63,13 +63,13 @@ redirect_from: "/Documentation/Usage%2Guide.html"
         initialStateClass: OctopusGameState.self)
     ```
 
-    > The game coordinator is the top-level "controller" (in the Model-View-Controller sense, not a gamepad or joystick) that manages the global state of your game.
+    > The game coordinator is the top-level "controller" (in the Model-View-Controller sense) that manages the global state of your game.
     
     > If your game needs to share complex logic or data across multiple scenes, you may create a subclass of `OctopusGameCoordinator`.
 
-3. Displaying OctopusKit content in your view hierarchy is handled differently depending on whether you use SwiftUI or AppKit/UIKit:
+3. Displaying OctopusKit content in your view hierarchy requires different steps depending on whether you use SwiftUI or AppKit/UIKit:
 
-    * **SwiftUI:** Add a `OctopusKitContainerView` pass it the game coordinator as an `environmentObject`:
+    * **SwiftUI:** Add a `OctopusKitContainerView` and pass the game coordinator as an `environmentObject` to it:
     
         ```
         import OctopusKit
@@ -88,7 +88,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     
         > 💡 It's best to pass the game coordinator `environmentObject` to the top level content view created in the `SceneDelegate.swift` file, which will make it available to your entire view hierarchy.
     
-    * **AppKit or UIKit:** Your storyboard should have an `SKView` whose controller is or inherits from `OctopusViewController`. 
+    * **AppKit or UIKit:** Your storyboard should have an `SKView` whose view controller's custom class is `OctopusViewController` or inherits from it.
         
         * If you use `OctopusViewController` directly, then you must initialize OctopusKit early in your application launch cycle: 
 
@@ -136,7 +136,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     >
     > If your game states also perform per-frame updates, then you must also call `OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)`
 
-6. Each of your game states can have a SwiftUI view associated with them to provide the user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass the `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
+6. Each of your game states can have a SwiftUI view associated with them to provide user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass an `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
 
 ----
 
@@ -181,8 +181,6 @@ systems. A typical game will create multiple instances of these objects.
 
 | 🐙 |
 | :-: |
-|📱 *Operating System*|
-|↓|
 |📲 `AppDelegate` + `SceneDelegate`|
 |↓|
 |🎬 `YourGameCoordinator: OctopusGameCoordinator` ¹|
@@ -216,23 +214,22 @@ systems. A typical game will create multiple instances of these objects.
 
 ### Tier 1
 
-📱 `OctopusAppDelegate:`[`UIApplicationDelegate`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate) or [`NSApplicationDelegate`](https://developer.apple.com/documentation/appkit/nsapplicationdelegate)  
 🎬 `OctopusGameCoordinator:`[`GKStateMachine`](https://developer.apple.com/documentation/gameplaykit/gkstatemachine)  
 🚦 `OctopusGameState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
 
-- At launch, the application configures a **Game Coordinator** object (which is a "controller" in the [MVC][mvc] hierarchy). A game coordinator is a **State Machine** with one or more **Game States**, each associated with a **Scene**. The coordinator may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
+- At launch, the application configures a **Game Coordinator** object (which counts as a "controller" in the [MVC][mvc] hierarchy). The coordinator is a **State Machine** with one or more **Game States**, each associated with a **Scene** and a **SwiftUI** view. The coordinator may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
 
-	> 💡 *Advanced: A single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
+	> 💡 *Advanced: Although OctopusKit does not support this out of the box, a single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
 
 ### Tier 2 
 
-🎛 [`SwiftUI.View`](https://developer.apple.com/documentation/swiftui)
+🎛 `YourGameStateUI:`[`SwiftUI.View`](https://developer.apple.com/documentation/swiftui)
 
-- SwiftUI lets you easily and quickly create complex user interfaces with a declarative syntax. Fluid animations, crisp text with advanced formatting, vector shapes, live previews and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
+- Every game state may have an associated SwiftUI view that is displayed over the gameplay. SwiftUI lets you easily and quickly create complex user interfaces with a declarative syntax. Fluid animations, crisp text with advanced formatting, vector shapes, live previews and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
 
-- Multiple states can share the same SwiftUI view, and a SwiftUI view may include the UIs of other states as child views or overlays, thanks to the power of SwiftUI's composability.
+- Multiple states can share the same SwiftUI view, and a SwiftUI view may include the UI of other states as child views or overlays, thanks to the power of SwiftUI's composability.
 
-- Through the `OctopusGameCoordinator` passed as an `environmentObject`, the SwiftUI views can inspect and modify the state of your game. An `OctopusComponent` may adopt the `ObservableObject` protocol to provide automatic data-driven updates for labels and HUD elements.
+- Through the `OctopusGameCoordinator` which is passed as an `environmentObject`, SwiftUI views can inspect and modify the state of your game. An `OctopusComponent` may adopt the `ObservableObject` protocol to provide automatic data-driven updates for labels and HUD elements.
 
 🏞 `OctopusScene:`[`SKScene`](https://developer.apple.com/documentation/spritekit/skscene)
 
@@ -247,10 +244,10 @@ systems. A typical game will create multiple instances of these objects.
     
 🌠 `OctopusSubscene:`[`SKNode`](https://developer.apple.com/documentation/spritekit/sknode)
 
-- A **Subscene** is a node which may be added to a scene, but maintains its own hierarchy of entities and components. When a subscene is presented, the scene sets a special flag to pause the entities in the scene itself and any previous subscenes. This allows subscenes to be used for modal UI and content which must be overlaid on top of the scene's content, while pausing the main action without pausing the engine, so that only the topmost subscene will be updated.
+- A **Subscene** is a node which may be added to a scene, but maintains its own hierarchy of entities and components. When a subscene is presented, the scene sets a special flag to pause the entities in the scene itself and any previous subscenes. This allows subscenes to be used for modal content which must be overlaid on top of the scene's content, while pausing the main action without pausing the engine, so that only the topmost subscene will be updated.
 
-    > e.g.: In a game where the player can rummage through the hero's inventory, subscenes may be used to display the inventory while pausing the gameplay. Multiple subscenes may be used to let the player open smaller containers in the inventory, such as pouches inside a backpack, each displaying its contents over the parent container's UI. The engine ensures that only the topmost container's UI can be interacted with.
-
+    > e.g.: In an adventure game a subscene may be used to present a "cutscene" which shows an story event while pausing the gameplay.
+    
 ### Tier 3
 
 👾 `OctopusEntity:`[`GKEntity`](https://developer.apple.com/documentation/gameplaykit/gkentity)  
