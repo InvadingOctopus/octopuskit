@@ -6,7 +6,9 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  🔶 STEP 7: The paused state for the QuickStart project, represented by the PlayScene (which also displays the content for the PlayState and GameOverState.)
+//  🔶 STEP 7: The paused state for the QuickStart project.
+//
+//  This state does not provide a scene or UI, as it is represented by the PlayScene (which also displays the content for the PlayState and GameOverState.)
 
 import GameplayKit
 import OctopusKit
@@ -17,7 +19,7 @@ final class PausedState: OctopusGameState {
     init() {
         
         // 🔶 STEP 7.1: Associates a scene and UI with this state.
-        // The PlayScene is also associated with the PlayState and GamerOverState.
+        // The PlayScene and PlayUI are also associated with the PlayState and GamerOverState.
         
         super.init(associatedSceneClass: PlayScene.self,
                    associatedSwiftUIView: AnyView(PlayUI()))
