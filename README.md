@@ -180,7 +180,7 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
     
     > *OK does not use "data-oriented design", but it does not prevent you from adhering to that in your project.*
 
-- 🎛 **User Interface** like buttons, lists, HUDs, is designed in **SwiftUI**. This allows fluid animations, vector shapes, live previews, automatic data-driven updates, and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
+- 🎛 **User Interfaces** like buttons, lists, HUDs, are designed in **SwiftUI**. This allows fluid animations, sharp text, vector shapes, live previews, automatic data-driven updates, and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
 
 Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend", while SwiftUI lets you design slick HUDs and other UI in declarative code.
 
