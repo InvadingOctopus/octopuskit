@@ -4,7 +4,7 @@
 
 ## How To Use
 
-1. 🆕 In Xcode 11 or later, create a **new Single View App** project, and **set the User Interface to SwiftUI.**
+1. 🆕 In Xcode 11 or later, create a new **Single View App** project, and choose **User Interface: SwiftUI.**
 
     > ❗️ **Do NOT** create a "Game" project, because that template does not use SwiftUI.
 
@@ -14,6 +14,8 @@
 
 3. 📥 **Copy** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package to your project's source folder. 
 
+    > In the Xcode Project Navigator, menu-click on the OctopusKit/QuickStart folder and select "Show in Finder"
+    
 4. 🗂 **Include** the copied files in your Xcode project. 
 
 	> By dragging the copies from your project's folder into the Project Navigator sidebar.
