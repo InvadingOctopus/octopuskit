@@ -5,10 +5,10 @@ import OctopusKit
 
 struct ___FILEBASENAMEASIDENTIFIER___: View {
 
-    // @EnvironmentObject var gameCoordinator: OctopusGameCoordinator
+    @EnvironmentObject var gameCoordinator: OctopusGameCoordinator
     
     var body: some View {
-        Text(<#"pew pew!"#>)
+        <#Text("pew pew!")#>
     }
     
 }
