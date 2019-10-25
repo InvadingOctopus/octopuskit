@@ -89,6 +89,8 @@ redirect_from: "/Documentation/Usage%2Guide.html"
                 super.init(gameCoordinator: gameCoordinator)
             }
             ``` 
+            
+            > ❗️ If you are starting with Xcode's SpriteKit Game template, you must **delete** the `GameViewController.viewDidLoad()` override, as that will prevent the `OctopusViewController` from presenting your game coordinator's scenes.
         
 4. Build the states, scenes and UI for your game. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes that inherit from `OctopusGameState` and `OctopusScene`. 
 
@@ -149,32 +151,34 @@ systems. A typical game will create multiple instances of these objects.
 |↓|
 |🎬 `YourGameCoordinator: OctopusGameCoordinator` ¹|
 |↓|
-|🚦 `YourGameState: OctopusGameState`|
+|🚦 `YourGameState: OctopusGameState` ²|
 |↕|
-|🎛 `YourUI: SwiftUI.View` ²|
-|🏞 `YourScene: OctopusScene` ³|  
+|🎛 `YourUI: SwiftUI.View` ³|
+|🏞 `YourScene: OctopusScene` ⁴|
 |↓|
-|👾 `OctopusEntity` ⁴|
+|👾 `OctopusEntity` ⁵|
 |↓|
-|🚥 `YourEntityState: OctopusEntityState` ⁵|
+|🚥 `YourEntityState: OctopusEntityState` ⁶|
 |↕|
-|⚙️ `YourComponent: OctopusComponent` ⁶|
+|⚙️ `YourComponent: OctopusComponent` ⁷|
 |↑|
-|⛓ `OctopusComponentSystem` ⁷|
+|⛓ `OctopusComponentSystem` ⁸|
 
 > ¹ `OctopusGameCoordinator` need not always be subclassed; projects that do not require a custom coordinator may simply use `OctopusGameCoordinator(states:initialStateClass:)`.
 
-> ² `SwiftUI` presents a UI overlay on top of the `OctopusScene` contents. 
+> ² `OctopusGameState` need not be subclassed if your game will have only one state and one scene; you may simply pass `OctopusGameState(associatedSceneClass: YourScene.self)` to the game coordinator initializer.
+
+> ³ `SwiftUI` presents a UI overlay on top of the `OctopusScene` contents. 
  
-> ³ `OctopusScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
+> ⁴ `OctopusScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
 
-> ⁴ `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
+> ⁵ `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
 
-> ⁵ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
+> ⁶ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
 
-> ⁶ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
+> ⁷ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
 
-> ⁷ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
+> ⁸ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
 
 ## Game Coordinator and Game States
 
