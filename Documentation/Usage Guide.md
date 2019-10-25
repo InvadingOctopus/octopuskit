@@ -118,23 +118,9 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
     > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow--object-hierarchy)
 
-5. Your scenes should inherit from `OctopusScene` and they should implement (override) the `update(_:)` method. Your implementation must call `super`, check the paused state flags, and update component systems:
-
-    ```swift
-    override func update(_ currentTime: TimeInterval) {
-        super.update(currentTime)
-        guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
-        
-        updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
-    }
-    ```
-
-    > Values such as `updateTimeDelta` are calculated when you call `super`.  
-    > `componentSystems` is the default array of systems in every scene.
-    >
-    > Other steps are left for the subclass because each scene may need to handle these differently.
-    >
-    > If your game states also perform per-frame updates, then you must also call `OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)`
+    > If your scenes requires custom per-frame logic, you may override the `OctopusScene.shouldUpdateSystems(deltaTime:)` method.
+    
+    > If your game state classes also perform per-frame updates, then you may also override the `OctopusScene.shouldUpdateGameCoordinator(deltaTime:)` method.
 
 6. Each of your game states can have a SwiftUI view associated with them to provide user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass an `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
 
@@ -240,9 +226,11 @@ systems. A typical game will create multiple instances of these objects.
     > A single scene may represent multiple game states.  
     > e.g.: for most games, it may not be necessary to have a separate scene for a "Paused" game state, and a single scene may handle both "Play" and "Paused" game states by displaying a dark overlay and some text in the paused state.
 
-- Once a scene is presented on screen, the system calls the scene's `update(_:)` method once every frame, which goes through the list of the scene's **Component Systems** and updates all the **Components** in each system.
+- Once a scene is presented on screen, the system calls the `OctopusScene.update(_:)` method at the beginning of every frame, which goes through the list of the scene's **Component Systems** and updates all the **Components** in each system. 
 
-    > Each scene may handle the frame update differently; [TODO]
+- The update method then calls the `shouldUpdateGameCoordinator(deltaTime:)` and `shouldUpdateSystems(deltaTime:)` methods to offer a customization point for complex game-specific scenes which perform their own per-frame logic.
+    
+    > See Apple's documentation for an overview of the [SpriteKit frame cycle][frame-cycle].
     
 🌠 `OctopusSubscene:`[`SKNode`](https://developer.apple.com/documentation/spritekit/sknode)
 
@@ -363,13 +351,13 @@ A component may be conceptually classified under one or more of the following ca
 - **Logic Component**: Executes some code every frame or at specific moments during an entity's lifetime: when added to the entity, upon being removed from an entity, or in response to external/asynchronous events such as player input.
 
     > e.g.: A `TimeComponent` that keeps track of the seconds that have elapsed since the component was added to an entity.
-    >
-    > Components such as these, which execute some logic in every frame, must be added to a component system or updated manually in a scene's `update(_:)` method, otherwise they cannot perform their task.
+    
+    > Components such as these, which execute some logic in every frame, must be added to a component system or updated manually in a scene's `shouldUpdateSystems(deltaTime:)` method, otherwise they cannot perform their task.
 
 - **Coordinator Component**: A logic component that observes one or more components and uses that information to act upon other components.
 
     > e.g.: A *PlayerInfoDisplayComponent* which is added to a scene, that searches the scene for an entity with a *PlayerInfoComponent*, and uses the properties of that data component to update the scene's *HUDComponent*.
-    >
+    
     > Such a design lets the *HUDComponent* remain a visual component which focuses on managing its graphics and labels, while letting other components decide what to display in the HUD, which may be player info, enemy info, or temporary alerts etc.
 		
 - **Support/Utility Component**: Performs no action upon the entity on its own, but provides a set of methods and data to assist other components.
@@ -421,4 +409,5 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 [mvc]: https://en.wikipedia.org/wiki/Model–view–controller
 [reducing-dynamic-dispatch]: https://developer.apple.com/swift/blog/?id=27
+[frame-cycle]: https://developer.apple.com/documentation/spritekit/skscene/responding_to_frame-cycle_events
 [sf-symbols]: https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/

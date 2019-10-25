@@ -305,16 +305,18 @@ open class OctopusScene: SKScene,
     
     // MARK: - Frame Update
     
-    /// Performs any scene-specific updates that need to occur before scene actions are evaluated. This method is the point for updating components, preferably via component systems.
+    /// This method is called by SpriteKit on every frame (before SKActions are evaluated) and updates components via component systems.
     ///
-    /// Also performs timer calculations and handles pausing/unpausing logic, entry removal and other preparations that are necessary for every frame.
+    /// This method also performs timer calculations and handles pausing/unpausing logic, entity removal and other preparations that are necessary for every frame.
     ///
-    /// - Note: Does not automatically update components or states. The subclass implementation must call `updateSystems(in: componentSystems, deltaTime: updateTimeDelta)` and `OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)` as applicable, or provide custom frame-update logic.
+    /// An `OctopusScene` subclass (i.e. the scenes specific to your game) may control pause/unpause behavior and perform other per-frame logic by overriding the `shouldUpdateGameCoordinator(deltaTime:)` and `shouldUpdateSystems(deltaTime:)` methods.
     ///
-    /// The preferred pattern in OctopusKit is to simply add entities and components to the scene in a method like `prepareContents()` or `gameCoordinatorDidEnterState(_:from:)`, and use this method to just update all component systems, letting all the per-frame game logic be handled by the `update(_:)` method of each individual component and state class.
+    /// The preferred pattern in OctopusKit is to simply add entities and components to the scene in a method like `prepareContents()` or `gameCoordinatorDidEnterState(_:from:)`, and let this method automatically update all component systems, which allows all the per-frame logic for the game to be handled by the `update(_:)` method of each individual component and state class.
     ///
-    /// - Important: `super.update(currentTime)` *must* be called for correct functionality (before any other code in most cases), and the subclass should also recheck `isPaused`, `isPausedBySystem`, `isPausedByPlayer` and `isPausedBySubscene` flags.
-    open override func update(_ currentTime: TimeInterval) {
+    /// For an overview of the SpriteKit frame cycle, see: https://developer.apple.com/documentation/spritekit/skscene/responding_to_frame-cycle_events
+    ///
+    /// - IMPORTANT: If this method is overridden, `super.update(currentTime)` **must** be called for correct functionality (before any other code in most cases), and the subclass should also recheck `isPaused`, `isPausedBySystem`, `isPausedByPlayer` and `isPausedBySubscene` flags.
+    public override func update(_ currentTime: TimeInterval) {
         
         // #1: Reset single-frame flags.
         
@@ -348,19 +350,24 @@ open class OctopusScene: SKScene,
         
         // NOTE: The `isPausedBySubscene` flag is a special case, and should only be handled by the subclass. The engine itself should continue so that the subscenes can be updated.
         
-        guard !isPaused, !isPausedBySystem, !isPausedByPlayer else {
-            
-            if pausedAtTime == nil {
+        guard
+            !isPaused,
+            !isPausedBySystem,
+            !isPausedByPlayer
+            else
+        {
+            if  pausedAtTime == nil {
                 pausedAtTime = currentTime
                 
                 OctopusKit.logForFramework.add("pausedAtTime = \(pausedAtTime!), isPaused = \(isPaused), isPausedBySystem = \(isPausedBySystem), isPausedByPlayer = \(isPausedByPlayer), isPausedBySubscene = \(isPausedBySubscene)")
             }
+            
             return
         }
         
         // If this is not our first frame, calculate the time elapsed (`updateTimeDelta`) between the current frame and the previous frame.
         
-        if let lastUpdateTime = self.lastUpdateTime {
+        if  let lastUpdateTime = self.lastUpdateTime {
             
             // ℹ️ Cannot use the overflow `&+` operator with `Double`, if you're thinking of allowing overflows for `secondsElapsedSinceMovedToView` to increase performance a little.
             
@@ -377,14 +384,13 @@ open class OctopusScene: SKScene,
                 // Forget the paused time and clear the instance property as we are no longer paused.
                 
                 self.pausedAtTime = nil
-            }
-            else {
+            
+            } else {
                 // If we were not paused, calculate the delta value as normal.
                 self.updateTimeDelta = currentTime - lastUpdateTime
             }
             
-        }
-        else {
+        } else {
             // If this is our very first frame, simply zero the delta value.
             self.updateTimeDelta = 0
         }
@@ -406,22 +412,47 @@ open class OctopusScene: SKScene,
         
         // #4: Update the most-recently-added subscene.
         
-        if let subscene = self.subscenes.last {
+        if  let subscene = self.subscenes.last {
             subscene.update(deltaTime: updateTimeDelta)
         }
         
-        // #5: Update components and systems in the subclass.
+        // #5: Call the game coordinator's update method in case the game uses per-frame logic in a subclass of `OctopusGameCoordinator`.
         
-        // An `OctopusScene` subclass should override this method and call `super.update(currentTime)` so that all of the above tasks can be performed.
-        //
-        // The responsibility of updating components and systems is left to the subclass, as each scene may need to perform updates differently, especially in complex games.
-        //
-        // In most cases, a subclass will need the following code:
-        //
-        //    super.update(currentTime)
-        //    guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
-        //    OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)
-        //    updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
+        if  self.shouldUpdateGameCoordinator(deltaTime: updateTimeDelta) {
+            OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)
+        }
+        
+        // #6: Update components and systems in the subclass.
+        
+        if  self.shouldUpdateSystems(deltaTime: updateTimeDelta) {
+            updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
+        }
+        
+    }
+    
+    /// This method is called at the end of `OctopusScene.update()` to determine whether to call `OctopusKit.shared?.gameCoordinator.update()` on every frame.
+    ///
+    /// If the game uses a custom subclass of `OctopusGameCoordinator` that implements an `update(deltaTime:)` method then an `OctopusScene` subclass may override `shouldUpdateGameCoordinator(deltaTime:)` to customize the per-frame logic.
+    ///
+    /// This method is called before `shouldUpdateSystems()` during the frame update.
+    ///
+    /// - RETURNS: The default implementation calls `shouldUpdateSystems` and forwards its result.
+    open func shouldUpdateGameCoordinator(deltaTime: TimeInterval) -> Bool {
+        shouldUpdateSystems(deltaTime: deltaTime)
+    }
+    
+    /// This method is called at the end of `OctopusScene.update()` on every frame to determine whether to update all systems in the `componentSystems` array.
+    ///
+    /// An `OctopusScene` subclass may override this method to customize pause/unpause behavior or other logic to control the updates of component systems.
+    ///
+    /// This method is called after `shouldUpdateGameCoordinator()` during the frame update.
+    ///
+    /// - RETURNS: The default implementation returns `true` if **none** of the paused flags are set: `!isPaused && !isPausedBySystem && isPausedByPlayer && !isPausedBySubscene`
+    open func shouldUpdateSystems(deltaTime: TimeInterval) -> Bool {
+        (!isPaused
+            && !isPausedBySystem
+            && !isPausedByPlayer
+            && !isPausedBySubscene)
     }
     
     /// Increments the frame counter at the end of the current frame update.

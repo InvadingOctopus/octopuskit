@@ -44,17 +44,5 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         // Customize: This is where you build your scene.
     }
     
-    // MARK: - Frame Update
-    
-    override func update(_ currentTime: TimeInterval) {
-        super.update(currentTime)
-        guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
-        
-        // Update game state, entities and components.
-        
-        OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)
-        updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
-    }
-
 }
 

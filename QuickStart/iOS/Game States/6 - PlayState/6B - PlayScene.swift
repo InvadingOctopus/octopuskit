@@ -73,9 +73,9 @@ final class PlayScene: OctopusScene {
                                     PhysicsWorldComponent(),
                                     PhysicsComponent(physicsBody: SKPhysicsBody(edgeLoopFrom: self.frame))])
                 
-        // Add the global game coordinator entity to this scene so that global components will be included in the update cycle.
+        // Add the global game coordinator entity to this scene so that global components will be included in the update cycle, and updated in the order specified by this scene's `componentSystems` array.
         
-        if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+        if  let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
             self.addEntity(gameCoordinatorEntity)
         }
     }
@@ -83,20 +83,22 @@ final class PlayScene: OctopusScene {
     // MARK: - Frame Update
     
     // MARK: 🔶 STEP 6B.4
-    override func update(_ currentTime: TimeInterval) {
+    override func shouldUpdateSystems(deltaTime: TimeInterval) -> Bool {
         
-        // Update component systems every frame after checking the paused flags.
+        // This method is not necessary but provided here for explanation:
         //
-        // Note that calling super.update(currentTime) is essential before any other code in the subclass' method.
+        // OctopusKit handles all the boilerplate per-frame logic, like timer calculations, frame counts, entity management and pause/unpause behavior.
         //
-        // OctopusKit defers component updates to the OctopusScene subclass, because each specific scene may need to handle pausing, unpausing and other tasks differently.
+        // The `OctopusScene.update(_:)` method, which is executed at the beginning of every frame by SpriteKit, calls this `shouldUpdateSystems(deltaTime:)` before updating the components of all entities.
         //
-        // The rest of the pausing and unpausing tasks are handled in gameCoordinatorDidEnterState(_:from:) and gameCoordinatorWillExitState(_:to:)
-
-        super.update(currentTime)
-        guard !isPaused, !isPausedBySystem, !isPausedByPlayer, !isPausedBySubscene else { return }
+        // This saves you from writing a lot of identical code for every scene, while still offering a customization point for your scenes that have custom pause/unpause behavior or need to perform other per-frame logic.
+        //
+        // By default this method just checks all the paused flags, and returns true if none are true. That's what we're going to do here too. :)
+        //
+        // 💡 For an overview of the SpriteKit frame cycle, see Apple's documentation:
+        // https://developer.apple.com/documentation/spritekit/skscene/responding_to_frame-cycle_events
         
-        updateSystems(in: componentSystems, deltaTime: updateTimeDelta)
+        return (!isPaused && !isPausedBySystem && !isPausedByPlayer && !isPausedBySubscene)
     }
     
     // MARK: - State & Scene Transitions
