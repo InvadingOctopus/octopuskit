@@ -27,5 +27,6 @@ let package = Package(
         .testTarget(
             name: "OctopusKitTests",
             dependencies: ["OctopusKit"]),
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )
