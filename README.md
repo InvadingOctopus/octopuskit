@@ -21,8 +21,8 @@ The flexible Entity-Component-System architecture lets you dynamically compose g
 > OK is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 
 > Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated! 
- 
-> *– ShinryakuTako*  
+
+> *– ShinryakuTako*
  
 ## Examples
 

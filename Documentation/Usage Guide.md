@@ -20,41 +20,16 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 ### 🍰 **To begin from a template**:
 
-1. 🆕 Create a new **Single View App** project, and choose **User Interface: SwiftUI.**
-
-	> You will require Xcode 11, and if you wish to run on an iPhone or iPad, iOS/iPadOS 13.
-
-2. 📦 Add OctopusKit as a **Swift Package** Dependency.
-    
-3. 📥 **Copy** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package to your project's source folder. 
-
-    > In the Xcode Project Navigator, menu-click on the OctopusKit/QuickStart folder and select "Show in Finder" 
-
-4. 🗂 **Include** the copied files in your Xcode project. 
-
-5. 🖼 Add the `OctopusKitQuickStartView` to the `ContentView.swift` file:
-
-    ```
-    var body: some View {
-        OctopusKitQuickStartView()
-    }
-    ```
-    	
-6. Build and run the project to verify that the template works.
-
-7. Modify the files in the `TitleState` and `	PlayState` folders to customize them for your game.
-
-    > 🏷 Filenames are prefixed with a number denoting the order they come in during the application's life cycle. 
-	
-    > 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
-
-    > 💡 To customize this template for a simple game of your own, modify the files in the `TitleState` and `PlayState` folders, and try out different components from the `Sources/OctopusKit/Components` folder.
-
+1. See the [**README QuickStart.md**][quickstart] file in the QuickStart folder of the OctopusKit package/repository.
 
 ### 🛠 **To import OctopusKit into a new or existing project:**
 
-1. 📦 Add OctopusKit as a **Swift Package** Dependency.
-
+1. 📦 Add OctopusKit as a **Swift Package Manager** Dependency.
+    
+    > *Xcode File menu » Swift Packages » Add Package Dependency...*
+        
+    > Enter the URL for the GitHub [repository][repository].
+    
 2. Create an instance of `OctopusGameCoordinator`.
 
     ```
@@ -122,7 +97,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     
     > If your game state classes also perform per-frame updates, then you may also override the `OctopusScene.shouldUpdateGameCoordinator(deltaTime:)` method.
 
-6. Each of your game states can have a SwiftUI view associated with them to provide user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass an `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
+5. Each of your game states can have a SwiftUI view associated with them to provide user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass an `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
 
 ----
 
@@ -403,8 +378,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 [website]: https://invadingoctopus.io
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html
 
-[quickstart-project]: https://github.com/invadingoctopus/octopuskit/releases
-[octopuskit-github]: https://github.com/invadingoctopus/octopuskit
+[quickstart]: https://github.com/InvadingOctopus/octopuskit/blob/master/QuickStart/README%20QuickStart.md
 [tips-&-troubleshooting]: https://invadingoctopus.io/octopuskit/documentation/tips.html
 
 [mvc]: https://en.wikipedia.org/wiki/Model–view–controller
