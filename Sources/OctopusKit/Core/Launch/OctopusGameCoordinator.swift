@@ -68,7 +68,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     
     /// A global entity for encapsulating components which manage data that must persist across scenes, such as the overall game world, active play session, or network connections etc.
     ///
-    /// - Important: Must be manually added to scenes that require it.
+    /// - IMPORTANT: **Do NOT** update this entity or its components directly; it must be manually added to scenes which require it, so that global components are updated in the order specified by each scene's `componentSystems` array, to preserve component dependencies.
     public let entity: OctopusEntity
 
     public private(set) var notifications: [AnyCancellable] = []
@@ -182,11 +182,11 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
             return false
         }
         
-        if viewController == nil {
+        if  viewController == nil {
             OctopusKit.logForDebug.add("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OctopusGameCoordinator was initialized early in the application life cycle.")
         }
         
-        if self.canEnterState(initialStateClass) {
+        if  self.canEnterState(initialStateClass) {
             // Customization point for subclasses.
             self.willEnterInitialState()
         }
@@ -195,10 +195,8 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         
         return didEnterInitialState
     }
-
-    deinit {
-        OctopusKit.logForDeinits.add("\(self)")
-    }
+    
+    deinit { OctopusKit.logForDeinits.add("\(self)") }
 
     // MARK: - Abstract Methods
     
