@@ -10,11 +10,12 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 1. [Start](#start)
 2. [Control Flow & Object Hierarchy](#control-flow--object-hierarchy)
 3. [Folder Organization](#folder-organization)
-4. [Scenes](#scenes)
-5. [Entities](#entities)
-6. [Components](#components)
-7. [State Machines](#state-machines)
-8. [Advanced Stuff](#advanced-stuff)
+4. [Game Coordinator and Game States](#game-coordinator-and-game-states)
+5. [Scenes](#scenes)
+6. [Entities](#entities)
+7. [Components](#components)
+8. [State Machines](#state-machines)
+9. [Advanced Stuff](#advanced-stuff)
 
 ## Start
 
@@ -175,7 +176,7 @@ systems. A typical game will create multiple instances of these objects.
 
 > ⁷ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
 
-### Tier 1
+## Game Coordinator and Game States
 
 🎬 `OctopusGameCoordinator:`[`GKStateMachine`](https://developer.apple.com/documentation/gameplaykit/gkstatemachine)  
 🚦 `OctopusGameState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
@@ -184,8 +185,6 @@ systems. A typical game will create multiple instances of these objects.
 
 	> 💡 *Advanced: Although OctopusKit does not support this out of the box, a single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
 
-### Tier 2 
-
 🎛 `YourGameStateUI:`[`SwiftUI.View`](https://developer.apple.com/documentation/swiftui)
 
 - Every game state may have an associated SwiftUI view that is displayed over the gameplay. SwiftUI lets you easily and quickly create complex user interfaces with a declarative syntax. Fluid animations, crisp text with advanced formatting, vector shapes, live previews and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
@@ -193,6 +192,8 @@ systems. A typical game will create multiple instances of these objects.
 - Multiple states can share the same SwiftUI view, and a SwiftUI view may include the UI of other states as child views or overlays, thanks to the power of SwiftUI's composability.
 
 - Through the `OctopusGameCoordinator` which is passed as an `environmentObject`, SwiftUI views can inspect and modify the state of your game. An `OctopusComponent` may adopt the `ObservableObject` protocol to provide automatic data-driven updates for labels and HUD elements.
+    
+## Scenes
 
 🏞 `OctopusScene:`[`SKScene`](https://developer.apple.com/documentation/spritekit/skscene)
 
@@ -213,38 +214,6 @@ systems. A typical game will create multiple instances of these objects.
 
     > e.g.: In an adventure game a subscene may be used to present a "cutscene" which shows an story event while pausing the gameplay.
     
-### Tier 3
-
-👾 `OctopusEntity:`[`GKEntity`](https://developer.apple.com/documentation/gameplaykit/gkentity)  
-🚥 `OctopusEntityState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
-
-- An **Entity** is a group of **Components** that may interact with each other. It may also have an **Entity State Machine** which is a special component comprising different **Entity States**. Each state has logic that decides which components to add to the entity and which components to remove depending on different conditions, as well as when to transition to a different state.
-
-	> e.g.: A *GrueEntity* with a *SleepingState, HuntingState, EatingState and DeadState.*
-
-### Tier 4
-
-⚙️ `OctopusComponent:`[`GKComponent`](https://developer.apple.com/documentation/gameplaykit/gkcomponent)  
-
-- A **Component** represents each onscreen object or unit of game logic. It may contain properties and execute logic at specific moments in its lifetime: when it's added to an entity, removed from an entity, and/or once every frame. A component may signal its entity to enter a different state, or request the entity's scene to spawn new entities, or even to remove the component's own entity from the scene. 
-
-    > Components may also access the game coordinator and its states. Nothing is "off limits" to a component; what a component may do is up to you. However, good practices dictate that a component should be polite and only access its own entity and its co-components.
-
-⛓ `OctopusComponentSystem:`[`GKComponentSystem`](https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem)
-
-- Whenever a component is added to an entity, the scene registers the component with a **Component System** that matches the component's class. Only components that perform any logic during frame updates need to be registered with a system.
-
-- After enumerating all components from all entities and adding them to a list of **Component Systems**, the scene updates each system in a deterministic order during the `OctopusScene.update(_:)` method every frame. The array of systems should be arranged such that components which depend on other components are processed after their dependencies.
-
-	> e.g.: An entity's `TouchControlledPositioningComponent` must be executed after its `TouchEventComponent`, so a scene's component systems array should place the system for `TouchEventComponent`s before the system for `TouchControlledPositioningComponent`s.
-
-- Over the course of the gameplay, a scene, state or even a component may signal the **Game Coordinator** to enter a different **Game State** in response to certain game-specific conditions. The current game state's logic determines whether the transition is valid; if it is, the state then passes control to another state, which may then load a different scene.
-
-    > As noted above, a single scene may choose to handle multiple game states. In those cases, no scene transition occurs during a game state transition. 
-
-## Scenes
-
-[TODO: Incomplete section]  
 [TODO: OctopusScene API overview]
 
 ### Scenes should:
@@ -253,8 +222,12 @@ systems. A typical game will create multiple instances of these objects.
 
 ## Entities
 
-[TODO: Incomplete section]  
-[TODO: OctopusEntity API overview]
+👾 `OctopusEntity:`[`GKEntity`](https://developer.apple.com/documentation/gameplaykit/gkentity)  
+🚥 `OctopusEntityState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
+
+- An **Entity** is a group of **Components** that may interact with each other. It may also have an **Entity State Machine** which is a special component comprising different **Entity States**. Each state has logic that decides which components to add to the entity and which components to remove depending on different conditions, as well as when to transition to a different state.
+
+	> e.g.: A *GrueEntity* with a *SleepingState, HuntingState, EatingState and DeadState.*
 
 - Contain components which are the primary block of game functionality.
 
@@ -292,10 +265,27 @@ systems. A typical game will create multiple instances of these objects.
 
 - Contain properties or code other than initializers/constructors.
 
+[TODO: OctopusEntity API overview]
+
 ## Components
 
-[TODO: Incomplete section]  
-[TODO: OctopusComponent API overview]
+⚙️ `OctopusComponent:`[`GKComponent`](https://developer.apple.com/documentation/gameplaykit/gkcomponent)  
+
+- A **Component** represents each onscreen object or unit of game logic. It may contain properties and execute logic at specific moments in its lifetime: when it's added to an entity, removed from an entity, and/or once every frame. A component may signal its entity to enter a different state, or request the entity's scene to spawn new entities, or even to remove the component's own entity from the scene. 
+
+    > Components may also access the game coordinator and its states. Nothing is "off limits" to a component; what a component may do is up to you. However, good practices dictate that a component should be polite and only access its own entity and its co-components.
+
+⛓ `OctopusComponentSystem:`[`GKComponentSystem`](https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem)
+
+- Whenever a component is added to an entity, the scene registers the component with a **Component System** that matches the component's class. Only components that perform any logic during frame updates need to be registered with a system.
+
+- After enumerating all components from all entities and adding them to a list of **Component Systems**, the scene updates each system in a deterministic order during the `OctopusScene.update(_:)` method every frame. The array of systems should be arranged such that components which depend on other components are processed after their dependencies.
+
+	> e.g.: An entity's `TouchControlledPositioningComponent` must be executed after its `TouchEventComponent`, so a scene's component systems array should place the system for `TouchEventComponent`s before the system for `TouchControlledPositioningComponent`s.
+
+- Over the course of the gameplay, a scene, state or even a component may signal the **Game Coordinator** to enter a different **Game State** in response to certain game-specific conditions. The current game state's logic determines whether the transition is valid; if it is, the state then passes control to another state, which may then load a different scene.
+
+    > As noted above, a single scene may choose to handle multiple game states. In those cases, no scene transition occurs during a game state transition. 
 
 - Ideally, components should have no methods/callbacks triggered by events, delegation or notifications. If a component needs to process events, then a parent object, such as a scene or view controller, should create a separate component for holding copies of events every frame. Components that rely on events should read that event-holding component every frame. An example would be an input events component.
 
@@ -348,6 +338,8 @@ A component may be conceptually classified under one or more of the following ca
 ### What should be Entities and what should be Components?
 
 - A spaceship, or a monster, are not components; they are entities. A spaceship may have a *ThrusterComponent*, and a *GunComponent*. A monster may have a *MonsterSpeciesComponent*. Both will have a `SpriteKitComponent`, `PhysicsComponent` etc.
+
+[TODO: OctopusComponent API overview]
 
 ## State Machines
 
