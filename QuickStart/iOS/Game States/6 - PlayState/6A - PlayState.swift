@@ -19,8 +19,8 @@ final class PlayState: OctopusGameState {
         // 🔶 STEP 6A.1: Associates a scene and UI with this state.
         // The PlayScene is also associated with the PausedState and GamerOverState.
         
-        super.init(associatedSceneClass: PlayScene.self,
-                   associatedSwiftUIView: AnyView(PlayUI()))
+        super.init(associatedSceneClass:  PlayScene.self,
+                   associatedSwiftUIView: PlayUI())
     }
     
     override func didEnter(from previousState: GKState?) {

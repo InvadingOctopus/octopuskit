@@ -22,8 +22,8 @@ final class TitleState: OctopusGameState {
         //
         // This hybridization lets you use an Entity-Component-System architecture for your gameplay, with a convenient declarative syntax for your user interface.
         
-        super.init(associatedSceneClass: TitleScene.self,
-                   associatedSwiftUIView: AnyView(TitleUI()))
+        super.init(associatedSceneClass:  TitleScene.self,
+                   associatedSwiftUIView: TitleUI())
     }
 
     @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {

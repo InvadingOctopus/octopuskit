@@ -21,8 +21,8 @@ final class PausedState: OctopusGameState {
         // 🔶 STEP 7.1: Associates a scene and UI with this state.
         // The PlayScene and PlayUI are also associated with the PlayState and GamerOverState.
         
-        super.init(associatedSceneClass: PlayScene.self,
-                   associatedSwiftUIView: AnyView(PlayUI()))
+        super.init(associatedSceneClass:  PlayScene.self,
+                   associatedSwiftUIView: PlayUI())
     }
     
     @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {

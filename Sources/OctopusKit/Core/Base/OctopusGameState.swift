@@ -60,12 +60,22 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     
     // MARK: - Life Cycle
     
-    /// Creates a game state and associates it with the specified scene class and UI overlay.
-    public init(associatedSceneClass: OctopusScene.Type? = nil,
-                associatedSwiftUIView: AnyView = AnyView(EmptyView()))
+    /// Creates a game state and associates it with the specified scene class.
+    public init(associatedSceneClass: OctopusScene.Type? = nil)
     {
-        self.associatedSceneClass = associatedSceneClass
-        self.associatedSwiftUIView = associatedSwiftUIView
+        // TODO: Remove this init once we figure out how to provide default arguments for `associatedSwiftUIView` without using AnyView. :|
+        self.associatedSceneClass  = associatedSceneClass
+        self.associatedSwiftUIView = AnyView(EmptyView())
+        super.init()
+    }
+    
+    /// Creates a game state and associates it with the specified scene class and UI overlay.
+    public init <ViewType: View>
+        (associatedSceneClass:  OctopusScene.Type? = nil,
+         associatedSwiftUIView: ViewType)
+    {
+        self.associatedSceneClass  = associatedSceneClass
+        self.associatedSwiftUIView = AnyView(associatedSwiftUIView)
         super.init()
     }
     
@@ -76,7 +86,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
         (associatedSceneClass: OctopusScene.Type? = nil,
          @ViewBuilder associatedSwiftUIView: () -> ViewType)
     {
-        self.associatedSceneClass = associatedSceneClass
+        self.associatedSceneClass  = associatedSceneClass
         self.associatedSwiftUIView = AnyView(associatedSwiftUIView())
         super.init()
     }
