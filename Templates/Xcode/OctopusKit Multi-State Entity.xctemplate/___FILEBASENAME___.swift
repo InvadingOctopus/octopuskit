@@ -43,7 +43,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntity {
         
         self.addComponents([
             StateMachineComponent(stateMachine: stateMachine,
-                                  stateClassOnAddingToEntity: ___FILEBASENAMEASIDENTIFIER___InactiveState.self),
+                                  stateClassWhenAddingToEntity: ___FILEBASENAMEASIDENTIFIER___InactiveState.self),
             ])
         
     }
