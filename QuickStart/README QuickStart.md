@@ -14,15 +14,11 @@
         
     > Enter the URL for the GitHub [repository][repository].
     
-3. 📥 **Copy** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package into your project's source folder. 
+3. 📥 **Copy and include** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package into your project's source folder. 
 
-    > In the Xcode Project Navigator, menu-click on the OctopusKit/QuickStart folder and select "Show in Finder" then just drag the iOS or macOS folder into your project folder. 
+    > In the Xcode Project Navigator, menu-click on the OctopusKit/QuickStart folder and select "Show in Finder" then just drag the iOS or macOS subfolder into your project folder in the Xcode navigator. 
 
-4. 🗂 **Include** the copied files in your Xcode project. 
-
-    > By dragging the new copies from your project's folder into the Project Navigator sidebar.
-
-5. 🖼 Add the `OctopusKitQuickStartView` to the `ContentView.swift` file:
+4. 🖼 Add the `OctopusKitQuickStartView` to the `ContentView.swift` file:
 
     ```
     var body: some View {
@@ -30,9 +26,9 @@
     }
     ```
     	
-6. 🚀 Build and run the project to verify that the template works.
+5. 🚀 Build and run the project to verify that the template works.
 
-7. 👓 Examine the OctopusKitQuickStartView.swift file and dig around in the QuickStart folder to see how everything works, then modify the template for your specific game. 
+6. 👓 Examine the OctopusKitQuickStartView.swift file and dig around in the QuickStart folder to see how everything works, then modify the template for your specific game. 
 
     > 📁 The main content of the template is in the `TitleState` and `PlayState` folders.
 
@@ -42,7 +38,7 @@
 
     > 💡 Try out different components from the `Sources/OctopusKit/Components` folder.
     
-8. For a detailed explanation of the engine, see the [Usage Guide][usage-guide] in the Documentation folder of the OctopusKit package/repository.
+7. For a detailed explanation of the engine, see the [Usage Guide][usage-guide] in the Documentation folder of the OctopusKit package/repository.
 
 ----
 
