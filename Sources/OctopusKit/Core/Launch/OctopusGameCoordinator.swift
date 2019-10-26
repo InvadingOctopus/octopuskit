@@ -80,10 +80,21 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     {
         OctopusKit.logForFramework.add("states: \(states) — initial: \(initialStateClass)")
         
+        assert(!states.isEmpty, "You must specify at least one game state!")
+        
         self.initialStateClass = initialStateClass
         self.entity = OctopusEntity(name: OctopusKit.Constants.Strings.gameCoordinatorEntityName)
         super.init(states: states)
         registerForNotifications()
+    }
+    
+    /// Convenience initializer that sets the initial game state to the first item passed in the `states` array.
+    public convenience init(states: [OctopusGameState]) {
+        
+        assert(!states.isEmpty, "You must specify at least one game state!")
+        
+        self.init(states: states,
+                  initialStateClass: type(of: states.first!))
     }
     
     private override init(states: [GKState]) {
