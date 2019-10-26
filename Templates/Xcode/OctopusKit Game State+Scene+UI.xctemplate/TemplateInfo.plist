@@ -5,17 +5,17 @@
 	<key>Kind</key>
 	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
 	<key>Description</key>
-	<string>An OctopusKit entity.</string>
+	<string>A state, scene and UI for an OctopusKit game, in a single file.</string>
 	<key>Summary</key>
-	<string>An OctopusKit entity</string>
+	<string>A state, scene and UI for an OctopusKit game, in a single file</string>
 	<key>SortOrder</key>
-	<string>40</string>
+	<string>10</string>
 	<key>AllowedTypes</key>
 	<array>
 		<string>public.swift-source</string>
 	</array>
 	<key>DefaultCompletionName</key>
-	<string>Entity</string>
+	<string>GameState</string>
 	<key>MainTemplateFile</key>
 	<string>___FILEBASENAME___.swift</string>
 </dict>

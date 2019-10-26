@@ -8,7 +8,7 @@ struct ___FILEBASENAMEASIDENTIFIER___: View {
     @EnvironmentObject var gameCoordinator: OctopusGameCoordinator
     
     var body: some View {
-        <#Text("pew pew!")#>
+        <#Text("___FILEBASENAMEASIDENTIFIER___").font(.largeTitle).foregroundColor(.gray)#>
     }
     
 }

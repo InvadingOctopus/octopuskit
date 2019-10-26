@@ -1,10 +1,29 @@
 //___FILEHEADER___
 
+import SwiftUI
 import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
+final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
+    
+    init() {
+        // NOTE: Game state classes are initialized when the game coordinator is initialized: on game launch.
+        super.init(associatedSceneClass:  ___FILEBASENAMEASIDENTIFIER___Scene.self,
+                   associatedSwiftUIView: ___FILEBASENAMEASIDENTIFIER___UI())
+    }
+    
+    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+        // Customize: Specify the valid states that this state can transition to.
+        // You may perform game-specific checks here to allow different states based on different conditions.
+        return stateClass is OctopusGameState.Type // Default: allow all states.
+    }
+    
+}
+
+// MARK: - Scene
+
+final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
         
     // MARK: - Life Cycle
     
@@ -46,3 +65,21 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     
 }
 
+// MARK: - UI
+
+struct ___FILEBASENAMEASIDENTIFIER___UI: View {
+
+    @EnvironmentObject var gameCoordinator: OctopusGameCoordinator
+    
+    var body: some View {
+        <#Text("___FILEBASENAMEASIDENTIFIER___").font(.largeTitle).foregroundColor(.gray)#>
+    }
+    
+}
+
+struct ___FILEBASENAMEASIDENTIFIER___UI_Previews: PreviewProvider {
+    static var previews: some View {
+        ___FILEBASENAMEASIDENTIFIER___UI()
+            // .environmentObject(gameCoordinator)
+    }
+}

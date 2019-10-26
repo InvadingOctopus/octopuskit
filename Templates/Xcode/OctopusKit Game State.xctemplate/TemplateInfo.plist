@@ -9,7 +9,7 @@
 	<key>Summary</key>
 	<string>A state for an OctopusKit game</string>
 	<key>SortOrder</key>
-	<string>0</string>
+	<string>20</string>
 	<key>AllowedTypes</key>
 	<array>
 		<string>public.swift-source</string>

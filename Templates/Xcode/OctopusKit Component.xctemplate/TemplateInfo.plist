@@ -9,7 +9,7 @@
 	<key>Summary</key>
 	<string>An OctopusKit component</string>
 	<key>SortOrder</key>
-	<string>40</string>
+	<string>50</string>
 	<key>AllowedTypes</key>
 	<array>
 		<string>public.swift-source</string>

@@ -9,7 +9,7 @@
 	<key>Summary</key>
 	<string>A SwiftUI view for an OctopusKit game state</string>
 	<key>SortOrder</key>
-	<string>1</string>
+	<string>35</string>
 	<key>AllowedTypes</key>
 	<array>
 		<string>public.swift-source</string>

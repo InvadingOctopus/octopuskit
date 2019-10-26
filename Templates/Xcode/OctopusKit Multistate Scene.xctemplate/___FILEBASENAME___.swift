@@ -73,7 +73,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     
     override func prepareContents() {
         super.prepareContents()
-        // Customize: This is where you build your scene.
+        // Customize: This is where you construct entities to add to your scene.
         //
         // You may also perform scene construction and deconstruction in `gameCoordinatorDidEnterState(_:from:)` and `gameCoordinatorWillExitState(_:to:)`
     }
