@@ -46,7 +46,7 @@ public protocol OctopusSceneDelegate: class {
 
 public extension OctopusSceneDelegate {
     
-    // Abstract; To be implemented by subclass. Default behavior is to redirect to `octopusSceneDidChooseNextGameState(_)`.
+    // Abstract; To be implemented by subclass. The default behavior is to redirect to `octopusSceneDidChooseNextGameState(_)`.
     func octopusSceneDidFinish(_ scene: OctopusScene) {
         // CHECK: Should this be the default behavior? It may be helpful in showing a series of credits or intros/cutscenes etc.
         self.octopusSceneDidChooseNextGameState(scene)
