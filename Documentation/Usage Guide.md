@@ -102,21 +102,25 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 5. Each of your game states can have a SwiftUI view associated with them to provide user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass an `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
 
+### 💡 Xcode File Templates
+
+To save yourself from writing a lot of the same code for every new state, scene, component or method override, copy the contents of the `Templates/Xcode` subfolder of the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
+
+This offers a section of templates for OctopusKit when you create a ⌘N New File in Xcode, including a very convenient template for creating a new game state class + its scene + UI in a single file, with just one click.
+
+> You may create a symbolic link (with the `ln` Terminal command) to keep the templates folders in sync whenever they're updated.
+
 ----
 
 #### Notes
-
-* **Xcode Templates:** To quickly create new files for common OK classes such as scenes and components, copy the files from the `Templates/Xcode` folder in the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
-
-    > 💡 Advanced: Create a symbolic link to keep the templates in sync.
-
-* Including the OctopusKit code in your main project (instead of as a package dependency) provides the benefits of [Whole Module Optimization](https://swift.org/blog/whole-module-optimizations/), quicker modification and autocompletion, easier navigation etc.
 
 * Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
 
     > This guide provides a detailed overview of the engine architecture, but there is no standalone reference for the API, as I don't have the time and energy to write that alongside developing the engine. (´･_･`)  
     >
     > The best way to learn may be to examine the engine source code. In the future I might make a demo game to serve as a comprehensive tutorial.
+
+* Advanced: Including the OctopusKit code in your main project (instead of as a package dependency) *may* provide the benefits of [Whole Module Optimization.](https://swift.org/blog/whole-module-optimizations/)
 
 ## Folder Organization
 
