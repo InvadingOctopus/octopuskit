@@ -14,6 +14,8 @@
         
     > Enter the URL for the GitHub [repository][repository].
     
+    > Download the "develop" branch for the latest version.
+    
 3. 📥 **Copy and include** all the contents of the relevant QuickStart subfolder (iOS or macOS) from the OctopusKit package into your project's source folder. 
 
     > In the Xcode Project Navigator, menu-click on the OctopusKit/QuickStart folder and select "Show in Finder" then just drag the iOS or macOS subfolder into your project folder in the Xcode navigator. 

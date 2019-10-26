@@ -12,10 +12,11 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 3. [Folder Organization](#folder-organization)
 4. [Game Coordinator and Game States](#game-coordinator-and-game-states)
 5. [Scenes](#scenes)
-6. [Entities](#entities)
-7. [Components](#components)
-8. [State Machines](#state-machines)
-9. [Advanced Stuff](#advanced-stuff)
+6. [User Interface](#user-interface)
+7. [Entities](#entities)
+8. [Components](#components)
+9. [State Machines](#state-machines)
+10. [Advanced Stuff](#advanced-stuff)
 
 ## Start
 
@@ -29,7 +30,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     
     > *Xcode File menu » Swift Packages » Add Package Dependency...*
         
-    > Enter the URL for the GitHub [repository][repository].
+    > Enter the URL for the GitHub [repository][repository]. Download the "develop" branch for the latest version.
     
 2. Create an instance of `OctopusGameCoordinator`.
 
@@ -92,7 +93,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
             
             > ❗️ If you are starting with Xcode's SpriteKit Game template, you must **delete** the `GameViewController.viewDidLoad()` override, as that will prevent the `OctopusViewController` from presenting your game coordinator's scenes.
         
-4. Build the states, scenes and UI for your game. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes that inherit from `OctopusGameState` and `OctopusScene`. 
+4. Code the states, scenes and UI for your game. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes which inherit from `OctopusGameState` and `OctopusScene`. 
 
     > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow--object-hierarchy)
 
@@ -192,14 +193,6 @@ systems. A typical game will create multiple instances of these objects.
 - At launch, the application configures a **Game Coordinator** object (which counts as a "controller" in the [MVC][mvc] hierarchy). The coordinator is a **State Machine** with one or more **Game States**, each associated with a **Scene** and a **SwiftUI** view. The coordinator may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
 
 	> 💡 *Advanced: Although OctopusKit does not support this out of the box, a single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
-
-🎛 `YourGameStateUI:`[`SwiftUI.View`](https://developer.apple.com/documentation/swiftui)
-
-- Every game state may have an associated SwiftUI view that is displayed over the gameplay. SwiftUI lets you easily and quickly create complex user interfaces with a declarative syntax. Fluid animations, crisp text with advanced formatting, vector shapes, live previews and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
-
-- Multiple states can share the same SwiftUI view, and a SwiftUI view may include the UI of other states as child views or overlays, thanks to the power of SwiftUI's composability.
-
-- Through the `OctopusGameCoordinator` which is passed as an `environmentObject`, SwiftUI views can inspect and modify the state of your game. An `OctopusComponent` may adopt the `ObservableObject` protocol to provide automatic data-driven updates for labels and HUD elements.
     
 ## Scenes
 
@@ -228,6 +221,16 @@ systems. A typical game will create multiple instances of these objects.
 
 - Try to encapsulate as much of their content into components, including visual content as well as non-visual functionality, such as music and input subsystems.
 
+## User Interface 
+
+🎛 `YourGameStateUI:`[`SwiftUI.View`](https://developer.apple.com/documentation/swiftui)
+
+- Every game state may optionally have an associated SwiftUI view that is displayed over the gameplay scene. SwiftUI lets you easily and quickly create complex user interfaces with a declarative syntax. Fluid animations, crisp text with advanced formatting, vector shapes, live previews and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
+
+- Multiple states can share the same SwiftUI view, and a SwiftUI view may include the UI of other states as child views or `.background` or `.overlay`, thanks to the power of SwiftUI's composability.
+
+- Through the `OctopusGameCoordinator` which is passed as an `environmentObject`, SwiftUI views can inspect and modify the state of your game. An `OctopusComponent` may adopt the `ObservableObject` protocol to provide automatic data-driven updates for labels and HUD elements.
+ 
 ## Entities
 
 👾 `OctopusEntity:`[`GKEntity`](https://developer.apple.com/documentation/gameplaykit/gkentity)  
