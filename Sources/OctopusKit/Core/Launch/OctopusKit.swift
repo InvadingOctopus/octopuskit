@@ -37,11 +37,13 @@ public final class OctopusKit {
     
     /// Returns the singleton OctopusKit instance, which must be created via `initSharedInstance(gameName:gameCoordinator:)` during `AppDelegate.applicationWillLaunchOctopusKit()`.
     public fileprivate(set) static var shared: OctopusKit? {
+        
         willSet {
             guard OctopusKit.shared == nil else {
                 fatalError("OctopusKit: Attempting to set OctopusKit.shared again after the singleton has already been initialized.")
             }
         }
+        
         didSet {
             guard oldValue == nil else {
                 fatalError("OctopusKit: OctopusKit.shared set again after the singleton has already been initialized.")
@@ -78,9 +80,8 @@ public final class OctopusKit {
             let view = viewController.view as? SKView
         {
             return view
-        }
-        else {
-//            OctopusKit.logForErrors.add("Cannot access gameCoordinator.viewController?.view as an SKView.")
+        } else {
+            OctopusKit.logForDebug.add("Cannot access gameCoordinator.viewController?.view as an SKView.")
             return nil
         }
     }
@@ -122,7 +123,7 @@ public final class OctopusKit {
     ///
     /// - Important: Calling this initializer more than once will raise a fatal error.
     ///
-    /// - Parameter appNameOverride: The name of the app bundle. Used to retreive the Core Data store and for logs. If omitted or `nil` the `CFBundleName` property from the `Info.plist` file will be used.
+    /// - Parameter appNameOverride: The name of the app bundle. Used to retrieve the Core Data store and for logs. If omitted or `nil` the `CFBundleName` property from the `Info.plist` file will be used.
     /// - Returns: Discardable; there is no need store the return value of this initializer.
     @discardableResult public init(appNameOverride: String? = nil,
                                    gameCoordinator: OctopusGameCoordinator)
