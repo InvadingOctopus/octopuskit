@@ -49,12 +49,15 @@ struct PlayUI: View {
             .frame(alignment: .top)
             .padding()
             
-            TitleUI(suppressAppearanceAnimation: true)
+            // Include the TitleUI in its entirety as a child view of PlayUI, so we don't have to recreate its contents here.
+            
+            TitleUI()
         }
     }
     
 }
 
+/// Displays the name of the current game state.
 struct GameStateLabel: View {
     
     @EnvironmentObject var gameCoordinator:  MyGameCoordinator
@@ -90,10 +93,13 @@ struct GameStateLabel: View {
     }
 }
 
+/// Displays data from the `GlobalDataComponent` which is part of the `MyGameCoordinator.entity` and remains active across all states and scenes.
 struct GlobalDataComponentLabel: View {
     
     @ObservedObject var component: GlobalDataComponent
 
+    @State private var color = Color.green
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("Global Data Component")
@@ -116,10 +122,21 @@ struct GlobalDataComponentLabel: View {
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 10)
-            .foregroundColor(.orange)
+            .foregroundColor(color)
             .shadow(radius: 10))
+        .onTapGesture {
+            withAnimation {
+                var newColor = self.color
+                repeat {
+                    newColor = .randomExcludingBlackWhite
+                } while newColor == self.color
+                self.color = newColor
+            }
+        }
     }
 }
+
+// MARK: - Preview
 
 struct PlayUI_Previews: PreviewProvider {
     
