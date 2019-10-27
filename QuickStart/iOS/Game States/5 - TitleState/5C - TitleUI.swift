@@ -10,7 +10,7 @@
 //
 //  This view displays a button which signals the game coordinator to enter the next game state, along with a few other controls to demonstrate SwiftUI.
 //
-//  ❕ SThis file is more of a demo than a tutorial; it may seem moderately complex because of the custom views and animations. Once you understand how the "Cycle State" button works, you may delete this file and replace it with your own UI.
+//  ❕ This file is more of a demo than a tutorial; it may seem moderately complex because of the custom views and animations. Once you understand how the "Cycle State" button works, you may delete this file and replace it with your own UI.
 
 import SwiftUI
 import OctopusKit
@@ -19,9 +19,12 @@ struct TitleUI: View {
     
     @EnvironmentObject var gameCoordinator: MyGameCoordinator
     
+    /// This is used to prevent the on-appearance animation when TitleUI is presented as a child of PlayUI.
     var suppressAppearanceAnimation = false
     
+    /// This flag is set when TitleUI is first presented, to display an initial animation.
     @State var didAppear = false
+    
     @State var showMoreUI = false
     
     var body: some View {
@@ -46,6 +49,7 @@ struct TitleUI: View {
         .onAppear {
             self.didAppear = true
         }
+        
     }
     
     var mainButtons: some View {

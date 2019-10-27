@@ -28,10 +28,10 @@ struct PlayUI: View {
                 
                 GameStateLabel().padding(.top, 40)
                     .opacity(0.9)
-                    .blendMode(.hardLight)
+                    .blendMode(.lighten)
                 
                 Text("""
-                    Tap and drag on the background to spawn physics entities.
+                    Tap and drag on the background to spawn physics entities in PlayState.
 
                     All this text and UI is a SwiftUI overlay on top of a SpriteKit view, all powered by Metal.
                     """)
@@ -70,12 +70,23 @@ struct GameStateLabel: View {
         }
     }
     
+    var stateColor: Color {
+        switch gameCoordinator.currentState {
+        case is LogoState:      return .blue
+        case is TitleState:     return .white
+        case is PlayState:      return .green
+        case is PausedState:    return .orange
+        case is GameOverState:  return .red
+        default:                return .gray
+        }
+    }
+    
     var body: some View {
         Text(stateName)
             .fontWeight(.bold)
             .font(Font(UIFont(name: "AvenirNextCondensed-Bold", size: 25)!))
-            .foregroundColor(.white)
-            .shadow(color: .white, radius: 10, x: 0, y: 0)
+            .foregroundColor(stateColor)
+            .shadow(color: stateColor, radius: 10, x: 0, y: 0)
     }
 }
 
@@ -84,12 +95,12 @@ struct GlobalDataComponentLabel: View {
     @ObservedObject var component: GlobalDataComponent
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             Text("Global Data Component")
                 .font(.headline)
                 .foregroundColor(.black)
-            Text("(persists across states and scenes)")
-                .font(.footnote)
+            Text("Persists across states and scenes")
+                .font(.callout)
                 .foregroundColor(.black)
             Text("""
                 Seconds since activation: \(component.secondsElapsedTrimmed)
@@ -101,15 +112,16 @@ struct GlobalDataComponentLabel: View {
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 10)
-            .foregroundColor(.accentColor)
+            .foregroundColor(.orange)
             .shadow(radius: 10))
     }
 }
 
 struct PlayUI_Previews: PreviewProvider {
+    
+    static let gameCoordinator = MyGameCoordinator()
+    
     static var previews: some View {
-        
-        let gameCoordinator = MyGameCoordinator()
         gameCoordinator.entity.addComponent(GlobalDataComponent())
         
         return PlayUI()
