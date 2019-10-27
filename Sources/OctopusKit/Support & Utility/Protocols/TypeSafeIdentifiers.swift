@@ -2,7 +2,7 @@
 //  TypeSafeIdentifiers.swift
 //  OctopusKit
 //
-//  Created by ShinryakuTako@invadingoctopus.io on 2019-10-11
+//  Created by ShinryakuTako@invadingoctopus.io on 2019/10/11.
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
