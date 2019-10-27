@@ -93,7 +93,7 @@ struct GameStateLabel: View {
 struct GlobalDataComponentLabel: View {
     
     @ObservedObject var component: GlobalDataComponent
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("Global Data Component")
@@ -105,10 +105,14 @@ struct GlobalDataComponentLabel: View {
             Text("""
                 Seconds since activation: \(component.secondsElapsedTrimmed)
                 Emojis spawned: \(component.emojiCount)
+                High Score: \(component.emojiHighScore)
                 """)
                 .fontWeight(.bold)
                 .font(.system(.body, design: .monospaced))
                 .foregroundColor(.white)
+            Text("Score saved as a user preference that persists across app launches")
+                .font(.callout)
+                .foregroundColor(.black)
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 10)

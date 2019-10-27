@@ -66,7 +66,6 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
             spinny.zPosition = -20 // + CGFloat(Int.random(in: 1...10))
             spinny.strokeColor = SKColor.brightColors.randomElement()!
             spinny.alpha = 0.5
-//            spinny.blendMode = .add
             node.addChild(spinny)
         }
         

@@ -14,7 +14,14 @@ import OctopusKit
 final class GlobalDataComponent: OctopusComponent, OctopusUpdatableComponent, ObservableObject {
     
     @Published public var secondsElapsed: TimeInterval = 0
-    @Published public var emojiCount: Int = 0
+    
+    @Published public var emojiCount: Int = 0 {
+        didSet {
+            emojiHighScore = max(emojiCount, emojiHighScore)
+        }
+    }
+    
+    @OctopusUserDefault(key: "emojiHighScore", defaultValue: 0) public var emojiHighScore: Int
     
     public var secondsElapsedTrimmed: String {
         String(secondsElapsed).prefix(6).padding(toLength: 7, withPad: " ", startingAt: 0)
