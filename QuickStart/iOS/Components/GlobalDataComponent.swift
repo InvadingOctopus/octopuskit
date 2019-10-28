@@ -21,7 +21,7 @@ final class GlobalDataComponent: OctopusComponent, OctopusUpdatableComponent, Ob
         }
     }
     
-    @OctopusUserDefault(key: "emojiHighScore", defaultValue: 0) public var emojiHighScore: Int
+    @OctopusUserDefault(key: "emojiHighScore", defaultValue: 50) public var emojiHighScore: Int
     
     public var secondsElapsedTrimmed: String {
         String(secondsElapsed).prefix(6).padding(toLength: 7, withPad: " ", startingAt: 0)
