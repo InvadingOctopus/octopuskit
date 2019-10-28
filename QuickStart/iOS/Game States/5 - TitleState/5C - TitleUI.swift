@@ -28,22 +28,25 @@ struct TitleUI: View {
     static var suppressAppearanceAnimation = false
     
     /// This flag controls the display of superficial UI for demonstration.
-    @State private var showMoreUI = showMoreUIGlobal {
+    @State private var showHUD = TitleUI.showHUDGlobal {
         didSet {
-            TitleUI.showMoreUIGlobal = showMoreUI
+            TitleUI.showHUDGlobal = showHUD
         }
     }
     
-    /// Since TitleUI is also used in PlayUI, we copy the showMoreUI setting to a static variable which persists across multiple game states, otherwise it would get reset when the game state changes.
-    static var showMoreUIGlobal = false
+    /// Since TitleUI is also used in PlayUI, we copy the showHUD setting to a static variable which persists across multiple game states, otherwise it would get reset when the game state changes.
+    static var showHUDGlobal = false
         
+    /// This flag is set to `false` after the HUD is shown, to prevent it from reanimating when TitleUI is shown inside PlayUI after the game state changes.
+    @State private var animateHUDAppearance = true
+    
     var body: some View {
         
         VStack {
             
             Spacer()
             
-            moreUI
+            hudUI
             
             Spacer()
             
@@ -62,8 +65,8 @@ struct TitleUI: View {
             }
         }
         .onAppear {
-            // Set a flag to start the initial animation.
-            self.didAppear = true
+            self.didAppear = true // Set a flag to start the initial animation.
+            self.showHUD = TitleUI.showHUDGlobal // Sync the instance and global flags.
         }
         
     }
@@ -77,7 +80,7 @@ struct TitleUI: View {
         
         VStack {
             
-            toggleMoreUIButton
+            toggleHUDButton
             
             nextStateButton
             
@@ -99,8 +102,8 @@ struct TitleUI: View {
         }
     }
     
-    var toggleMoreUIButton: some View {
-        Button(action: toggleMoreUI) {
+    var toggleHUDButton: some View {
+        Button(action: toggleHUD) {
             QuickStartButtonLabel(text: "TOGGLE MORE UI", color: .purple)
         }
     }
@@ -114,32 +117,31 @@ struct TitleUI: View {
         }
     }
     
-    func toggleMoreUI() {
-        showMoreUI.toggle()
-        TitleUI.showMoreUIGlobal = showMoreUI
+    func toggleHUD() {
+        showHUD.toggle()
     }
     
     // MARK: - Superficial UI
     // To demonstrate animation and HUD overlays.
     
-    var moreUI: some View {
+    var hudUI: some View {
         
         HStack(alignment: .center) {
             
-            if showMoreUI || TitleUI.showMoreUIGlobal {
+            if showHUD || TitleUI.showHUDGlobal {
                 
-                moreUIButtonStack
+                hudButtonStack
                     .transition(.move(edge: .leading))
                 
                 Spacer()
                 
-                moreUIButtonStack
+                hudButtonStack
                     .transition(.move(edge: .trailing))
             }
         }
     }
     
-    var moreUIButtonStack: some View {
+    var hudButtonStack: some View {
         
         VStack(alignment: .leading, spacing: 50) {
             
@@ -163,8 +165,15 @@ struct TitleUI: View {
             .foregroundColor(.randomExcludingBlackWhite)
             .opacity(0.85)
             .shadow(color: .black, radius: 5, x: 0, y: 10)
-            .animation(.spring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.5))
+            .animation(self.animateHUDAppearance ? .spring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.5) : .none)
             .overlay(Image(systemName: randomImageName).font(.largeTitle).foregroundColor(.white))
+            .onAppear {
+                /// Prevent re-animation on a new game state.
+                self.animateHUDAppearance = false
+            }
+            .onDisappear {
+                self.animateHUDAppearance = true
+            }
     }
     
 }
