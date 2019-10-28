@@ -5,7 +5,7 @@ A 2.5D game engine that combines ECS with SwiftUI, for iOS, macOS and tvOS. Buil
 The flexible Entity-Component-System architecture lets you dynamically compose game behavior, while SpriteKit gives you full access to GPU shaders and SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs with crisp text and vector shapes.
 
 <p align="center">
-    <img src="https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo20191024.gif?raw=true" alt="OctopusKit Demo"/>
+    <img src="https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo.gif?raw=true" alt="OctopusKit Demo"/>
 </p>
 
 🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
