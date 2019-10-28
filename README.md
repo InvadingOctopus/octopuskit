@@ -2,13 +2,7 @@
 
 A 2.5D game engine that combines ECS with SwiftUI, for iOS, macOS and tvOS. Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
 
-The flexible Entity-Component-System architecture lets you dynamically compose game behavior, SpriteKit gives you full access to GPU shaders, while SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs with crisp text and vector shapes.
-
-1. [Examples](#examples)
-2. [Overview](#overview)
-3. [Design Goals](#design-goals)
-4. [Getting Started](#getting-started)
-5. [Etcetera (license, contact)](#etcetera)
+The flexible Entity-Component-System architecture lets you dynamically compose game behavior, while SpriteKit gives you full access to GPU shaders and SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs with crisp text and vector shapes.
 
 <p align="center">
     <img src="https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo20191024.gif?raw=true" alt="OctopusKit Demo"/>
@@ -16,13 +10,17 @@ The flexible Entity-Component-System architecture lets you dynamically compose g
 
 🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
 
+1. [Examples](#examples)
+2. [Overview](#overview)
+3. [Design Goals](#design-goals)
+4. [Getting Started](#getting-started)
+5. [Etcetera (license, contact)](#etcetera)
+
 > This project is a constant **work in progress** and my first ever open-source project. I'm still learning as I go, so OctopusKit may change rapidly without maintaining backwards compatibility or updating the documentation.
 
 > OK is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 
-> Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated! 
-
-> *– ShinryakuTako*
+> Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated! *– ShinryakuTako*
  
 ## Examples
 
@@ -241,7 +239,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ## Etcetera
 
-- This project may be referred to as "OctopusKit", "OK" or "OKIO" (for "OctopusKit by Invading Octopus") but "IOOK" sounds weird.
+- This project may be referred to as OctopusKit, "OK" or "OKIO" (for "OctopusKit by Invading Octopus") but "IOOK" sounds weird.
 
 - The naming is a combination of inspiration from companies like Rogue Amoeba, the .io domain, and the anime *Shinryaku! Ika Musume*.
 
@@ -257,7 +255,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ----
 
-[OctopusKit][repository] © 2018 [Invading Octopus][website] • [Apache License 2.0][license]
+[OctopusKit][repository] © 2019 [Invading Octopus][website] • [Apache License 2.0][license]
 
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io
