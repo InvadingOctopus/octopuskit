@@ -38,7 +38,7 @@ struct TitleUI: View {
     static var showHUDGlobal = false
         
     /// This flag is set to `false` after the HUD is shown, to prevent it from reanimating when TitleUI is shown inside PlayUI after the game state changes.
-    @State private var animateHUDAppearance = true
+    @State private var animateHUDTransition = true
     
     var body: some View {
         
@@ -165,14 +165,14 @@ struct TitleUI: View {
             .foregroundColor(.randomExcludingBlackWhite)
             .opacity(0.85)
             .shadow(color: .black, radius: 5, x: 0, y: 10)
-            .animation(self.animateHUDAppearance ? .spring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.5) : .none)
+            .animation(self.animateHUDTransition ? .spring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.5) : .none)
             .overlay(Image(systemName: randomImageName).font(.largeTitle).foregroundColor(.white))
             .onAppear {
                 /// Prevent re-animation on a new game state.
-                self.animateHUDAppearance = false
+                self.animateHUDTransition = false
             }
             .onDisappear {
-                self.animateHUDAppearance = true
+                self.animateHUDTransition = true
             }
     }
     
