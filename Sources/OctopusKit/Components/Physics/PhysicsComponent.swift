@@ -76,7 +76,8 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
             
             self.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
             
-            // Setting our `physicsBody` should call `assignBody(to: node)` via the property observer.
+            // Setting our `physicsBody` should call `assignBody(to: node)` via the property observer now.
+            
         } else {
             assignBody(to: node)
         }
@@ -140,6 +141,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
         }
         
         // Remove the physicsBody even if the node had a different one, to keep the expected behavior of removing physics from the node when a PhysicsComponent is removed.
+        
         node.physicsBody = nil
     }
     
