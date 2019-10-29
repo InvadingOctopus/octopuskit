@@ -23,6 +23,7 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
     
     public init() {}
     
+    /// NOTE: This method is a requirement of the `UIViewControllerRepresentable` protocol; it creates a SwiftUI view controller coordinator, **NOT** OctopusKit's `OctopusGameCoordinator`.
     public func makeCoordinator() -> ViewControllerCoordinator<OctopusViewControllerType> {
         OctopusViewControllerRepresentable.ViewControllerCoordinator(gameCoordinator: self.gameCoordinator)
     }
@@ -58,7 +59,7 @@ public extension OctopusViewControllerRepresentable { // CHECK: Should this be p
         var viewController: OctopusViewControllerType
         
         init(gameCoordinator: OctopusGameCoordinator) {
-            self.viewController = OctopusViewControllerType(gameCoordinator: gameCoordinator)
+            self.viewController = try! OctopusViewControllerType(gameCoordinator: gameCoordinator)
             super.init()
         }
     }

@@ -126,16 +126,16 @@ public final class OctopusKit {
     /// - Parameter appNameOverride: The name of the app bundle. Used to retrieve the Core Data store and for logs. If omitted or `nil` the `CFBundleName` property from the `Info.plist` file will be used.
     /// - Returns: Discardable; there is no need store the return value of this initializer.
     @discardableResult public init(appNameOverride: String? = nil,
-                                   gameCoordinator: OctopusGameCoordinator)
+                                   gameCoordinator: OctopusGameCoordinator) throws
     {
         guard OctopusKit.shared == nil else {
-            fatalError("OctopusKit: OctopusKit(appName:gameCoordinator:) called again after OctopusKit.shared singleton has already been initialized.")
+            throw OctopusError.invalidConfiguration("OctopusKit: OctopusKit(appName:gameCoordinator:) called again after OctopusKit.shared singleton has already been initialized.")
         }
         
         guard   let appName = appNameOverride ??
                 (Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)
         else {
-            fatalError("Cannot read CFBundleName from Info.plist as a String, and appNameOverride not provided.")
+            throw OctopusError.invalidConfiguration("Cannot read CFBundleName from Info.plist as a String, and appNameOverride not provided.")
         }
             
         self.appName = appName
@@ -146,13 +146,13 @@ public final class OctopusKit {
     }
     
     /// Ensures that the OctopusKit has been correctly initialized.
-    @discardableResult public static func verifyConfiguration() -> Bool {
+    @discardableResult public static func verifyConfiguration() throws -> Bool {
         guard let singleton = OctopusKit.shared else {
-            fatalError("OctopusKit: OctopusKit.shared singleton not initialized. Call OctopusKit(gameCoordinator:) or OctopusViewController(gameCoordinator:) during application launch.")
+            throw OctopusError.invalidConfiguration("OctopusKit.shared singleton not initialized. Call OctopusKit(gameCoordinator:) or OctopusViewController(gameCoordinator:) during application launch.")
         }
         guard !singleton.appName.isEmpty else {
-            // TODO: More rigorous verification; compare with `CFBundleName` in `Info.plist`?
-            fatalError("OctopusKit: OctopusKit.shared.appName is empty.")
+            // CHECK: More rigorous verification? Compare with `CFBundleName` from `Info.plist`?
+            throw OctopusError.invalidConfiguration("OctopusKit.shared.appName is empty.")
         }
         return true
     }

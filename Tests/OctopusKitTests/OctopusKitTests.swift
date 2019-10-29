@@ -3,15 +3,42 @@
 import XCTest
 @testable import OctopusKit
 
-final class OctopusKit: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        // XCTAssertEqual(OctopusKit().text, "Hello, World!")
-    }
+final class OctopusKitTests: XCTestCase {
+    
+    func testLaunch() {
+        
+        // 1: `verifyConfiguration` should fail if there's nothing configured.
+        
+        XCTAssertThrowsError(try OctopusKit.verifyConfiguration())
+        
+        // 2: `OctopusViewController` should not initialize without an `OctopusGameCoordinator`.
+            
+        XCTAssertThrowsError(try OctopusViewController())
+        
+        // 3: OctopusKit should be initialized more than once.
+        
+        let gameCoordinator = OctopusGameCoordinator(states: [OctopusGameState()])
+        
+        XCTAssertNoThrow(try OctopusKit(gameCoordinator: gameCoordinator))
+        
+        XCTAssertThrowsError(try OctopusKit(gameCoordinator: gameCoordinator))
+            
+        // 4: `OctopusViewController` should allow multiple instances.
+        
+        var viewController1, viewController2: OctopusViewController?
+        
+        XCTAssertNoThrow(viewController1 = try OctopusViewController())
+        XCTAssertNoThrow(viewController2 = try OctopusViewController())
+        
+        XCTAssertEqual(viewController1!.gameCoordinator, viewController2!.gameCoordinator)
+        
+        // TODO: Test `OctopusViewControllerRepresentable`
+        // let viewControllerRepresentable = OctopusViewControllerRepresentable()
+        // XCTAssertThrowsError(viewControllerRepresentable.makeCoordinator())
 
+    }
+    
     static var allTests = [
-        ("testExample", testExample),
+        ("Test Launch Process", testLaunch)
     ]
 }

@@ -33,7 +33,7 @@ open class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
                           didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
         OctopusKit.logForFramework.add()
-        OctopusKit.verifyConfiguration()
+        try! OctopusKit.verifyConfiguration()
         return true
     }
     

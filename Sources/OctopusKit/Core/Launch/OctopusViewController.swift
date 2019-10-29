@@ -30,36 +30,40 @@ public typealias OSViewController = NSViewController
 /// - Important: The view controller of your main SpriteKit view must be an `OctopusSpriteKitViewController` or its subclass, for the OctopusKit to function.
 open class OctopusViewController: OSViewController {
     
+    public fileprivate(set) var spriteKitView: SKView?
+    
     public unowned var gameCoordinator: OctopusGameCoordinator? {
         didSet {
-            // Display the new game coordinator's current scene.
-            if oldValue !== gameCoordinator {
-                // TODO
+            // Display the ongoing scene of the new game coordinator, if any.
+            if  oldValue !== gameCoordinator,
+                let ongoingScene = gameCoordinator?.currentScene,
+                let spriteKitView = self.spriteKitView
+            {
+                spriteKitView.presentScene(ongoingScene)
+                ongoingScene.didUnpauseBySystem()
             }
         }
     }
     
-    public fileprivate(set) var spriteKitView: SKView?
-    
     // MARK: - Life Cycle
     
-    public required init(gameCoordinator: OctopusGameCoordinator? = nil) {
+    public required init(gameCoordinator: OctopusGameCoordinator? = nil) throws {
         
         // To support easy SwiftUI usage...
         
-        if let gameCoordinator = gameCoordinator {
+        if  let gameCoordinator = gameCoordinator {
             
             if  let existingGameCoordinator = OctopusKit.shared?.gameCoordinator,
                 gameCoordinator !== existingGameCoordinator
             {
-                fatalError("OctopusKit already running with \(existingGameCoordinator) — OctopusViewController initialized with \(gameCoordinator)")
+                throw OctopusError.invalidConfiguration("OctopusKit already running with \(existingGameCoordinator) — OctopusViewController initialized with \(gameCoordinator)")
             }
             
             // Initialize OctopusKit if we're the very first view controller.
             // Putting this here reduces the boilerplate required by SwiftUI applications.
             
             if  OctopusKit.shared?.gameCoordinator == nil {
-                OctopusKit(gameCoordinator: gameCoordinator)
+                try OctopusKit(gameCoordinator: gameCoordinator)
             }
             
             self.gameCoordinator = gameCoordinator
@@ -71,7 +75,7 @@ open class OctopusViewController: OSViewController {
             guard   OctopusKit.initialized,
                     let octopusKitSingleton = OctopusKit.shared
             else {
-                fatalError("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called during application launch or OctopusViewController must be initialized with a OctopusGameCoordinator")
+                throw OctopusError.invalidConfiguration("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called during application launch or OctopusViewController must be initialized with a OctopusGameCoordinator")
             }
         
             self.gameCoordinator = octopusKitSingleton.gameCoordinator
@@ -92,16 +96,7 @@ open class OctopusViewController: OSViewController {
         super.init(coder: aDecoder)
         self.gameCoordinator?.viewController = self
     }
-    
-//    open override func loadView() {
-//        OctopusKit.logForFramework.add("\(preferredContentSize)")
-//
-//        // ℹ️ APPLE: Your custom implementation of this method should not call super.
-//        // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621454-loadview
-//
-//        self.view = SKView()
-//    }
-    
+        
     open override func viewDidLoad() {
         OctopusKit.logForFramework.add("view.frame = \(String(optional: self.view?.frame))")
         super.viewDidLoad()
@@ -110,7 +105,7 @@ open class OctopusViewController: OSViewController {
         
         // CHECK: Should the SKView be set up here or in viewWillAppear? Confirm which function is the earliest point where we can get the correct screen dimensions for creating the view with.
         
-        if let rootView = self.view as? SKView {
+        if  let rootView = self.view as? SKView {
             self.spriteKitView = rootView
             
         } else {
@@ -137,7 +132,7 @@ open class OctopusViewController: OSViewController {
         
         // If we are a new view controller being added to an ongoing game, such as when showing a new SwiftUI container view, present the ongoing scene.
         
-        if let ongoingScene = gameCoordinator?.currentScene {
+        if  let ongoingScene = gameCoordinator?.currentScene {
             
             spriteKitView.presentScene(ongoingScene)
             ongoingScene.didUnpauseBySystem()

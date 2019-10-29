@@ -80,7 +80,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     {
         OctopusKit.logForFramework.add("states: \(states) — initial: \(initialStateClass)")
         
-        assert(!states.isEmpty, "You must specify at least one game state!")
+        assert(!states.isEmpty, "OctopusGameCoordinator must be initialized with at least one game state!")
         
         self.initialStateClass = initialStateClass
         self.entity = OctopusEntity(name: OctopusKit.Constants.Strings.gameCoordinatorEntityName)
@@ -91,7 +91,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     /// Convenience initializer that sets the initial game state to the first item passed in the `states` array.
     public convenience init(states: [OctopusGameState]) {
         
-        assert(!states.isEmpty, "You must specify at least one game state!")
+        assert(!states.isEmpty, "OctopusGameCoordinator must be initialized with at least one game state!")
         
         self.init(states: states,
                   initialStateClass: type(of: states.first!))
@@ -100,6 +100,10 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     private override init(states: [GKState]) {
         // The default initializer is hidden so that only `OctopusGameState` is accepted.
         fatalError("OctopusGameCoordinator(states:) not implemented. Initialize with OctopusGameCoordinator(states:initialStateClass:)")
+    }
+    
+    private init() {
+        fatalError("OctopusGameCoordinator must be initialized with at least one game state!")
     }
     
     fileprivate func registerForNotifications() {
