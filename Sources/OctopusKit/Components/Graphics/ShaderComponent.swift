@@ -136,8 +136,19 @@ public final class ShaderComponent: OctopusComponent {
         let nodeSizeAttribute = vector_float2(Float(nodeSize.width),
                                               Float(nodeSize.height))
         
-        node.setValue(SKAttributeValue(vectorFloat2: nodeSizeAttribute),
-                        forAttribute: "a_sprite_size")
+        // SWIFT LIMITATION: Casting to concrete types here is not necessary,
+        // but we do it to avoid the deprecation warning:
+        // "setValue(_:forAttribute:) was deprecated in iOS 10.0"
+        
+        if  let node = node as? SKEffectNode { // Includes SKScene
+            node.setValue(SKAttributeValue(vectorFloat2: nodeSizeAttribute),
+            forAttribute: "a_sprite_size")
+        
+        }   else if let node = node as? SKSpriteNode {
+            
+            node.setValue(SKAttributeValue(vectorFloat2: nodeSizeAttribute),
+            forAttribute: "a_sprite_size")
+        }
         
     }
 }
