@@ -209,7 +209,7 @@ public struct OctopusLog {
 
     /// - Returns: The `description` of the last entry added to the log, if any.
     public var lastEntryText: String? {
-        return entries.last?.description
+        return entries.last?.text
     }
     
     /// If `true` then a `fatalError` is raised when a new entry is added.
