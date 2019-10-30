@@ -14,7 +14,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         // Customize: Specify the valid states that this state can transition to.
-        // You may perform game-specific checks here to allow different states based on different conditions.
+        // NOTE: Do not use this method to conditionally control state transitions. Perform such conditional logic in the scene or UI, before calling the game coordinator state machine’s enter(_:) method.
         return stateClass is OctopusGameState.Type // Default: allow all states.
     }
     

@@ -42,7 +42,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     
     override func createComponentSystems() -> [GKComponent.Type] {
         [
-            // Customize
+            // Customize. Each component must be listed after the components it depends on; check the `requiredComponents` property.
             
             // 1: Time and state.
             

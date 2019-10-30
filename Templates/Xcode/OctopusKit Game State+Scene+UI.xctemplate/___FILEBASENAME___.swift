@@ -5,6 +5,8 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
+// MARK: - Game State
+
 final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
     
     init() {
@@ -15,7 +17,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         // Customize: Specify the valid states that this state can transition to.
-        // You may perform game-specific checks here to allow different states based on different conditions.
+        // NOTE: Do not use this method to conditionally control state transitions. Perform such conditional logic in the scene or UI, before calling the game coordinator state machine’s enter(_:) method.
         return stateClass is OctopusGameState.Type // Default: allow all states.
     }
     
@@ -24,12 +26,10 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
 // MARK: - Scene
 
 final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
-        
-    // MARK: - Life Cycle
     
     override func createComponentSystems() -> [GKComponent.Type] {
         [
-            // Customize
+            // Customize. Each component must be listed after the components it depends on; check the `requiredComponents` property.
             
             // 1: Time and state.
             
