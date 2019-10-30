@@ -6,7 +6,9 @@ import PackageDescription
 let package = Package(
     name: "OctopusKit",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v13),
+        .macOS(.v10_15),
+        .tvOS(.v13)
     ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
