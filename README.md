@@ -32,9 +32,10 @@ import OctopusKit
                                                 
 struct ContentView: View {
 
-    var gameCoordinator = OctopusGameCoordinator(
-        states: [MainMenuState(), GameplayState()],
-        initialStateClass: MainMenuState.self)
+    var gameCoordinator = OctopusGameCoordinator(states: [
+        MainMenu(),
+        Lobby(), 
+        Gameplay() ])
                                                 
     var body: some View {
         OctopusKitContainerView()
@@ -242,6 +243,8 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 - This project may be referred to as OctopusKit, "OK" or "OKIO" (for "OctopusKit by Invading Octopus") but "IOOK" sounds weird.
 
 - The naming is a combination of inspiration from companies like Rogue Amoeba, the .io domain, and the anime *Shinryaku! Ika Musume*.
+
+- The space before the last `])` in the Examples section is for clarity. :)
 
 - **License: [Apache 2.0][license]**
 
