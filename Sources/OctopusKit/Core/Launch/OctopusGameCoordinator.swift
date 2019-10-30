@@ -75,6 +75,9 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     
     // MARK: - Life Cycle
     
+    /// Initializes the top-level game coordinator which holds a list of all the possible states for your game, such as main menu, playing or paused.
+    ///
+    /// You may omit the `initialStateClass` argument to use the first item of the `states` array as the initial state.
     public init(states: [OctopusGameState],
                 initialStateClass: OctopusGameState.Type)
     {
@@ -88,7 +91,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         registerForNotifications()
     }
     
-    /// Convenience initializer that sets the initial game state to the first item passed in the `states` array.
+    /// Convenience initializer which sets the initial game state to the first item passed in the `states` array.
     public convenience init(states: [OctopusGameState]) {
         
         assert(!states.isEmpty, "OctopusGameCoordinator must be initialized with at least one game state!")
