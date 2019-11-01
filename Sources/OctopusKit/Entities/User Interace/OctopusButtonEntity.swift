@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Encapsulates components for representing a tappable button on the screen.
 public final class OctopusButtonEntity: OctopusEntity {
     
@@ -82,3 +84,5 @@ public final class OctopusButtonEntity: OctopusEntity {
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
 }
+
+#endif

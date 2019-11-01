@@ -19,6 +19,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Tracks a single touch if it begins in the entity's `SpriteKitComponent` node, and updates its state depending on the position of the touch in relation to the node's bounds.
 ///
 /// Other components can simply query this component's `state` and `trackedTouch` properties to implement touch-controlled behavior, such as moving a node while it's being touched or updating a button's visual state, without having to track touches themselves.
@@ -224,14 +226,14 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
         // If the state was `tapped` or `endedOutside` in the last frame, reset it to `ready` and forget the previously-tracked touch before processing inputs for this frame.
         
         if state == .tapped || state == .endedOutside {
-            // CHECK: Should this be updated regarldess of any guard conditions?
+            // CHECK: Should this be updated regardless of any guard conditions?
             state = .ready // Resets `trackedTouch` and timestamps via the property observer.
         }
         
         // If we're tracking a touch, update the difference in the touch's timestamp between the last frame and this frame. This lets other components quickly see if the touch was updated.
         
         if let trackedTouch = self.trackedTouch {
-            // CHECK: Should this be updated regarldess of any guard conditions?
+            // CHECK: Should this be updated regardless of any guard conditions?
             trackedTouchTimestampDelta = trackedTouch.timestamp - previousTouchTimestamp
         }
         
@@ -390,3 +392,4 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
     }
 }
 
+#endif

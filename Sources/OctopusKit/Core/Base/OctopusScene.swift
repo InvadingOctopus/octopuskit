@@ -25,8 +25,8 @@ open class OctopusScene: SKScene,
     OctopusGameStateDelegate,
     OctopusEntityDelegate,
     OctopusSubsceneDelegate,
-    SKPhysicsContactDelegate,
-    TouchEventComponentCompatible
+    SKPhysicsContactDelegate
+    // TouchEventComponentCompatible // Only #if canImport(UIKit)
 {
     // MARK: - Properties
     
@@ -820,3 +820,6 @@ open class OctopusScene: SKScene,
     
 }
 
+#if canImport(UIKit)
+extension OctopusScene: TouchEventComponentCompatible {}
+#endif

@@ -16,6 +16,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Moves the `CameraComponent` node based on input from a `PanGestureRecognizerComponent`
 ///
 /// - Important: The `CameraPanComponent` must be updated before `PanGestureRecognizerComponent` ??
@@ -229,3 +231,4 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     }
 }
 
+#endif

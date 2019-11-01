@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIkit)
+
 /// Prevents the physics body of the entity's `SpriteKitComponent` node from moving while the node is touched by the player.
 ///
 /// - Prevents the body from being affected by gravity while it is being held.
@@ -78,3 +80,4 @@ final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpd
     }
 }
 
+#endif

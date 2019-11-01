@@ -92,7 +92,7 @@ public final class OctopusKit {
     
     // MARK: - App-wide Singletons
 
-    #if os(iOS)
+    #if canImport(UIKit)
     
     public lazy var managedObjectContext: NSManagedObjectContext? = {
         
@@ -104,9 +104,21 @@ public final class OctopusKit {
         return appDelegate.persistentContainer.viewContext
     }()
     
+    #elseif canImport(AppKit)
+    
+    public lazy var managedObjectContext: NSManagedObjectContext? = {
+        
+        guard let appDelegate = NSApplication.shared.delegate as? OctopusAppDelegate else {
+            // CHECK: Warning or error?
+            fatalError("Cannot access UIApplication.shared.delegate as an OctopusAppDelegate.")
+        }
+        
+        return appDelegate.persistentContainer.viewContext
+    }()
+    
     #endif
     
-    #if canImport(CoreMotion) // #if os(iOS) // CHECK: Include tvOS?
+    #if canImport(UIKit) // #if os(iOS) // CHECK: Include tvOS?
     
     /// As per Apple documentation: An app should create only a single instance of the `CMMotionManager` class, as multiple instances of this class can affect the rate at which data is received from the accelerometer and gyroscope.
     public static var motionManager: CMMotionManager? = {

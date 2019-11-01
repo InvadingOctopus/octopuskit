@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Base class for components which handle tap gestures on the entity's `SpriteKitComponent` node.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TapGestureRecognizerComponent`
@@ -106,3 +108,4 @@ open class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableCom
     }
 }
 
+#endif

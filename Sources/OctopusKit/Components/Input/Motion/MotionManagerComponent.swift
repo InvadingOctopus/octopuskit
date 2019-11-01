@@ -8,7 +8,7 @@
 
 import GameplayKit
 
-#if canImport(CoreMotion) // CHECK: Include tvOS?
+#if os(iOS) // CHECK: Include tvOS?
 
 import CoreMotion
 

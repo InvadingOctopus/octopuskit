@@ -8,6 +8,8 @@
 
 import CoreMotion
 
+#if canImport(UIKit)
+
 extension CMMotionManager {
     
     /// A convenience method that calls all of the "`stop-`" methods.
@@ -18,3 +20,5 @@ extension CMMotionManager {
         self.stopMagnetometerUpdates()
     }
 }
+
+#endif

@@ -6,6 +6,8 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+#if canImport(UIKit)
+
 import UIKit
 
 extension UIGestureRecognizer {
@@ -16,7 +18,7 @@ extension UIGestureRecognizer {
     ///
     /// Returns `false` when the `state` is `.possible`, `.cancelled`, `.failed` or `.ended`.
     ///
-    /// Use this flag to avoid unncessary processing in gesture-controlled objects.
+    /// Use this flag to avoid unnecessary processing in gesture-controlled objects.
     public var isHandlingGesture: Bool {
         switch self.state {
             // CHECK: Is this all the correct states?
@@ -32,3 +34,5 @@ extension UIGestureRecognizer {
         }
     }
 }
+
+#endif

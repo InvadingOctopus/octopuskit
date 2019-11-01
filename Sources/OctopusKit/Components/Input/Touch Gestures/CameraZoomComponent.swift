@@ -13,6 +13,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Scales the `CameraComponent` node based on input from a `PinchGestureRecognizerComponent`
 ///
 /// **Dependencies:** `CameraComponent`, `PinchGestureRecognizerComponent`
@@ -108,3 +110,4 @@ public final class CameraZoomComponent: OctopusComponent, OctopusUpdatableCompon
     }
 }
 
+#endif

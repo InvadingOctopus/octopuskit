@@ -12,6 +12,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Modifies the `zRotation` of the entity's `SpriteKitComponent` node to face it towards the point touched by the player, as received via a `TouchEventComponent`.
 ///
 /// See also: `PositionSeekingGoalComponent` and `TouchControlledSeekingComponent`
@@ -215,3 +217,4 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
     
 }
 
+#endif

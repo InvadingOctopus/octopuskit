@@ -98,7 +98,13 @@ open class OctopusViewController: OSViewController {
     }
         
     open override func viewDidLoad() {
+        
+        #if canImport(UIKit)
         OctopusKit.logForFramework.add("view.frame = \(String(optional: self.view?.frame))")
+        #elseif canImport(AppKit)
+        OctopusKit.logForFramework.add("view.frame = \(String(optional: self.view.frame))")
+        #endif
+        
         super.viewDidLoad()
         
         // To support SwiftUI, we create a child SKView using the root view's frame which will be provided by SwiftUI.
@@ -112,7 +118,11 @@ open class OctopusViewController: OSViewController {
             
             OctopusKit.logForFramework.add("Root view is nil or not an SpriteKit SKView — Creating child SKView")
             
+            #if canImport(UIKit)
             guard let rootView = self.view else { fatalError("OctopusViewController has no root view!") }
+            #elseif canImport(AppKit)
+            let rootView = self.view
+            #endif
             
             let childView = SKView(frame: rootView.frame)
             rootView.addSubview(childView)

@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Executes one of the supplied closures for each state of touch-based player interaction with the entity's `SpriteKitComponent` node.
 ///
 /// This component calls the supplied closures with a reference to `self`, so that the component's user can refer to the instance properties of this component, such as its entity or co-components, at the calling site before it has finished initialization.
@@ -106,3 +108,4 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
     }
 }
 
+#endif

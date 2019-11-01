@@ -108,7 +108,7 @@ open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComp
 
 #else
 
-public final class OctopusGestureRecognizerComponent<GestureRecognizerType: UIGestureRecognizer>: iOSExclusiveComponent {}
+public final class OctopusGestureRecognizerComponent<GestureRecognizerType: NSGestureRecognizer>: iOSExclusiveComponent {}
 
 #endif
 

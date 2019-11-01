@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Sets the position of the entity's `SpriteKitComponent` node to the location of the first or latest touch received by the entity's `TouchEventComponent`.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
@@ -52,3 +54,4 @@ public final class TouchControlledPositioningComponent: OctopusComponent, Octopu
     }
 }
 
+#endif
