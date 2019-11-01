@@ -26,7 +26,7 @@ open class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
     /// Implementation of this property is required if your app’s `Info.plist` file contains the `UIMainStoryboardFile` key.
     ///
     /// The Xcode project templates usually include a synthesized declaration of the property automatically for the app delegate. The default value of this synthesized property is `nil`, which causes the app to create a generic `UIWindow` object and assign it to the property. If you want to provide a custom window for your app, you must implement the getter method of this property and use it to create and return your custom window.
-    public var window: UIWindow?
+    open var window: UIWindow?
     
     /// Override point for customization after game launch.
     open func application(_ application: UIApplication,
@@ -74,7 +74,7 @@ open class OctopusAppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Core Data stack
     
-    public lazy var persistentContainer: NSPersistentContainer = {
+    open lazy var persistentContainer: NSPersistentContainer = {
         
         guard let appName = OctopusKit.shared?.appName else {
             fatalError("OctopusKit.appName not set")
