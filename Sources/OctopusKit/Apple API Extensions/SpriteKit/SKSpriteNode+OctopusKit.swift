@@ -12,12 +12,6 @@ import SpriteKit
 
 extension SKSpriteNode {
     
-    #if canImport(UIkit)
-    public typealias OSImage = UIImage
-    #elseif canImport(AppKit)
-    public typealias OSImage = NSImage
-    #endif
-    
     // MARK: - Initializers
     
     /// Creates an `SKSpriteNode` from a `UIImage` or image literal.

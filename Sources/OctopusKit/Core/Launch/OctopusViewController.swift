@@ -15,13 +15,9 @@ import GameplayKit
 
 import UIKit
 
-public typealias OSViewController = UIViewController
-
 #elseif os(OSX)
 
 import Cocoa
-
-public typealias OSViewController = NSViewController
 
 #endif
 

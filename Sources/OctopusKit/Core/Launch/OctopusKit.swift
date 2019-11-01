@@ -9,12 +9,6 @@
 import SpriteKit
 import CoreData
 
-#if canImport(AppKit)
-public typealias OSApplication = NSApplication
-#elseif canImport(UIKit)
-public typealias OSApplication = UIApplication
-#endif
-
 #if os(iOS) // CHECK: Include tvOS?
 
 import CoreMotion
