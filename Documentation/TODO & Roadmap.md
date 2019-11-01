@@ -25,6 +25,7 @@ permalink: documentation/todo.html
 
 ## To Do
 
+- [Swift Logging API](https://github.com/apple/swift-log)
 - Tests. Too lazy.
 - Improve coding conventions.
 - Write tutorials for common tasks.
