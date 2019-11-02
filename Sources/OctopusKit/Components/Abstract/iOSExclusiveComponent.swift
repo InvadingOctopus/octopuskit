@@ -19,11 +19,12 @@ public typealias iOSExclusiveComponent = OctopusComponent
 open class iOSExclusiveComponent: OctopusComponent {
     
     public override init() {
-        OctopusKit.logForErrors.add("iOS only!")
+        // TO DECIDE: Error or warning?
+        OctopusKit.logForErrors.add("\(type(of: self)) is for iOS only!")
         super.init()
     }
     
-    public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    public required init?(coder aDecoder: NSCoder) { fatalError("\(Self.self)) is for iOS only!") }
 }
 
 #endif
