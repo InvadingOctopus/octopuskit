@@ -77,10 +77,11 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
     public func updateNSViewController(_ uiViewController: OctopusViewControllerType,
                                        context: Context)
     {
-        // Enter the first game state if the game coordinator has not already done so.
-        if !gameCoordinator.didEnterInitialState {
-            gameCoordinator.enterInitialState()
-        }
+        // ❓ Apparently on macOS, updateNSViewController gets called before Application.didBecomeActiveNotification, so the first scene gets presented with a frame of (width: 0, height: 0) ... so we will just let the OctopusGameCoordinator's notification handler evoke the initial state.
+        
+        // if !gameCoordinator.didEnterInitialState {
+        //    gameCoordinator.enterInitialState()
+        // }
     }
   
     public static func dismantleNSViewController(_ nsViewController: OctopusViewControllerType,
