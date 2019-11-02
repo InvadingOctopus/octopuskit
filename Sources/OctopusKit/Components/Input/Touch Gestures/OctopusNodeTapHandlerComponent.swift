@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Base class for components which handle tap gestures on the entity's `SpriteKitComponent` node.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TapGestureRecognizerComponent`
@@ -27,7 +29,7 @@ open class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableCom
     
     private var haveGestureToProcess: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if haveGestureToProcess != oldValue { debugLog("= \(oldValue) → \(haveGestureToProcess)") }
             #endif
         }
@@ -106,3 +108,4 @@ open class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableCom
     }
 }
 
+#endif

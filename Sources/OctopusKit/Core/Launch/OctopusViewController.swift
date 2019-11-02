@@ -15,13 +15,9 @@ import GameplayKit
 
 import UIKit
 
-public typealias OSViewController = UIViewController
-
 #elseif os(OSX)
 
 import Cocoa
-
-public typealias OSViewController = NSViewController
 
 #endif
 
@@ -98,7 +94,13 @@ open class OctopusViewController: OSViewController {
     }
         
     open override func viewDidLoad() {
+        
+        #if canImport(UIKit)
         OctopusKit.logForFramework.add("view.frame = \(String(optional: self.view?.frame))")
+        #elseif canImport(AppKit)
+        OctopusKit.logForFramework.add("view.frame = \(String(optional: self.view.frame))")
+        #endif
+        
         super.viewDidLoad()
         
         // To support SwiftUI, we create a child SKView using the root view's frame which will be provided by SwiftUI.
@@ -112,7 +114,11 @@ open class OctopusViewController: OSViewController {
             
             OctopusKit.logForFramework.add("Root view is nil or not an SpriteKit SKView — Creating child SKView")
             
+            #if canImport(UIKit)
             guard let rootView = self.view else { fatalError("OctopusViewController has no root view!") }
+            #elseif canImport(AppKit)
+            let rootView = self.view
+            #endif
             
             let childView = SKView(frame: rootView.frame)
             rootView.addSubview(childView)
@@ -221,6 +227,13 @@ open class OctopusViewController: OSViewController {
     #elseif os(OSX)
     
     // MARK: macOS-specific
+    
+    public override func loadView() {
+        // ℹ️ If you pass in nil for nibNameOrNil, nibName returns nil and loadView() throws an exception; in this case you must set view before view is invoked, or override loadView().
+        // https://developer.apple.com/documentation/appkit/nsviewcontroller/1434481-init
+        
+        self.view = SKView()
+    }
     
     open override func viewWillAppear() {
         OctopusKit.logForFramework.add()

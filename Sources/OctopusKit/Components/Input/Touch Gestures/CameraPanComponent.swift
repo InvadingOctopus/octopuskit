@@ -16,6 +16,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Moves the `CameraComponent` node based on input from a `PanGestureRecognizerComponent`
 ///
 /// - Important: The `CameraPanComponent` must be updated before `PanGestureRecognizerComponent` ??
@@ -42,7 +44,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     
     public var isPanning: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if isPanning != oldValue { debugLog("= \(oldValue) → \(isPanning)") }
             #endif
         }
@@ -63,7 +65,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     
     private var initialCameraPosition: CGPoint? {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if initialCameraPosition != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: initialCameraPosition))") }
             #endif
         }
@@ -74,7 +76,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
     private var haveGestureToProcess: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if haveGestureToProcess != oldValue { debugLog("= \(oldValue) → \(haveGestureToProcess)") }
             #endif
         }
@@ -147,7 +149,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
         switch panGestureRecognizer.state {
             
         case .began:
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             debugLog("state = began")
             #endif
             
@@ -155,7 +157,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
             self.isPanning = true
             
         case .changed:
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             debugLog("state = changed")
             #endif
             
@@ -177,7 +179,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
             // CHECK: Useful? // panGestureRecognizer.setTranslation(CGPoint.zero, in: sceneView)
             
         case .ended:
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             debugLog("state = ended")
             #endif
             
@@ -229,3 +231,4 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     }
 }
 
+#endif

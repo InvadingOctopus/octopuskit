@@ -12,6 +12,8 @@
 import SpriteKit
 import GameplayKit
 
+#if canImport(UIKit)
+
 /// Modifies the `zRotation` of the entity's `SpriteKitComponent` node to face it towards the point touched by the player, as received via a `TouchEventComponent`.
 ///
 /// See also: `PositionSeekingGoalComponent` and `TouchControlledSeekingComponent`
@@ -84,7 +86,7 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
         
         // #6: Apply the calculated rotation to the node.
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), touchLocation = \(touchLocation), targetRotation = \(targetRotation), delta = \(delta), rotationAmountForThisFrame = \(rotationAmountForThisFrame)")
         #endif
         
@@ -133,7 +135,7 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
             nodeRotationForThisFrame += rotationAmountForThisFrame
         }
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), targetRotation = \(targetRotation), delta = \(delta), rotationAmountForThisFrame = \(rotationAmountForThisFrame)")
         #endif
         
@@ -203,7 +205,7 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
         
         // TODO: Snap
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), targetRotation = \(targetRotation), delta = \(targetRotation - node.zRotation), touchDistanceToClockwisePoint = \(touchDistanceToClockwisePoint), touchDistanceToCounterclockwisePoint = \(touchDistanceToCounterclockwisePoint), rotationAmountForThisFrame = \(rotationAmountForThisFrame)")
         #endif
         
@@ -215,3 +217,4 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
     
 }
 
+#endif

@@ -31,17 +31,26 @@ final class MyGameViewController: OctopusViewController {
         
         super.viewDidLoad() // ❗️ Required. You must call super.viewDidLoad() before any other code in your overriding implementation.
         
+        #if canImport(UIKit)
+        
         supportedInterfaceOrientationsOverride[.phone] = .allButUpsideDown
         
         // prefersStatusBarHiddenOverride = true
         // prefersHomeIndicatorAutoHiddenOverride = true
         // shouldAutorotateOverride = false
+        
+        #endif
+        
     }
+    
+    #if canImport(UIKit)
     
     override func didReceiveMemoryWarning() {
         // Customize this method to release any cached game-specific data, images, etc. that aren't in use, so that the operating system can free up some memory.
         super.didReceiveMemoryWarning()
     }
+    
+    #endif
     
 }
 

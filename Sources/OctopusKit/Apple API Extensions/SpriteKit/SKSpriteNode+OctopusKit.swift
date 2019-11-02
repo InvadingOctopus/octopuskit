@@ -15,12 +15,12 @@ extension SKSpriteNode {
     // MARK: - Initializers
     
     /// Creates an `SKSpriteNode` from a `UIImage` or image literal.
-    public convenience init(image: UIImage) {
+    public convenience init(image: OSImage) {
         self.init(texture: SKTexture(image: image))
     }
     
     /// Creates an `SKSpriteNode` of the specified size from a `UIImage` or image literal.
-    public convenience init(image: UIImage, size: CGSize) {
+    public convenience init(image: OSImage, size: CGSize) {
         self.init(texture: SKTexture(image: image), size: size)
     }
     

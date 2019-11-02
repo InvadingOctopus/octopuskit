@@ -49,6 +49,48 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
     
 }
 
+#elseif canImport(AppKit)
+
+import AppKit
+
+/// Encapsulates an OctopusViewController for presenting SpriteKit/SceneKit/Metal content in a SwiftUI application.
+public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, OctopusViewControllerType> : NSViewControllerRepresentable
+    where OctopusGameCoordinatorType: OctopusGameCoordinator,
+    OctopusViewControllerType: OctopusViewController
+{
+    
+    // typealias Context = UIViewControllerRepresentableContext<Self> // Defined in UIViewControllerRepresentable
+    
+    @EnvironmentObject var gameCoordinator: OctopusGameCoordinatorType
+    
+    public init() {}
+    
+    /// NOTE: This method is a requirement of the `UIViewControllerRepresentable` protocol; it creates a SwiftUI view controller coordinator, **NOT** OctopusKit's `OctopusGameCoordinator`.
+    public func makeCoordinator() -> ViewControllerCoordinator<OctopusViewControllerType> {
+        OctopusViewControllerRepresentable.ViewControllerCoordinator(gameCoordinator: self.gameCoordinator)
+    }
+    
+    public func makeNSViewController(context: Context) -> OctopusViewControllerType {
+        return context.coordinator.viewController
+    }
+    
+    public func updateNSViewController(_ uiViewController: OctopusViewControllerType,
+                                       context: Context)
+    {
+        // Enter the first game state if the game coordinator has not already done so.
+        if !gameCoordinator.didEnterInitialState {
+            gameCoordinator.enterInitialState()
+        }
+    }
+  
+    public static func dismantleNSViewController(_ nsViewController: OctopusViewControllerType,
+                                                 coordinator: ViewControllerCoordinator<OctopusViewControllerType>)
+    {
+        nsViewController.gameCoordinator?.currentScene?.didPauseBySystem()
+    }
+    
+}
+
 #endif
 
 public extension OctopusViewControllerRepresentable { // CHECK: Should this be public?

@@ -10,7 +10,6 @@
 // TODO: Improve
 // TODO: Complete support for more than 10 entries.
 
-import UIKit
 import CoreData
 
 /// TODO: Replace placeholder.

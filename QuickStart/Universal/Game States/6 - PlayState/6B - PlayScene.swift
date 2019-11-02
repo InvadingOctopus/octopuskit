@@ -69,7 +69,7 @@ final class PlayScene: OctopusScene {
         
         // Add components to the scene entity.
         
-        self.entity?.addComponents([sharedTouchEventComponent,
+        self.entity?.addComponents([sharedPointerEventComponent,
                                     PhysicsWorldComponent(),
                                     PhysicsComponent(physicsBody: SKPhysicsBody(edgeLoopFrom: self.frame))])
                 

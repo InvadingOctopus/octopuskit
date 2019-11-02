@@ -25,8 +25,8 @@ open class OctopusScene: SKScene,
     OctopusGameStateDelegate,
     OctopusEntityDelegate,
     OctopusSubsceneDelegate,
-    SKPhysicsContactDelegate,
-    TouchEventComponentCompatible
+    SKPhysicsContactDelegate
+    // TouchEventProvider // Only #if canImport(UIKit)
 {
     // MARK: - Properties
     
@@ -117,20 +117,39 @@ open class OctopusScene: SKScene,
     
     // CHECKED: These properties do not seem to prevent the scene from deinit'ing if they're not optionals.
     
+    #if canImport(AppKit)
+    
+    /// Creates a new `MouseEventComponent` when this property is first accessed, and returns that component on subsequent calls.
+    ///
+    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    public fileprivate(set) lazy var sharedMouseEventComponent = MouseEventComponent()
+    
+    /// Returns `sharedTouchEventComponent` on iOS, or `sharedMouseEventComponent` on macOS.
+    public var sharedPointerEventComponent: MouseEventComponent { sharedMouseEventComponent }
+    
+    #endif
+    
+    #if canImport(UIKit)
+    
     /// Creates a new `TouchEventComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
     /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
     public fileprivate(set) lazy var sharedTouchEventComponent = TouchEventComponent()
     
-    /// Creates a new `PhysicsEventComponent` when this property is first accessed, and returns that component on subsequent calls.
-    ///
-    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
-    public fileprivate(set) lazy var sharedPhysicsEventComponent = PhysicsEventComponent()
+    /// Returns `sharedTouchEventComponent` on iOS, or `sharedMouseEventComponent` on macOS.
+    public var sharedPointerEventComponent: TouchEventComponent { sharedTouchEventComponent }
     
     /// Creates a new `MotionManagerComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
     /// This is a convenience for cases such as adding a single motion manager to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
     public fileprivate(set) lazy var sharedMotionManagerComponent = MotionManagerComponent()
+    
+    #endif
+    
+    /// Creates a new `PhysicsEventComponent` when this property is first accessed, and returns that component on subsequent calls.
+    ///
+    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    public fileprivate(set) lazy var sharedPhysicsEventComponent = PhysicsEventComponent()
 
     // MARK: Other
 
@@ -468,72 +487,6 @@ open class OctopusScene: SKScene,
         currentFrameNumber = currentFrameNumber &+ 1
     }
     
-    // MARK: - Player Input (iOS)
-    
-    #if os(iOS) // CHECK: Include tvOS?
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesBegan = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
-    }
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesMoved = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
-    }
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesCancelled = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
-    }
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesEnded = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
-    }
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesEstimatedPropertiesUpdated = TouchEventComponent.TouchEvent(touches: touches, event: nil, node: self)
-        }
-    }
-    
-    #endif
-    
     // MARK: - Physics
     
     /// Relay physics contact events to the scene's `PhysicsEventComponent`.
@@ -819,4 +772,3 @@ open class OctopusScene: SKScene,
     }
     
 }
-

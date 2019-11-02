@@ -50,6 +50,8 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
         }
     }
     
+    #if canImport(UIKit)
+    
     override func update(deltaTime seconds: TimeInterval) {
         
         if nodesSpawnedInContiguousFrames > 0 { nodesSpawnedInContiguousFrames -= 1 }
@@ -86,6 +88,8 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
         
         if touchedFramesCount >= Int.max - 10 { touchedFramesCount = 0 } // :)
     }
+    
+    #endif
     
     func createRandomEmojiNode(position: CGPoint) -> SKLabelNode {
         

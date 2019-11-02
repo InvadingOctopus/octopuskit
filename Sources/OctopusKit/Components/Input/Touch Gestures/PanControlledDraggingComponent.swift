@@ -46,7 +46,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     
     public var isDragging: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if isDragging != oldValue { debugLog("= \(oldValue) → \(isDragging)") }
             #endif
         }
@@ -57,7 +57,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     
     private var initialNodePosition: CGPoint? {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if initialNodePosition != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: initialNodePosition))") }
             #endif
         }
@@ -65,7 +65,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     
     private var newNodePosition: CGPoint? {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if newNodePosition != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: newNodePosition))") }
             #endif
         }
@@ -76,7 +76,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
     private var haveGestureToProcess: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if haveGestureToProcess != oldValue { debugLog("= \(oldValue) → \(haveGestureToProcess)") }
             #endif
         }
@@ -162,7 +162,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
                 return
         }
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         let currentTouchLocation = trackedTouch.location(in: parent)
         let previousTouchLocation = trackedTouch.previousLocation(in: parent)
         let touchLocationDelta = currentTouchLocation - previousTouchLocation

@@ -87,7 +87,7 @@ struct GameStateLabel: View {
     var body: some View {
         Text(stateName)
             .fontWeight(.bold)
-            .font(Font(UIFont(name: "AvenirNextCondensed-Bold", size: 25)!))
+            .font(Font(OSFont(name: "AvenirNextCondensed-Bold", size: 25)!))
             .foregroundColor(stateColor)
             .shadow(color: stateColor, radius: 10, x: 0, y: 0)
     }

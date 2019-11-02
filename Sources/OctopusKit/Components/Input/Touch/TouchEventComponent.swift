@@ -14,7 +14,7 @@ import GameplayKit
 
 #if os(iOS)
 
-/// Stores the input events received by a scene or interactive node and tracks touches to be used by other components.
+/// Stores the input events received by a scene or interactive node and tracks touches to be used by other components on the next frame update.
 ///
 /// Stores each event category for a single frame for other components to process, and clears it on the next frame unless new events of the same category are received.
 ///
@@ -82,7 +82,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     public var touchesBegan: TouchEvent? {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if touchesBegan != oldValue { debugLog("= \(String(optional: touchesBegan))") }
             #endif
             
@@ -101,17 +101,11 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    public var touchesMoved: TouchEvent? {
-        didSet {
-            #if LOGINPUT
-            if touchesMoved != oldValue { debugLog("= \(String(optional: touchesMoved))") }
-            #endif
-        }
-    }
+    @LogInputEvent public var touchesMoved: TouchEvent?
     
     public var touchesEnded: TouchEvent? {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if touchesEnded != oldValue { debugLog("= \(String(optional: touchesEnded))") }
             #endif
             
@@ -131,7 +125,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     public var touchesCancelled: TouchEvent? {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if touchesCancelled != oldValue { debugLog("= \(String(optional: touchesCancelled))") }
             #endif
             
@@ -149,23 +143,17 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    public var touchesEstimatedPropertiesUpdated: TouchEvent? {
-        didSet {
-            #if LOGINPUT
-            if touchesEstimatedPropertiesUpdated != oldValue { debugLog("= \(String(optional: touchesEstimatedPropertiesUpdated))") }
-            #endif
-        }
-    }
+    @LogInputEvent public var touchesEstimatedPropertiesUpdated: TouchEvent?
     
     /// Returns an array of all events for the current frame.
     ///
     /// - IMPORTANT: The array returned by this property is a *snapshot* of the events that are *currently* stored by this component; it does *not* automatically point to new events when they are received. To ensure that you have the latest events, either query the individual `touches...` properties or recheck this property at the point of use.
     public var allEvents: [TouchEvent?] {
-        return [touchesBegan,
-                touchesMoved,
-                touchesEnded,
-                touchesCancelled,
-                touchesEstimatedPropertiesUpdated]
+        [touchesBegan,
+         touchesMoved,
+         touchesEnded,
+         touchesCancelled,
+         touchesEstimatedPropertiesUpdated]
     }
     
     // MARK: Touches
@@ -246,12 +234,12 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     }
 }
 
-/// A placeholder protocol whose default implementation channels touch events from a node to the `TouchEventComponent` of the node's entity. Currently cannot be elegantly implemented because of the limitations and issues with Default Implementations and inheritance. 2018-05-08
-public protocol TouchEventComponentCompatible {
-    func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
-    func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
-    func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?)
-    func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
+/// A placeholder protocol whose default implementation channels touch events from a SpriteKit node to the `TouchEventComponent` of the node's entity. Currently cannot be elegantly implemented because of the limitations and issues with Default Implementations and inheritance. 2018-05-08
+public protocol TouchEventProvider {
+    func touchesBegan       (_ touches: Set<UITouch>, with event: UIEvent?)
+    func touchesMoved       (_ touches: Set<UITouch>, with event: UIEvent?)
+    func touchesCancelled   (_ touches: Set<UITouch>, with event: UIEvent?)
+    func touchesEnded       (_ touches: Set<UITouch>, with event: UIEvent?)
     func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>)
 }
 

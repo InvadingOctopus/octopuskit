@@ -110,16 +110,11 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     }
     
     fileprivate func registerForNotifications() {
+
         self.notifications = [
             
             NotificationCenter.default.publisher(for: OSApplication.didFinishLaunchingNotification)
                 .sink { _ in OctopusKit.logForDebug.add("Application.didFinishLaunchingNotification") },
-            
-            NotificationCenter.default.publisher(for: OSApplication.willEnterForegroundNotification)
-                .sink { _ in
-                    OctopusKit.logForDebug.add("Application.willEnterForegroundNotification")
-                    self.currentScene?.applicationWillEnterForeground()
-            },
             
             NotificationCenter.default.publisher(for: OSApplication.didBecomeActiveNotification)
                 .sink { _ in
@@ -139,6 +134,18 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
                 .sink { _ in
                     OctopusKit.logForDebug.add("Application.willResignActiveNotification")
                     self.currentScene?.applicationWillResignActive()
+            }
+            
+        ]
+        
+        #if canImport(UIKit)
+        
+        self.notifications += [
+            
+            NotificationCenter.default.publisher(for: OSApplication.willEnterForegroundNotification)
+                .sink { _ in
+                    OctopusKit.logForDebug.add("Application.willEnterForegroundNotification")
+                    self.currentScene?.applicationWillEnterForeground()
             },
             
             NotificationCenter.default.publisher(for: OSApplication.didEnterBackgroundNotification)
@@ -147,6 +154,8 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
                     self.currentScene?.applicationDidEnterBackground()
             }
         ]
+        
+        #endif
     }
     
     open override func enter(_ stateClass: AnyClass) -> Bool {
