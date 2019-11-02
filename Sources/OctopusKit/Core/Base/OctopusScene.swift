@@ -124,6 +124,9 @@ open class OctopusScene: SKScene,
     /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
     public fileprivate(set) lazy var sharedMouseEventComponent = MouseEventComponent()
     
+    /// Returns `sharedTouchEventComponent` on iOS, or `sharedMouseEventComponent` on macOS.
+    public var sharedPointerEventComponent: MouseEventComponent { sharedMouseEventComponent }
+    
     #endif
     
     #if canImport(UIKit)
@@ -132,6 +135,9 @@ open class OctopusScene: SKScene,
     ///
     /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
     public fileprivate(set) lazy var sharedTouchEventComponent = TouchEventComponent()
+    
+    /// Returns `sharedTouchEventComponent` on iOS, or `sharedMouseEventComponent` on macOS.
+    public var sharedPointerEventComponent: TouchEventComponent { sharedTouchEventComponent }
     
     /// Creates a new `MotionManagerComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
