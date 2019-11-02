@@ -98,16 +98,20 @@ struct TitleUI: View {
     
     var nextStateButton: some View {
         Button(action: nextGameState) {
-            QuickStartButtonLabel(text: "CYCLE GAME STATES", color: .accentColor)
+            Text("CYCLE GAME STATES")
+                .fontWeight(.bold)
         }
+        .buttonStyle(FatButtonStyle(color: .accentColor))
     }
     
     var toggleHUDButton: some View {
         Button(action: toggleHUD) {
-            QuickStartButtonLabel(text: "TOGGLE MORE UI", color: .purple)
+            Text("TOGGLE MORE UI")
+                .fontWeight(.bold)
         }
+        .buttonStyle(FatButtonStyle(color: .purple))
     }
-    
+ 
     // MARK: - Button Actions
     
     func nextGameState() {
@@ -155,10 +159,20 @@ struct TitleUI: View {
     
     var animatedButton: some View {
         
+        #if canImport(UIKit)
+        
         let randomImageName =  ["person.fill", "person.3.fill", "heart.fill", "ellipses.bubble.fill",
-                                "paperplane.fill", "globe", "sparkles", "moon.stars.fill", "bolt.fill",
-                                "doc.fill", "book.fill", "cloud.bolt.fill", "hurricane"]
-            .randomElement()!
+                            "paperplane.fill", "globe", "sparkles", "moon.stars.fill", "bolt.fill",
+                            "doc.fill", "book.fill", "cloud.bolt.fill", "hurricane", "gamecontroller.fill"]
+        .randomElement()!
+        
+        let randomImage = Image(systemName: randomImageName)
+        
+        #elseif os(macOS)
+        
+        let randomImage = Text(String("􀉪􀛹􀊵􀈠􀆪􀆿􀇁􀕻􀋦􀝋􀉛􀇩􀇓􀈸".randomElement()!))
+        
+        #endif
         
         return Circle()
             .frame(width: 75, height: 75)
@@ -166,7 +180,7 @@ struct TitleUI: View {
             .opacity(0.85)
             .shadow(color: .black, radius: 5, x: 0, y: 10)
             .animation(self.animateHUDTransition ? .spring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.5) : .none)
-            .overlay(Image(systemName: randomImageName).font(.largeTitle).foregroundColor(.white))
+            .overlay(randomImage.font(.largeTitle).foregroundColor(.white))
             .onAppear {
                 /// Prevent re-animation on a new game state.
                 self.animateHUDTransition = false

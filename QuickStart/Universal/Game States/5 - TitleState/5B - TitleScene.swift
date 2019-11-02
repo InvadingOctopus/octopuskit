@@ -68,8 +68,7 @@ final class TitleScene: OctopusScene {
             
         // Add components to the scene entity.
         
-        self.entity?.addComponents([sharedTouchEventComponent,
-                                   TitleEffectsComponent()])
+        self.entity?.addComponent(TitleEffectsComponent())
         
         // Create a label to display the game's title.
         
