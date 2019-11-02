@@ -20,6 +20,7 @@ struct FatButtonStyle: ButtonStyle {
             .background(RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(color)
                 .opacity(0.85)
+                .brightness(configuration.isPressed ? 0.2 : 0)
                 .shadow(color: .black,
                         radius: configuration.isPressed ? 5 : 10,
                         x: 0,
@@ -28,6 +29,7 @@ struct FatButtonStyle: ButtonStyle {
     }
 }
 
+/// Preview in live mode to test interactivity and animations.
 struct ButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 20) {
