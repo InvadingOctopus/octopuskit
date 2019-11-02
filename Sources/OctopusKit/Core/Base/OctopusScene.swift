@@ -117,20 +117,33 @@ open class OctopusScene: SKScene,
     
     // CHECKED: These properties do not seem to prevent the scene from deinit'ing if they're not optionals.
     
+    #if canImport(AppKit)
+    
+    /// Creates a new `MouseEventComponent` when this property is first accessed, and returns that component on subsequent calls.
+    ///
+    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    public fileprivate(set) lazy var sharedMouseEventComponent = MouseEventComponent()
+    
+    #endif
+    
+    #if canImport(UIKit)
+    
     /// Creates a new `TouchEventComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
     /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
     public fileprivate(set) lazy var sharedTouchEventComponent = TouchEventComponent()
     
-    /// Creates a new `PhysicsEventComponent` when this property is first accessed, and returns that component on subsequent calls.
-    ///
-    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
-    public fileprivate(set) lazy var sharedPhysicsEventComponent = PhysicsEventComponent()
-    
     /// Creates a new `MotionManagerComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
     /// This is a convenience for cases such as adding a single motion manager to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
     public fileprivate(set) lazy var sharedMotionManagerComponent = MotionManagerComponent()
+    
+    #endif
+    
+    /// Creates a new `PhysicsEventComponent` when this property is first accessed, and returns that component on subsequent calls.
+    ///
+    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    public fileprivate(set) lazy var sharedPhysicsEventComponent = PhysicsEventComponent()
 
     // MARK: Other
 
