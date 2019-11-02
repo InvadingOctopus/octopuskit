@@ -33,7 +33,7 @@ final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpd
     
     public var isHolding: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if isHolding != oldValue { debugLog("= \(oldValue) → \(isHolding)") }
             #endif
         }

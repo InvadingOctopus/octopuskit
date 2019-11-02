@@ -32,7 +32,7 @@ public final class CameraZoomComponent: OctopusComponent, OctopusUpdatableCompon
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
     private var haveGestureToProcess: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if haveGestureToProcess != oldValue { debugLog("= \(oldValue) → \(haveGestureToProcess)") }
             #endif
         }

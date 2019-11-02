@@ -29,7 +29,7 @@ open class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableCom
     
     private var haveGestureToProcess: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if haveGestureToProcess != oldValue { debugLog("= \(oldValue) → \(haveGestureToProcess)") }
             #endif
         }

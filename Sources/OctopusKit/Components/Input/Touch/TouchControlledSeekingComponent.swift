@@ -45,7 +45,7 @@ public final class TouchControlledSeekingComponent: OctopusComponent, OctopusUpd
             
             let targetPosition = firstTouch.location(in: parent) // TODO: Verify with nested nodes etc.
             
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             debugLog("\(String(optional: positionSeekingComponent.targetPosition))")
             #endif
             

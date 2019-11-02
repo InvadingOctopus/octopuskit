@@ -33,7 +33,7 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
     
     public var isDragging: Bool = false {
         didSet {
-            #if LOGINPUT
+            #if LOGINPUTEVENTS
             if isDragging != oldValue { debugLog("= \(oldValue) → \(isDragging)") }
             #endif
         }
@@ -73,7 +73,7 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
         
         let currentTouchLocation = trackedTouch.location(in: parent)
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         let previousTouchLocation = trackedTouch.previousLocation(in: parent)
         let touchLocationDelta = currentTouchLocation - previousTouchLocation
         debugLog("trackedTouch.location in parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(String(optional: nodeTouchComponent.touchTranslationInParent))")
