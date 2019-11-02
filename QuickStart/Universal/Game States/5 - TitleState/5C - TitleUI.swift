@@ -94,6 +94,7 @@ struct TitleUI: View {
                     .opacity(0.6))
                 .padding(.bottom, 15)
         }
+        .padding(.top, 20) // BUG: Apparently needed to prevent shadow clipping on macOS. 2019/11/03
     }
     
     var nextStateButton: some View {
