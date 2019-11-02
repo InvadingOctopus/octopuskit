@@ -140,7 +140,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         
         #if canImport(UIKit)
         
-        self.notifications.append([
+        self.notifications += [
             
             NotificationCenter.default.publisher(for: OSApplication.willEnterForegroundNotification)
                 .sink { _ in
@@ -153,7 +153,8 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
                     OctopusKit.logForDebug.add("Application.didEnterBackgroundNotification")
                     self.currentScene?.applicationDidEnterBackground()
             }
-        ])
+        ]
+        
         #endif
     }
     

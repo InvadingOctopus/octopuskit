@@ -51,6 +51,8 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
 
 #elseif canImport(AppKit)
 
+import AppKit
+
 /// Encapsulates an OctopusViewController for presenting SpriteKit/SceneKit/Metal content in a SwiftUI application.
 public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, OctopusViewControllerType> : NSViewControllerRepresentable
     where OctopusGameCoordinatorType: OctopusGameCoordinator,

@@ -228,6 +228,13 @@ open class OctopusViewController: OSViewController {
     
     // MARK: macOS-specific
     
+    public override func loadView() {
+        // ℹ️ If you pass in nil for nibNameOrNil, nibName returns nil and loadView() throws an exception; in this case you must set view before view is invoked, or override loadView().
+        // https://developer.apple.com/documentation/appkit/nsviewcontroller/1434481-init
+        
+        self.view = SKView()
+    }
+    
     open override func viewWillAppear() {
         OctopusKit.logForFramework.add()
         super.viewWillAppear()
