@@ -11,7 +11,7 @@ import GameplayKit
 
 #if os(iOS)
 
-extension OctopusSprite: TouchEventComponentCompatible {
+extension OctopusSprite: TouchEventProvider {
     
     /// `super` must be called when overriding, to ensure proper operation.
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
