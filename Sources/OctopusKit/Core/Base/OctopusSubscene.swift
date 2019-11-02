@@ -39,7 +39,7 @@ public enum OctopusSubsceneResultType {
 open class OctopusSubscene: SKNode,
     OctopusEntityContainerNode,
     OctopusEntityDelegate
-    // TouchEventComponentCompatible // Only #if canImport(UIKit)
+    // TouchEventProvider // Only #if canImport(UIKit)
 {
     
     // ℹ️ NOTE: This class currently contains a lot of duplicate code from `OctopusScene`. The `OctopusEntityContainer` protocol is meant to reduce code duplication in the future but cannot be elegantly implemented currently because of the issues associated with Default Implementations (via Extensions) and inheritance. 2018-05-08
@@ -132,73 +132,5 @@ open class OctopusSubscene: SKNode,
         updateSystems(in: componentSystems, deltaTime: seconds)
     }
     
-    // MARK: - Player Input (iOS)
-    
-    #if os(iOS) // CHECK: Include tvOS?
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesBegan = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
-    }
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesMoved = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
-    }
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesCancelled = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
-    }
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesEnded = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
-    }
-    
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
-    open override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
-        
-        #if LOGINPUT
-        debugLog()
-        #endif
-        
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesEstimatedPropertiesUpdated = TouchEventComponent.TouchEvent(touches: touches, event: nil, node: self)
-        }
-    }
-    
-    #endif
 }
 
-#if canImport(UIKit)
-public extension OctopusSubscene: TouchEventComponentCompatible {}
-#endif
