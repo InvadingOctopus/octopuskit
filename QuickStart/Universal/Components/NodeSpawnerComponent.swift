@@ -15,6 +15,11 @@ import OctopusKit
 /// A random emoji `SKLabelNode` with physics and an animated "spinny" `SKShapeNode` like the one in the Xcode SpriteKit game project template. :)
 final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
     
+    override var requiredComponents: [GKComponent.Type]? {
+        [SpriteKitComponent.self,
+         PointerEventComponent.self]
+    }
+    
     private var spinnyNode: SKShapeNode?
     private var emojiNode: SKLabelNode?
     
@@ -50,21 +55,21 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
         }
     }
     
-    #if canImport(UIKit)
-    
     override func update(deltaTime seconds: TimeInterval) {
         
         if nodesSpawnedInContiguousFrames > 0 { nodesSpawnedInContiguousFrames -= 1 }
         
         guard
             let node = entityNode,
-            let touchEventComponent = coComponent(TouchEventComponent.self),
-            let touch = touchEventComponent.touches.first
+            let pointerEventComponent = coComponent(PointerEventComponent.self),
+//            let touchEventComponent = coComponent(TouchEventComponent.self),
+//            let touch = touchEventComponent.touches.first
+            let pointerLocation = pointerEventComponent.latestEvent?.location(in: node)
             else { return }
         
         if let spinny = self.spinnyNode?.copy() as? SKShapeNode
         {
-            spinny.position = touch.location(in: node)
+            spinny.position = pointerLocation
             spinny.zPosition = -20 // + CGFloat(Int.random(in: 1...10))
             spinny.strokeColor = SKColor.brightColors.randomElement()!
             spinny.alpha = 0.5
@@ -74,7 +79,7 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
         if  touchedFramesCount == 0
             || touchedFramesCount.isMultiple(of: 2)
         {
-            let emojiNode = createRandomEmojiNode(position: touch.location(in: node))
+            let emojiNode = createRandomEmojiNode(position: pointerLocation)
             node.addChild(emojiNode)
             
             //
@@ -88,8 +93,6 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
         
         if touchedFramesCount >= Int.max - 10 { touchedFramesCount = 0 } // :)
     }
-    
-    #endif
     
     func createRandomEmojiNode(position: CGPoint) -> SKLabelNode {
         

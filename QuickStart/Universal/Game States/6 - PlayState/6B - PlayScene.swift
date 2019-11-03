@@ -41,7 +41,8 @@ final class PlayScene: OctopusScene {
         [
             // Components that process player input, provided by OctopusKit.
             
-            TouchEventComponent.self,
+            OSMouseOrTouchEventComponent.self,
+            PointerEventComponent.self,
             
             // Custom components which are specific to this QuickStart project.
             
@@ -69,7 +70,8 @@ final class PlayScene: OctopusScene {
         
         // Add components to the scene entity.
         
-        self.entity?.addComponents([sharedPointerEventComponent,
+        self.entity?.addComponents([sharedMouseOrTouchEventComponent,
+                                    sharedPointerEventComponent,
                                     PhysicsWorldComponent(),
                                     PhysicsComponent(physicsBody: SKPhysicsBody(edgeLoopFrom: self.frame))])
                 
