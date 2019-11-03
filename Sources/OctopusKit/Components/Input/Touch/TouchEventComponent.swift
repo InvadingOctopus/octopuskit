@@ -57,19 +57,19 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
             return "\(String(optional: event))"
         }
         
-        public init(touches: Set<UITouch>,
-                    event: UIEvent?,
-                    node: SKNode)
-        {
-            self.touches = touches
-            self.event = event
-            self.node = node
-        }
-
         public static func == (left: TouchEvent, right: TouchEvent) -> Bool {
             return (left.touches == right.touches
-                &&  left.event === right.event
-                &&  left.node === right.node)
+                &&  left.event   === right.event
+                &&  left.node    === right.node)
+        }
+        
+        public init(touches: Set<UITouch>,
+                    event:   UIEvent?,
+                    node:    SKNode)
+        {
+            self.touches = touches
+            self.event   = event
+            self.node    = node
         }
         
     }

@@ -58,14 +58,14 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
             return "\(String(optional: event))"
         }
         
-        public init(event: NSEvent, node: SKNode) {
-            self.event = event
-            self.node = node
-        }
-        
         public static func == (left: MouseEvent, right: MouseEvent) -> Bool {
             return (left.event === right.event
                 &&  left.node  === right.node)
+        }
+        
+        public init(event: NSEvent, node: SKNode) {
+            self.event = event
+            self.node  = node
         }
         
     }
