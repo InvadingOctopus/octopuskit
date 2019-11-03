@@ -34,7 +34,11 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
                 &&  left.locationInNode  == right.locationInNode)
         }
         
-        public init?(event: NSEvent? = nil, node: SKNode? = nil) {
+        #if canImport(AppKit)
+        
+        public init?(event: NSEvent? = nil,
+                     node:  SKNode?  = nil)
+        {
             guard
                 let event = event,
                 let node  = node
@@ -44,6 +48,26 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
             self.node = node
             self.locationInNode = event.location(in: node)
         }
+        
+        #endif
+        
+        public init?(firstTouch: UITouch? = nil,
+                     event:      UIEvent? = nil,
+                     node:       SKNode?  = nil)
+        {
+            guard
+                let firstTouch = firstTouch,
+                let event      = event,
+                let node       = node
+                else { return nil }
+            
+            self.timestamp = event.timestamp
+            self.node = node
+            self.locationInNode = firstTouch.location(in: node)
+        }
+        
+        #if canImport(UIKit)
+        #endif
         
         public func location(in anotherNode: SKNode) -> CGPoint {
             self.node.convert(locationInNode, to: anotherNode)
@@ -93,13 +117,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         
         // #2: Mirror a `TouchEventComponent` on iOS or a `MouseEventComponent` on macOS.
         
-        #if os(iOS)
-        
-        if let touchEventComponent = coComponent(TouchEventComponent) {
-            
-        }
-        
-        #elseif os(macOS)
+        #if canImport(AppKit)
         
         if let mouseEventComponent = coComponent(MouseEventComponent.self) {
             
@@ -113,6 +131,31 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
             
             if let mouseUp = mouseEventComponent.mouseUp {
                 pointerEnded = PointerEvent(event: mouseUp.event, node: mouseUp.node)
+            }
+        }
+        
+        #elseif canImport(UIKit)
+        
+        if let touchEventComponent = coComponent(TouchEventComponent.self) {
+            
+            if let touchesBegan = touchEventComponent.touchesBegan {
+                pointerBegan = PointerEvent(firstTouch: touchEventComponent.touches.first,
+                                            event: touchesBegan.event,
+                                            node:  touchesBegan.node)
+            }
+            
+            if let touchesMoved = touchEventComponent.touchesMoved {
+                pointerMoved = PointerEvent(firstTouch: touchEventComponent.touches.first,
+                                            event: touchesMoved.event,
+                                            node:  touchesMoved.node)
+            }
+            
+            // ⚠️ TODO: CHECK: Safeguard against different touches being ended or cancelled, which may cause jumps in touch-dependent nodes when using multiple fingers.
+            
+            if let touchesEnded = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled {
+                pointerEnded = PointerEvent(firstTouch: touchEventComponent.touches.first,
+                                            event: touchesEnded.event,
+                                            node:  touchesEnded.node)
             }
         }
         

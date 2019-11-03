@@ -62,8 +62,6 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
         guard
             let node = entityNode,
             let pointerEventComponent = coComponent(PointerEventComponent.self),
-//            let touchEventComponent = coComponent(TouchEventComponent.self),
-//            let touch = touchEventComponent.touches.first
             let pointerLocation = pointerEventComponent.latestEvent?.location(in: node)
             else { return }
         
