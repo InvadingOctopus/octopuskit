@@ -19,7 +19,7 @@ public typealias OSFont             = NSFont
 public typealias OSImage            = NSImage
 public typealias OSViewController   = NSViewController
 
-public typealias OSInputComponent   = MouseEventComponent
+public typealias OSMouseOrTouchEventComponent = MouseEventComponent
 
 #elseif canImport(UIKit)
 
@@ -30,6 +30,6 @@ public typealias OSFont             = UIFont
 public typealias OSImage            = UIImage
 public typealias OSViewController   = UIViewController
 
-public typealias OSInputComponent   = TouchEventComponent
+public typealias OSMouseOrTouchEventComponent = TouchEventComponent
 
 #endif
