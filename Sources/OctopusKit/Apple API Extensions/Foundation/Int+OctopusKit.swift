@@ -10,7 +10,7 @@
 
 import Foundation
 
-extension Int {
+public extension Int {
 
     // MARK: - Random Numbers
     
@@ -21,7 +21,7 @@ extension Int {
     /// If `upperBound` is less than `0` then `nil` will returned. If `upperBound` is `0` then `0` will be returned without calling the random number generator.
     ///
     /// Uses `arc4random_uniform(_:)`. For GameplayKit-based randomization, use the extensions of `GKRandom`.
-    public static func randomFromZero(to upperBound: Int,
+    static func randomFromZero(to upperBound: Int,
                               skipping exclusions: Set<Int>,
                               maximumAttempts: UInt = 100) -> Int?
     {

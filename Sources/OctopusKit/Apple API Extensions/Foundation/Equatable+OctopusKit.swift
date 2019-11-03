@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Equatable {
+public extension Equatable {
     
     /// - Returns: `true` if the provided list of items contains this object or value.
     func isAny(of candidates: Self...) -> Bool {

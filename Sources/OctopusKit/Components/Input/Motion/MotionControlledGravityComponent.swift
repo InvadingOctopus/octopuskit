@@ -13,14 +13,14 @@ import GameplayKit
 /// Modifies the `gravity` of a scene's `PhysicsWorldComponent` based on the input from a `MotionManagerComponent`.
 ///
 /// **Dependencies:** `MotionManagerComponent`, `PhysicsWorldComponent`
-class MotionControlledGravityComponent: OctopusComponent, OctopusUpdatableComponent {
+public class MotionControlledGravityComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    override var requiredComponents: [GKComponent.Type]? {
+    public override var requiredComponents: [GKComponent.Type]? {
         return [PhysicsWorldComponent.self,
                 MotionManagerComponent.self]
     }
     
-    override func update(deltaTime seconds: TimeInterval) {
+    public override func update(deltaTime seconds: TimeInterval) {
         guard
             let physicsWorld = coComponent(PhysicsWorldComponent.self)?.physicsWorld,
             let motionManagerComponent = coComponent(MotionManagerComponent.self)

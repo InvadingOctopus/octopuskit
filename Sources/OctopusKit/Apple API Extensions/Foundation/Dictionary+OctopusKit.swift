@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Dictionary {
+public extension Dictionary {
     
     /// Returns the value for the specified key. If none exists, adds the result of the supplied closure as the value for that key.
     mutating func getOrSetValue(

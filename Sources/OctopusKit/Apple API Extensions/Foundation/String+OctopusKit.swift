@@ -10,7 +10,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     
     /// Creates a `String` containing the `description` of `optional`.
     ///
@@ -28,7 +28,7 @@ extension String {
     }
     
     /// Generates and returns a function that concatenates strings in the order they're sent, with an optional (comma by default) separator.
-    public static func createConcatenator(withSeparator separator: String = ", ")
+    static func createConcatenator(withSeparator separator: String = ", ")
         -> (String?) -> String
     {
         // CHECK: Is this method useful or is it too weird and not compatible with Swift idioms?
@@ -59,7 +59,7 @@ extension String {
     }
     
     /// Generates and returns a function that concatenates strings in the order they're sent, with a separator that may be overriden per each call.
-    public static func createConcatenatorWithOverrideableSeparator(withDefaultSeparator defaultSeparator: String = ", ")
+    static func createConcatenatorWithOverrideableSeparator(withDefaultSeparator defaultSeparator: String = ", ")
         -> (String?, String?) -> String
     {
         // CHECK: Is this method useful or is it too weird and not compatible with Swift idioms?

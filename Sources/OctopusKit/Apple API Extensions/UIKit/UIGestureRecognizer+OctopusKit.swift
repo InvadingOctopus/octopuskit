@@ -10,7 +10,7 @@
 
 import UIKit
 
-extension UIGestureRecognizer {
+public extension UIGestureRecognizer {
     
     /// Specifies whether the recognizer is currently processing a gesture.
     ///
@@ -19,7 +19,7 @@ extension UIGestureRecognizer {
     /// Returns `false` when the `state` is `.possible`, `.cancelled`, `.failed` or `.ended`.
     ///
     /// Use this flag to avoid unnecessary processing in gesture-controlled objects.
-    public var isHandlingGesture: Bool {
+    var isHandlingGesture: Bool {
         switch self.state {
             // CHECK: Is this all the correct states?
             

@@ -8,7 +8,7 @@
 
 import CoreGraphics
 
-extension CGFloat {
+public extension CGFloat {
     
     // NOTE: Randomization extensions removed in favor of `CGFloat(Int(CGFloat.random(in:)))` etc.
     

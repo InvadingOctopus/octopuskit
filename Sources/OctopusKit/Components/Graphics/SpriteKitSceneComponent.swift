@@ -11,16 +11,16 @@
 import GameplayKit
 
 /// An abstraction layer for accessing SpriteKit scene features via a component. This component should only be added to an `SKScene.entity` or `OctopusScene.entity` and is used to identify the entity as a scene to other components.
-class SpriteKitSceneComponent: OctopusComponent {
+public class SpriteKitSceneComponent: OctopusComponent {
     
     public let scene: OctopusScene
     
-    init(scene: OctopusScene) {
+    public init(scene: OctopusScene) {
         self.scene = scene
         super.init()
     }
     
-    override func didAddToEntity(withNode node: SKNode) {
+    public override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)
         
         // Remove ourselves if our node is not a scene

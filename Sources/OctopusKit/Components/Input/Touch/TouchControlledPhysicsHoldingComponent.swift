@@ -19,9 +19,9 @@ import GameplayKit
 /// - These properties are reapplied every frame.
 ///
 /// **Dependencies:** `NodeTouchComponent`, `PhysicsComponent`
-final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    override var requiredComponents: [GKComponent.Type]? {
+    public override var requiredComponents: [GKComponent.Type]? {
         return [PhysicsComponent.self,
                 NodeTouchComponent.self]
     }
@@ -50,7 +50,7 @@ final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpd
         }
     }
     
-    override func update(deltaTime seconds: TimeInterval) {
+    public override func update(deltaTime seconds: TimeInterval) {
 
         let nodeTouchComponent = coComponent(ofType: NodeTouchComponent.self)
         
@@ -67,7 +67,7 @@ final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpd
         isHolding = true
     }
     
-    override func willRemoveFromEntity() {
+    public override func willRemoveFromEntity() {
         super.willRemoveFromEntity()
         releaseBody()
         isHolding = false

@@ -11,7 +11,7 @@
 import CoreGraphics
 import simd
 
-extension SIMD2 where Scalar == Float {
+public extension SIMD2 where Scalar == Float {
     
     // MARK: - Initializers
     

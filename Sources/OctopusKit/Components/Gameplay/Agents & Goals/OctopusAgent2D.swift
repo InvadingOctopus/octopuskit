@@ -58,7 +58,7 @@ public final class OctopusAgent2D: GKAgent2D, OctopusUpdatableComponent {
     /// Copies properties such as `radius` and `mass` from the entity's `SpriteKitComponent` node.
     ///
     /// The `radius` is set to the greater value among the node's width or height.
-    public func copyPropertiesFromNode() {
+    private func copyPropertiesFromNode() {
         guard let node = entityNode else { return }
         
         self.radius = Float(CGFloat.maximum(node.frame.size.width, node.frame.size.height))

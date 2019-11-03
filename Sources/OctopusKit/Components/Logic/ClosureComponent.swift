@@ -18,7 +18,7 @@ import GameplayKit
 ///     ClosureComponent(executionDelay: 60.0) {
 ///         $0.coComponent(ofType: SpriteKitComponent.self)?.node
 ///     }
-public final class ClosureComponent: SingleUseComponent {
+open class ClosureComponent: SingleUseComponent {
     
     /// The block of code to be executed by a `ClosureComponent`.
     ///
@@ -32,14 +32,14 @@ public final class ClosureComponent: SingleUseComponent {
     /// The block of code to execute when this component is added to an entity.
     ///
     /// For a description of the closure's signature and parameters, see `ClosureComponent.ClosureType`.
-    public var closureOnAddingToEntity: ClosureType?
+    open var closureOnAddingToEntity: ClosureType?
     
     /// The block of code to execute when this component is removed from an entity.
     ///
     /// The component removal may be implicit, such as when a scene's entity destruction process includes automatically removing all its components.
     ///
     /// For a description of the closure's signature and parameters, see `ClosureComponent.ClosureType`.
-    public var closureOnRemovingFromEntity: ClosureType?
+    open var closureOnRemovingFromEntity: ClosureType?
     
     /// - Parameter closureOnAddingToEntity: The block of code to execute when this component is added to an entity.
     ///
@@ -76,13 +76,13 @@ public final class ClosureComponent: SingleUseComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func didAddToEntity() {
+    open override func didAddToEntity() {
         if let closureOnAddingToEntity = self.closureOnAddingToEntity {
             closureOnAddingToEntity(self)
         }
     }
     
-    public override func willRemoveFromEntity() {
+    open override func willRemoveFromEntity() {
         if let closureOnRemovingFromEntity = self.closureOnRemovingFromEntity {
             closureOnRemovingFromEntity(self)
         }

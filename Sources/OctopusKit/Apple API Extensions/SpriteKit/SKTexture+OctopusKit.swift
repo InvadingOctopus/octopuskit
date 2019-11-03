@@ -10,7 +10,7 @@
 
 import SpriteKit
 
-extension SKTexture {
+public extension SKTexture {
     
     /// Creates a gradient texture.
     convenience init(size: CGSize,

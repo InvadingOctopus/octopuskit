@@ -15,7 +15,9 @@ import GameplayKit
 /// The `GKComponent.coComponent(ofType:)` and `GKEntity.componentOrRelay(ofType:)` methods will check the entity for a `RelayComponent` which points to a component of the specified type, if the entity itself does not have a component of the specified type.
 ///
 /// - Important: `GKEntity.component(ofType:)` does *not* automatically substitute a `RelayComponent` for the specified component class, due to GameplayKit/Swift limitations. Use `GKEntity.componentOrRelay(ofType:)` or `GKComponent.coComponent(ofType:)` to automatically look for `RelayComponent`s.
-public final class RelayComponent<MasterComponentType: GKComponent>: OctopusComponent {
+public final class RelayComponent <MasterComponentType> : OctopusComponent
+    where MasterComponentType: GKComponent
+{
     
     // ℹ️ GameplayKit does not allow an entity to have more than one component of the same class, but a generic class with different associated types can be added, e.g. `RelayComponent<Component1>` and `RelayComponent<Component2>`.
     
@@ -27,7 +29,7 @@ public final class RelayComponent<MasterComponentType: GKComponent>: OctopusComp
     ///
     /// - Important: `GKEntity.component(ofType:)` does *not* automatically substitute a `RelayComponent` for the specified component class, due to GameplayKit/Swift limitations. Use `GKEntity.componentOrRelay(ofType:)` or `GKComponent.coComponent(ofType:)` to automatically look for `RelayComponent`s.
     public var target: MasterComponentType? {
-        if let directlyReferencedComponent = self.directlyReferencedComponent {
+        if  let directlyReferencedComponent = self.directlyReferencedComponent {
             return directlyReferencedComponent
         }
         else if let sceneComponentType = self.sceneComponentType,
@@ -73,7 +75,7 @@ public final class RelayComponent<MasterComponentType: GKComponent>: OctopusComp
         
         if  let existingComponent = coComponent(MasterComponentType.self, ignoreRelayComponents: true)
         {
-            if existingComponent === target {
+            if  existingComponent === target {
                 OctopusKit.logForWarnings.add("\(entity) already has \(existingComponent)")
             }
             else {

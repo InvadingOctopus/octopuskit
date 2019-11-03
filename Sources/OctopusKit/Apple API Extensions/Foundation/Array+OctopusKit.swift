@@ -12,7 +12,7 @@
 import Foundation
 import GameplayKit
 
-extension Array {
+public extension Array {
     
     // MARK: - Randomization
         
@@ -25,7 +25,7 @@ extension Array {
     /// Calls `Int.random(upto:skipping:maximumAttempts:)` which uses `arc4random_uniform()`.
     ///
     /// Can be used with array literals, e.g.: `[4, 8, 16, 42].randomElement(skippingIndices: [0, 1, 2])`
-    public func randomElement(skippingIndices exclusions: Set<Int>,
+    func randomElement(skippingIndices exclusions: Set<Int>,
                               maximumAttempts: UInt = 100) -> Element?
     {
         guard self.count > 0 else { return nil }
@@ -49,7 +49,7 @@ extension Array {
     /// If the array has only 1 element, then that is returned without generating any random indices.
     ///
     /// Can be used with array literals, e.g.: `[4, 8, 16, 42].randomElement(usingDistribution: GKRandomDistribution.d20(), skippingIndices: [0, 1, 2])`
-    public func randomElement(usingDistribution randomDistribution: GKRandomDistribution,
+    func randomElement(usingDistribution randomDistribution: GKRandomDistribution,
                               skippingIndices exclusions: Set<Int>? = nil,
                               maximumAttempts: UInt = 100) -> Element?
     {
@@ -74,7 +74,6 @@ extension Array {
             return nil
         }
     }
-
     
 }
 

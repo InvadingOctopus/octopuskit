@@ -18,14 +18,14 @@ import CoreMotion
 /// Adds a shift in the position of the entity's `SpriteKitComponent` node every frame, based on the device's motion.
 ///
 /// **Dependencies:** `MotionManagerComponent`, `SpriteKitComponent`
-class MotionControlledParallaxComponent: OctopusComponent, OctopusUpdatableComponent {
+public class MotionControlledParallaxComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    override var requiredComponents: [GKComponent.Type]? {
+    public override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self,
                 MotionManagerComponent.self]
     }
     
-    override func update(deltaTime seconds: TimeInterval) {
+    public override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
         
     }

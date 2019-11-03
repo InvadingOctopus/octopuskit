@@ -12,9 +12,9 @@ import GameplayKit
 /// Adds an action to the entity's `SpriteKitComponent` node with an automatically generated `key`, and removes any action associated with that key when this component is removed from that entity.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-class SpriteKitActionComponent: OctopusComponent {
+public class SpriteKitActionComponent: OctopusComponent {
     
-    override var requiredComponents: [GKComponent.Type]? {
+    public override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self]
     }
     
@@ -29,7 +29,7 @@ class SpriteKitActionComponent: OctopusComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    override func didAddToEntity(withNode node: SKNode) {
+    public override func didAddToEntity(withNode node: SKNode) {
         
         if let action = node.action(forKey: key) {
             OctopusKit.logForWarnings.add("\(node) already has \(action) with key \"\(key)\" — Replacing")
@@ -39,7 +39,7 @@ class SpriteKitActionComponent: OctopusComponent {
         node.run(action, withKey: key)
     }
     
-    override func willRemoveFromEntity(withNode node: SKNode) {
+    public override func willRemoveFromEntity(withNode node: SKNode) {
         
         if node.action(forKey: key) == nil {
             OctopusKit.logForWarnings.add("\(node) has no action with key \"\(key)\"")

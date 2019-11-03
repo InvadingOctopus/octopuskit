@@ -16,9 +16,9 @@ import GameplayKit
 /// Applies a `thrustVector` to a `PhysicsComponent` every frame.
 ///
 /// **Dependencies:** `PhysicsComponent`
-class ThrustComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class ThrustComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    override var requiredComponents: [GKComponent.Type]? {
+    public override var requiredComponents: [GKComponent.Type]? {
         return [PhysicsComponent.self]
     }
     
@@ -30,8 +30,8 @@ class ThrustComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public var thrustVector: CGVector?
     
-    init(thrustBoostFactor: CGFloat = 1.0,
-         maxThrust: CGFloat? = nil)
+    public init(thrustBoostFactor: CGFloat = 1.0,
+                maxThrust: CGFloat? = nil)
     {
         self.thrustBoostFactor = thrustBoostFactor
         self.maxThrust = maxThrust
@@ -41,7 +41,7 @@ class ThrustComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    override func update(deltaTime seconds: TimeInterval) {
+    public override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
         
         guard

@@ -86,7 +86,7 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     public override func createGoal() -> GKGoal? {
-        if let targetPosition = self.targetPosition {
+        if  let targetPosition = self.targetPosition {
             targetAgent.position = SIMD2<Float>(targetPosition)
         }
         return GKGoal(toSeekAgent: targetAgent)
