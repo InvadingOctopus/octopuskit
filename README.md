@@ -16,9 +16,9 @@ The flexible Entity-Component-System architecture lets you dynamically compose g
 4. [Getting Started](#getting-started)
 5. [Etcetera (license, contact)](#etcetera)
 
-> This project is a constant **work in progress** and my first ever open-source project. I'm still learning as I go, so OctopusKit may change rapidly without maintaining backwards compatibility or updating the documentation.
+> This project is a constant **work in progress** and my first ever open-source project. I'm still learning as I go, so it may change rapidly without maintaining backwards compatibility or updating the documentation.
 
-> OK is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
+> OctopusKit is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 
 > Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated! *– ShinryakuTako*
  
