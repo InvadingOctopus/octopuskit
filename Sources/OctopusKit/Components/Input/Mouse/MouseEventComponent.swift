@@ -74,7 +74,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     // MARK: Events
         
-    @LogInputEvent public var mouseEntered: MouseEvent?
+    @LogInputEventChange public var mouseEntered: MouseEvent?
     
     public var mouseMoved: MouseEvent?
     
