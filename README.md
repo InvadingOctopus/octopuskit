@@ -51,7 +51,7 @@ struct ContentView: View {
 👾 *Creating an animated sprite*
 
 ```swift
-let character = OctopusEntity(components: [
+var character = OctopusEntity(components: [
     
     // Start with a blank texture.
     SpriteKitComponent(node: SKSpriteNode(color: .clear, size: CGSize(widthAndHeight: 42))),
