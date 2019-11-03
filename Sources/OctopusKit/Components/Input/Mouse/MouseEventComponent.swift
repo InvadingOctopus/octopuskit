@@ -122,7 +122,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
          mouseExited]
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Frame Cycle
     
     public override func update(deltaTime seconds: TimeInterval) {
   

@@ -181,7 +181,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         // TODO: Confirm that this property correctly points to the next latest touch after the latest touch ends.
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Frame Cycle
     
     public override func update(deltaTime seconds: TimeInterval) {
   
