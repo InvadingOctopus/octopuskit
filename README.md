@@ -176,13 +176,15 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 
 - 👾 **Entities** are simply collections of **Components**. They contain no logic, except for convenience constructors which initialize groups of related components. 
 
-- ⚙️ **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game. They may be dynamically added to and removed from an entity to alter its appearance and behavior during runtime. The engine comes with a library of many customizable components for graphics, gameplay, physics and UI etc. 
+- ⚙️ **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game. A component runs its code when it's added to an entity, when a frame is updated, and/or when it's removed from an entity. Components may query their entity for other components and affect each other's behavior to form dynamic dependencies during runtime. The engine comes with a library of customizable components for graphics, gameplay, physics and UI etc. 
 
 - ⛓ **Systems** are simply collections of components *of a specific class.* They don't perform any logic\*, but they're arranged by a **Scene** in an array to execute components from all entities in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
     > \* *These definitions may differ from other engines, like Unity, where all the logic is contained within systems.*  
    
 - 🎛 **User Interface** elements like buttons, lists and HUDs are designed in **SwiftUI**. This allows fluid animations, sharp text, vector shapes, live previews, automatic data-driven updates, and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
+
+See the [Usage Guide][usage-guide] for a detailed breakdown of the object hierarchy.
 
 Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend", while SwiftUI lets you design slick HUDs and other UI in declarative code.
 
