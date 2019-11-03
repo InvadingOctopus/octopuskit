@@ -32,6 +32,9 @@ import OctopusKit
                                                 
 struct ContentView: View {
 
+    // The coordinator object manages your game's scenes and global state, 
+    // and can be observed and controlled from SwiftUI.
+    
     var gameCoordinator = OctopusGameCoordinator(states: [
         MainMenu(),
         Lobby(), 
@@ -45,8 +48,6 @@ struct ContentView: View {
     }
 }
 ```
-
-> The coordinator object manages your game's scenes and global state, and can be observed and controlled from SwiftUI.
 
 👾 *Creating an animated sprite*
 
