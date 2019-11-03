@@ -51,6 +51,8 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         
         #endif
         
+        #if canImport(UIKit)
+        
         public init?(firstTouch: UITouch? = nil,
                      event:      UIEvent? = nil,
                      node:       SKNode?  = nil)
@@ -66,7 +68,6 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
             self.locationInNode = firstTouch.location(in: node)
         }
         
-        #if canImport(UIKit)
         #endif
         
         public func location(in anotherNode: SKNode) -> CGPoint {
