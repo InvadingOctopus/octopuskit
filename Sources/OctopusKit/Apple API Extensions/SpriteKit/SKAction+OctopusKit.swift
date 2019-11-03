@@ -101,7 +101,7 @@ extension SKAction {
         return SKAction.colorize(withColorBlendFactor: 0.0, duration: duration)
     }
     
-    /// Creates an action that immediately changes the colorization of a sprite to the `initialColor` and `blendFactor`, then cycles the colorization once between the specifed target color then back to the initial color.
+    /// Creates an action that immediately changes the colorization of a sprite to the `initialColor` and `blendFactor`, then cycles the colorization once between the specified target color then back to the initial color.
     ///
     /// This action can only be executed by an `SKSpriteNode` object.
     open class func cycleColor(

@@ -64,7 +64,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponen
     open override func didAddToEntity(withNode node: SKNode) {
         OctopusKit.logForComponents.add("\(node) ← \(String(optional: attachment))")
         
-        // Warn if the overriden parent is not a child of this component's entity's node.
+        // Warn if the overridden parent is not a child of this component's entity's node.
         
         // CHECK: Warning necessary?
         
@@ -82,13 +82,13 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponen
         
         self.attachment = createAttachment(for: self.parentOverride ?? node) ?? self.attachment
         
-        // Add the attachment to the the `parentOverride` if any has been specified, or the parimary node of this component's entity.
+        // Add the attachment to the the `parentOverride` if any has been specified, or the primary node of this component's entity.
         
         addAttachment(to: self.parentOverride ?? node)
         
     }
     
-    /// Abstract; to be overriden by subclass. `didAddToEntity(withNode:)` calls this method and sets this component's `attachment` to its return value. If this method is not implemented by the subclass, then `didAddToEntity(withNode:)` will not replace any existing `attachment` with `nil`.
+    /// Abstract; to be overridden by subclass. `didAddToEntity(withNode:)` calls this method and sets this component's `attachment` to its return value. If this method is not implemented by the subclass, then `didAddToEntity(withNode:)` will not replace any existing `attachment` with `nil`.
     open func createAttachment(for parent: SKNode) -> AttachmentType? {
         return nil // CHECK: Should this be a `fatalError` if unimplemented?
     }
