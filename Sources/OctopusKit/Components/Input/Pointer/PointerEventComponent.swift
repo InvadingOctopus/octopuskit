@@ -14,6 +14,8 @@ import GameplayKit
 /// A device-agnostic component that provides abstraction for the entity's `TouchEventComponent` on iOS or `MouseEventComponent` on macOS, for relaying player input from pointer-like sources, such as touch or mouse, to other components which depend on player input.
 ///
 /// Does not differentiate between number of touches (fingers) or type of mouse buttons.
+///
+/// **Dependencies:** `TouchEventComponent` on iOS, `MouseEventComponent` on macOS.
 public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComponent {
     
     // MARK: - Subtypes
@@ -95,6 +97,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     @LogInputEventChange public var pointerMoved: PointerEvent?
     @LogInputEventChange public var pointerEnded: PointerEvent?
     
+    
     public var latestEvent: PointerEvent? {
         [pointerBegan, pointerMoved, pointerEnded]
             .compactMap { $0 }
@@ -140,13 +143,13 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         if let touchEventComponent = coComponent(TouchEventComponent.self) {
             
             if let touchesBegan = touchEventComponent.touchesBegan {
-                pointerBegan = PointerEvent(firstTouch: touchEventComponent.touches.first,
+                pointerBegan = PointerEvent(firstTouch: touchesBegan.touches.first,
                                             event: touchesBegan.event,
                                             node:  touchesBegan.node)
             }
             
             if let touchesMoved = touchEventComponent.touchesMoved {
-                pointerMoved = PointerEvent(firstTouch: touchEventComponent.touches.first,
+                pointerMoved = PointerEvent(firstTouch: touchesMoved.touches.first,
                                             event: touchesMoved.event,
                                             node:  touchesMoved.node)
             }
@@ -154,7 +157,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
             // ⚠️ TODO: CHECK: Safeguard against different touches being ended or cancelled, which may cause jumps in touch-dependent nodes when using multiple fingers.
             
             if let touchesEnded = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled {
-                pointerEnded = PointerEvent(firstTouch: touchEventComponent.touches.first,
+                pointerEnded = PointerEvent(firstTouch: touchesEnded.touches.first,
                                             event: touchesEnded.event,
                                             node:  touchesEnded.node)
             }
