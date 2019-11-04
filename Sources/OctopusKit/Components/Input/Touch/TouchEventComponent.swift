@@ -101,7 +101,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChange public var touchesMoved: TouchEvent?
+    @LogInputEventChanges public var touchesMoved: TouchEvent?
     
     public var touchesEnded: TouchEvent? {
         didSet {
@@ -143,7 +143,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChange public var touchesEstimatedPropertiesUpdated: TouchEvent?
+    @LogInputEventChanges public var touchesEstimatedPropertiesUpdated: TouchEvent?
     
     /// Returns an array of all events for the current frame.
     ///

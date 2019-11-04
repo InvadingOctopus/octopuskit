@@ -10,7 +10,7 @@ import Foundation
 
 /// A wrapper which prints a `debugLog` of any changes to the wrapped property if the `LOGINPUTEVENTS` conditional compilation flag is set.
 @propertyWrapper
-public struct LogInputEventChange <ValueType: Equatable> {
+public struct LogInputEventChanges <ValueType: Equatable> {
     
     public var wrappedValue: ValueType {
         didSet {
