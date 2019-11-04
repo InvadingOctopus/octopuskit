@@ -49,7 +49,7 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
     }
     
     /// A dictionary that contains blocks of code to execute for each touch interaction state.
-    public var closures: [NodeTouchState : NodeTouchClosureType] = [:]
+    public var closures: [NodeTouchComponent.TouchInteractionState : NodeTouchClosureType] = [:]
     
     /// If `true`, ignores all touch events and does not execute any of the supplied closures.
     public var isPaused: Bool = false
@@ -57,7 +57,7 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
     /// - Parameter closures: A dictionary that contains blocks of code to execute for each touch interaction state.
     ///
     ///     For a description of the closure's signature and parameters, see `NodeTouchClosureComponent.NodeTouchClosureType`.
-    public init(closures: [NodeTouchState : NodeTouchClosureType]) {
+    public init(closures: [NodeTouchComponent.TouchInteractionState : NodeTouchClosureType]) {
         self.closures = closures
         super.init()
     }
