@@ -34,7 +34,7 @@ import GameplayKit
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
 public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    public typealias TouchInteractionState = OctopusNodeTouchState
+    public typealias TouchInteractionState = NodeTouchState
     
     public override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self,
