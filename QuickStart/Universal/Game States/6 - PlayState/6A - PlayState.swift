@@ -29,7 +29,7 @@ final class PlayState: OctopusGameState {
         //
         // Here we add a component to the global game coordinator entity (a property of OctopusGameCoordinator and its subclasses) which is available to all states and all scenes, to demonstrate how to hold data which will persist throughout the game.
         
-        if OctopusKit.shared?.gameCoordinator.entity.component(ofType: GlobalDataComponent.self) == nil {
+        if  OctopusKit.shared?.gameCoordinator.entity.component(ofType: GlobalDataComponent.self) == nil {
             OctopusKit.shared?.gameCoordinator.entity.addComponent(GlobalDataComponent())
         }
         

@@ -130,7 +130,7 @@ character.addComponent(RepeatingClosureComponent { component in
 ```swift
 // Load a ".sks" file as a child node.
 
-if let editorScene = SKReferenceNode(fileNamed: "EditorScene.sks") {
+if  let editorScene = SKReferenceNode(fileNamed: "EditorScene.sks") {
     scene.addChild(editorScene)
 }
 
