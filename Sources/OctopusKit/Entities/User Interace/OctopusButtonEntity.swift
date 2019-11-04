@@ -69,7 +69,7 @@ public final class OctopusButtonEntity: OctopusEntity {
         super.init()
         self.name = name
         
-        var touchHandlers: [NodeTouchComponent.TouchInteractionState : NodeTouchClosureComponent.NodeTouchClosureType] = [:]
+        var touchHandlers: [NodeTouchState : NodeTouchClosureComponent.NodeTouchClosureType] = [:]
         
         touchHandlers[.tapped] = tapHandler
         
