@@ -104,7 +104,7 @@ character.addComponents([
     JoystickControlledForceComponent() ])
 ```
 
-🛠 *Advanced: Using a custom "script" to change the animation based on player movement*
+🛠 *Advanced: Using a custom closure to change the animation based on player movement*
 
 ```swift
 // Add a component that executes the supplied closure every frame.
