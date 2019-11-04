@@ -13,7 +13,7 @@ import GameplayKit
 
 /// A device-agnostic component that provides abstraction for the entity's `TouchEventComponent` on iOS or `MouseEventComponent` on macOS, for relaying player input from pointer-like sources, such as touch or mouse, to other components which depend on player input.
 ///
-/// Does not differentiate between number of touches (fingers) or type of mouse buttons.
+/// Only stores the location of a single pointer; does not differentiate between number of pointers (fingers), type of mouse buttons (left/right), or modifier keys (Shift/Control/etc.)
 ///
 /// **Dependencies:** `TouchEventComponent` on iOS, `MouseEventComponent` on macOS.
 public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComponent {
