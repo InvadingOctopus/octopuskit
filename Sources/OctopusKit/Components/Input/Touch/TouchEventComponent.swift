@@ -243,8 +243,9 @@ public protocol TouchEventProvider {
     func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>)
 }
 
-#else
-    
+#endif
+
+#if !canImport(UIKit)
 public final class TouchEventComponent: iOSExclusiveComponent {}
-    
+public protocol TouchEventProvider {}
 #endif

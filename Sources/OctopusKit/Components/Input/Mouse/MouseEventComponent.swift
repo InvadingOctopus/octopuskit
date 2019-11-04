@@ -11,7 +11,7 @@
 
 import GameplayKit
 
-#if os(macOS)
+#if !canImport(UIKit)
 
 /// Stores the mouse input events received by a scene or interactive node to be used by other components on the next frame update.
 ///

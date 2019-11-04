@@ -135,8 +135,8 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
     }
 }
 
-#else
+#endif
 
+#if !canImport(UIKit)
 public final class TouchControlledImpulseComponent: iOSExclusiveComponent {}
-
 #endif

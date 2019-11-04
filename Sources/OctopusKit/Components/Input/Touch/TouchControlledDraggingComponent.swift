@@ -169,8 +169,8 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
     }
 }
 
-#else
+#endif
 
+#if !canImport(UIKit)
 public final class TouchControlledRepositioningComponent: iOSExclusiveComponent {}
-    
 #endif

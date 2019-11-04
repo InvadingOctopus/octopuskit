@@ -111,3 +111,7 @@ public final class CameraZoomComponent: OctopusComponent, OctopusUpdatableCompon
 }
 
 #endif
+
+#if !canImport(UIKit)
+public final class CameraZoomComponent: iOSExclusiveComponent {}
+#endif

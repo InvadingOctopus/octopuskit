@@ -232,3 +232,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
 }
 
 #endif
+
+#if !canImport(UIKit)
+public final class CameraPanComponent: iOSExclusiveComponent {}
+#endif

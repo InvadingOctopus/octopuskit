@@ -49,9 +49,8 @@ open class VibrationComponent<FeedbackGeneratorType: UIFeedbackGenerator>: Octop
     open func vibrate() {}
 }
 
-#else
-
-public final class VibrationComponent: iOSExclusiveComponent {}
-    
 #endif
 
+#if !os(iOS)
+public final class VibrationComponent: iOSExclusiveComponent {}
+#endif

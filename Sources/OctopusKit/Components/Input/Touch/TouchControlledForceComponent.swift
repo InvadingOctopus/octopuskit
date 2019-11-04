@@ -88,8 +88,8 @@ public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdat
     }
 }
 
-#else
+#endif
     
+#if !canImport(UIKit)
 public final class TouchControlledForceComponent: iOSExclusiveComponent {}
-    
 #endif

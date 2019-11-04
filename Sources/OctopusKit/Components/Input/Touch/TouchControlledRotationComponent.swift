@@ -218,3 +218,7 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
 }
 
 #endif
+
+#if !canImport(UIKit)
+public final class TouchControlledRotationComponent: iOSExclusiveComponent {}
+#endif

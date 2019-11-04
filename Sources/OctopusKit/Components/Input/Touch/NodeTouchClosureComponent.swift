@@ -109,3 +109,7 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
 }
 
 #endif
+
+#if !canImport(UIKit)
+public final class NodeTouchClosureComponent: iOSExclusiveComponent {}
+#endif

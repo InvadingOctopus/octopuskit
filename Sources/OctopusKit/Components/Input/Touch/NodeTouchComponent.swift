@@ -393,3 +393,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
 }
 
 #endif
+
+#if !canImport(UIKit)
+public final class NodeTouchComponent: iOSExclusiveComponent {}
+#endif

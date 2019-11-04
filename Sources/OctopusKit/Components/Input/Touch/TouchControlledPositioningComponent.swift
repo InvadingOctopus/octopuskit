@@ -55,3 +55,7 @@ public final class TouchControlledPositioningComponent: OctopusComponent, Octopu
 }
 
 #endif
+
+#if !canImport(UIKit)
+public final class TouchControlledPositioningComponent: iOSExclusiveComponent {}
+#endif

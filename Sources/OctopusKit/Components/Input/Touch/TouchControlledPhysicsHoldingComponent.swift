@@ -81,3 +81,7 @@ public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, Oct
 }
 
 #endif
+
+#if !canImport(UIKit)
+public final class TouchControlledPhysicsHoldingComponent: iOSExclusiveComponent {}
+#endif

@@ -63,8 +63,8 @@ public final class TouchControlledSeekingComponent: OctopusComponent, OctopusUpd
 
 }
 
-#else
+#endif
 
+#if !canImport(UIKit)
 public final class TouchControlledSeekingComponent: iOSExclusiveComponent {}
-    
 #endif
