@@ -51,7 +51,8 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
             
             // 2: Player input.
             
-            TouchEventComponent.self,
+            OSMouseOrTouchEventComponent.self,
+            PointerEventComponent.self,
             NodeTouchComponent.self,
             NodeTouchClosureComponent.self,
             MotionManagerComponent.self,
