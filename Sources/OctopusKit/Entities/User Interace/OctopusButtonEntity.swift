@@ -46,6 +46,8 @@ public final class OctopusButtonEntity: OctopusEntity {
     }
     
     /// Creates a button with the specified node as the visual representation.
+    ///
+    /// NOTE: IGNORE WARNING: This initializer may trigger a warning log about missing `requiredComponents` because it will add the `SpriteKitComponent` last, after other components.
     public convenience init(
         name: String = "Button",
         node: SKNode,
@@ -56,6 +58,8 @@ public final class OctopusButtonEntity: OctopusEntity {
         self.init(name: name,
                   touchEventComponent: touchEventComponent,
                   tapHandler: tapHandler)
+        
+        // NOTE: IGNORE WARNING: This will cause a warning about missing `requiredComponents` because we are adding the `SpriteKitComponent` last.
         
         self.addComponent(SpriteKitComponent(node: node, addToNode: parentOverride))
     }
