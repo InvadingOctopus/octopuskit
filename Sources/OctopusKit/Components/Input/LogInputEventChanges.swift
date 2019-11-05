@@ -9,18 +9,22 @@
 import Foundation
 
 /// A wrapper which prints a `debugLog` of any changes to the wrapped property if the `LOGINPUTEVENTS` conditional compilation flag is set.
+///
+/// When you use an additional `didSet` observer on properties which have this wrapper, this wrapper's observer will execute first.
 @propertyWrapper
 public struct LogInputEventChanges <ValueType: Equatable> {
     
+    #if LOGINPUTEVENTS
     public var wrappedValue: ValueType {
         didSet {
-            #if LOGINPUTEVENTS
             if wrappedValue != oldValue {
                 debugLog("= \(oldValue) → \(String(optional: wrappedValue))")
             }
-            #endif
         }
     }
+    #else
+    public var wrappedValue: ValueType
+    #endif
     
     public init(wrappedValue: ValueType) {
         self.wrappedValue = wrappedValue
