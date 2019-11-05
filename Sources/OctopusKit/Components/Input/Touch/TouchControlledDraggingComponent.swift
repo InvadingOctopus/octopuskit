@@ -30,14 +30,14 @@ import GameplayKit
 
 #if os(iOS)
 
-/// Allows the player to drag the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchComponent`.
+/// Allows the player to drag the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchStateComponent`.
 ///
-/// **Dependencies:** `NodeTouchComponent, SpriteKitComponent`
+/// **Dependencies:** `NodeTouchStateComponent, SpriteKitComponent`
 public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self,
-                NodeTouchComponent.self]
+                NodeTouchStateComponent.self]
     }
     
     /// Stores the initial position of the node to compare against the `TouchStateComponent`'s translation over time.
@@ -75,7 +75,7 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         guard
             let node = self.entityNode,
             let parent = node.parent,
-            let nodeTouchComponent = coComponent(NodeTouchComponent.self),
+            let nodeTouchComponent = coComponent(NodeTouchStateComponent.self),
             let trackedTouch = nodeTouchComponent.trackedTouch
             else {
                 initialNodePosition = nil
@@ -142,16 +142,16 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
     
         // ℹ️ NOTE: Do not move the node by comparing the `location` and `previousLocation` of the touch. That does not seem to be accurate, and can cause "drifts" where the "pointer" ends up in a different point in the node than where it started touching the node, at least in the iOS Simulator. Instead, store the initial position of the node, then compare the initial position of the touch with its latest position, and directly set the node's position to the final translation. This works the same way as the `translation` property of a `UIPanGestureRecognizer`: https://developer.apple.com/documentation/uikit/uipangesturerecognizer/1621207-translation
         
-        // ℹ️ PERFORMANCE: Calculating the translation here should be faster than accessing the `NodeTouchComponent.touchTranslationInParent` computed property which checks for and unwraps many optionals (node, parent, etc.)
+        // ℹ️ PERFORMANCE: Calculating the translation here should be faster than accessing the `NodeTouchStateComponent.touchTranslationInParent` computed property which checks for and unwraps many optionals (node, parent, etc.)
         
         node.position = initialNodePosition + (currentTouchLocation - initialTouchLocationInParent)
         isDragging = true
         
         // #6: Update the interaction state.
         
-        // ℹ️ After the node moves, the state of the `NodeTouchComponent` may no longer be correct. e.g. if the touch moves too fast, it may be outside the node's bounds, so the state will be `touchingOutside`. When this component moves the node to the touch's location, the state should be restored back to `touching`, so that other components which are affected by `NodeTouchComponent` can function correctly, e.g. so they don't show a `touchingOutside` behavior or visual effect for a single frame.
+        // ℹ️ After the node moves, the state of the `NodeTouchStateComponent` may no longer be correct. e.g. if the touch moves too fast, it may be outside the node's bounds, so the state will be `touchingOutside`. When this component moves the node to the touch's location, the state should be restored back to `touching`, so that other components which are affected by `NodeTouchStateComponent` can function correctly, e.g. so they don't show a `touchingOutside` behavior or visual effect for a single frame.
         
-        // ℹ️ When the user performs a dragging operation, a "tap" operation is not expected, so we will instruct the `NodeTouchComponent` to not enter a `tapped` or `endedOutside` state when the user lifts the touch after moving the node.
+        // ℹ️ When the user performs a dragging operation, a "tap" operation is not expected, so we will instruct the `NodeTouchStateComponent` to not enter a `tapped` or `endedOutside` state when the user lifts the touch after moving the node.
         
         // CHECK: Should this suppression of taps be optional? Should it depend on whether the node has moved from its initial position?
         

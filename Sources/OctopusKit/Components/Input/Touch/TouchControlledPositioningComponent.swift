@@ -44,9 +44,9 @@ public final class TouchControlledPositioningComponent: OctopusComponent, Octopu
         
         node.position = trackedTouch.location(in: parent)
         
-        // Update the state of a `NodeTouchComponent`, if present, for the new position.
+        // Update the state of a `NodeTouchStateComponent`, if present, for the new position.
         
-        if let nodeTouchComponent = coComponent(NodeTouchComponent.self) {
+        if let nodeTouchComponent = coComponent(NodeTouchStateComponent.self) {
             nodeTouchComponent.updateState(suppressTappedState: true,
                                            suppressCancelledState: true)
         }

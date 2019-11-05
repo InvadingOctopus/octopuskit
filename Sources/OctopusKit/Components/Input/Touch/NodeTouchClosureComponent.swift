@@ -45,7 +45,7 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
     
     open override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self,
-                NodeTouchComponent.self]
+                NodeTouchStateComponent.self]
     }
     
     /// A dictionary that contains blocks of code to execute for each touch interaction state.
@@ -89,12 +89,12 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
         guard
             !isPaused,
             let node = entityNode,
-            let nodeTouchComponent = coComponent(NodeTouchComponent.self)
+            let nodeTouchComponent = coComponent(NodeTouchStateComponent.self)
             else { return }
      
-        // Execute the closure for the current state of the entity's `NodeTouchComponent`.
+        // Execute the closure for the current state of the entity's `NodeTouchStateComponent`.
         
-        // ⚠️ NOTE: Run the closure ONLY when the `NodeTouchComponent`'s state has CHANGED, otherwise the closure would be repeated every frame.
+        // ⚠️ NOTE: Run the closure ONLY when the `NodeTouchStateComponent`'s state has CHANGED, otherwise the closure would be repeated every frame.
         
         let state = nodeTouchComponent.state // PERFORMANCE: Cache the property access?
         

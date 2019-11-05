@@ -1,5 +1,5 @@
 //
-//  NodeTouchComponent.swift
+//  NodeTouchStateComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/04/19.
@@ -8,7 +8,7 @@
 
 // TODO: Fix multitouch handling even if not tracking multiple touches. (BUG 20180502B)
 
-// TODO: An option for only tracking a touch if the node has the highest `zPosition`, and maybe only nodes with an entity that has a `NodeTouchComponent` should count.
+// TODO: An option for only tracking a touch if the node has the highest `zPosition`, and maybe only nodes with an entity that has a `NodeTouchStateComponent` should count.
 
 // PERFORMANCE: May need optimization?
 
@@ -20,19 +20,19 @@ import SpriteKit
 import GameplayKit
 
 #if canImport(UIKit)
-
+    
 /// Tracks a single touch if it begins in the entity's `SpriteKitComponent` node, and updates its state depending on the position of the touch in relation to the node's bounds.
 ///
 /// Other components can simply query this component's `state` and `trackedTouch` properties to implement touch-controlled behavior, such as moving a node while it's being touched or updating a button's visual state, without having to track touches themselves.
 ///
 /// - NOTE: To ensure that the state reported by this component remains valid even if the node is modified during the frame, other components should call the `updateState(...)` method after modifying the node or before using this component's state.
 ///
-/// - NOTE: Whereas a `TouchEventComponent` should generally be added to a scene and then linked to other entities via `RelayComponent`s, a `NodeTouchComponent` should be added to every entity whose nodes represent a visually interactive area in the scene, such as buttons.
+/// - NOTE: Whereas a `TouchEventComponent` should generally be added to a scene and then linked to other entities via `RelayComponent`s, a `NodeTouchStateComponent` should be added to every entity whose nodes represent a visually interactive area in the scene, such as buttons.
 ///
 /// - NOTE: This component only tracks a single touch by design; specifically the first touch that begins inside the entity's `SpriteKitComponent` node. For multi-touch gestures, use components based on gesture-recognizers.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
-public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,
@@ -167,7 +167,9 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
         
         // Clear the state mutation flag until the state changes again.
         
-        stateChangedThisFrame = false // NOTE: This may trigger the property observers multiple times if the state changes later on during this method.
+        if  stateChangedThisFrame { // Otherwise property observers will trigger on every frame!
+            stateChangedThisFrame = false // NOTE: This may trigger the property observers multiple times if the state changes later on during this method.
+        }
         
         // CHECK: This component should be usable on an `OctopusScene.entity` as well as any other subentity. Should we find a better way to do this than making `parent` and `scene` equal to the `node`?
         
@@ -185,7 +187,7 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
                 
                 // ℹ️ The state should not be automatically set to `disabled` here; that case is meant to be set explicitly, and may affect visual effects from other components.
                 
-                if  state != .ready || state != .disabled {
+                if  state != .ready && state != .disabled {
                     state = .ready // Resets `trackedTouch` and timestamps via the property observer.
                 }
                 return
@@ -363,5 +365,11 @@ public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableCompone
 #endif
 
 #if !canImport(UIKit)
-public final class NodeTouchComponent: iOSExclusiveComponent {}
+public final class NodeTouchStateComponent: iOSExclusiveComponent {}
+
+@available(*, unavailable, renamed: "NodeTouchStateComponent")
+public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {}
 #endif
+
+@available(*, unavailable, renamed: "NodeTouchStateComponent")
+public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {}

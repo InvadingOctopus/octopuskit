@@ -75,7 +75,7 @@ public final class OctopusButtonEntity: OctopusEntity {
         
         self.addComponents([
             RelayComponent(for: touchEventComponent),
-            NodeTouchComponent(),
+            NodeTouchStateComponent(),
             NodeTouchClosureComponent(closures: touchHandlers)
             ])
         

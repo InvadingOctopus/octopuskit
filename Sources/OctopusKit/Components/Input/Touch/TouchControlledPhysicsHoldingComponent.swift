@@ -18,12 +18,12 @@ import GameplayKit
 /// - Optionally sets the body's angular velocity to `0` while it is being held, but the body may still be rotated by other forces (such as contact with other bodies.)
 /// - These properties are reapplied every frame.
 ///
-/// **Dependencies:** `NodeTouchComponent`, `PhysicsComponent`
+/// **Dependencies:** `NodeTouchStateComponent`, `PhysicsComponent`
 public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         return [PhysicsComponent.self,
-                NodeTouchComponent.self]
+                NodeTouchStateComponent.self]
     }
     
     /// If `true`, the body's angular velocity is set to `0` in every frame while the node is being held, but the body may still be rotated by other forces (such as contact with other bodies.)
@@ -52,7 +52,7 @@ public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, Oct
     
     public override func update(deltaTime seconds: TimeInterval) {
 
-        let nodeTouchComponent = coComponent(ofType: NodeTouchComponent.self)
+        let nodeTouchComponent = coComponent(ofType: NodeTouchStateComponent.self)
         
         let isBeingTouched = (nodeTouchComponent?.trackedTouch != nil)
         

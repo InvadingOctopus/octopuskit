@@ -15,12 +15,12 @@ import GameplayKit
 
 #if os(iOS)
 
-/// Allows the player to drag the entity's `PhysicsComponent` body based on input from the entity's `NodeTouchComponent`.
+/// Allows the player to drag the entity's `PhysicsComponent` body based on input from the entity's `NodeTouchStateComponent`.
 ///
 /// - Prevents the body from being affected by gravity while it is being held.
 /// - Modifies the body's velocity.
 ///
-/// **Dependencies:** `NodeTouchComponent, PhysicsComponent.self, SpriteKitComponent`
+/// **Dependencies:** `NodeTouchStateComponent, PhysicsComponent.self, SpriteKitComponent`
 public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     // ℹ️ DESIGN: Not pinning to the specific point of touch, because that would be inconvenient for the user to control on a [small] touchscreen, and also seems like overkill in the amount of code it takes and the temporary node it needs to create, as well as likely impacting performance.
@@ -28,7 +28,7 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
     public override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self,
                 PhysicsComponent.self,
-                NodeTouchComponent.self]
+                NodeTouchStateComponent.self]
     }
     
     public var isDragging: Bool = false {
@@ -61,7 +61,7 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
             let node = self.entityNode,
             let parent = node.parent,
             let physicsBody = coComponent(ofType: PhysicsComponent.self)?.physicsBody,
-            let nodeTouchComponent = coComponent(NodeTouchComponent.self),
+            let nodeTouchComponent = coComponent(NodeTouchStateComponent.self),
             nodeTouchComponent.state != .ready || nodeTouchComponent.state != .disabled,
             let trackedTouch = nodeTouchComponent.trackedTouch
             else {
@@ -111,9 +111,9 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
         
         // #6: Update the interaction state.
         
-        // ℹ️ After the node moves, the state of the `NodeTouchComponent` may no longer be correct. e.g. if the touch moves too fast, it may be outside the node's bounds, so the state will be `touchingOutside`. When this component moves the node to the touch's location, the state should be restored back to `touching`, so that other components which are affected by `NodeTouchComponent` can function correctly, e.g. so they don't show a `touchingOutside` behavior or visual effect for a single frame.
+        // ℹ️ After the node moves, the state of the `NodeTouchStateComponent` may no longer be correct. e.g. if the touch moves too fast, it may be outside the node's bounds, so the state will be `touchingOutside`. When this component moves the node to the touch's location, the state should be restored back to `touching`, so that other components which are affected by `NodeTouchStateComponent` can function correctly, e.g. so they don't show a `touchingOutside` behavior or visual effect for a single frame.
         
-        // ℹ️ When the user performs a dragging operation, a "tap" operation is not expected, so we will instruct the `NodeTouchComponent` to not enter a `tapped` or `endedOutside` state when the user lifts the touch after moving the node.
+        // ℹ️ When the user performs a dragging operation, a "tap" operation is not expected, so we will instruct the `NodeTouchStateComponent` to not enter a `tapped` or `endedOutside` state when the user lifts the touch after moving the node.
         
         // CHECK: Should this suppression of taps be optional? Should it depend on whether the node has moved from its initial position?
         

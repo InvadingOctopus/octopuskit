@@ -15,23 +15,23 @@
 
 // ⚠️ NOTE: For single touches, this seems to be a poor alternative to `TouchControlledDraggingComponent`, as the pan gesture recognizer begins around 7 frames after the first `touchesBegan` event is received by the `TouchEventComponent`, at least in the iOS Simulator. This component should probably be only used for multi-touch dragging.
 
-// ℹ️ NOTE: For the above reason, we HAVE to use a `NodeTouchComponent` to get the initial touch and location.
+// ℹ️ NOTE: For the above reason, we HAVE to use a `NodeTouchStateComponent` to get the initial touch and location.
 
 import SpriteKit
 import GameplayKit
 
 #if os(iOS)
 
-/// Drags the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchComponent` and `PanGestureRecognizerComponent`.
+/// Drags the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchStateComponent` and `PanGestureRecognizerComponent`.
 ///
-/// **Dependencies:** `NodeTouchComponent, PanGestureRecognizerComponent, SpriteKitComponent`
+/// **Dependencies:** `NodeTouchStateComponent, PanGestureRecognizerComponent, SpriteKitComponent`
 public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public static let inertialMovementKey = "OctopusKit.PanControlledDraggingComponent.Move"
     
     public override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitComponent.self,
-                NodeTouchComponent.self,
+                NodeTouchStateComponent.self,
                 PanGestureRecognizerComponent.self]
     }
     
@@ -153,7 +153,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
             !isPaused,
             let node = self.entityNode,
             let parent = node.parent,
-            let nodeTouchComponent = coComponent(NodeTouchComponent.self),
+            let nodeTouchComponent = coComponent(NodeTouchStateComponent.self),
             let trackedTouch = nodeTouchComponent.trackedTouch
             else {
                 initialNodePosition = nil
@@ -201,13 +201,13 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
         
         // #4: Update the interaction state.
         
-        // ℹ️ After the node moves, the state of the `NodeTouchComponent` may no longer be correct. e.g. if the touch moves too fast, it may be outside the node's bounds, so the state will be `touchingOutside`. When this component moves the node to the touch's location, the state should be restored back to `touching`, so that other components which are affected by `NodeTouchComponent` can function correctly, e.g. so they don't show a `touchingOutside` behavior or visual effect for a single frame.
+        // ℹ️ After the node moves, the state of the `NodeTouchStateComponent` may no longer be correct. e.g. if the touch moves too fast, it may be outside the node's bounds, so the state will be `touchingOutside`. When this component moves the node to the touch's location, the state should be restored back to `touching`, so that other components which are affected by `NodeTouchStateComponent` can function correctly, e.g. so they don't show a `touchingOutside` behavior or visual effect for a single frame.
         
-        // ℹ️ When the user performs a dragging operation, a "tap" operation is not expected, so we will instruct the `NodeTouchComponent` to not enter a `tapped` or `endedOutside` state when the user lifts the touch after moving the node.
+        // ℹ️ When the user performs a dragging operation, a "tap" operation is not expected, so we will instruct the `NodeTouchStateComponent` to not enter a `tapped` or `endedOutside` state when the user lifts the touch after moving the node.
         
         // CHECK: Should this suppression of taps be optional? Should it depend on whether the node has moved from its initial position?
         
-        // ⚠️ NOTE: The `PanControlledDraggingComponent` will supress taps and cancles only if there has actually been a pan gesture; otherwise the `NodeTouchComponent` will still report taps if the player taps on the node without panning the node, because this code will not be called in the absence of a pan event.
+        // ⚠️ NOTE: The `PanControlledDraggingComponent` will supress taps and cancles only if there has actually been a pan gesture; otherwise the `NodeTouchStateComponent` will still report taps if the player taps on the node without panning the node, because this code will not be called in the absence of a pan event.
         
         nodeTouchComponent.updateState(
             suppressStateChangedFlag: false,
