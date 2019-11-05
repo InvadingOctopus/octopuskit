@@ -25,10 +25,9 @@ public extension GKComponent {
         ignoreRelayComponents: Bool = false)
         -> ComponentType? where ComponentType: GKComponent
     {
-        if ignoreRelayComponents {
+        if  ignoreRelayComponents {
             return self.entity?.component(ofType: componentClass)
-        }
-        else {
+        } else {
             return self.entity?.component(ofType: componentClass)
                 ?? self.entity?.component(ofType: RelayComponent<ComponentType>.self)?.target
         }

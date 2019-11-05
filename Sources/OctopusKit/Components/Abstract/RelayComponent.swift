@@ -27,17 +27,16 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
     ///
     /// The `GKComponent.coComponent(ofType:)` and `GKEntity.componentOrRelay(ofType:)` methods will check the entity for a `RelayComponent` which points to a component matching the specified type, if the entity itself does not have a component of the specified type.
     ///
-    /// - Important: `GKEntity.component(ofType:)` does *not* automatically substitute a `RelayComponent` for the specified component class, due to GameplayKit/Swift limitations. Use `GKEntity.componentOrRelay(ofType:)` or `GKComponent.coComponent(ofType:)` to automatically look for `RelayComponent`s.
+    /// - IMPORTANT: `GKEntity.component(ofType:)` does *not* automatically substitute a `RelayComponent` for the specified component class, due to GameplayKit/Swift limitations. Use `GKEntity.componentOrRelay(ofType:)` or `GKComponent.coComponent(ofType:)` to automatically look for `RelayComponent`s.
     public var target: MasterComponentType? {
-        if  let directlyReferencedComponent = self.directlyReferencedComponent {
-            return directlyReferencedComponent
+        if   let directlyReferencedComponent = self.directlyReferencedComponent {
+             return directlyReferencedComponent
         }
         else if let sceneComponentType = self.sceneComponentType,
                 let sceneComponent = self.entityNode?.scene?.entity?.component(ofType: sceneComponentType)
         {
             return sceneComponent
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -58,7 +57,7 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
         super.init()
     }
     
-    /// Creates a `RelayComponent` which points to a component of the specified type in the scene entity associated with the `SpriteKitComponent` node of the `RelayComponent`'s entity.
+    /// Creates a `RelayComponent` which points to a component of the specified type in the scene entity associated with the `SpriteKitComponent` node of this `RelayComponent`'s entity.
     public init (sceneComponentType: MasterComponentType.Type) {
         self.sceneComponentType = sceneComponentType
         super.init()
@@ -77,8 +76,7 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
         {
             if  existingComponent === target {
                 OctopusKit.logForWarnings.add("\(entity) already has \(existingComponent)")
-            }
-            else {
+            } else {
                 OctopusKit.logForWarnings.add("\(entity) already has a \(type(of: existingComponent)) component: \(existingComponent)")
             }
         }
