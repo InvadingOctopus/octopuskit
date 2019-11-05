@@ -1,9 +1,14 @@
-// TODO
+//
+//  OctopusKitLaunchTests.swift
+//  OctopusKit Tests
+//
+//  Created by ShinryakuTako@invadingoctopus.io on 2019/10/30.
+//
 
 import XCTest
 @testable import OctopusKit
 
-final class OctopusKitTests: XCTestCase {
+final class OctopusKitLaunchTests: XCTestCase {
     
     func testLaunch() {
         
