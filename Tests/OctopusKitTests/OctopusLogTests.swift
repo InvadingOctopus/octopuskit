@@ -8,7 +8,7 @@
 import XCTest
 @testable import OctopusKit
 
-class OctopusLogTests: XCTestCase {
+final class OctopusLogTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -48,6 +48,6 @@ class OctopusLogTests: XCTestCase {
     }
     
     static var allTests = [
-        ("testLog", testLog),
+        ("Test OctopusLog", testLog)
         ]
 }
