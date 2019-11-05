@@ -2,7 +2,7 @@
 //  OctopusLogTests.swift
 //  OctopusKit Tests
 //
-//  Created by ShinryakuTako on 2017-07-07.
+//  Created by ShinryakuTako@invadingoctopus.io on 2017-07-07.
 //
 
 import XCTest
