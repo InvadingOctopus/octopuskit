@@ -20,7 +20,9 @@ The flexible Entity-Component-System architecture lets you dynamically compose g
 
 > OctopusKit is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
 
-> Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated! *– ShinryakuTako*
+> Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated!
+
+> *– ShinryakuTako*
  
 ## Examples
 
@@ -83,6 +85,9 @@ character.addComponents([
     // This component checks the entity's TouchEventComponent (provided here by a relay)
     // and syncs the entity's position to the touch location in every frame.
     TouchControlledPositioningComponent() ])
+    
+    // There are OS-agnostic input components that work with touch or mouse,
+    // such as PointerEventComponent.
 ```
 
 🕹 *Dynamically removing player control or changing to a different input method*
