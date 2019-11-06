@@ -4,7 +4,8 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(OctopusKitLaunchTests.allTests),
-        textCase(OctopusLogTests.allTests)
+        textCase(OctopusLogTests.allTests),
+        textCase(ECSTests.allTests)
     ]
 }
 #endif
