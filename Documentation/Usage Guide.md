@@ -129,7 +129,7 @@ This offers a section of templates for OctopusKit when you create a ⌘N New Fil
 
 - `Assets`: A collection of basic images, shaders and sounds to get you started.
 
-- `Components`: A wide library of components for graphics, gameplay, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing dynamic dispatch][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
+- `Components`: A library of components for graphics, gameplay, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing dynamic dispatch][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
 
 - `Core/Base`: The base classes for game states, scenes, entities, components and 
 systems. A typical game will create multiple instances of these objects.
@@ -142,7 +142,7 @@ systems. A typical game will create multiple instances of these objects.
 
 - `Miscellaneous`: General types used by various components, such as compass directions.
 
-- `Scene Templates`: Some prebuilt scenes, such as the OctopusKit logo.
+- `Scene Templates`: Prebuilt scenes, such as the OctopusKit logo.
 
 - `Support & Utility`: Auxiliary classes that are required for common OctopusKit functionality, such as logging, but may not always be needed. Advanced projects may exclude these or use custom implementations.
 

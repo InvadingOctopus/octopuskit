@@ -153,7 +153,7 @@ for turretNode in scene["//Turret"] {
         MonsterTargettingComponent(),
         
         // Track the first touch that begins inside the sprite.
-        NodeTouchComponent(),
+        NodeTouchStateComponent(),
                 
         // Let the player select and drag a specific sprite.
         // This differs from the TouchControlledPositioningComponent in a previous example, 
