@@ -169,30 +169,36 @@ systems. A typical game will create multiple instances of these objects.
 |↑|
 |⛓ `OctopusComponentSystem` ⁸|
 
-> ¹ `OctopusGameCoordinator` need not always be subclassed; projects that do not require a custom coordinator may simply use `OctopusGameCoordinator(states:initialStateClass:)`.
+> ¹ `OctopusGameCoordinator` must be initialized before any other OctopusKit objects.
 
-> ² `OctopusGameState` need not be subclassed if your game will have only one state and one scene; you may simply pass `OctopusGameState(associatedSceneClass: YourScene.self)` to the game coordinator initializer.
+> ² Every game must have at least one `OctopusGameState`.
 
 > ³ `SwiftUI` presents a UI overlay on top of the `OctopusScene` contents. 
  
 > ⁴ `OctopusScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
 
-> ⁵ `OctopusEntity` need not always be subclassed; `OctopusEntity(name:components:)` may be enough for most cases.
+> ⁵ `OctopusEntity` is optional; a simple scene may directly add sprites to itself.
 
-> ⁶ `OctopusEntityState`s are optional. An entity need not necessarily have states.  
+> ⁶ `OctopusEntityState` is optional. An entity need not necessarily have states.  
 
 > ⁷ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
 
-> ⁸ `OctopusComponentSystem`s are used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame.
+> ⁸ `OctopusComponentSystem` is used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame update cycle.
 
 ## Game Coordinator and Game States
 
 🎬 `OctopusGameCoordinator:`[`GKStateMachine`](https://developer.apple.com/documentation/gameplaykit/gkstatemachine)  
 🚦 `OctopusGameState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
 
-- At launch, the application configures a **Game Coordinator** object (which counts as a "controller" in the [MVC][mvc] hierarchy). The coordinator is a **State Machine** with one or more **Game States**, each associated with a **Scene** and a **SwiftUI** view. The coordinator may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
+- At launch, the application configures a **Game Coordinator** object (which counts as a "controller" in the [MVC][mvc] hierarchy). The coordinator is a **State Machine** with one or more **Game States**, each associated with a **SpriteKit Scene** and a **SwiftUI** view. The coordinator may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
 
-	> 💡 *Advanced: Although OctopusKit does not support this out of the box, a single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
+- `OctopusGameCoordinator` need not always be subclassed; projects that do not require a custom coordinator may simply use `OctopusGameCoordinator(states:initialStateClass:)`.
+
+- The game coordinator must be provided to the `OctopusKit(gameCoordinator:)` initializer and your SwiftUI view hierarchy's top-level `.environmentObject`, to make it available for the entire application.
+
+- `OctopusGameState` need not be subclassed if your game will have only one state and one scene; you may simply pass `OctopusGameState(associatedSceneClass: YourScene.self)` to the game coordinator initializer.
+
+	> *Advanced: Although OctopusKit does not support this out of the box, a single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
     
 ## Scenes
 
@@ -239,6 +245,8 @@ systems. A typical game will create multiple instances of these objects.
 - An **Entity** is a group of **Components** that may interact with each other. It may also have an **Entity State Machine** which is a special component comprising different **Entity States**. Each state has logic that decides which components to add to the entity and which components to remove depending on different conditions, as well as when to transition to a different state.
 
 	> e.g.: A *GrueEntity* with a *SleepingState, HuntingState, EatingState and DeadState.*
+
+- `OctopusEntity` need not always be subclassed; `OctopusEntity(components:)` should be enough for most cases.
 
 - Contain components which are the primary block of game functionality.
 
