@@ -20,21 +20,27 @@ public extension GKComponent {
     }
     
     /// Returns the component of type `componentClass`, or a `RelayComponent` linked to a component of that type, if it's present in the entity that is associated with this component.
-    func coComponent<ComponentType>(
+    ///
+    /// Returns `nil` if the requested `componentClass` is this component's class, as that would not be a "co" component, and entities can have only one component of each class.
+    func coComponent <ComponentType> (
         ofType componentClass: ComponentType.Type,
         ignoreRelayComponents: Bool = false)
         -> ComponentType? where ComponentType: GKComponent
     {
-        if  ignoreRelayComponents {
+        if  componentClass == type(of: self) {
+            return nil
+        
+        }   else if ignoreRelayComponents {
             return self.entity?.component(ofType: componentClass)
-        } else {
+            
+        }   else {
             return self.entity?.component(ofType: componentClass)
                 ?? self.entity?.component(ofType: RelayComponent<ComponentType>.self)?.target
         }
     }
     
     /// A version of `coComponent(ofTYpe:)` without a parameter name to reduce text clutter.
-    func coComponent<ComponentType>(
+    func coComponent <ComponentType> (
         _ componentClass: ComponentType.Type,
         ignoreRelayComponents: Bool = false)
         -> ComponentType? where ComponentType: GKComponent
