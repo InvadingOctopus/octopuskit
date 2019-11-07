@@ -74,10 +74,9 @@ public extension GKEntity {
     ///
     /// Useful for chaining calls with `coComponent(ofType:)` or other methods that may potentially return `nil`.
     func addComponent(_ component: GKComponent?) {
-        if let component = component {
+        if  let component = component {
             self.addComponent(component)
-        }
-        else {
+        } else {
             OctopusKit.logForDebug.add("nil") // CHECK: Is logging this helpful?
         }
     }

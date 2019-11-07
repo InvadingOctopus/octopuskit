@@ -35,9 +35,9 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
         else if let sceneComponentType = self.sceneComponentType,
                 let sceneComponent = self.entityNode?.scene?.entity?.component(ofType: sceneComponentType)
         {
-            return sceneComponent
+             return sceneComponent
         } else {
-            return nil
+             return nil
         }
     }
     
