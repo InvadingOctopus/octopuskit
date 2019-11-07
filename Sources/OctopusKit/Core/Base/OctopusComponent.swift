@@ -61,7 +61,7 @@ open class OctopusComponent: GKComponent {
         super.init(coder: aDecoder)
     }
     
-    /// - Important: If a subclass overrides this method, then `super.didAddToEntity()` *MUST* be called to ensure proper functionality, e.g. to check for dependencies on other components and to set `shouldRemoveFromEntityOnDeinit = true`.
+    /// - IMPORTANT: If a subclass overrides this method, then `super.didAddToEntity()` *MUST* be called to ensure proper functionality, e.g. to check for dependencies on other components and to set `shouldRemoveFromEntityOnDeinit = true`.
     open override func didAddToEntity() {
         OctopusKit.logForComponents.add("\(String(optional: entity)) ← \(self)")
         super.didAddToEntity()
@@ -77,7 +77,7 @@ open class OctopusComponent: GKComponent {
         shouldWarnIfDeinitWithoutRemoving = true
         
         // A convenient delegation method for subclasses to easily access the entity's SpriteKit node, if any.
-        if let node = self.entityNode {
+        if  let node = self.entityNode {
             didAddToEntity(withNode: node)
         }
     }
@@ -85,32 +85,44 @@ open class OctopusComponent: GKComponent {
     /// Logs a warning if the entity is missing any of the components in `requiredComponents`.
     ///
     /// ⚠️ BUG: 201804029A: See method comments.
-    fileprivate func checkEntityForRequiredComponents() {
+    ///
+    /// - RETURNS: `true` if there are no missing dependencies or no `requiredComponents`.
+    @discardableResult public func checkEntityForRequiredComponents() -> Bool {
         // ⚠️
         // BUG: 201804029A: APPLEBUG: Sending an array like `[GKComponent.Type]` to `entity.componentOrRelay(ofType:)` does not use the actual metatypes, and so it can cause false warnings about missing components.
         // NOTE: The bug does not affect directly sending "concrete" subtypes of `GKComponent` to `entity.componentOrRelay(ofType:)`.
         // TODO: Find a way to get true runtime metatypes from an array of parent metatype.
         
-        // ℹ️ See description of `requiredComponents` for explanation about not halting execution on missing dependencies.
+        // ℹ️ DESIGN: See description of `requiredComponents` for explanation about not halting execution on missing dependencies.
         
-        guard let entity = self.entity else { return }
+        guard let entity = self.entity else {
+            // If we have no `requiredComponents`, just return `true`.
+            // If we don't have an entity but have `requiredComponents`, then return `false` because code which checks for the return value probably uses it to say if the component has all dependencies or not.
+            return self.requiredComponents?.isEmpty ?? true
+        }
+        
+        var hasMissingDependencies: Bool = false
         
         if let requiredComponents = self.requiredComponents {
 
             for requiredComponent in requiredComponents {
-                
-                let result = entity.componentOrRelay(ofType: requiredComponent)
-                
-                if  result == nil
-                    || type(of: result!) != requiredComponent // Is this dynamic checking necessary instead of just testing for `nil`?
+                                
+                if  let result = self.coComponent(requiredComponent),
+                    type(of: result) == requiredComponent // Is this dynamic checking necessary, instead of just testing for `nil`?
                 {
+                    // PASS
+                } else {
                     OctopusKit.logForDebug.add("BUG in method: IGNORE warning: \(entity) is missing a \(requiredComponent) (or a RelayComponent linked to it) which is required by \(self)")
                     // OctopusKit.logForWarnings.add("\(entity) is missing a \(requiredComponent) (or a RelayComponent linked to it) which is required by \(self)")
                     // OctopusKit.logForTips.add("Check the order in which components are added. Ignore warning if entity has any substitutable components.")
+                    
+                    hasMissingDependencies = true
                 }
-                
             }
         }
+        
+        return !hasMissingDependencies
+        
     }
     
     /// Abstract; To be implemented by subclass. Provides convenient access to the `SpriteKitComponent` node that the entity is associated with.
@@ -133,7 +145,7 @@ open class OctopusComponent: GKComponent {
         super.willRemoveFromEntity()
         guard self.entity != nil else { return }
         
-        if let spriteKitComponentNode = entityNode {
+        if  let spriteKitComponentNode = entityNode {
             willRemoveFromEntity(withNode: spriteKitComponentNode)
         }
         
@@ -141,7 +153,7 @@ open class OctopusComponent: GKComponent {
         shouldWarnIfDeinitWithoutRemoving = false
         
         // NOTE: Since removeComponent(ofType:) CANNOT be overridden in a GKEntity subclass (because "Declarations from extensions cannot be overridden yet" and "Overriding non-open instance method outside of its defining module") as of 2017-11-14, use this method to notify the OctopusEntityDelegate about component removal.
-        if let entity = self.entity as? OctopusEntity {
+        if  let entity = self.entity as? OctopusEntity {
             entity.delegate?.entity(entity, willRemoveComponent: self)
         }
     }
@@ -149,11 +161,12 @@ open class OctopusComponent: GKComponent {
     deinit {
         OctopusKit.logForDeinits.add("\(self)")
         
-        if shouldRemoveFromEntityOnDeinit {
+        if  shouldRemoveFromEntityOnDeinit {
             // ⚠️ NOTE: Do NOT call `self.entity?.removeComponent(ofType: type(of: self))` here, as this may remove the NEW component, if one of the same class was added, causing this deinit's object to be replaced.
             willRemoveFromEntity() // CHECKED: Successfully calls `willRemoveFromEntity()` etc. on the subclass :)
         }
-        if shouldWarnIfDeinitWithoutRemoving {
+        
+        if  shouldWarnIfDeinitWithoutRemoving {
             OctopusKit.logForWarnings.add("\(self) deinit before willRemoveFromEntity()")
         }
     }

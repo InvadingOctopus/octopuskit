@@ -311,7 +311,7 @@ final class ECSTests: XCTestCase {
         
         XCTAssertEqual  (componentWithDependencies.coComponent(ofType: BasicComponentA.self), componentA)
         XCTAssertEqual  (componentWithDependencies.coComponent(ofType: BasicComponentB.self), componentB)
-        XCTAssertTrue   (componentWithDependencies.checkEntityForRequiredComponents())
+        XCTAssertTrue   (componentWithDependencies.checkEntityForRequiredComponents()) // This will fail. See comment for "BUG: 201804029A"
         
         // 9: RelayComponent should remain linked to its target even if the target is removed from its entity.
         
