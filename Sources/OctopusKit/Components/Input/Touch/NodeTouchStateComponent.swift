@@ -362,6 +362,9 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     }
 }
 
+@available(*, unavailable, renamed: "NodeTouchStateComponent")
+public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {}
+
 #endif
 
 #if !canImport(UIKit)
@@ -370,6 +373,3 @@ public final class NodeTouchStateComponent: iOSExclusiveComponent {}
 @available(*, unavailable, renamed: "NodeTouchStateComponent")
 public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {}
 #endif
-
-@available(*, unavailable, renamed: "NodeTouchStateComponent")
-public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {}
