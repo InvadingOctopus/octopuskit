@@ -16,18 +16,20 @@ import GameplayKit
 /// This component calls the supplied closures with a reference to `self`, so that the component's user can refer to the instance properties of this component, such as its entity or co-components, at the calling site before it has finished initialization.
 ///
 /// Subclass this component to provide multiple, reusable sets of event handlers for the same entity (as an entity can only have one component of each concrete class.)
+///
+/// **Example**
+///
+///     NodeTouchClosureComponent(closures: [
+///         .ready              : { ($1 as? SKSpriteNode)?.color = .gray },
+///         .touching           : { ($1 as? SKSpriteNode)?.color = .white },
+///         .touchingOutside    : { ($1 as? SKSpriteNode)?.color = .orange },
+///         .endedOutside       : { ($1 as? SKSpriteNode)?.color = .red },
+///         .tapped             : { $1.run(.repeat(.blink(), count: 3)) }
+///     ])
+///
 open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponent {
 
     // ℹ️ This class is not marked as `final` so that subclasses can be created, each providing a different set of event handlers for the same entity.
-    
-    // 💡 Example:
-    // NodeTouchClosureComponent(closures: [
-    //      .ready              : { ($1 as? SKSpriteNode)?.color = .gray },
-    //      .touching           : { ($1 as? SKSpriteNode)?.color = .white },
-    //      .touchingOutside    : { ($1 as? SKSpriteNode)?.color = .orange },
-    //      .endedOutside       : { ($1 as? SKSpriteNode)?.color = .red },
-    //      .tapped             : { $1.run(.repeat(.blink(), count: 3)) }
-    // ])
     
     /// The block of code to be executed for a touch-interaction state by a `NodeTouchClosureComponent`.
     ///
@@ -44,8 +46,8 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
         -> Void
     
     open override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                NodeTouchStateComponent.self]
+        [SpriteKitComponent.self,
+         NodeTouchStateComponent.self]
     }
     
     /// A dictionary that contains blocks of code to execute for each touch interaction state.
@@ -66,19 +68,20 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
     ///
     /// For a description of the closure signature and parameters, see `NodeTouchClosureComponent.NodeTouchClosureType`.
     public init(
-        ready: NodeTouchClosureType? = nil,
-        touching: NodeTouchClosureType? = nil,
-        touchingOutside: NodeTouchClosureType? = nil,
-        tapped: NodeTouchClosureType? = nil,
-        cancelled: NodeTouchClosureType? = nil,
-        disabled: NodeTouchClosureType? = nil)
+        ready:              NodeTouchClosureType? = nil,
+        touching:           NodeTouchClosureType? = nil,
+        touchingOutside:    NodeTouchClosureType? = nil,
+        tapped:             NodeTouchClosureType? = nil,
+        cancelled:          NodeTouchClosureType? = nil,
+        disabled:           NodeTouchClosureType? = nil)
     {
-        self.closures[.ready] = ready
-        self.closures[.touching] = touching
+        self.closures[.ready]           = ready
+        self.closures[.touching]        = touching
         self.closures[.touchingOutside] = touchingOutside
-        self.closures[.tapped] = tapped
-        self.closures[.endedOutside] = cancelled
-        self.closures[.disabled] = disabled
+        self.closures[.tapped]          = tapped
+        self.closures[.endedOutside]    = cancelled
+        self.closures[.disabled]        = disabled
+        
         super.init()
     }
     
