@@ -39,7 +39,7 @@ public extension GKComponent {
         }
     }
     
-    /// A version of `coComponent(ofTYpe:)` without a parameter name to reduce text clutter.
+    /// A version of `coComponent(ofType:)` without a parameter name to reduce text clutter.
     func coComponent <ComponentType> (
         _ componentClass: ComponentType.Type,
         ignoreRelayComponents: Bool = false)
