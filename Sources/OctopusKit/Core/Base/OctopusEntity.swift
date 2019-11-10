@@ -83,15 +83,15 @@ open class OctopusEntity: GKEntity {
         self.addComponent(SpriteKitComponent(node: node, addToNode: parentNode))
     }
     
-    public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
+    public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+    
     /// Adds a component to the entity and notifies the delegate, logging a warning if the entity already has another component of the same class, as the new component will replace the existing component.
     open override func addComponent(_ component: GKComponent) {
         
         // NOTE: BUG? GameplayKit's default implementation does NOT remove a component from its current entity before adding it to a different entity.
         // So we do that here, because otherwise it may cause unexpected behavior. A component's `entity` property can only point to one entity anyway; the latest.
         
-         component.entity?.removeComponent(ofType: type(of: component))
+        component.entity?.removeComponent(ofType: type(of: component))
         
         // Warn if we already have a component of the same class, as GameplayKit does not allow multiple components of the same type in the same entity.
         
