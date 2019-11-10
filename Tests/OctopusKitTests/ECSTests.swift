@@ -258,6 +258,9 @@ final class ECSTests: XCTestCase {
         relayComponentA = RelayComponent(for: componentA)
         entity2         = OctopusEntity(components: [relayComponentA])
         
+        // 0: Silence the warning about "Variable entity1 was written to, but never read" :)
+        XCTAssertEqual  (componentA.entity, entity1)
+        
         // 1: relayComponentA.target should be componentA
         XCTAssertEqual  (relayComponentA.target, componentA)
         
@@ -281,7 +284,11 @@ final class ECSTests: XCTestCase {
         
         XCTAssertEqual  (componentB.coComponent(ofType: BasicComponentA.self), componentA)
         
-        // 7: Entities should be able to have multiple RelayComponents with targets of different types.
+        // 7: GKComponent.coComponent(ofType:ignoreRelayComponents: true) should NOT find co-components via RelayComponent
+        
+        XCTAssertNotEqual  (componentB.coComponent(ofType: BasicComponentA.self, ignoreRelayComponents: true), componentA)
+        
+        // 8: Entities should be able to have multiple RelayComponents with targets of different types.
         
         componentA      = BasicComponentA()
         componentB      = BasicComponentB()
@@ -291,13 +298,13 @@ final class ECSTests: XCTestCase {
         relayComponentB = RelayComponent(for: componentB)
         entity2         = OctopusEntity(components: [relayComponentA, relayComponentB])
         
-        XCTAssertNotNil (entity2.component(ofType: RelayComponent<BasicComponentA>.self))
-        XCTAssertNotNil (entity2.component(ofType: RelayComponent<BasicComponentB>.self))
+        XCTAssertNotNil  (entity2.component(ofType: RelayComponent<BasicComponentA>.self))
+        XCTAssertNotNil  (entity2.component(ofType: RelayComponent<BasicComponentB>.self))
         
         XCTAssertNotEqual(entity2.component(ofType: RelayComponent<BasicComponentA>.self),
                           entity2.component(ofType: RelayComponent<BasicComponentB>.self))
         
-        // 8: OctopusComponent.checkEntityForRequiredComponents() should be able to find dependencies via RelayComponent
+        // 9: OctopusComponent.checkEntityForRequiredComponents() should be able to find dependencies via RelayComponent
         
         componentA      = BasicComponentA()
         entity1         = OctopusEntity(components: [componentA])
@@ -311,9 +318,9 @@ final class ECSTests: XCTestCase {
         
         XCTAssertEqual  (componentWithDependencies.coComponent(ofType: BasicComponentA.self), componentA)
         XCTAssertEqual  (componentWithDependencies.coComponent(ofType: BasicComponentB.self), componentB)
-        XCTAssertTrue   (componentWithDependencies.checkEntityForRequiredComponents()) // This will fail. See comment for "BUG: 201804029A"
+        XCTAssertTrue   (componentWithDependencies.checkEntityForRequiredComponents()) // If this fails, search comments for "BUG: 201804029A"
         
-        // 9: RelayComponent should remain linked to its target even if the target is removed from its entity.
+        // 10: RelayComponent should remain linked to its target even if the target is removed from its entity.
         
         componentA      = BasicComponentA()
         entity1         = OctopusEntity(components: [componentA])
