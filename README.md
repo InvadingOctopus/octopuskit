@@ -171,9 +171,9 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 
 - 🎬 A game is organized into **States** such as *MainMenu*, *Playing* and *Paused*. Each state is associated with a **SwiftUI** view which displays the user interface, and a **SpriteKit Scene** that presents the gameplay for that state using **Entities**, **Components** and **Systems**.
 
-    > You can divide your game into as many or as few states as you want. e.g.: A single "PlayState" which also handles the main menu, pausing, cutscenes etc.
+    > You can divide your game into as many or as few states as you want. e.g. A single "PlayState" which also handles the main menu, pausing, cutscenes etc.
     
-    > States, Scenes, and SwiftUI views may have many-to-many relationships that can be changed at runtime.
+    > States, Scenes, and SwiftUI views may have many-to-many relationships that may change during runtime.
 
 - 👾 **Entities** are simply collections of **Components**. They contain no logic, except for convenience constructors which initialize groups of related components. 
 
@@ -189,7 +189,7 @@ See the [Usage Guide][usage-guide] for a detailed breakdown of the object hierar
 
 Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend", while SwiftUI lets you design slick HUDs and other UI in declarative code.
 
-> e.g.: say a _ParallaxBackgroundEntity_ containing a _CloudsComponent_, a *HillsComponent* and a *TreesComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.
+> e.g. say a _ParallaxBackgroundEntity_ containing a _CloudsComponent_, a *HillsComponent* and a *TreesComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.
 
 **Performance:** Although extensive benchmarks have not been done yet, OK can display **over 3000 sprites on an iPhone X at 60 frames per second**; each sprite represented by an entity with multiple components being updated every frame, and responding to touch input.
 

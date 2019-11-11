@@ -207,7 +207,7 @@ systems. A typical game will create multiple instances of these objects.
 - A **Scene** presents the visuals, plays audio, and receives player input events and device updates for each state or "act" of the game. A scene is itself an **Entity** with various **Components**, and it loads or creates sub-entities that represent the characters and other elements of the gameplay. 
 
     > A single scene may represent multiple game states.  
-    > e.g.: for most games, it may not be necessary to have a separate scene for a "Paused" game state, and a single scene may handle both "Play" and "Paused" game states by displaying a dark overlay and some text in the paused state.
+    > e.g. for most games, it may not be necessary to have a separate scene for a "Paused" game state, and a single scene may handle both "Play" and "Paused" game states by displaying a dark overlay and some text in the paused state.
 
 - Once a scene is presented on screen, the system calls the `OctopusScene.update(_:)` method at the beginning of every frame, which goes through the list of the scene's **Component Systems** and updates all the **Components** in each system. 
 
@@ -219,7 +219,7 @@ systems. A typical game will create multiple instances of these objects.
 
 - A **Subscene** is a node which may be added to a scene, but maintains its own hierarchy of entities and components. When a subscene is presented, the scene sets a special flag to pause the entities in the scene itself and any previous subscenes. This allows subscenes to be used for modal content which must be overlaid on top of the scene's content, while pausing the main action without pausing the engine, so that only the topmost subscene will be updated.
 
-    > e.g.: In an adventure game a subscene may be used to present a "cutscene" which shows an story event while pausing the gameplay.
+    > e.g. In an adventure game a subscene may be used to present a "cutscene" which shows an story event while pausing the gameplay.
     
 [TODO: OctopusScene API overview]
 
@@ -244,7 +244,7 @@ systems. A typical game will create multiple instances of these objects.
 
 - An **Entity** is a group of **Components** that may interact with each other. It may also have an **Entity State Machine** which is a special component comprising different **Entity States**. Each state has logic that decides which components to add to the entity and which components to remove depending on different conditions, as well as when to transition to a different state.
 
-	> e.g.: A *GrueEntity* with a *SleepingState, HuntingState, EatingState and DeadState.*
+	> e.g. A *GrueEntity* with a *SleepingState, HuntingState, EatingState and DeadState.*
 
 - `OctopusEntity` need not always be subclassed; `OctopusEntity(components:)` should be enough for most cases.
 
@@ -256,11 +256,11 @@ systems. A typical game will create multiple instances of these objects.
 
 - May be subclassed from `OctopusEntity` and offer `init` constructors that group sets of related components. The components may be customized according to the supplied arguments.
 
-	> e.g.: A *PlayerShipEntity* with "mass", "speed" etc. parameters.
+	> e.g. A *PlayerShipEntity* with "mass", "speed" etc. parameters.
 
 - Contain `StateMachineComponent`s that add and remove groups of components to the entity depending on the state.
     
-    > e.g.: a player character in a *SpawningState* may have a *BlinkingEffectComponent* but no *DamageComponent* as it must be invulnerable before it has fully spawned, but entering the *ReadyState* will add a *DamageComponent* as well as a *PlayerControlComponent* etc.
+    > e.g. A player character in a *SpawningState* may have a *BlinkingEffectComponent* but no *DamageComponent* as it must be invulnerable before it has fully spawned, but entering the *ReadyState* will add a *DamageComponent* as well as a *PlayerControlComponent* etc.
 
 ### The Scene Entity
 
@@ -300,7 +300,7 @@ systems. A typical game will create multiple instances of these objects.
 
 - After enumerating all components from all entities and adding them to a list of **Component Systems**, the scene updates each system in a deterministic order during the `OctopusScene.update(_:)` method every frame. The array of systems should be arranged such that components which depend on other components are processed after their dependencies.
 
-	> e.g.: An entity's `TouchControlledPositioningComponent` must be executed after its `TouchEventComponent`, so a scene's component systems array should place the system for `TouchEventComponent`s before the system for `TouchControlledPositioningComponent`s.
+	> e.g. An entity's `TouchControlledPositioningComponent` must be executed after its `TouchEventComponent`, so a scene's component systems array should place the system for `TouchEventComponent`s before the system for `TouchControlledPositioningComponent`s.
 
 - Over the course of the gameplay, a scene, state or even a component may signal the **Game Coordinator** to enter a different **Game State** in response to certain game-specific conditions. The current game state's logic determines whether the transition is valid; if it is, the state then passes control to another state, which may then load a different scene.
 
@@ -310,7 +310,7 @@ systems. A typical game will create multiple instances of these objects.
 
 - SpriteKit and GameplayKit features should be abstracted behind and accessed via components as much as conveniently and practically possible.
 	
-	> e.g.: access an `SKSpriteNode`'s `physicsBody` through a `PhysicsComponent`, instead of an `SpriteKitComponent`'s node. This way, when the `PhysicsComponent` is removed from an entity, it marks the entity as no longer affected by physics.
+	> e.g. access an `SKSpriteNode`'s `physicsBody` through a `PhysicsComponent`, instead of an `SpriteKitComponent`'s node. This way, when the `PhysicsComponent` is removed from an entity, it marks the entity as no longer affected by physics.
 
 - A component's properties can be supplied upon initialization and should generally be accessible afterwards.
 
@@ -326,33 +326,33 @@ A component may be conceptually classified under one or more of the following ca
 
 - **Data Component**: Adds some properties to the entity that other components may access and act upon.
 
-	> e.g.: A *PlayerInfoComponent* with *name* and *score* properties.
+	> e.g. A *PlayerInfoComponent* with *name* and *score* properties.
 
 - **Visual Component**: A component that modifies the appearance of the SpriteKit node associated with its entity, or adds child nodes to it.
 
-	> e.g.: A *SpinComponent* that sets a sprite's color to green when added to the entity, changes the node's rotation in every frame, and sets the sprite's color to red when removed from the entity, or a *ThrustersEffectComponent* which draws a jet flame behind a spaceship.
+	> e.g. A *SpinComponent* that sets a sprite's color to green when added to the entity, changes the node's rotation in every frame, and sets the sprite's color to red when removed from the entity, or a *ThrustersEffectComponent* which draws a jet flame behind a spaceship.
 
 - **Logic Component**: Executes some code every frame or at specific moments during an entity's lifetime: when added to the entity, upon being removed from an entity, or in response to external/asynchronous events such as player input.
 
-    > e.g.: A `TimeComponent` that keeps track of the seconds that have elapsed since the component was added to an entity.
+    > e.g. A `TimeComponent` that keeps track of the seconds that have elapsed since the component was added to an entity.
     
     > Components such as these, which execute some logic in every frame, must be added to a component system or updated manually in a scene's `shouldUpdateSystems(deltaTime:)` method, otherwise they cannot perform their task.
 
 - **Coordinator Component**: A logic component that observes one or more components and uses that information to act upon other components.
 
-    > e.g.: A *PlayerInfoDisplayComponent* which is added to a scene, that searches the scene for an entity with a *PlayerInfoComponent*, and uses the properties of that data component to update the scene's *HUDComponent*.
+    > e.g. A *PlayerInfoDisplayComponent* which is added to a scene, that searches the scene for an entity with a *PlayerInfoComponent*, and uses the properties of that data component to update the scene's *HUDComponent*.
     
     > Such a design lets the *HUDComponent* remain a visual component which focuses on managing its graphics and labels, while letting other components decide what to display in the HUD, which may be player info, enemy info, or temporary alerts etc.
 		
 - **Support/Utility Component**: Performs no action upon the entity on its own, but provides a set of methods and data to assist other components.
 
-	> e.g.: A `TextureDictionaryComponent` used by a `TextureAnimationComponent`, and a `TouchEventComponent` used by many touch-controlled components.
+	> e.g. A `TextureDictionaryComponent` used by a `TextureAnimationComponent`, and a `TouchEventComponent` used by many touch-controlled components.
 		
 ### Components should:
 
 - Be broken into sub-components if one component handles many duties.
     
-	> e.g.: a `PlayerControlComponent` may be broken down into a `TouchControlledSeekingComponent` and a `MotionControlledThrustComponent`.
+	> e.g. a `PlayerControlComponent` may be broken down into a `TouchControlledSeekingComponent` and a `MotionControlledThrustComponent`.
 
 ### What should be Entities and what should be Components?
 
@@ -367,7 +367,7 @@ A component may be conceptually classified under one or more of the following ca
 
 - If an entity can be in one of several conceptual states at a given time, it more makes sense to represent those states with a `GKStateMachine` (as encapsulated by a `StateMachineComponent`) instead of putting lots of conditional checks in multiple components.
 
-	> e.g.: A spaceship entity with gun components that generate heat and temporarily stop firing when they are overheated. Without states, you might need to repeatedly check for the overheated state in *GunComponent* and *GunControlComponent* and *ShipVisualEffectsComponent* etc. With states, you may have an *OverheatedState* that removes the *GunControlComponent* and adds a *OverheatedVisualEffectComponent*. The overheated state monitors the *HeatComponent* to see when the ship cools down, and transitions the entity back to its *NormalState* which restores the relevant components necessary for normal player control.
+	> e.g. A spaceship entity with gun components that generate heat and temporarily stop firing when they are overheated. Without states, you might need to repeatedly check for the overheated state in *GunComponent* and *GunControlComponent* and *ShipVisualEffectsComponent* etc. With states, you may have an *OverheatedState* that removes the *GunControlComponent* and adds a *OverheatedVisualEffectComponent*. The overheated state monitors the *HeatComponent* to see when the ship cools down, and transitions the entity back to its *NormalState* which restores the relevant components necessary for normal player control.
 
 ### State classes should:
 
