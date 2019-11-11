@@ -1,8 +1,8 @@
 # OctopusKit 👾🐙⚙️
 
-A 2.5D game engine that combines ECS with SwiftUI, for iOS, macOS and tvOS. Built upon Apple's SpriteKit, GameplayKit and Metal technologies.
+A 2.5D game engine in pure Swift with ECS and SwiftUI, for iOS, macOS and tvOS.
 
-The flexible Entity-Component-System architecture lets you dynamically compose game behavior, while SpriteKit gives you full access to GPU shaders and SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs with crisp text and vector shapes.
+OctopusKit encapsulates and extends Apple's frameworks: GameplayKit's flexible Entity-Component-System architecture lets you dynamically compose game behavior, while SpriteKit gives you full access to GPU shaders and SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs. Metal under the hood ensures the best native performance. 
 
 <p align="center">
     <img src="https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo.gif?raw=true" alt="OctopusKit Demo"/>
@@ -14,11 +14,11 @@ The flexible Entity-Component-System architecture lets you dynamically compose g
 2. [Overview](#overview)
 3. [Design Goals](#design-goals)
 4. [Getting Started](#getting-started)
-5. [Etcetera (license, contact)](#etcetera)
+5. [Etcetera](#etcetera)
 
-> This project is a constant **work in progress** and my first ever open-source project. I'm still learning as I go, so it may change rapidly without maintaining backwards compatibility or updating the documentation.
+> OctopusKit is a constant **work in progress** and my first ever open-source project. I'm still learning as I go, so it may change rapidly without maintaining backwards compatibility or updating the documentation.
 
-> OctopusKit is the result of trying to make my own games as a hobby. I love Swift but I couldn't find any engines that support it or had the kind of architecture that I wanted to work with, so I started making my own.
+> This project is a result of trying to make my own games as a hobby. I fell in love with Swift but couldn't find any engines that supported it or had the kind of architecture that I wanted to work with, so I started making my own.
 
 > Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated! *– ShinryakuTako*
  
