@@ -51,6 +51,9 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
     /// This property is only used if the `directlyReferencedComponent` is `nil.
     public var sceneComponentType: MasterComponentType.Type?
     
+    /// This helps `GKEntity.componentOrRelay(ofType:)` see the correct concrete type at runtime, e.g. when comparing with `OctopusComponent.requiredComponents`.
+    public override var componentType: GKComponent.Type? { target?.componentType }
+    
     public init(for targetComponent: MasterComponentType?) {
         // ℹ️ DESIGN: `target` is optional so that we can write stuff like `entity1.addComponent(RelayComponent(for: entity2.component(ofType: SomeComponent.self)))`
         self.directlyReferencedComponent = targetComponent
@@ -82,5 +85,6 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
         }
         
     }
+
 }
 

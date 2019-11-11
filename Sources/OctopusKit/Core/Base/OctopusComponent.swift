@@ -84,14 +84,10 @@ open class OctopusComponent: GKComponent {
     
     /// Logs a warning if the entity is missing any of the components in `requiredComponents`.
     ///
-    /// ⚠️ BUG: 201804029A: See method comments.
-    ///
-    /// - RETURNS: `true` if there are no missing dependencies or no `requiredComponents`.
+    /// - RETURNS: `true` if there are no missing dependencies or no `requiredComponents`
     @discardableResult public func checkEntityForRequiredComponents() -> Bool {
-        // ⚠️
-        // BUG: 201804029A: APPLEBUG: Sending an array like `[GKComponent.Type]` to `entity.componentOrRelay(ofType:)` does not use the actual metatypes, and so it can cause false warnings about missing components.
-        // NOTE: The bug does not affect directly sending "concrete" subtypes of `GKComponent` to `entity.componentOrRelay(ofType:)`.
-        // TODO: Find a way to get true runtime metatypes from an array of parent metatype.
+        
+        // FIXED: BUG: 201804029A: See comments for `GKEntity.componentOrRelay(ofType:)`
         
         // ℹ️ DESIGN: See description of `requiredComponents` for explanation about not halting execution on missing dependencies.
         
@@ -103,21 +99,20 @@ open class OctopusComponent: GKComponent {
         
         var hasMissingDependencies: Bool = false
         
-        if let requiredComponents = self.requiredComponents {
-
-            for requiredComponent in requiredComponents {
-                                
-                if  let result = self.coComponent(requiredComponent),
-                    type(of: result) == requiredComponent // Is this dynamic checking necessary, instead of just testing for `nil`?
-                {
-                    // PASS
-                } else {
-                    OctopusKit.logForDebug.add("BUG in method: IGNORE warning: \(entity) is missing a \(requiredComponent) (or a RelayComponent linked to it) which is required by \(self)")
-                    // OctopusKit.logForWarnings.add("\(entity) is missing a \(requiredComponent) (or a RelayComponent linked to it) which is required by \(self)")
-                    // OctopusKit.logForTips.add("Check the order in which components are added. Ignore warning if entity has any substitutable components.")
-                    
-                    hasMissingDependencies = true
-                }
+        self.requiredComponents?.forEach { requiredComponent in
+            
+            let match = self.coComponent(requiredComponent)
+            
+            // Using `type(of: result)` instead of `GKComponent.componentType` may report `GKComponent` instead of the concrete subclass. See comments for `GKEntity.componentOrRelay(ofType:)`
+            
+            if  match?.componentType != requiredComponent {
+                
+                OctopusKit.logForWarnings.add("\(entity) is missing a \(requiredComponent) (or a RelayComponent linked to it) which is required by \(self)")
+                OctopusKit.logForTips.add("Check the order in which components are added. Ignore warning if entity has any substitutable components.")
+                
+                hasMissingDependencies = true
+                
+                // Do not break the iteration here or return early, so we can issue warnings about any other missing dependencies.
             }
         }
         

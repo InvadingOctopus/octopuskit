@@ -99,19 +99,28 @@ public extension GKEntity {
         }
     }
     
-    /// Returns the component matching `componentClass` or a `RelayComponent` linked to that type, if present in the entity.
-    ///
-    /// ⚠️ BUG: 201804029A: See method comments.
+    /// Returns the component matching `componentClass` or a `RelayComponent` whose `target` is a component of that type, if present in the entity.
     func componentOrRelay <ComponentType> (ofType componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: GKComponent
     {
-        // ⚠️
-        // BUG: 201804029A: APPLEBUG: Sending an array like `[GKComponent.Type]`, such the one at `OctopusComponent.requiredComponents?`, to `entity.componentOrRelay(ofType:)` does not use the actual metatypes, and so it can cause false warnings about missing components.
+        // FIXED: BUG: 201804029A: APPLEBUG? SWIFT LIMITATION?
+        // Checking an array like `[GKComponent.Type]` with `entity.componentOrRelay(ofType:)` does not pass the actual metatypes, and so it may cause false warnings about missing components.
+        // NOTE: This does not affect directly sending "concrete" subtypes of `GKComponent` to `entity.componentOrRelay(ofType:)`.
+        // FIXED! via `GKComponent.baseComponent` 2019.11.11
+        // To work around the bug, we're basically reimplementing `GKEntity.component(ofType:)` as we can't override it because `Overriding declarations in extensions is not supported` and `Overriding non-open instance method outside of its defining module` as of 2019-11-11
+        // THANKS: https://forums.swift.org/u/TellowKrinkle
+        // https://forums.swift.org/t/type-information-loss-when-comparing-generic-variables-with-an-array-of-metatypes/30650/2
         
-        // ℹ️ DESIGN: Cannot override `GKEntity.component(ofType:)` because `Overriding declarations in extensions is not supported` and `Overriding non-open instance method outside of its defining module` as of 2018-04-10
+        let componentOrRelay = components.first { component in
+            // Using `type(of:)` will fail to accurately find all matches. See the Swift forums discussion linked above.
+            // `RelayComponent` overrides `GKComponent.componentType` to return the type of the relay's target component.
+            component.componentType == componentClass
+        } //?.baseComponent as? ComponentType
         
-        return self.component(ofType: componentClass)
-            ?? self.component(ofType: RelayComponent<ComponentType>.self)?.target
+        return  componentOrRelay as? ComponentType
+            ?? (componentOrRelay as? RelayComponent<ComponentType>)?.target
+        
+        // CHECK: PERFORMANCE: Will using `baseComponent` for every component be better, compared to casting as `RelayComponent`?
     }
     
     /// Removes components of the specified types.
