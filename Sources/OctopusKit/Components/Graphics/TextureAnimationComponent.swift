@@ -17,8 +17,8 @@ import GameplayKit
 public final class TextureAnimationComponent: OctopusComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                TextureDictionaryComponent.self] // ℹ️ Even though a `TextureDictionaryComponent` is not REQUIRED, it is how this `TextureAnimationComponent` is usually used with.
+        [SpriteKitComponent.self,
+         TextureDictionaryComponent.self] // ℹ️ Even though a `TextureDictionaryComponent` is not REQUIRED, it is how this `TextureAnimationComponent` is usually used with.
     }
  
     // MARK: - Properties
@@ -32,8 +32,10 @@ public final class TextureAnimationComponent: OctopusComponent {
     
     public var frames: [SKTexture] {
         didSet {
-            if  frames != oldValue {
-                frames.isEmpty ? stopAnimation() : updateAnimation()
+            if frames != oldValue {
+                // Cannot use ?: because "Result values in expression have mismatching types '()' and 'Bool'"
+                if !frames.isEmpty { updateAnimation() }
+                else { stopAnimation() }
             }
         }
     }
