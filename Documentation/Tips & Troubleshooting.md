@@ -78,8 +78,11 @@ If an entity needs multiple components of the same type but with different param
 
 > [TODO: Instructions for where to enter these in Xcode]
 
+* `LOGECSVERBOSE` - Logs detailed Entity-Component-System actions.
 * `LOGINPUTEVENTS` - Logs all input events and related information.
 * `LOGPHYSICS` - Logs all physics contact events.
+
+⚠️ Setting any of these flags may reduce engine performance.
 
 ----
 

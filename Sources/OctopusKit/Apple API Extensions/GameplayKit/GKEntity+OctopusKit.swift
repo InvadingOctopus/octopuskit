@@ -17,29 +17,59 @@ public extension GKEntity {
     /// Returns the SpriteKit scene of either the `SpriteKitSceneComponent`, or the node of the `SpriteKitComponent` or `GKSKNodeComponent` (in that order) associated with this entity, if any.
     ///
     /// A `RelayComponent` may be used in place of those components.
+    @inlinable
     var scene: SKScene? {
-        return componentOrRelay(ofType: SpriteKitSceneComponent.self)?.scene
+        
+        #if LOGECSVERBOSE
+        debugLog("self: \(self)")
+        #endif
+        
+        // NOTE: To avoid infinite recursion when a RelayComponent checks its node's scene, we now skip `componentOrRelay(ofType:)` and just use `component(ofType:)` and check `RelayComponent.directlyReferencedComponent` instead of `RelayComponent.target`
+        
+        return self.component(ofType: SpriteKitSceneComponent.self)?.scene
+            ?? self.component(ofType: RelayComponent<SpriteKitSceneComponent>.self)?.directlyReferencedComponent?.scene
             ?? self.node?.scene
     }
     
     /// Convenient shorthand for accessing the SpriteKit node associated with this entity's `SpriteKitComponent` or `GKSKNodeComponent` (in that order.)
     ///
     /// A `RelayComponent` may be used in place of those components.
+    @inlinable
     var node: SKNode? {
-        return componentOrRelay(ofType: SpriteKitComponent.self)?.node
-            ?? componentOrRelay(ofType: GKSKNodeComponent.self)?.node // CHECK: Necessary?
-    }
+        
+        #if LOGECSVERBOSE
+        debugLog("self: \(self)")
+        #endif
+        
+        // ❕ NOTE: componentOrRelay(ofType:) used to cause infinite recursion with a `RelayComponent` that only had a `sceneComponentType`, because the RelayComponent tried to access its `entityNode` which leads back here. :)
+        // FIXED: We now skip `componentOrRelay(ofType:)` and just use `component(ofType:)` and check `RelayComponent.directlyReferencedComponent` instead of `RelayComponent.target`
+        
+        let nodeComponent = self.component(ofType: SpriteKitComponent.self)
+            ?? self.component (ofType: GKSKNodeComponent.self)
+            ?? self.component (ofType: RelayComponent<SpriteKitComponent>.self)?.directlyReferencedComponent
+            ?? self.component (ofType: RelayComponent<GKSKNodeComponent>.self)?.directlyReferencedComponent
+        
+        #if LOGECSVERBOSE
+        debugLog("nodeComponent: \(nodeComponent), .node: \(nodeComponent?.node)")
+        #endif
+        
+        return nodeComponent?.node
+        
+        // CHECK: Is looking for GKSKNodeComponent necessary?
+    } 
     
     /// Convenient shorthand for accessing the SpriteKit node associated with this entity's `SpriteKitComponent` or `GKSKNodeComponent` (in that order) as an `SKSpriteNode` if applicable.
     ///
     /// A `RelayComponent` may be used in place of those components.
+    @inlinable
     var sprite: SKNode? {
-        return self.node as? SKSpriteNode
+        self.node as? SKSpriteNode
     }
     
     /// Returns the component matching `componentClass` or a `RelayComponent` linked to that type, if present in the entity.
     ///
     /// This subscript is a shortcut for the `componentOrRelay(ofType:)` method.
+    @inlinable
     subscript <ComponentType> (componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: GKComponent
     {
@@ -73,7 +103,13 @@ public extension GKEntity {
     /// An overload of `addComponent(_:)` that allows optionally `nil` arguments.
     ///
     /// Useful for chaining calls with `coComponent(ofType:)` or other methods that may potentially return `nil`.
+    @inlinable
     func addComponent(_ component: GKComponent?) {
+        
+        #if LOGECSVERBOSE
+        debugLog("component: \(component), self: \(self)")
+        #endif
+        
         if  let component = component {
             self.addComponent(component)
         } else {
@@ -84,6 +120,7 @@ public extension GKEntity {
     /// Adds the components in the specified order.
     ///
     /// - NOTE: The order in which the components are passed may be crucial to correctly resolving dependencies between different components.
+    @inlinable
     func addComponents(_ components: [GKComponent]) {
         for component in components {
             self.addComponent(component)
@@ -93,6 +130,7 @@ public extension GKEntity {
     /// An overload of `addComponents(_:)` that allows optionally `nil` elements.
     ///
     /// Useful for chaining calls with `coComponent(ofType:)` or other methods that may potentially return `nil`.
+    @inlinable
     func addComponents(_ components: [GKComponent?]) {
         for case let component in components {
             self.addComponent(component)
@@ -100,9 +138,14 @@ public extension GKEntity {
     }
     
     /// Returns the component matching `componentClass` or a `RelayComponent` whose `target` is a component of that type, if present in the entity.
+    @inlinable
     func componentOrRelay <ComponentType> (ofType componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: GKComponent
     {
+        #if LOGECSVERBOSE
+        debugLog("ComponentType: \(ComponentType.self), componentClass: \(componentClass), self: \(self)")
+        #endif
+        
         // FIXED: BUG: 201804029A: APPLEBUG? SWIFT LIMITATION?
         // Checking an array like `[GKComponent.Type]` with `entity.componentOrRelay(ofType:)` does not pass the actual metatypes, and so it may cause false warnings about missing components.
         // NOTE: This does not affect directly sending "concrete" subtypes of `GKComponent` to `entity.componentOrRelay(ofType:)`.
@@ -111,19 +154,41 @@ public extension GKEntity {
         // THANKS: https://forums.swift.org/u/TellowKrinkle
         // https://forums.swift.org/t/type-information-loss-when-comparing-generic-variables-with-an-array-of-metatypes/30650/2
         
-        let componentOrRelay = components.first { component in
-            // Using `type(of:)` will fail to accurately find all matches. See the Swift forums discussion linked above.
+        // ℹ️ DESIGN: There may be cases when an entity may have a component of a specific type as well as a `RelayComponent` with a target of the same type; e.g. a NodePointerStateComponent and a RelayComponent<NodePointerStateComponent>. See `OctopusEntity.addComponent(_:)` for the comments about this decision.
+        // This method should always return the direct component (non-relay) first.
+        
+        // Look for a direct match as well as any RelayComponent with a target matching ComponentType
+        
+        var directComponent: ComponentType?
+        var relayComponent:  RelayComponent<ComponentType>?
+        
+        // #1: Try GKEntity's base implementation first.
+        
+        directComponent = self.component(ofType: componentClass)
+        
+        if  directComponent != nil {
+            return directComponent!
+        }
+        
+        // #2: If that didn't work, try a manual search.
+        
+        components.forEach {
+            component in
+            
+            // Using `type(of:)` may fail to accurately find matching types at runtime. See the forums discussion linked above.
             // `RelayComponent` overrides `GKComponent.componentType` to return the type of the relay's target component.
-            component.componentType == componentClass
-        } //?.baseComponent as? ComponentType
+            
+            if  component.componentType == componentClass {
+                directComponent = component as? ComponentType
+                relayComponent  = component as? RelayComponent
+            }
+        }
         
-        return  componentOrRelay as? ComponentType
-            ?? (componentOrRelay as? RelayComponent<ComponentType>)?.target
-        
-        // CHECK: PERFORMANCE: Will using `baseComponent` for every component be better, compared to casting as `RelayComponent`?
+        return directComponent ?? relayComponent?.target
     }
     
     /// Removes components of the specified types.
+    @inlinable
     func removeComponents(ofTypes componentClasses: [GKComponent.Type]) {
         for componentClass in componentClasses {
             self.removeComponent(ofType: componentClass)
@@ -131,6 +196,9 @@ public extension GKEntity {
     }
     
     /// Removes all components from this entity.
+    ///
+    /// Calls `removeComponent(ofType:)` for each item in `components`.
+    @inlinable
     func removeAllComponents() {
         
         // NOTE: Cannot modify a collection while it is being enumerated, so go the longer way around by using a second list of items to remove.

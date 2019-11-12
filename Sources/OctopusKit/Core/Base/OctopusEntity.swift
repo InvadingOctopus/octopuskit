@@ -10,9 +10,12 @@ import GameplayKit
 
 /// A protocol for types that manage entities, such as `OctopusScene`.
 public protocol OctopusEntityDelegate: class {
-    func entity(_ entity: GKEntity, didAddComponent component: GKComponent)
+    func entity(_ entity: GKEntity, didAddComponent component:     GKComponent)
     func entity(_ entity: GKEntity, willRemoveComponent component: GKComponent)
-    @discardableResult func entity(_ entity: GKEntity, didSpawn spawnedEntity: GKEntity) -> Bool
+    
+    @discardableResult
+    func entity(_ entity: GKEntity, didSpawn spawnedEntity: GKEntity) -> Bool
+    
     func entityDidRequestRemoval(_ entity: GKEntity)
 }
 
@@ -23,6 +26,8 @@ public protocol OctopusEntityDelegate: class {
 /// An `OctopusScene` is also represented by an entity via a `SpriteKitSceneComponent`.
 open class OctopusEntity: GKEntity {
     
+    // ℹ️ Also see GKEntity+OctopusKit extensions.
+    
     /// Identifies the entity. Can be non-unique and shared with other entities.
     ///
     /// An `OctopusScene` may search for entities by their name via `entities(withName:)`.
@@ -32,11 +37,11 @@ open class OctopusEntity: GKEntity {
     
     open override var description: String {
         // CHECK: Improve?
-        return "\(super.description) \"\(self.name ?? "")\""
+        "\(super.description) \"\(self.name ?? "")\""
     }
     
     open override var debugDescription: String {
-        return "\(self.description)\(components.count > 0 ? " \(components.count) components = \(components)" : "")"
+        "\(self.description)\(components.count > 0 ? " \(components.count) components = \(components)" : "")"
     }
     
     // ℹ️ NOTE: These inits are not marked with the `convenience` modifier because we want to set `self.name = name` BEFORE calling `GKEntity` inits, in order to ensure that the log entries for `addComponent` will include the `OctopusEntity`'s name if it's supplied.
@@ -91,13 +96,22 @@ open class OctopusEntity: GKEntity {
         // NOTE: BUG? GameplayKit's default implementation does NOT remove a component from its current entity before adding it to a different entity.
         // So we do that here, because otherwise it may cause unexpected behavior. A component's `entity` property can only point to one entity anyway; the latest.
         
+        // ℹ️ DESIGN: DECIDED: When adding a `RelayComponent<TargetComponentType>`, we should NOT remove any existing component of the same type as the RelayComponent's target.
+        // REASON: Components need to operate on their entity; adding a RelayComponent to an entity does NOT and SHOULD NOT set the target component's `entity` property to that entity. So we cannot and SHOULD NOT replace a direct component with a RelayComponent.
+        // NOTE: This design decision means that an entity might find 2 components of the same type when checking for them with `GKEntity.componentOrRelay(ofType:)`, e.g. a NodePointerStateComponent and a RelayComponent<NodePointerStateComponent>, so `GKEntity.componentOrRelay(ofType:)` must always return the direct component first.
+        
+        // NOTE: Checking the `component.componentType` of a `RelayComponent` will return its `target?.componentType`, so we will use `type(of: component)` instead, to avoid deleting a direct component when a relay to the same component type is added.
+        
+        #if LOGECSVERBOSE
+        debugLog("component: \(component), self: \(self)")
+        #endif
+        
         component.entity?.removeComponent(ofType: type(of: component))
         
         // Warn if we already have a component of the same class, as GameplayKit does not allow multiple components of the same type in the same entity.
         
-        // NOTE: Do not compare with `RelayComponent`s here.
-        
         if  let existingComponent = self.component(ofType: type(of: component)) {
+            
             OctopusKit.logForWarnings.add("\(self) replacing \(existingComponent) → \(component)")
             
             // NOTE: BUG? GameplayKit's default implementation does NOT seem to set the about-to-be-replaced component's entity property to `nil`.

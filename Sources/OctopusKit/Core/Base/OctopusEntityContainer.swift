@@ -259,13 +259,13 @@ public extension OctopusEntityContainerNode {
             return nil
         }
         
-        let newEntity = OctopusEntity(name: node.name, node: node) // ⚠️ Set the name to the node's name instead of the search string. :)
+        let newEntity = OctopusEntity(name: node.name, node: node) // ❕ Set the name to the node's name instead of the search string. :)
         
-        if let components = components {
+        if  let components = components {
             newEntity.addComponents(components)
         }
         
-        if addEntityToScene {
+        if  addEntityToScene {
             self.addEntity(newEntity)
         }
         

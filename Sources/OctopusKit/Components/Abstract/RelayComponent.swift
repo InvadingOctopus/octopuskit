@@ -28,16 +28,34 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
     /// The `GKComponent.coComponent(ofType:)` and `GKEntity.componentOrRelay(ofType:)` methods will check the entity for a `RelayComponent` which points to a component matching the specified type, if the entity itself does not have a component of the specified type.
     ///
     /// - IMPORTANT: `GKEntity.component(ofType:)` does *not* automatically substitute a `RelayComponent` for the specified component class, due to GameplayKit/Swift limitations. Use `GKEntity.componentOrRelay(ofType:)` or `GKComponent.coComponent(ofType:)` to automatically look for `RelayComponent`s.
+    @inlinable
     public var target: MasterComponentType? {
-        if   let directlyReferencedComponent = self.directlyReferencedComponent {
-             return directlyReferencedComponent
-        }
-        else if let sceneComponentType = self.sceneComponentType,
-                let sceneComponent = self.entityNode?.scene?.entity?.component(ofType: sceneComponentType)
-        {
-             return sceneComponent
-        } else {
-             return nil
+        
+        #if LOGECSVERBOSE
+        debugLog("self: \(self)")
+        #endif
+        
+        if  let directlyReferencedComponent = self.directlyReferencedComponent {
+            
+            #if LOGECSVERBOSE
+            debugLog("directlyReferencedComponent: \(directlyReferencedComponent)")
+            #endif
+            
+            return directlyReferencedComponent
+        
+        }   else if let sceneComponentType = self.sceneComponentType {
+            
+            #if LOGECSVERBOSE
+            debugLog("Accessing self.entityNode?.scene?.entity?.component(ofType: \(sceneComponentType))")
+            #endif
+            
+            // ❕ NOTE: Accessing `entityNode` used to cause infinite recursion because `GKEntity.node` calls `GKEntity.componentOrRelay(ofType:)` which leads back here. :)
+            // FIXED: `GKEntity.node` now uses `GKEntity.component(ofType:)` instead of `GKEntity.componentOrRelay(ofType:)` and checks for `directlyReferencedComponent` instead of this `target` property.
+            
+            return self.entityNode?.scene?.entity?.component(ofType: sceneComponentType)
+            
+        }   else {
+            return nil
         }
     }
     
@@ -46,28 +64,56 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
     
     // PERFORMANCE: The increased property accesses may decrease performance, especially for components like `TouchEventComponent` that are accessed every frame.
     
-    /// The type of component to look for in the scene entity of the `SpriteKitComponent` node of this `RelayComponent`'s entity.
+    /// The type of component to look for in the entity which represents the scene associated with the `SpriteKitComponent` node of this `RelayComponent`'s entity.
+    ///
+    /// `RelayComponent.entityNode?.scene?.entity?.component(ofType: sceneComponentType)`
     ///
     /// This property is only used if the `directlyReferencedComponent` is `nil.
     public var sceneComponentType: MasterComponentType.Type?
     
     /// This helps `GKEntity.componentOrRelay(ofType:)` see the correct concrete type at runtime, e.g. when comparing with `OctopusComponent.requiredComponents`.
-    public override var componentType: GKComponent.Type? { target?.componentType }
+    public override var componentType: GKComponent.Type {
+        
+        #if LOGECSVERBOSE
+        debugLog("self: \(self), \(type(of: self)), target?.componentType: \(target?.componentType)")
+        #endif
+        
+        return target?.componentType ?? type(of: self)
+    }
+    
+    public override var description: String {
+        "\(super.description), directlyReferencedComponent: \(directlyReferencedComponent), sceneComponentType: \(sceneComponentType)"
+    }
+    
+    // MARK: - Life Cycle
     
     public init(for targetComponent: MasterComponentType?) {
         // ℹ️ DESIGN: `target` is optional so that we can write stuff like `entity1.addComponent(RelayComponent(for: entity2.component(ofType: SomeComponent.self)))`
+        
+        #if LOGECSVERBOSE
+        debugLog("targetComponent: \(targetComponent)")
+        #endif
+        
         self.directlyReferencedComponent = targetComponent
         super.init()
     }
     
     /// Creates a `RelayComponent` which points to a component of the specified type in the scene entity associated with the `SpriteKitComponent` node of this `RelayComponent`'s entity.
+    ///
+    /// Whenever the `target` of this relay is requested, it will check for `self.entityNode?.scene?.entity?.component(ofType: sceneComponentType)`.
     public init (sceneComponentType: MasterComponentType.Type) {
+        
+        #if LOGECSVERBOSE
+        debugLog("sceneComponentType: \(sceneComponentType)")
+        #endif
+        
         self.sceneComponentType = sceneComponentType
         super.init()
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-   
+    
+    @inlinable
     public override func didAddToEntity() {
         super.didAddToEntity()
         
@@ -79,12 +125,20 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
         {
             if  existingComponent === target {
                 OctopusKit.logForWarnings.add("\(entity) already has \(existingComponent)")
-            } else {
+            }   else {
                 OctopusKit.logForWarnings.add("\(entity) already has a \(type(of: existingComponent)) component: \(existingComponent)")
             }
         }
-        
     }
 
+    /*
+    public override var baseComponent: GKComponent? {
+        // CHECK: Include? Will it improve correctness and performance in GKEntity.componentOrRelay(ofType:) or is it unnecessary?
+        // THANKS: https://forums.swift.org/u/TellowKrinkle
+        // https://forums.swift.org/t/type-information-loss-when-comparing-generic-variables-with-an-array-of-metatypes/30650
+        target?.baseComponent // ?? self
+    }
+    */
+    
 }
 

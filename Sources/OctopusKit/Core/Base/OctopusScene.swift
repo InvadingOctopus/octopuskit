@@ -28,6 +28,8 @@ open class OctopusScene: SKScene,
     SKPhysicsContactDelegate
     // TouchEventProvider // Only #if canImport(UIKit)
 {
+    // ℹ️ Also see SKScene+OctopusKit extensions.
+    
     // MARK: - Properties
     
     // MARK: Constants

@@ -28,22 +28,27 @@ public protocol OctopusUpdatableComponent {
 /// Components may also be purely abstract collections of data, without any logic.
 open class OctopusComponent: GKComponent {
     
+    // ℹ️ Also see GKComponent+OctopusKit extensions.
+    
     /// A list of co-component types that this component depends on.
     ///
     /// - NOTE: The component should not raise an application-halting error or exception if a dependency is missing, because components may be added to or removed from an entity during runtime to dynamically modify the entity's behavior. In the absence of a dependency, a component should fail gracefully and simply skip a part or all of its functionality, optionally logging a warning.
+    @inlinable
     open var requiredComponents: [GKComponent.Type]? {
         // CHECK: Rename to `dependencies`?
-        return nil
+        nil
     }
     
     /// Returns the entity associated with this component, if it is an `OctopusEntity`.
+    @inlinable
     public var octopusEntity: OctopusEntity? {
-        return self.entity as? OctopusEntity
+        self.entity as? OctopusEntity
     }
     
     /// Returns the delegate for the entity associated with this component, if any.
+    @inlinable
     public var entityDelegate: OctopusEntityDelegate? {
-        return (self.entity as? OctopusEntity)?.delegate
+        (self.entity as? OctopusEntity)?.delegate
     }
     
     /// Ensures that any necessary cleanup (such as removing child nodes) is performed in case of a forced deinit, which may be caused by GameplayKit if multiple components of the same type are added to the same entity, as that replaces previous components of the same class without letting them call `willRemoveFromEntity()`.
@@ -53,13 +58,9 @@ open class OctopusComponent: GKComponent {
     
     // MARK: - Life Cycle
     
-    public override init() {
-        super.init()
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+    // These initializers are for subclasses to implement Xcode Scene Builder support.
+    public override init() { super.init() }
+    public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
     
     /// - IMPORTANT: If a subclass overrides this method, then `super.didAddToEntity()` *MUST* be called to ensure proper functionality, e.g. to check for dependencies on other components and to set `shouldRemoveFromEntityOnDeinit = true`.
     open override func didAddToEntity() {
@@ -85,29 +86,42 @@ open class OctopusComponent: GKComponent {
     /// Logs a warning if the entity is missing any of the components in `requiredComponents`.
     ///
     /// - RETURNS: `true` if there are no missing dependencies or no `requiredComponents`
-    @discardableResult public func checkEntityForRequiredComponents() -> Bool {
-        
-        // FIXED: BUG: 201804029A: See comments for `GKEntity.componentOrRelay(ofType:)`
+    @discardableResult
+    public func checkEntityForRequiredComponents() -> Bool {
         
         // ℹ️ DESIGN: See description of `requiredComponents` for explanation about not halting execution on missing dependencies.
+        // FIXED: BUG: 201804029A: See comments for `GKEntity.componentOrRelay(ofType:)`
+        
+        #if LOGECSVERBOSE
+        debugLog("self: \(self)")
+        #endif
         
         guard let entity = self.entity else {
-            // If we have no `requiredComponents`, just return `true`.
-            // If we don't have an entity but have `requiredComponents`, then return `false` because code which checks for the return value probably uses it to say if the component has all dependencies or not.
+            // If we don't have an entity,
+            // and have requiredComponents: return `false`,
+            // but no requiredComponents: return `true`, because code which checks for the return value probably uses it to say if the component has all dependencies or not.
             return self.requiredComponents?.isEmpty ?? true
         }
         
         var hasMissingDependencies: Bool = false
         
-        self.requiredComponents?.forEach { requiredComponent in
+        self.requiredComponents?.forEach { requiredComponentType in
             
-            let match = self.coComponent(requiredComponent)
+            #if LOGECSVERBOSE
+            debugLog("requiredComponentType: \(requiredComponentType)")
+            #endif
+            
+            let match = self.coComponent(requiredComponentType)
             
             // Using `type(of: result)` instead of `GKComponent.componentType` may report `GKComponent` instead of the concrete subclass. See comments for `GKEntity.componentOrRelay(ofType:)`
             
-            if  match?.componentType != requiredComponent {
+            #if LOGECSVERBOSE
+            debugLog("match: \(match)")
+            #endif
+            
+            if  match?.componentType != requiredComponentType {
                 
-                OctopusKit.logForWarnings.add("\(entity) is missing a \(requiredComponent) (or a RelayComponent linked to it) which is required by \(self)")
+                OctopusKit.logForWarnings.add("\(entity) is missing a \(requiredComponentType) (or a RelayComponent linked to it) which is required by \(self)")
                 OctopusKit.logForTips.add("Check the order in which components are added. Ignore warning if entity has any substitutable components.")
                 
                 hasMissingDependencies = true
@@ -133,7 +147,7 @@ open class OctopusComponent: GKComponent {
         self.entity?.removeComponent(ofType: type(of: self))
     }
     
-    /// - Important: If a subclass overrides this method, then `super.willRemoveFromEntity()` MUST be called to ensure proper functionality, including clearing `shouldRemoveFromEntityOnDeinit`.
+    /// - IMPORTANT: If a subclass overrides this method, then `super.willRemoveFromEntity()` MUST be called to ensure proper functionality, including clearing `shouldRemoveFromEntityOnDeinit`.
     open override func willRemoveFromEntity() {
         OctopusKit.logForComponents.add("\(String(optional: entity)) ~ \(self)")
         
