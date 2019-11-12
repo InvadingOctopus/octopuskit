@@ -24,9 +24,15 @@ import GameplayKit
 /// - Note: Adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
 ///
 /// **Dependencies:** `SpriteKitSceneComponent`
+///
+/// - IMPORTANT: BUG: Xcode 11.2 has a bug in its version of Swift, which will cause a fatal runtime crash wherever `OctopusGestureRecognizerComponent<GestureRecognizerType>` is mentioned: "type metadata accessor failed to demangle superclass from mangled name"
 open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComponent, UIGestureRecognizerDelegate
     where GestureRecognizerType: UIGestureRecognizer
 {
+    
+    // ⚠️
+    // BUG 20191112A: APPLEBUG: Xcode 11.2 Runtime Error "type metadata accessor failed to demangle superclass from mangled name"
+    // https://forums.swift.org/t/xcode-11-2-runtime-error-type-metadata-accessor-failed-to-demangle-superclass-from-mangled-name/30604/9
     
     open override var requiredComponents: [GKComponent.Type]? {
         return [SpriteKitSceneComponent.self]
