@@ -167,6 +167,7 @@ open class OctopusScene: SKScene,
     /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OctopusViewController`.
     public var octopusSceneDelegate: OctopusSceneDelegate? {
         didSet {
+            // Cannot use `@LogChanges` because "Protocol type 'OctopusSceneDelegate' cannot conform to 'Equatable' because only concrete types can conform to protocols"
             OctopusKit.logForDebug.add("\(oldValue) → \(octopusSceneDelegate)")
         }
     }

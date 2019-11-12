@@ -80,11 +80,9 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     // ℹ️ NOTE: The system may send the same type of event (began, ended, etc.) multiple times during a single frame, each reporting different touches, so the `touches` array must be updated inside the event property observers, NOT inside the `update` method, because that could miss the beginning or end of some touches (if they are not reported in the latest event to be received during a frame.) 2018-07-17
     
-    public var touchesBegan: TouchEvent? {
+    @LogInputEventChanges(omitOldValue: true)
+    public var touchesBegan: TouchEvent? = nil {
         didSet {
-            #if LOGINPUTEVENTS
-            if touchesBegan != oldValue { debugLog("= \(touchesBegan)") }
-            #endif
             
             // Add new touches to our array.
             
@@ -101,13 +99,11 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChanges public var touchesMoved: TouchEvent?
+    @LogInputEventChanges(omitOldValue: true)
+    public var touchesMoved: TouchEvent? = nil
     
-    public var touchesEnded: TouchEvent? {
+    @LogInputEventChanges(omitOldValue: true) public var touchesEnded: TouchEvent? = nil {
         didSet {
-            #if LOGINPUTEVENTS
-            if touchesEnded != oldValue { debugLog("= \(touchesEnded)") }
-            #endif
             
             // Remove finished touches from our array.
             
@@ -123,11 +119,9 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    public var touchesCancelled: TouchEvent? {
+    @LogInputEventChanges(omitOldValue: true)
+    public var touchesCancelled: TouchEvent? = nil  {
         didSet {
-            #if LOGINPUTEVENTS
-            if touchesCancelled != oldValue { debugLog("= \(touchesCancelled)") }
-            #endif
             
             // Remove finished touches from our array.
             
@@ -143,7 +137,8 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChanges public var touchesEstimatedPropertiesUpdated: TouchEvent?
+    @LogInputEventChanges(omitOldValue: true)
+    public var touchesEstimatedPropertiesUpdated: TouchEvent? = nil
     
     /// Returns an array of all events for the current frame.
     ///

@@ -46,14 +46,11 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     /// The current state of player interaction with the entity's `SpriteKitComponent` node. See the descriptions for each case of `TouchStateComponent.TouchInteractionState`.
     ///
     /// Changing this property copies the old value to `previousState.`
+    @LogInputEventChanges
     public fileprivate(set) var state: NodeTouchState = .ready {
         didSet {
             // CHECK: PERFORMANCE: Will this observer degrade performance compared to just setting `previousState` in `update(deltaTime:)` etc.?
             if  state != oldValue { // Update only when changed.
-                
-                #if LOGINPUTEVENTS
-                debugLog("= \(oldValue) → \(state)")
-                #endif
                 
                 previousState = oldValue
                 stateChangedThisFrame = true
@@ -78,13 +75,10 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     // MARK: Touch
     
     /// Tracks a touch which began inside the entity's `SpriteKitComponent` node.
+    @LogInputEventChanges
     public fileprivate(set) var trackedTouch: UITouch? {
         didSet {
             if trackedTouch != oldValue { // Reset the timestamps only if we stopped tracking a touch or started tracking a different touch.
-                
-                #if LOGINPUTEVENTS
-                debugLog("= \(oldValue) → \(trackedTouch)")
-                #endif
                 
                 previousTouchTimestamp = 0
                 trackedTouchTimestampDelta = 0

@@ -42,13 +42,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     
     public var isPaused: Bool = false
     
-    public var isPanning: Bool = false {
-        didSet {
-            #if LOGINPUTEVENTS
-            if isPanning != oldValue { debugLog("= \(oldValue) → \(isPanning)") }
-            #endif
-        }
-    }
+    @LogInputEventChanges public var isPanning: Bool = false
     
     /// If `true`, the camera will slide for a distance depending on the panning velocity at the end of the gesture.
     public var isInertialScrollingEnabled: Bool
@@ -63,24 +57,12 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     /// By default this is `false`, when means panning up moves the camera *down*, but the scene's contents move up, which is the "natural" panning behavior and the OS default.
     public var invertYAxis: Bool
     
-    private var initialCameraPosition: CGPoint? {
-        didSet {
-            #if LOGINPUTEVENTS
-            if initialCameraPosition != oldValue { debugLog("= \(oldValue) → \(initialCameraPosition)") }
-            #endif
-        }
-    }
+    @LogInputEventChanges private var initialCameraPosition: CGPoint?
     
     /// A flag that indicates whether there is a gesture to process for the `update(deltaTime:)` method.
     ///
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
-    private var haveGestureToProcess: Bool = false {
-        didSet {
-            #if LOGINPUTEVENTS
-            if haveGestureToProcess != oldValue { debugLog("= \(oldValue) → \(haveGestureToProcess)") }
-            #endif
-        }
-    }
+    @LogInputEventChanges private var haveGestureToProcess: Bool = false
     
     // MARK: - Life Cycle
     

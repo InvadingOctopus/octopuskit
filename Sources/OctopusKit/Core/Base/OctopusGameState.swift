@@ -54,6 +54,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     /// This is read-only and is dynamically set by `OctopusGameState` to the incoming or outgoing scene as appropriate.
     public fileprivate(set) weak var delegate: OctopusGameStateDelegate? {
         didSet {
+            // Can't use @LogChanges because "Property with a wrapper cannot also be weak"
             OctopusKit.logForFramework.add("\(oldValue) → \(delegate)")
         }
     }

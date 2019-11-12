@@ -44,43 +44,19 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     
     public var isPaused: Bool = false
     
-    public var isDragging: Bool = false {
-        didSet {
-            #if LOGINPUTEVENTS
-            if isDragging != oldValue { debugLog("= \(oldValue) → \(isDragging)") }
-            #endif
-        }
-    }
+    @LogInputEventChanges public var isDragging: Bool = false
     
     /// If `true`, the node will slide for a distance depending on the panning velocity at the end of the gesture.
     public var isInertialScrollingEnabled: Bool
     
-    private var initialNodePosition: CGPoint? {
-        didSet {
-            #if LOGINPUTEVENTS
-            if initialNodePosition != oldValue { debugLog("= \(oldValue) → \(initialNodePosition)") }
-            #endif
-        }
-    }
+    @LogInputEventChanges private var initialNodePosition: CGPoint?
     
-    private var newNodePosition: CGPoint? {
-        didSet {
-            #if LOGINPUTEVENTS
-            if newNodePosition != oldValue { debugLog("= \(oldValue) → \(newNodePosition)") }
-            #endif
-        }
-    }
+    @LogInputEventChanges private var newNodePosition: CGPoint?
     
     /// A flag that indicates whether there is a gesture to process for the `update(deltaTime:)` method.
     ///
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
-    private var haveGestureToProcess: Bool = false {
-        didSet {
-            #if LOGINPUTEVENTS
-            if haveGestureToProcess != oldValue { debugLog("= \(oldValue) → \(haveGestureToProcess)") }
-            #endif
-        }
-    }
+    @LogInputEventChanges private var haveGestureToProcess: Bool = false
     
     // MARK: -
     

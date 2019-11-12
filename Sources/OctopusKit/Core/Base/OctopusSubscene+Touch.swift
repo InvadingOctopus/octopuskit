@@ -17,7 +17,7 @@ extension OctopusSubscene: TouchEventProvider {
     /// Relays touch-input events to the scene's `TouchEventComponent`.
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         debugLog()
         #endif
         
@@ -29,7 +29,7 @@ extension OctopusSubscene: TouchEventProvider {
     /// Relays touch-input events to the scene's `TouchEventComponent`.
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         debugLog()
         #endif
         
@@ -41,7 +41,7 @@ extension OctopusSubscene: TouchEventProvider {
     /// Relays touch-input events to the scene's `TouchEventComponent`.
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         debugLog()
         #endif
         
@@ -53,7 +53,7 @@ extension OctopusSubscene: TouchEventProvider {
     /// Relays touch-input events to the scene's `TouchEventComponent`.
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         debugLog()
         #endif
         
@@ -65,7 +65,7 @@ extension OctopusSubscene: TouchEventProvider {
     /// Relays touch-input events to the scene's `TouchEventComponent`.
     open override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
         
-        #if LOGINPUT
+        #if LOGINPUTEVENTS
         debugLog()
         #endif
         

@@ -52,6 +52,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         
     public weak var viewController: OctopusViewController? {
         didSet {
+            // Can't use @LogChanges because "Property with a wrapper cannot also be weak"
             OctopusKit.logForFramework.add("\(oldValue) → \(viewController)")
         }
     }

@@ -18,7 +18,11 @@ public struct LogInputEventChanges <ValueType: Equatable> {
     public var wrappedValue: ValueType {
         didSet {
             if  wrappedValue != oldValue {
-                debugLog("= \(oldValue) → \(wrappedValue)")
+                if  omitOldValue {
+                    debugLog("= \(wrappedValue)")
+                } else {
+                    debugLog("= \(oldValue) → \(wrappedValue)")
+                }
             }
         }
     }
@@ -26,7 +30,21 @@ public struct LogInputEventChanges <ValueType: Equatable> {
     public var wrappedValue: ValueType
     #endif
     
+    /// When `true`, the old (previous) value of properties is not printed when logging their changes.
+    let omitOldValue: Bool
+    
+    /// Adds a `didSet` observer which calls `debugLog(_:)` to print the new value and `oldValue` of the wrapped property when it changes.
+    /// - Parameters:
+    ///   - wrappedValue: The value to log changes for.
+    ///   - omitOldValue: Set this to `true` for properties whose old value does not matter when logging their changes.
+    public init(wrappedValue: ValueType, omitOldValue: Bool = false) {
+        self.wrappedValue = wrappedValue
+        self.omitOldValue = omitOldValue
+    }
+    
+    /// Adds a `didSet` observer which calls `debugLog(_:)` to print the new value and `oldValue` of the wrapped property when it changes.
     public init(wrappedValue: ValueType) {
         self.wrappedValue = wrappedValue
+        self.omitOldValue = false
     }
 }
