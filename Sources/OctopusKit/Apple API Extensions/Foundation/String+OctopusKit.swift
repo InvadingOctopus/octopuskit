@@ -12,13 +12,12 @@ import Foundation
 
 public extension String {
     
-    /// Creates a `String` containing the `description` of `optional`.
+    /// Creates a `String` containing the `description` of the `optional` value.
     ///
-    /// Produces cleaner string interpolation than the default behavior of printing optionals (sans the "Optional:" text).
+    /// Produces cleaner string interpolation than the default behavior of printing optionals by omitting the `"Optional(...)"` text.
     init(optional: Optional<Any>) {
-        /// Helps in removing the extremely annoying warning about "String interpolation produces a debug description for an optional value; did you mean to make this explicit?"
+        /// Helps in removing the warning about "String interpolation produces a debug description for an optional value; did you mean to make this explicit?"
         
-        // TODO: Remove when it may not be needed in a future Swift version, hopefully.
         switch optional {
         case .some(let value):  self.init(describing: value)
         case .none:             self.init(describing: optional)
@@ -99,7 +98,12 @@ extension DefaultStringInterpolation {
 
     /// Fixes the warnings about "String interpolation produces a debug description for an optional value; did you mean to make this explicit?"
     ///
-    /// May not always be desirable when a debug description for an optional value is needed.
+    /// When a debug description for an optional value is needed, use `String(describing:)`
+    mutating func appendInterpolation <T> (optional optionalValue: T?) {
+        appendInterpolation(String(optional: optionalValue))
+    }
+    
+    /// Shorthand for `"\(optional: someValue)"`
     mutating func appendInterpolation <T> (_ optionalValue: T?) {
         appendInterpolation(String(optional: optionalValue))
     }
