@@ -66,7 +66,7 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     private var initialCameraPosition: CGPoint? {
         didSet {
             #if LOGINPUTEVENTS
-            if initialCameraPosition != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: initialCameraPosition))") }
+            if initialCameraPosition != oldValue { debugLog("= \(oldValue) → \(initialCameraPosition)") }
             #endif
         }
     }

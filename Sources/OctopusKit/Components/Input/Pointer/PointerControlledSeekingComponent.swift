@@ -42,7 +42,7 @@ public final class PointerControlledSeekingComponent: OctopusComponent, OctopusU
             let targetPosition = latestEvent.location(in: parent) // TODO: Verify with nested nodes etc.
             
             #if LOGINPUTEVENTS
-            debugLog("\(String(optional: positionSeekingComponent.targetPosition))")
+            debugLog("\(positionSeekingComponent.targetPosition)")
             #endif
             
             positionSeekingComponent.isPaused = false // Unpause the component in case it was initially added with a `nil` position, which automatically pauses the goal otherwise it may orbit around `(0,0)`.

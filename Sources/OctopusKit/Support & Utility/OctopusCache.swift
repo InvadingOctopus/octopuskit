@@ -72,7 +72,7 @@ public final class OctopusCache<AssetKeyType: Hashable, AssetType> {
     public func printAssets() {
         OctopusKit.logForResources.add("assets.count = \(assets.count)")
         for key in assets.keys {
-            OctopusKit.logForResources.add("key = \(key), asset = \(String(optional: assets[key]))")
+            OctopusKit.logForResources.add("key = \(key), asset = \(assets[key])")
         }
     }
     

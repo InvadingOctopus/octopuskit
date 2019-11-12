@@ -25,7 +25,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
 
     @Published public var currentGameState: OctopusGameState? = nil {
         didSet {
-            OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: currentGameState))")
+            OctopusKit.logForFramework.add("\(oldValue) → \(currentGameState)")
         }
     }
     
@@ -43,7 +43,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
             if  let currentGameState = self.currentState as? OctopusGameState {
                 return currentGameState
             } else {
-                OctopusKit.logForWarnings.add("Cannot cast \(String(optional: currentState)) as OctopusGameState")
+                OctopusKit.logForWarnings.add("Cannot cast \(currentState) as OctopusGameState")
                 return nil
             }
         }
@@ -52,7 +52,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         
     public weak var viewController: OctopusViewController? {
         didSet {
-            OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: viewController))")
+            OctopusKit.logForFramework.add("\(oldValue) → \(viewController)")
         }
     }
     
@@ -62,7 +62,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
 
     @Published public var currentScene: OctopusScene? {
            didSet {
-               OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: currentScene))")
+               OctopusKit.logForFramework.add("\(oldValue) → \(currentScene)")
            }
        }
     
@@ -205,7 +205,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         // Even though GKStateMachine should handle the correct transitions between states, this coordinator should only initiate the initial state only once, just to be extra safe, and also as a flag for other classes to refer to if needed.
         
         guard !didEnterInitialState else {
-            OctopusKit.logForFramework.add("didEnterInitialState already set. currentState: \(String(optional: currentState))")
+            OctopusKit.logForFramework.add("didEnterInitialState already set. currentState: \(currentState)")
             return false
         }
         

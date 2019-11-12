@@ -96,9 +96,9 @@ open class OctopusViewController: OSViewController {
     open override func viewDidLoad() {
         
         #if canImport(UIKit)
-        OctopusKit.logForFramework.add("view.frame = \(String(optional: self.view?.frame))")
+        OctopusKit.logForFramework.add("view.frame = \(self.view?.frame)")
         #elseif canImport(AppKit)
-        OctopusKit.logForFramework.add("view.frame = \(String(optional: self.view.frame))")
+        OctopusKit.logForFramework.add("view.frame = \(self.view.frame)")
         #endif
         
         super.viewDidLoad()

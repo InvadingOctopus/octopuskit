@@ -54,7 +54,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         public fileprivate(set) var shouldClear: Bool = false
         
         public var description: String {
-            return "\(String(optional: event))"
+            return "\(event)"
         }
         
         public static func == (left: TouchEvent, right: TouchEvent) -> Bool {
@@ -83,7 +83,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     public var touchesBegan: TouchEvent? {
         didSet {
             #if LOGINPUTEVENTS
-            if touchesBegan != oldValue { debugLog("= \(String(optional: touchesBegan))") }
+            if touchesBegan != oldValue { debugLog("= \(touchesBegan)") }
             #endif
             
             // Add new touches to our array.
@@ -106,7 +106,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     public var touchesEnded: TouchEvent? {
         didSet {
             #if LOGINPUTEVENTS
-            if touchesEnded != oldValue { debugLog("= \(String(optional: touchesEnded))") }
+            if touchesEnded != oldValue { debugLog("= \(touchesEnded)") }
             #endif
             
             // Remove finished touches from our array.
@@ -126,7 +126,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     public var touchesCancelled: TouchEvent? {
         didSet {
             #if LOGINPUTEVENTS
-            if touchesCancelled != oldValue { debugLog("= \(String(optional: touchesCancelled))") }
+            if touchesCancelled != oldValue { debugLog("= \(touchesCancelled)") }
             #endif
             
             // Remove finished touches from our array.

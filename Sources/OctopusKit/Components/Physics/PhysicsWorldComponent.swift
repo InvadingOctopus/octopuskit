@@ -23,7 +23,7 @@ public final class PhysicsWorldComponent: OctopusComponent {
         super.didAddToEntity()
         
         guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene  else {
-            OctopusKit.logForWarnings.add("\(String(optional: entity)) missing SpriteKitSceneComponent – Cannot assign physicsWorld")
+            OctopusKit.logForWarnings.add("\(entity) missing SpriteKitSceneComponent – Cannot assign physicsWorld")
             return
         }
         

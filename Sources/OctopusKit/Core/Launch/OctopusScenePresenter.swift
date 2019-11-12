@@ -94,7 +94,7 @@ public extension OctopusScenePresenter {
         
         let transition = transitionOverride ?? self.currentScene?.transition(for: type(of: incomingScene))
         
-        OctopusKit.logForFramework.add("\(String(optional: self.currentScene)) → [\(String(optional: transition))] → \(incomingScene)")
+        OctopusKit.logForFramework.add("\(self.currentScene) → [\(transition)] → \(incomingScene)")
         
         // If the specified scene is already the current scene (as may be the case for scenes that handle multiple states, such as playing and paused) just set its delegate to the current state and return.
 
@@ -126,7 +126,7 @@ public extension OctopusScenePresenter {
         if spriteKitView.scene is OctopusScene {
             self.currentScene = incomingScene
         } else {
-            OctopusKit.logForErrors.add("Cannot cast spriteKitView.scene as OctopusScene: \(String(optional: spriteKitView.scene))")
+            OctopusKit.logForErrors.add("Cannot cast spriteKitView.scene as OctopusScene: \(spriteKitView.scene)")
         }
 
     }

@@ -15,7 +15,7 @@ public struct LogChanges <ValueType: Equatable> {
     public var wrappedValue: ValueType {
         didSet {
             if wrappedValue != oldValue {
-                debugLog("= \(oldValue) → \(String(optional: wrappedValue))")
+                debugLog("= \(oldValue) → \(wrappedValue)")
             }
         }
     }

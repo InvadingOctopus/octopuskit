@@ -55,7 +55,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
         public fileprivate(set) var shouldClear: Bool = false
         
         public var description: String {
-            return "\(String(optional: event))"
+            return "\(event)"
         }
         
         public static func == (left: MouseEvent, right: MouseEvent) -> Bool {
@@ -81,7 +81,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     public var mouseDown: MouseEvent? {
         didSet {
             #if LOGINPUTEVENTS
-            if mouseDown != oldValue { debugLog("= \(String(optional: mouseDown))") }
+            if mouseDown != oldValue { debugLog("= \(mouseDown)") }
             #endif
         }
     }
@@ -89,7 +89,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     public var mouseDragged: MouseEvent? {
         didSet {
             #if LOGINPUTEVENTS
-            if mouseDragged != oldValue { debugLog("= \(String(optional: mouseDragged))") }
+            if mouseDragged != oldValue { debugLog("= \(mouseDragged)") }
             #endif
         }
     }
@@ -97,7 +97,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     public var mouseUp: MouseEvent? {
         didSet {
             #if LOGINPUTEVENTS
-            if mouseUp != oldValue { debugLog("= \(String(optional: mouseUp))") }
+            if mouseUp != oldValue { debugLog("= \(mouseUp)") }
             #endif
         }
     }
@@ -105,7 +105,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     public var mouseExited: MouseEvent? {
         didSet {
             #if LOGINPUTEVENTS
-            if mouseExited != oldValue { debugLog("= \(String(optional: mouseExited))") }
+            if mouseExited != oldValue { debugLog("= \(mouseExited)") }
             #endif
         }
     }

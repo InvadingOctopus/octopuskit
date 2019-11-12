@@ -95,7 +95,7 @@ open class OctopusAgentGoalComponent: OctopusComponent {
     open func applyGoalToAgent() {
         
         guard let agent = self.agent else {
-            OctopusKit.logForWarnings.add("\(String(optional: entity)) missing OctopusAgent2D")
+            OctopusKit.logForWarnings.add("\(entity) missing OctopusAgent2D")
             return
         }
         

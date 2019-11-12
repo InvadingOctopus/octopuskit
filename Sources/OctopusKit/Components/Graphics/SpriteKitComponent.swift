@@ -55,7 +55,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
     }
     
     public override func didAddToEntity() {
-        OctopusKit.logForComponents.add("\(String(optional: entity)) ← \(self) \(super.node)")
+        OctopusKit.logForComponents.add("\(entity) ← \(self) \(super.node)")
         
         // Does our node already has a different entity? Check this before calling `super` which may set the node's `entity` property to ours.
         
@@ -64,7 +64,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
             let nodeEntity = self.node.entity,
             nodeEntity !== entity
         {
-            OctopusKit.logForWarnings.add("\(self.node)'s entity is \(nodeEntity), but \(self)'s entity is \(String(optional: self.entity))")
+            OctopusKit.logForWarnings.add("\(self.node)'s entity is \(nodeEntity), but \(self)'s entity is \(self.entity)")
         }
         
         super.didAddToEntity()
@@ -115,7 +115,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
     }
     
     public override func willRemoveFromEntity() {
-        OctopusKit.logForComponents.add("\(String(optional: entity)) ~ \(self) \(super.node)")
+        OctopusKit.logForComponents.add("\(entity) ~ \(self) \(super.node)")
         
         // Warn if our node somehow ended up in a different entity by now. Check this before calling `super` which may set the node's `entity` property to `nil`.
         
@@ -124,7 +124,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
             let nodeEntity = self.node.entity,
             nodeEntity !== entity
         {
-            OctopusKit.logForWarnings.add("\(self.node)'s entity is \(nodeEntity), but \(self)'s entity is \(String(optional: self.entity))")
+            OctopusKit.logForWarnings.add("\(self.node)'s entity is \(nodeEntity), but \(self)'s entity is \(self.entity)")
         }
         
         super.willRemoveFromEntity()

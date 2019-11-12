@@ -48,7 +48,7 @@ public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComp
         super.didAddToEntity()
         
         guard let scene = self.entity?.node as? SKScene else {
-            OctopusKit.logForWarnings.add("Entity \(String(optional: self.entity)) is not a scene — This component may not automatically receive physics events!")
+            OctopusKit.logForWarnings.add("Entity \(self.entity) is not a scene — This component may not automatically receive physics events!")
             return
         }
         

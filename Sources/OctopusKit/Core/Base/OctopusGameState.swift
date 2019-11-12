@@ -54,7 +54,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     /// This is read-only and is dynamically set by `OctopusGameState` to the incoming or outgoing scene as appropriate.
     public fileprivate(set) weak var delegate: OctopusGameStateDelegate? {
         didSet {
-            OctopusKit.logForFramework.add("\(String(optional: oldValue)) → \(String(optional: delegate))")
+            OctopusKit.logForFramework.add("\(oldValue) → \(delegate)")
         }
     }
     
@@ -94,7 +94,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     /// - Important: When overriding in a subclass, take care of when you call `super.didEnter(from:)` as that affects when the current `OctopusScene` is notified via `gameCoordinatorDidEnterState(_:from:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
     open override func didEnter(from previousState: GKState?) {
         
-        OctopusKit.logForStates.add("\(String(optional: previousState)) → \(self)")
+        OctopusKit.logForStates.add("\(previousState) → \(self)")
         super.didEnter(from: previousState)
         
         // ℹ️ DESIGN: Should the scene presentation be an optional step to be decided by the subclass? — No: A state should always display its associated scene, but the logic for deciding whether to enter an state should be made in `isValidNextState(_:)`.
@@ -163,7 +163,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
         // Notify our delegate, to let it perform any outgoing animations etc., or in case the game uses a single scene for multiple states (e.g. displaying an overlay for the paused state, menus, etc. on the gameplay view.)
         
         if gameCoordinator?.currentScene !== self.delegate {
-            OctopusKit.logForWarnings.add("gameCoordinator?.currentScene: \(String(optional: gameCoordinator?.currentScene)) !== self.delegate: \(String(optional: self.delegate))")
+            OctopusKit.logForWarnings.add("gameCoordinator?.currentScene: \(gameCoordinator?.currentScene) !== self.delegate: \(self.delegate)")
         }
         
         self.delegate?.gameCoordinatorWillExitState(self, to: nextState)

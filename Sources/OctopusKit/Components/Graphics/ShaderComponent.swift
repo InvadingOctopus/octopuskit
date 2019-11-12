@@ -97,7 +97,7 @@ public final class ShaderComponent: OctopusComponent {
             
         else if self.shader != nil && node.shader != nil && self.shader !== node.shader {
             
-            OctopusKit.logForWarnings.add("Mismatching shaders: \(self) has \(String(optional: self.shader)), \(node.name ?? String(describing: node)) has \(String(optional: node.shader)) — Replacing node's shader")
+            OctopusKit.logForWarnings.add("Mismatching shaders: \(self) has \(self.shader), \(node.name ?? String(describing: node)) has \(node.shader) — Replacing node's shader")
             
             node.shader = self.shader
         }

@@ -90,7 +90,7 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         #if LOGINPUTEVENTS
         let previousTouchLocation = trackedTouch.previousLocation(in: parent)
         let touchLocationDelta = currentTouchLocation - previousTouchLocation
-        debugLog("trackedTouch.location in node parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(String(optional: nodeTouchComponent.touchTranslationInParent))")
+        debugLog("trackedTouch.location in node parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(nodeTouchComponent.touchTranslationInParent)")
         #endif
         
         let currentTouchState = nodeTouchComponent.state

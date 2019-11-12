@@ -58,7 +58,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     private var initialNodePosition: CGPoint? {
         didSet {
             #if LOGINPUTEVENTS
-            if initialNodePosition != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: initialNodePosition))") }
+            if initialNodePosition != oldValue { debugLog("= \(oldValue) → \(initialNodePosition)") }
             #endif
         }
     }
@@ -66,7 +66,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     private var newNodePosition: CGPoint? {
         didSet {
             #if LOGINPUTEVENTS
-            if newNodePosition != oldValue { debugLog("= \(String(optional: oldValue)) → \(String(optional: newNodePosition))") }
+            if newNodePosition != oldValue { debugLog("= \(oldValue) → \(newNodePosition)") }
             #endif
         }
     }
@@ -166,7 +166,7 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
         let currentTouchLocation = trackedTouch.location(in: parent)
         let previousTouchLocation = trackedTouch.previousLocation(in: parent)
         let touchLocationDelta = currentTouchLocation - previousTouchLocation
-        debugLog("trackedTouch.location in parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(String(optional: nodeTouchComponent.touchTranslationInParent))")
+        debugLog("trackedTouch.location in parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(nodeTouchComponent.touchTranslationInParent)")
         #endif
         
         // PERFORMANCE: Cache the touch component's properties locally so that we don't have to query another class's properties too much. CHECK: Should this be the job of the compiler?

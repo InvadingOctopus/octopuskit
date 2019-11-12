@@ -64,7 +64,7 @@ open class OctopusComponent: GKComponent {
     
     /// - IMPORTANT: If a subclass overrides this method, then `super.didAddToEntity()` *MUST* be called to ensure proper functionality, e.g. to check for dependencies on other components and to set `shouldRemoveFromEntityOnDeinit = true`.
     open override func didAddToEntity() {
-        OctopusKit.logForComponents.add("\(String(optional: entity)) ← \(self)")
+        OctopusKit.logForComponents.add("\(entity) ← \(self)")
         super.didAddToEntity()
         guard self.entity != nil else { fatalError("entity not set") }
         
@@ -149,7 +149,7 @@ open class OctopusComponent: GKComponent {
     
     /// - IMPORTANT: If a subclass overrides this method, then `super.willRemoveFromEntity()` MUST be called to ensure proper functionality, including clearing `shouldRemoveFromEntityOnDeinit`.
     open override func willRemoveFromEntity() {
-        OctopusKit.logForComponents.add("\(String(optional: entity)) ~ \(self)")
+        OctopusKit.logForComponents.add("\(entity) ~ \(self)")
         
         super.willRemoveFromEntity()
         guard self.entity != nil else { return }

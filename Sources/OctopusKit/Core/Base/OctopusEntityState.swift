@@ -49,7 +49,7 @@ open class OctopusEntityState: GKState {
     /// - IMPORTANT: `super.didEnter(from: previousState)` must be called to add `componentsToAddOnEntry`.
     open override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
-        OctopusKit.logForStates.add("\"\(String(optional: entity.name))\" \(String(optional: previousState)) → \(self)")
+        OctopusKit.logForStates.add("\"\(entity.name)\" \(previousState) → \(self)")
         
         if let componentsToAddOnEntry = self.componentsToAddOnEntry {
             // TODO: Add count check?
@@ -60,7 +60,7 @@ open class OctopusEntityState: GKState {
     /// - IMPORTANT: `super.willExit(to: nextState)` must be called to remove `componentTypesToRemoveOnExit`.
     open override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
-        OctopusKit.logForStates.add("\"\(String(optional: entity.name))\" \(self) → \(nextState)")
+        OctopusKit.logForStates.add("\"\(entity.name)\" \(self) → \(nextState)")
         
         if let componentTypesToRemoveOnExit = self.componentTypesToRemoveOnExit {
             // TODO: Add count check?

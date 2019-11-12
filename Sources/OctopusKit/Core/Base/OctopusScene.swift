@@ -167,7 +167,7 @@ open class OctopusScene: SKScene,
     /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OctopusViewController`.
     public var octopusSceneDelegate: OctopusSceneDelegate? {
         didSet {
-            OctopusKit.logForDebug.add("\(String(optional: oldValue)) → \(String(optional: octopusSceneDelegate))")
+            OctopusKit.logForDebug.add("\(oldValue) → \(octopusSceneDelegate)")
         }
     }
     
@@ -176,7 +176,7 @@ open class OctopusScene: SKScene,
     
     /// Debugging information.
     open override var description: String {
-        return "\"\(name == nil ? "" : name!)\" frame = \(frame) size = \(size) anchor = \(anchorPoint) view.frame.size = \(String(optional: view?.frame.size))"
+        return "\"\(name == nil ? "" : name!)\" frame = \(frame) size = \(size) anchor = \(anchorPoint) view.frame.size = \(view?.frame.size)"
     }
     
     // MARK: - Life Cycle
@@ -301,7 +301,7 @@ open class OctopusScene: SKScene,
     }
     
     deinit {
-        OctopusKit.logForDeinits.add("\"\(String(optional: self.name))\" secondsElapsedSinceMovedToView = \(String(optional: secondsElapsedSinceMovedToView)), lastUpdateTime = \(String(optional: lastUpdateTime))")
+        OctopusKit.logForDeinits.add("\"\(self.name)\" secondsElapsedSinceMovedToView = \(secondsElapsedSinceMovedToView), lastUpdateTime = \(lastUpdateTime)")
     }
     
     // MARK: - Game State
@@ -310,7 +310,7 @@ open class OctopusScene: SKScene,
     ///
     /// Call `super` to add default logging.
     open func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?) {
-        OctopusKit.logForStates.add("\(String(optional: previousState)) → \(String(optional: state))")
+        OctopusKit.logForStates.add("\(previousState) → \(state)")
     }
     
     /// Called by `OctopusGameState`. To be overridden by a subclass if this same scene is used for different game states, e.g. to remove visual overlays that were presented during a paused or "game over" state.
@@ -692,7 +692,7 @@ open class OctopusScene: SKScene,
         
         let parent = parent ?? self.camera ?? self
         
-        OctopusKit.logForFramework.add("\(subscene) on \(parent) at zPosition \(String(optional: zPosition))")
+        OctopusKit.logForFramework.add("\(subscene) on \(parent) at zPosition \(zPosition)")
         
         // Set the subscene's properties.
         
@@ -736,7 +736,7 @@ open class OctopusScene: SKScene,
     open func subsceneDidFinish(_ subscene: OctopusSubscene,
                                   withResult result: OctopusSubsceneResultType?)
     {
-        OctopusKit.logForFramework.add("\(subscene) result = \(String(optional: result))")
+        OctopusKit.logForFramework.add("\(subscene) result = \(result)")
         
         if let index = self.subscenes.firstIndex(of: subscene) {
             self.subscenes.remove(at: index) // ⚠️ CHECK: Will this cause a mutating-while-enumerating exception?

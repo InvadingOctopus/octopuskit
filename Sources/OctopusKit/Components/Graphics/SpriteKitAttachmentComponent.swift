@@ -62,7 +62,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponen
     
     /// `super` must be called by overriding subclass for proper functionality. Adds `attachment` as a child of the `node` specified by the `SpriteKitComponent`.
     open override func didAddToEntity(withNode node: SKNode) {
-        OctopusKit.logForComponents.add("\(node) ← \(String(optional: attachment))")
+        OctopusKit.logForComponents.add("\(node) ← \(attachment)")
         
         // Warn if the overridden parent is not a child of this component's entity's node.
         
@@ -73,7 +73,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponen
             !node.children.contains(parentOverride)
                 && parentOverride != node // Skip warning if the `parentOverride` IS the node. This will be the case in situations like `parentOverride = scene.camera ?? scene` where a child node is added to a scene's camera if there is one, otherwise to the scene itself.
         {
-            OctopusKit.logForWarnings.add("The specified parentOverride \(parentOverride) is not a child of \(String(optional: entity))'s node: \(node)")
+            OctopusKit.logForWarnings.add("The specified parentOverride \(parentOverride) is not a child of \(entity)'s node: \(node)")
         }
         
         // Allow the subclass to conveniently create an attachment by simply overriding `createAttachment(for:)`.
@@ -168,13 +168,13 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponen
             attachment.parent != nil
             else { return }
         
-        OctopusKit.logForComponents.add("\(node) ~ \(String(optional: attachment))")
+        OctopusKit.logForComponents.add("\(node) ~ \(attachment)")
         
         // If a separate parent was not specified, assume the entity's `SpriteKitComponent` node to be the rightful parent.
         let parent = self.parentOverride ?? node
         
         if attachment.parent !== parent {
-            OctopusKit.logForWarnings.add("\(attachment) was not a child of \(parent) — Removing from \(String(optional: attachment.parent))")
+            OctopusKit.logForWarnings.add("\(attachment) was not a child of \(parent) — Removing from \(attachment.parent)")
         }
         
         // Since the removal of a component carries the expectation that the component's behavior will no longer be present, remove the attachment from any parent, even if the parent wasn't the expected node.

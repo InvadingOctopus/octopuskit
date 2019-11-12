@@ -83,7 +83,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
             if trackedTouch != oldValue { // Reset the timestamps only if we stopped tracking a touch or started tracking a different touch.
                 
                 #if LOGINPUTEVENTS
-                debugLog("= \(String(optional: oldValue)) → \(String(optional: trackedTouch))")
+                debugLog("= \(oldValue) → \(trackedTouch)")
                 #endif
                 
                 previousTouchTimestamp = 0

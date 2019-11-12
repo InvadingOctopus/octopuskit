@@ -126,7 +126,7 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
             
         else if self.physicsBody != nil && node.physicsBody != nil && self.physicsBody !== node.physicsBody {
             
-            OctopusKit.logForWarnings.add("Mismatching bodies: \(self) has \(String(optional: self.physicsBody)), \(node.name ?? String(describing: node)) has \(String(optional: node.physicsBody)) — Replacing node's body")
+            OctopusKit.logForWarnings.add("Mismatching bodies: \(self) has \(self.physicsBody), \(node.name ?? String(describing: node)) has \(node.physicsBody) — Replacing node's body")
             
             node.physicsBody = self.physicsBody
         }

@@ -53,7 +53,7 @@ open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComp
         super.didAddToEntity(withNode: node)
         
         guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene else {
-            OctopusKit.logForWarnings.add("\(String(optional: entity)) missing SpriteKitSceneComponent — Detaching")
+            OctopusKit.logForWarnings.add("\(entity) missing SpriteKitSceneComponent — Detaching")
             self.removeFromEntity()
             return
         }
@@ -71,7 +71,7 @@ open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComp
         super.willRemoveFromEntity(withNode: node)
         
         guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene else {
-            OctopusKit.logForWarnings.add("\(String(optional: entity)) missing SpriteKitSceneComponent — Detaching")
+            OctopusKit.logForWarnings.add("\(entity) missing SpriteKitSceneComponent — Detaching")
             self.removeFromEntity()
             return
         }

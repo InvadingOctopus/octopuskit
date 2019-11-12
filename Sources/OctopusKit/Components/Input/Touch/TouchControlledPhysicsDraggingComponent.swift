@@ -76,7 +76,7 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
         #if LOGINPUTEVENTS
         let previousTouchLocation = trackedTouch.previousLocation(in: parent)
         let touchLocationDelta = currentTouchLocation - previousTouchLocation
-        debugLog("trackedTouch.location in parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(String(optional: nodeTouchComponent.touchTranslationInParent))")
+        debugLog("trackedTouch.location in parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(nodeTouchComponent.touchTranslationInParent)")
         #endif
         
         // #2: Move the node's physics body.
