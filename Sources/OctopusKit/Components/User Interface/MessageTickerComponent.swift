@@ -37,7 +37,7 @@ public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>,
     public var backgroundDefaultAlpha: CGFloat = 0.6 {
         didSet {
             guard let background = entityNode else { return }
-            if background.isHidden == false {
+            if  background.isHidden == false {
                 background.alpha = backgroundDefaultAlpha
             }
         }

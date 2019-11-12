@@ -32,9 +32,8 @@ public final class TextureAnimationComponent: OctopusComponent {
     
     public var frames: [SKTexture] {
         didSet {
-            if frames != oldValue {
-                if !frames.isEmpty { updateAnimation() }
-                else { stopAnimation() }
+            if  frames != oldValue {
+                frames.isEmpty ? stopAnimation() : updateAnimation()
             }
         }
     }

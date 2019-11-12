@@ -46,7 +46,7 @@ public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<S
     /// Resets and regenerates the contents when modified.
     public var noise: GKNoise {
         didSet {
-            if noise != oldValue { // Avoid redundancy.
+            if  noise != oldValue { // Avoid redundancy.
                 recreateAttachmentForCurrentParent()
             }
         }

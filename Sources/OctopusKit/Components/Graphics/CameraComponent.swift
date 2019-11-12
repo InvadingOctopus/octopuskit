@@ -23,7 +23,7 @@ public final class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
     
     public var camera: SKCameraNode {
         didSet {
-            if camera != oldValue { // Avoid redundancy.
+            if  camera != oldValue { // Avoid redundancy.
                 super.recreateAttachmentForCurrentParent()
             }
         }
@@ -52,7 +52,7 @@ public final class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
     /// - To properly ensure that the constraints are correctly updated after the camera's scale is changed, call `resetBoundsConstraint()`.
     public var insetBoundsByScreenSize: Bool {
         didSet {
-            if   insetBoundsByScreenSize != oldValue { // Avoid redundant processing.
+            if  insetBoundsByScreenSize != oldValue { // Avoid redundant processing.
                 resetBoundsConstraint()
             }
         }

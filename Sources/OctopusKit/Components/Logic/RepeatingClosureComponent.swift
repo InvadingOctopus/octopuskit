@@ -43,7 +43,7 @@ open class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponen
     /// - NOTE: When this property is modified, the repetition counter is reset to `0`.
     open var framesToStopAfter: UInt64? {
         didSet {
-            if framesToStopAfter != oldValue { // Reset only when the value actually changes.
+            if  framesToStopAfter != oldValue { // Reset only when the value actually changes.
                 self.repetitionCounter = 0
             }
         }

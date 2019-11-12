@@ -17,7 +17,7 @@ public struct LogInputEventChanges <ValueType: Equatable> {
     #if LOGINPUTEVENTS
     public var wrappedValue: ValueType {
         didSet {
-            if wrappedValue != oldValue {
+            if  wrappedValue != oldValue {
                 debugLog("= \(oldValue) → \(wrappedValue)")
             }
         }

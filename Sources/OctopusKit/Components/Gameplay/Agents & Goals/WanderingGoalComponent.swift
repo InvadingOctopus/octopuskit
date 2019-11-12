@@ -20,7 +20,7 @@ public final class WanderingGoalComponent: OctopusAgentGoalComponent {
     /// When this value is modified, a new goal is created with the new speed.
     public var speedToMaintain: Float {
         didSet {
-            if speedToMaintain != oldValue { // Avoid redundancy
+            if  speedToMaintain != oldValue { // Avoid redundancy
                 recreateAndReapplyGoal()
             }
         }

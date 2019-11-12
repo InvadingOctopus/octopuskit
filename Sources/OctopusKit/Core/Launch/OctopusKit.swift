@@ -42,7 +42,7 @@ public final class OctopusKit {
             guard oldValue == nil else {
                 fatalError("OctopusKit: OctopusKit.shared set again after the singleton has already been initialized.")
             }
-            if let singleton = OctopusKit.shared {
+            if  let singleton = OctopusKit.shared {
                 OctopusKit.logForFramework.add("\(singleton) initialized.")
             }
         }

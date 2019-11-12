@@ -24,7 +24,7 @@ public final class BadgeComponent: SpriteKitAttachmentComponent<SKNode> {
     /// The edge or corner to display the badge in. Only compass directions are valid for this component.
     public var placement: OctopusDirection {
         didSet {
-            if placement != oldValue { // Avoid redundancy.
+            if  placement != oldValue { // Avoid redundancy.
                 positionBadge()
             }
         }

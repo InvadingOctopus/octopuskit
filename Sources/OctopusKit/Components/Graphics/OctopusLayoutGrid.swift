@@ -20,10 +20,10 @@ public final class OctopusLayoutGridCell: SKNode {
     public var background: SKSpriteNode? {
         didSet {
             // Remove the old background anyway even if nil is passed.
-            if let previousBackground = oldValue {
+            if  let previousBackground = oldValue {
                 previousBackground.removeFromParent()
             }
-            if let newBackground = background {
+            if  let newBackground = background {
                 self.addChild(newBackground)
             }
         }

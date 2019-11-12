@@ -34,7 +34,7 @@ public final class ShaderComponent: OctopusComponent {
                     
                 // Otherwise, if our shader was set to `nil`, then set the node's shader to `nil` as well, as this would be the expected behavior of modifying the `ShaderComponent` of an entity with an existing node.
                 else if self.shader == nil {
-                    node.shader = nil
+                     node.shader = nil
                 }
             }
         }

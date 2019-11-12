@@ -18,7 +18,7 @@ public final class ObstacleAvoidanceGoalComponent: OctopusAgentGoalComponent {
     /// When this value is modified, a new goal is created with the new obstacles. If `obstacles` is set to `nil` then the goal is removed from the agent.
     public var obstacles: [GKObstacle]? {
         didSet {
-            if obstacles != oldValue { // Avoid redundancy.
+            if  obstacles != oldValue { // Avoid redundancy.
                 obstacles == nil ? removeGoalFromAgent() : recreateAndReapplyGoal()
             }
         }
@@ -31,7 +31,7 @@ public final class ObstacleAvoidanceGoalComponent: OctopusAgentGoalComponent {
     /// When this value is modified, a new goal is created with the new property.
     public var maxPredictionTime: TimeInterval {
         didSet {
-            if maxPredictionTime != oldValue { // Avoid redundancy.
+            if  maxPredictionTime != oldValue { // Avoid redundancy.
                 recreateAndReapplyGoal()
             }
         }

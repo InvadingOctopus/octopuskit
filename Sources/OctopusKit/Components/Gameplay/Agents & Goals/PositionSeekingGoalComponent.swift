@@ -27,21 +27,21 @@ public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
     /// If you want the agent to only face the target, set the agent's speed properties to `0`.
     public var targetPosition: CGPoint? {
         didSet {
-            if targetPosition != oldValue { // Avoid recursion or redundant calls.
+            if  targetPosition != oldValue { // Avoid recursion or redundant calls.
 
-                if let targetPosition = self.targetPosition {
+                if  let targetPosition = self.targetPosition {
                     targetAgent.position = SIMD2<Float>(targetPosition)
                     
                     // ⚠️ NOTE: If this component is added with an initial `targetPosition == nil` then it is automatically paused. In that case, it must be manually unpaused before it can take effect!
-                    if isPaused && oldValue == nil {
+                    if  isPaused && oldValue == nil {
                         OctopusKit.logForDebug.add("Possible mistake: targetPosition was set but goal isPaused.")
                     }
                     
                     // CHECK: Should `unbrake()` depend on `isPaused` and/or `brakeOnNilTarget`, or always called?
                     
                     if !isPaused { unbrake() }
-                }
-                else {
+                
+                } else {
                     // If there is no position to track, then pause this goal, otherwise the agent may keep orbiting the last target.
                     isPaused = true
                     // If `brakeOnNilTarget` is set, then decrease the agent's speed towards `0`.

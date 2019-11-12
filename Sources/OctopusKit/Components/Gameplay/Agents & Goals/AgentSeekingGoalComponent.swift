@@ -20,7 +20,7 @@ public final class AgentSeekingGoalComponent: OctopusAgentGoalComponent {
     /// When this value is modified, a new goal is created with the new target. If `targetAgent` is set to `nil` then the goal is removed from the agent.
     public var targetAgent: OctopusAgent2D? {
         didSet {
-            if targetAgent != oldValue { // Avoid redundancy.
+            if  targetAgent != oldValue { // Avoid redundancy.
                 targetAgent == nil ? removeGoalFromAgent() : recreateAndReapplyGoal()
             }
         }

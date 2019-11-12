@@ -24,7 +24,7 @@ public final class SpeedGoalComponent: OctopusAgentGoalComponent {
     /// When this value is modified, a new goal is created with the new speed.
     public var targetSpeed: Float {
         didSet {
-            if targetSpeed != oldValue { // Avoid redundancy
+            if  targetSpeed != oldValue { // Avoid redundancy
                 recreateAndReapplyGoal()
             }
         }

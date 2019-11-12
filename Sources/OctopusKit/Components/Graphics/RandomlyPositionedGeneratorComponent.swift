@@ -47,7 +47,7 @@ public final class RandomlyPositionedGeneratorComponent: SpriteKitAttachmentComp
     /// Resets and regenerates the contents when set.
     public var numberOfNodes: Int {
         didSet {
-            if numberOfNodes != oldValue { // Avoid redundancy.
+            if  numberOfNodes != oldValue { // Avoid redundancy.
                 recreateAttachmentForCurrentParent()
             }
         }
