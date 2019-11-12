@@ -1,6 +1,6 @@
 //
 //  OctopusKitLaunchTests.swift
-//  OctopusKit Tests
+//  OctopusKitTests
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/10/30.
 //

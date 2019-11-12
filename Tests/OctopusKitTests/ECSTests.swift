@@ -1,6 +1,6 @@
 //
 //  ECSTests.swift
-//  OctopusKit Tests
+//  OctopusKitTests
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/5.
 //
