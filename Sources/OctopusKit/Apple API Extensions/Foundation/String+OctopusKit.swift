@@ -20,10 +20,8 @@ public extension String {
         
         // TODO: Remove when it may not be needed in a future Swift version, hopefully.
         switch optional {
-        case .some(let value):
-            self.init(describing: value)
-        case .none:
-            self.init(describing: optional)
+        case .some(let value):  self.init(describing: value)
+        case .none:             self.init(describing: optional)
         }
     }
     
@@ -40,15 +38,18 @@ public extension String {
         /// Returns the string concatenated so far when an empty or missing string is passed as the argument.
         func concatenator(addString stringToAdd: String? = nil) -> String {
             
-            if let string = stringToAdd {
-                if string == "" {
+            if  let string = stringToAdd {
+                
+                if  string == "" {
                     return concatenatedString
-                } else {
-                    if concatenatedString != "" {
+                
+                }   else {
+                
+                    if  concatenatedString != "" {
                         concatenatedString += separator
                     }
-                    concatenatedString += stringToAdd!
                     
+                    concatenatedString += stringToAdd!
                 }
             }
             
@@ -58,8 +59,8 @@ public extension String {
         return concatenator
     }
     
-    /// Generates and returns a function that concatenates strings in the order they're sent, with a separator that may be overriden per each call.
-    static func createConcatenatorWithOverrideableSeparator(withDefaultSeparator defaultSeparator: String = ", ")
+    /// Generates and returns a function that concatenates strings in the order they're sent, with a separator that may be overridden per each call.
+    static func createConcatenatorWithOverridableSeparator(withDefaultSeparator defaultSeparator: String = ", ")
         -> (String?, String?) -> String
     {
         // CHECK: Is this method useful or is it too weird and not compatible with Swift idioms?
@@ -71,15 +72,18 @@ public extension String {
         /// Returns the string concatenated so far when an empty or missing string is passed as the argument.
         func concatenator(addString stringToAdd: String? = nil, overrideSeparator: String? = nil) -> String {
             
-            if let string = stringToAdd {
-                if string == "" {
+            if  let string = stringToAdd {
+                
+                if  string == "" {
                     return concatenatedString
+                    
                 } else {
-                    if concatenatedString != "" {
+                    
+                    if  concatenatedString != "" {
                         concatenatedString += overrideSeparator ?? defaultSeparator
                     }
-                    concatenatedString += stringToAdd!
                     
+                    concatenatedString += stringToAdd!
                 }
             }
             
@@ -87,6 +91,17 @@ public extension String {
         }
         
         return concatenator
+    }
+    
+}
+
+extension DefaultStringInterpolation {
+
+    /// Fixes the warnings about "String interpolation produces a debug description for an optional value; did you mean to make this explicit?"
+    ///
+    /// May not always be desirable when a debug description for an optional value is needed.
+    mutating func appendInterpolation <T> (_ optionalValue: T?) {
+        appendInterpolation(String(optional: optionalValue))
     }
     
 }
