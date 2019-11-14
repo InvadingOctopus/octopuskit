@@ -12,9 +12,11 @@ import SpriteKit
 
 extension OctopusSubscene: TouchEventProvider {
     
-    // MARK: - Player Input (iOS)
+    // TODO: Eliminate code duplication between OctopusScene+Touch and OctopusSubscene+Touch
     
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
+    // MARK: - Player Input (iOS Touch)
+    
+    /// Relays touch-input events to the subscene's `TouchEventComponent`.
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUTEVENTS
@@ -26,7 +28,7 @@ extension OctopusSubscene: TouchEventProvider {
         }
     }
     
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
+    /// Relays touch-input events to the subscene's `TouchEventComponent`.
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUTEVENTS
@@ -38,7 +40,7 @@ extension OctopusSubscene: TouchEventProvider {
         }
     }
     
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
+    /// Relays touch-input events to the subscene's `TouchEventComponent`.
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUTEVENTS
@@ -50,7 +52,7 @@ extension OctopusSubscene: TouchEventProvider {
         }
     }
     
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
+    /// Relays touch-input events to the subscene's `TouchEventComponent`.
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         #if LOGINPUTEVENTS
@@ -62,7 +64,7 @@ extension OctopusSubscene: TouchEventProvider {
         }
     }
     
-    /// Relays touch-input events to the scene's `TouchEventComponent`.
+    /// Relays touch-input events to the subscene's `TouchEventComponent`.
     open override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
         
         #if LOGINPUTEVENTS

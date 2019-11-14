@@ -13,6 +13,8 @@ import SpriteKit
 
 extension OctopusScene: TouchEventProvider {
     
+    // TODO: Eliminate code duplication between OctopusScene+Touch and OctopusSubscene+Touch
+    
     // MARK: - Player Input (iOS Touch)
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.

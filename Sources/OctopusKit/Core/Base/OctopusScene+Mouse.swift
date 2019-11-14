@@ -12,6 +12,10 @@ import SpriteKit
 #if canImport(AppKit)
 
 extension OctopusScene: MouseEventProvider {
+
+    // TODO: Eliminate code duplication between OctopusScene+Mouse and OctopusSubscene+Mouse
+    
+    // MARK: - Player Input (macOS Mouse)
     
     /// Relays mouse-input events to the scene's `MouseEventComponent`.
     open override func mouseEntered(with event: NSEvent) {
