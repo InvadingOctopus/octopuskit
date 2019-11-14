@@ -44,22 +44,22 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     
     public var isPaused: Bool = false
     
-    @LogInputEventChanges(propertyName: "isDragging")
+    @LogInputEventChanges(propertyName: "PanControlledDraggingComponent.isDragging")
     public var isDragging: Bool = false
     
     /// If `true`, the node will slide for a distance depending on the panning velocity at the end of the gesture.
     public var isInertialScrollingEnabled: Bool
     
-    @LogInputEventChanges(propertyName: "initialNodePosition")
+    @LogInputEventChanges(propertyName: "PanControlledDraggingComponent.initialNodePosition")
     private var initialNodePosition: CGPoint? = nil
     
-    @LogInputEventChanges(propertyName: "newNodePosition")
+    @LogInputEventChanges(propertyName: "PanControlledDraggingComponent.newNodePosition")
     private var newNodePosition: CGPoint? = nil
     
     /// A flag that indicates whether there is a gesture to process for the `update(deltaTime:)` method.
     ///
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
-    @LogInputEventChanges(propertyName: "haveGestureToProcess")
+    @LogInputEventChanges(propertyName: "PanControlledDraggingComponent.haveGestureToProcess")
     private var haveGestureToProcess: Bool = false
     
     // MARK: -

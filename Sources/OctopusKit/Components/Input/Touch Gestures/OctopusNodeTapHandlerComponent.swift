@@ -27,7 +27,7 @@ open class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableCom
     
     public var isPaused: Bool = false
     
-    @LogInputEventChanges(propertyName: "haveGestureToProcess")
+    @LogInputEventChanges(propertyName: "OctopusNodeTapHandlerComponent.haveGestureToProcess")
     private var haveGestureToProcess: Bool = false
     
     // MARK: - Life Cycle

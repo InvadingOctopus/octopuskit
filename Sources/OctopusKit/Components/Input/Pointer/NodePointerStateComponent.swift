@@ -38,7 +38,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// The current state of player interaction with the entity's `SpriteKitComponent` node. See the descriptions for each case of `NodePointerState`.
     ///
     /// Changing this property copies the old value to `previousState.`
-    @LogInputEventChanges(propertyName: "state")
+    @LogInputEventChanges(propertyName: "NodePointerStateComponent.state")
     public fileprivate(set) var state: NodePointerState = .ready {
         didSet {
             // CHECK: PERFORMANCE: Will this observer degrade performance compared to just setting `previousState` in `update(deltaTime:)` etc.?
@@ -62,7 +62,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     public fileprivate(set) var previousState: NodePointerState = .ready
     
     /// Set to `true` for a single frame after the `state` changes.
-    @LogInputEventChanges(propertyName: "stateChangedThisFrame")
+    @LogInputEventChanges(propertyName: "NodePointerStateComponent.stateChangedThisFrame")
     public fileprivate(set) var stateChangedThisFrame: Bool = false
     
     // MARK: Pointer
@@ -72,7 +72,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// This property is set to `nil` whenever the `state` changes to `ready` and when there are no more pointer events related to the node.
     ///
     /// Changing this property resets the following properties: `previousTimestamp`, `timestampDelta`, `initialPointerLocationInScene` and `initialPointerLocationInParent`.
-    @LogInputEventChanges(propertyName: "lastEvent")
+    @LogInputEventChanges(propertyName: "NodePointerStateComponent.lastEvent")
     public fileprivate(set) var lastEvent: PointerEventComponent.PointerEvent? = nil {
         didSet {
             if  lastEvent != oldValue { // Reset the timestamps only if we received a different event or no events.
@@ -93,7 +93,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// The first observed location of the currently-tracked pointer, in scene coordinates.
     ///
     /// Other components can compare the current location of the pointer with this value to obtain the total translation over time.
-    @LogInputEventChanges(propertyName: "initialPointerLocationInScene")
+    @LogInputEventChanges(propertyName: "NodePointerStateComponent.initialPointerLocationInScene")
     public fileprivate(set) var initialPointerLocationInScene: CGPoint? = nil
     
     // CHECK: Keep `pointerTranslationInScene`, or just `pointerTranslationInParent`?
@@ -116,7 +116,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// The first observed location of the currently-tracked pointer, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
     ///
     /// Other components can compare the current location of the pointer with this value to obtain the total translation over time.
-    @LogInputEventChanges(propertyName: "initialPointerLocationInParent")
+    @LogInputEventChanges(propertyName: "NodePointerStateComponent.initialPointerLocationInParent")
     public fileprivate(set) var initialPointerLocationInParent: CGPoint? = nil
     
     /// Returns the total translation over time of the currently-tracked pointer's location, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
@@ -141,13 +141,13 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     // ℹ️ It's pointless to make `previousTimestamp` `public` for use by other components, because `previousTimestamp = lastEvent.timeStamp` at the end of our `update(deltaTime:)`. Better to have a delta property for other components to observe.
     
     /// Stores the previous value of the `timestamp` for the most recent event.
-    @LogInputEventChanges(propertyName: "previousTimestamp")
+    @LogInputEventChanges(propertyName: "NodePointerStateComponent.previousTimestamp")
     private var previousTimestamp: TimeInterval = 0
     
     /// Stores the change in the timestamp of the most recent event between the previous frame and the current frame.
     ///
     /// Useful for other components to see if the pointer has moved.
-    @LogInputEventChanges(propertyName: "timestampDelta")
+    @LogInputEventChanges(propertyName: "NodePointerStateComponent.timestampDelta")
     public fileprivate(set) var timestampDelta: TimeInterval = 0
     
     // MARK: Settings

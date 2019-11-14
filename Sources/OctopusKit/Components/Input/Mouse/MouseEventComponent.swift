@@ -74,21 +74,21 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     // MARK: Events
         
-    @LogInputEventChanges(propertyName: "mouseEntered")
+    @LogInputEventChanges(propertyName: "MouseEventComponent.mouseEntered")
     public var mouseEntered: MouseEvent?
     
     public var mouseMoved: MouseEvent? // Logging these would flood the log.
     
-    @LogInputEventChanges(propertyName: "mouseDown", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "MouseEventComponent.mouseDown", omitOldValue: true)
     public var mouseDown: MouseEvent?
     
-    @LogInputEventChanges(propertyName: "mouseDragged", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "MouseEventComponent.mouseDragged", omitOldValue: true)
     public var mouseDragged: MouseEvent?
     
-    @LogInputEventChanges(propertyName: "mouseUp", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "MouseEventComponent.mouseUp", omitOldValue: true)
     public var mouseUp: MouseEvent?
     
-    @LogInputEventChanges(propertyName: "mouseExited", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "MouseEventComponent.mouseExited", omitOldValue: true)
     public var mouseExited: MouseEvent?
         
     /// Returns an array of all events for the current frame.

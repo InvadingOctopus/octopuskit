@@ -93,9 +93,9 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     
     #endif
     
-    @LogInputEventChanges(propertyName: "pointerBegan") public var pointerBegan: PointerEvent? = nil
-    @LogInputEventChanges(propertyName: "pointerMoved") public var pointerMoved: PointerEvent? = nil
-    @LogInputEventChanges(propertyName: "pointerEnded") public var pointerEnded: PointerEvent? = nil
+    @LogInputEventChanges(propertyName: "PointerEventComponent.pointerBegan") public var pointerBegan: PointerEvent? = nil
+    @LogInputEventChanges(propertyName: "PointerEventComponent.pointerMoved") public var pointerMoved: PointerEvent? = nil
+    @LogInputEventChanges(propertyName: "PointerEventComponent.pointerEnded") public var pointerEnded: PointerEvent? = nil
     
     
     public var latestEvent: PointerEvent? {

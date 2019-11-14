@@ -80,7 +80,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     // ℹ️ NOTE: The system may send the same type of event (began, ended, etc.) multiple times during a single frame, each reporting different touches, so the `touches` array must be updated inside the event property observers, NOT inside the `update` method, because that could miss the beginning or end of some touches (if they are not reported in the latest event to be received during a frame.) 2018-07-17
     
-    @LogInputEventChanges(propertyName: "touchesBegan", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "TouchEventComponent.touchesBegan", omitOldValue: true)
     public var touchesBegan: TouchEvent? = nil {
         didSet {
             
@@ -99,10 +99,10 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChanges(propertyName: "touchesMoved", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "TouchEventComponent.touchesMoved", omitOldValue: true)
     public var touchesMoved: TouchEvent? = nil
     
-    @LogInputEventChanges(propertyName: "touchesEnded", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "TouchEventComponent.touchesEnded", omitOldValue: true)
     public var touchesEnded: TouchEvent? = nil {
         didSet {
             
@@ -120,7 +120,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChanges(propertyName: "touchesCancelled", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "TouchEventComponent.touchesCancelled", omitOldValue: true)
     public var touchesCancelled: TouchEvent? = nil  {
         didSet {
             
@@ -138,7 +138,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChanges(propertyName: "touchesEstimatedPropertiesUpdated", omitOldValue: true)
+    @LogInputEventChanges(propertyName: "TouchEventComponent.touchesEstimatedPropertiesUpdated", omitOldValue: true)
     public var touchesEstimatedPropertiesUpdated: TouchEvent? = nil
     
     /// Returns an array of all events for the current frame.

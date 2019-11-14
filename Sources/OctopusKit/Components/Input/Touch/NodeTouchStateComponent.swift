@@ -46,7 +46,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     /// The current state of player interaction with the entity's `SpriteKitComponent` node. See the descriptions for each case of `TouchStateComponent.TouchInteractionState`.
     ///
     /// Changing this property copies the old value to `previousState.`
-    @LogInputEventChanges(propertyName: "state")
+    @LogInputEventChanges(propertyName: "NodeTouchStateComponent.state")
     public fileprivate(set) var state: NodeTouchState = .ready {
         didSet {
             // CHECK: PERFORMANCE: Will this observer degrade performance compared to just setting `previousState` in `update(deltaTime:)` etc.?
@@ -70,13 +70,13 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     public fileprivate(set) var previousState: NodeTouchState = .ready
     
     /// Set to `true` for a single frame after the `state` changes.
-    @LogInputEventChanges(propertyName: "stateChangedThisFrame")
+    @LogInputEventChanges(propertyName: "NodeTouchStateComponent.stateChangedThisFrame")
     public fileprivate(set) var stateChangedThisFrame: Bool = false
     
     // MARK: Touch
     
     /// Tracks a touch which began inside the entity's `SpriteKitComponent` node.
-    @LogInputEventChanges(propertyName: "trackedTouch")
+    @LogInputEventChanges(propertyName: "NodeTouchStateComponent.trackedTouch")
     public fileprivate(set) var trackedTouch: UITouch? = nil {
         didSet {
             if trackedTouch != oldValue { // Reset the timestamps only if we stopped tracking a touch or started tracking a different touch.
@@ -97,7 +97,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     /// The first observed location of the currently-tracked touch, in scene coordinates.
     ///
     /// Other components can compare the current location of the touch with this value to obtain the total translation over time.
-    @LogInputEventChanges(propertyName: "initialTouchLocationInScene")
+    @LogInputEventChanges(propertyName: "NodeTouchStateComponent.initialTouchLocationInScene")
     public fileprivate(set) var initialTouchLocationInScene: CGPoint? = nil
     
     // CHECK: Keep `touchTranslationInScene`, or just `touchTranslationInParent`?
@@ -120,7 +120,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     /// The first observed location of the currently-tracked touch, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
     ///
     /// Other components can compare the current location of the touch with this value to obtain the total translation over time.
-    @LogInputEventChanges(propertyName: "initialTouchLocationInParent")
+    @LogInputEventChanges(propertyName: "NodeTouchStateComponent.initialTouchLocationInParent")
     public fileprivate(set) var initialTouchLocationInParent: CGPoint? = nil
     
     /// Returns the total translation over time of the currently-tracked touch's location, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
@@ -146,13 +146,13 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     // ℹ️ It's pointless to make `previousTouchTimestamp` `public` for use by other components, because `previousTouchTimestamp == trackedTouch.timeStamp` at the end of our `update(deltaTime:)`. Better to have a delta property for other components to observe.
     
     /// Stores the previous value of the `timestamp` for the tracked touch.
-    @LogInputEventChanges(propertyName: "previousTouchTimestamp")
+    @LogInputEventChanges(propertyName: "NodeTouchStateComponent.previousTouchTimestamp")
     private var previousTouchTimestamp: TimeInterval = 0
     
     /// Stores the change in the timestamp of the tracked touch between the previous frame and the current frame.
     ///
     /// Useful for other components to see if the `trackedTouch` has moved.
-    @LogInputEventChanges(propertyName: "trackedTouchTimestampDelta")
+    @LogInputEventChanges(propertyName: "NodeTouchStateComponent.trackedTouchTimestampDelta")
     public fileprivate(set) var trackedTouchTimestampDelta: TimeInterval = 0
     
     // MARK: Settings
