@@ -18,7 +18,7 @@
 
 // PERFORMANCE: May need optimization?
 
-// 💬 NOTE: It's possible to make the node move only when the touch moves out through its edges, by writing:
+// 💡💬 NOTE: It's possible to make the node move only when the touch moves out through its edges, by writing:
 //
 //  let nodePositionAndCenterDelta = node.position - node.frame.center
 //  node.position = (currentTouchLocation - initialNodeCenterAndTouchPositionDelta) + nodePositionAndCenterDelta
@@ -36,8 +36,8 @@ import GameplayKit
 public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                NodeTouchStateComponent.self]
+        [SpriteKitComponent.self,
+         NodeTouchStateComponent.self]
     }
     
     /// Stores the initial position of the node to compare against the `TouchStateComponent`'s translation over time.
@@ -56,7 +56,7 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         
         // A scene itself is not really draggable, so...
         
-        if node is SKScene {
+        if  node is SKScene {
             OctopusKit.logForWarnings.add("A TouchControlledDraggingComponent cannot be added to the scene entity — Removing.")
             OctopusKit.logForTips.add("See CameraPanComponent.")
             self.removeFromEntity()
@@ -70,8 +70,8 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         guard
             let node = self.entityNode,
             let parent = node.parent,
-            let nodeTouchComponent = coComponent(NodeTouchStateComponent.self),
-            let trackedTouch = nodeTouchComponent.trackedTouch
+            let nodeTouchStateComponent = coComponent(NodeTouchStateComponent.self),
+            let trackedTouch = nodeTouchStateComponent.trackedTouch
             else {
                 initialNodePosition = nil
                 isDragging = false
@@ -85,11 +85,11 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         #if LOGINPUTEVENTS
         let previousTouchLocation = trackedTouch.previousLocation(in: parent)
         let touchLocationDelta = currentTouchLocation - previousTouchLocation
-        debugLog("trackedTouch.location in node parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(nodeTouchComponent.touchTranslationInParent)")
+        debugLog("trackedTouch.location in node parent: \(previousTouchLocation) → \(currentTouchLocation), delta: \(touchLocationDelta), translation: \(nodeTouchStateComponent.touchTranslationInParent)")
         #endif
         
-        let currentTouchState = nodeTouchComponent.state
-        let previousTouchState = nodeTouchComponent.previousState
+        let currentTouchState  = nodeTouchStateComponent.state
+        let previousTouchState = nodeTouchStateComponent.previousState
         
         // #2: If we're in any state other than `ready` or `disabled`, then it means the touch may have moved, otherwise this component has nothing to do.
         
@@ -101,7 +101,7 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         // #3: Store the initial position of the node if the player just began touching it.
         
         if  self.initialNodePosition == nil,
-            currentTouchState == .touching,
+            currentTouchState  == .touching,
             previousTouchState == .ready // CHECK: for `disabled` too?
         {
             self.initialNodePosition = node.position
@@ -111,7 +111,7 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         
         guard
             let initialNodePosition = self.initialNodePosition,
-            let initialTouchLocationInParent = nodeTouchComponent.initialTouchLocationInParent
+            let initialTouchLocationInParent = nodeTouchStateComponent.initialTouchLocationInParent
             else { return }
         
         // #4.2: Should we move the node only when tracked touch moves?
@@ -126,7 +126,7 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
             
             // BUG: 20180502C: APPLEBUG? `UITouch.phase: UITouch.UITouchPhase` does not seem to work for this situation, as it seems to report an `stationary` case by the time this component is updated.
             
-            guard nodeTouchComponent.trackedTouchTimestampDelta > 0 else { return }
+            guard nodeTouchStateComponent.trackedTouchTimestampDelta > 0 else { return }
         }
         
         // #5: Reposition the node.
@@ -150,7 +150,7 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
         
         // CHECK: Should this suppression of taps be optional? Should it depend on whether the node has moved from its initial position?
         
-        nodeTouchComponent.updateState(
+        nodeTouchStateComponent.updateState(
             suppressStateChangedFlag: false,
             suppressTappedState: true,
             suppressCancelledState: true)

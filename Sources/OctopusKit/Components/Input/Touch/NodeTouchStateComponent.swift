@@ -298,8 +298,8 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     /// Other components should call this method after they have moved the entity's node, or if other components want to modify the interaction in some way, so that this component can reflect the correct state for other observers.
     @discardableResult public func updateState(
         suppressStateChangedFlag: Bool = false,
-        suppressTappedState: Bool = false,
-        suppressCancelledState: Bool = false)
+        suppressTappedState:      Bool = false,
+        suppressCancelledState:   Bool = false)
         -> NodeTouchState
     {
         #if LOGINPUTEVENTS
@@ -310,14 +310,14 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
         
         guard
             let trackedTouch = self.trackedTouch,
-            let node = self.entityNode,
-            let parent = node.parent
+            let node         = self.entityNode,
+            let parent       = node.parent
             else {
                 
                 // ℹ️ The state should not be automatically set to `disabled` here; that case is meant to be set explicitly, and may affect visual effects from other components.
                 
                 if  state != .ready || state != .disabled {
-                    state = .ready // Resets `trackedTouch` and timestamps via the property observer.
+                    state  = .ready // Resets `trackedTouch` and timestamps via the property observer.
                 }
                 return state
         }
@@ -358,7 +358,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
         trackedTouch = nil
         
         if  state != .disabled {
-            state = .ready
+            state  = .ready
         }
     }
 }
