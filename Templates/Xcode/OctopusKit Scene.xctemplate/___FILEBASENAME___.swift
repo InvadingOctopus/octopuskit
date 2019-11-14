@@ -21,13 +21,13 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
             
             OSMouseOrTouchEventComponent.self,
             PointerEventComponent.self,
-            NodeTouchComponent.self,
-            NodeTouchClosureComponent.self,
+            NodePointerStateComponent.self,
+            NodePointerClosureComponent.self,
             MotionManagerComponent.self,
             
             // 3: Movement and physics.
             
-            TouchControlledPositioningComponent.self,
+            PointerControlledPositioningComponent.self,
             OctopusAgent2D.self,
             PhysicsComponent.self, // The physics component should come in after other components have modified node properties, so it can clamp the velocity etc. if such limits have been specified.
             

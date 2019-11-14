@@ -9,8 +9,6 @@
 import SpriteKit
 import GameplayKit
 
-#if canImport(UIKit)
-
 /// Encapsulates components for representing a tappable button on the screen.
 public final class OctopusButtonEntity: OctopusEntity {
     
@@ -24,8 +22,8 @@ public final class OctopusButtonEntity: OctopusEntity {
         backgroundColor: SKColor,
         font: OctopusFont = OctopusFont.buttonFontDefault,
         parentOverride: SKNode? = nil,
-        touchEventComponent: TouchEventComponent,
-        tapHandler: @escaping NodeTouchClosureComponent.NodeTouchClosureType)
+        pointerEventComponent: PointerEventComponent,
+        tapHandler: @escaping NodePointerClosureComponent.NodePointerClosureType)
     {
         let buttonSprite = SKSpriteNode(color: backgroundColor, size: frame.size)
         buttonSprite.position = frame.center
@@ -40,7 +38,7 @@ public final class OctopusButtonEntity: OctopusEntity {
         self.init(name: name ?? "\(text) Button", // If no name is specified, set it to the text.
                   node: buttonSprite,
                   parentOverride: parentOverride,
-                  touchEventComponent: touchEventComponent,
+                  pointerEventComponent: pointerEventComponent,
                   tapHandler: tapHandler)
         
     }
@@ -52,11 +50,11 @@ public final class OctopusButtonEntity: OctopusEntity {
         name: String = "Button",
         node: SKNode,
         parentOverride: SKNode? = nil,
-        touchEventComponent: TouchEventComponent,
-        tapHandler: @escaping NodeTouchClosureComponent.NodeTouchClosureType)
+        pointerEventComponent: PointerEventComponent,
+        tapHandler: @escaping NodePointerClosureComponent.NodePointerClosureType)
     {
         self.init(name: name,
-                  touchEventComponent: touchEventComponent,
+                  pointerEventComponent: pointerEventComponent,
                   tapHandler: tapHandler)
         
         // NOTE: IGNORE WARNING: This will cause a warning about missing `requiredComponents` because we are adding the `SpriteKitComponent` last.
@@ -66,27 +64,24 @@ public final class OctopusButtonEntity: OctopusEntity {
     
     fileprivate init(
         name: String = "Button",
-        touchEventComponent: TouchEventComponent,
-        tapHandler: @escaping NodeTouchClosureComponent.NodeTouchClosureType)
+        pointerEventComponent: PointerEventComponent,
+        tapHandler: @escaping NodePointerClosureComponent.NodePointerClosureType)
     {
         
         super.init()
         self.name = name
         
-        var touchHandlers: [NodeTouchState : NodeTouchClosureComponent.NodeTouchClosureType] = [:]
+        var pointerHandlers: [NodePointerState : NodePointerClosureComponent.NodePointerClosureType] = [:]
         
-        touchHandlers[.tapped] = tapHandler
+        pointerHandlers[.tapped] = tapHandler
         
         self.addComponents([
-            RelayComponent(for: touchEventComponent),
-            NodeTouchStateComponent(),
-            NodeTouchClosureComponent(closures: touchHandlers)
+            RelayComponent(for: pointerEventComponent),
+            NodePointerStateComponent(),
+            NodePointerClosureComponent(closures: pointerHandlers)
             ])
         
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    
 }
-
-#endif

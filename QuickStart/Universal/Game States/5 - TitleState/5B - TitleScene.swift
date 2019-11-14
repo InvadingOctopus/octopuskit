@@ -39,7 +39,8 @@ final class TitleScene: OctopusScene {
         [
             // Components that process player input, provided by OctopusKit.
             
-            TouchEventComponent.self,
+            OSMouseOrTouchEventComponent.self,
+            PointerEventComponent.self, // This component translates touch or mouse input into an OS-agnostic "pointer" format, which is used by other input-processing components that work on iOS as well as macOS.
             
             // Custom components which are specific to this QuickStart project.
             

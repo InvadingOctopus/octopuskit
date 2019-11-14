@@ -22,6 +22,7 @@ public typealias OSImage            = NSImage
 public typealias OSViewController   = NSViewController
 
 public typealias OSMouseOrTouchEventComponent = MouseEventComponent
+public typealias OSTouchOrMouseEventComponent = MouseEventComponent
 
 #elseif canImport(UIKit)
 
@@ -33,5 +34,6 @@ public typealias OSImage            = UIImage
 public typealias OSViewController   = UIViewController
 
 public typealias OSMouseOrTouchEventComponent = TouchEventComponent
+public typealias OSTouchOrMouseEventComponent = TouchEventComponent
 
 #endif
