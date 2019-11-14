@@ -62,7 +62,7 @@ public struct LogChanges <ValueType: Equatable> {
     }
     
     public init(wrappedValue: ValueType,
-                 propertyName: String)
+                propertyName: String)
     {
         self.wrappedValue = wrappedValue
         self.propertyName = propertyName
