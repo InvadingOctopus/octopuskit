@@ -14,20 +14,22 @@ permalink: documentation/todo.html
 
 *More-or-less in order of priority/necessity:*
 
-- Full macOS and tvOS support (currently in a preliminary state as of 2018-06-08.)
-- Components for mouse, keyboard, gamepad/joystick and Siri Remote input.
+- Full tvOS support (currently in a preliminary state as of 2019-11-14.)
+- Components for keyboard, gamepad/joystick and Siri Remote input.
 - Asset/resource loading system.
 - Saving and loading game/scene/entity/component states via `Codable`.
 - Support for describing scenes/entities/components in HTML/XML/JSON or a  similar format.
 - Networking components.
 - SceneKit support in 2D scenes, and 3D components.
+- Declarative SwiftUI-like syntax for describing scenes and entities. 🤫
 - Custom Scene Editor & Live Previewer?
+
 
 ## To Do
 
 - [Swift Logging API](https://github.com/apple/swift-log)
-- Tests. Too lazy.
-- Improve coding conventions.
+- More Tests. Too lazy.
+- Decide upon a coding style and conventions.
 - Write tutorials for common tasks.
 - Clarify `super` chaining where applicable – when an overridden method in a subclass *needs* to call the superclass method for the functionality to work correctly – and enforce it when it becomes possible through language support in a future version of Swift, similar to `NS_REQUIRES_SUPER` in Objective-C.
 - Eliminate the possibility of a `SKNode.physicsBody` being added to a scene more than once.
@@ -42,8 +44,6 @@ permalink: documentation/todo.html
 
 ## Outstanding Bugs & Known Issues 
 
-- Sending an array like `[GKComponent.Type]`, such the one at `OctopusComponent.requiredComponents?`, to `entity.componentOrRelay(ofType:)` does not use the actual metatypes, and so it can cause false warnings about missing components.
-
 - Nodes added via an `SKReferenceNode` that is loaded from a scene created in the Xcode Scene Editor, start with their `isPaused` set to `true` until Xcode pauses and resumes the program execution.
 
 - `UITouch.location(in:)` and `UITouch.previousLocation(in:)` are sometimes not updated for many frames, causing a node to "jump" many pixels after 10 or so frames. Same issue with `preciseLocation(in:)` and `precisePreviousLocation(in:)`.
@@ -52,7 +52,6 @@ permalink: documentation/todo.html
 
 ## To Decide
 
-- Shorten the prefix for engine types from "Octopus" to "OK"?
 - Use variadic parameters (`...`) instead of arrays in certain places, like `GKEntity.addComponent(_:)`?
 - Write standalone documentation for every API unit? (Currently, source comments are the primary API documentation.)
 - Write documentation and tutorials for absolute beginners? i.e. people who have no experience with Xcode or Swift?

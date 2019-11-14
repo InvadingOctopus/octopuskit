@@ -11,7 +11,7 @@ permalink: documentation/conventions.html
 
 - Git workflow: [http://nvie.com/posts/a-successful-git-branching-model/](http://nvie.com/posts/a-successful-git-branching-model/)
 
-- OctopusKit type names are prefixed with the word "Octopus" instead of "OK" because I like it that way, so far. I may rename everything to begin with "OK" in the future to follow the common convention.
+- OctopusKit's core types are named with the prefix "Octopus" instead of "OK" because I like it that way, so far. I may rename everything to begin with "OK" in the future to follow the common convention.
 
 - Classes are marked `final` where possible to improve performance. If you need to subclass them in a specific project, you could create a copy of the class (or entire engine source) and modify it to suit your project. See: [Increasing Performance by Reducing Dynamic Dispatch](https://developer.apple.com/swift/blog/?id=27)
 
@@ -38,10 +38,12 @@ permalink: documentation/conventions.html
 
 ## Comments Key
 
-- ℹ️ / DESIGN: A design decision or note.
-- ⚠️ A warning about potential undesirable behavior, or a workaround for an undesirable situation that was avoided or fixed. 
-- 💬 General commentary/observations.
-- PERFORMANCE: Related to speed/efficiency/optimization.
+- `TODO: / FIX: / CHECK: / BUG: / 🐞` Self explanatory.
+- `PERFORMANCE:` Related to speed/efficiency/optimization.
+- `ℹ️ / DESIGN:` A design decision or note. An explanation for why something that may seem strange is done the way it is.
+- `⚠️ / ❗️` A warning about potential undesirable behavior, or a workaround for an undesirable situation that was avoided or fixed. 
+- `💬 / ❕` General commentary/observations.
+- `💡` Tips for you to try in your game.
 
 ----
 

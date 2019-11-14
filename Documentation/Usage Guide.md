@@ -165,7 +165,7 @@ systems. A typical game will create multiple instances of these objects.
 |↓|
 |🚥 `YourEntityState: OctopusEntityState` ⁶|
 |↕|
-|⚙️ `YourComponent: OctopusComponent` ⁷|
+|🧩 `YourComponent: OctopusComponent` ⁷|
 |↑|
 |⛓ `OctopusComponentSystem` ⁸|
 
@@ -288,7 +288,7 @@ systems. A typical game will create multiple instances of these objects.
 
 ## Components
 
-⚙️ `OctopusComponent:`[`GKComponent`](https://developer.apple.com/documentation/gameplaykit/gkcomponent)  
+🧩 `OctopusComponent:`[`GKComponent`](https://developer.apple.com/documentation/gameplaykit/gkcomponent)  
 
 - A **Component** represents each onscreen object or unit of game logic. It may contain properties and execute logic at specific moments in its lifetime: when it's added to an entity, removed from an entity, and/or once every frame. A component may signal its entity to enter a different state, or request the entity's scene to spawn new entities, or even to remove the component's own entity from the scene. 
 

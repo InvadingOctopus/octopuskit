@@ -109,7 +109,31 @@ character.addComponents([
     JoystickControlledForceComponent() ])
 ```
 
-🛠 *Advanced: Using a custom closure to change the animation based on player movement*
+🧩 *A custom game-specific component may look like this*
+
+```swift
+class AngryEnemyComponent: OctopusComponent {
+    
+    override var requiredComponents: [GKComponent.Type]? {
+        [EnemyBehaviorComponent.self]
+    }
+    
+    override func didAddToEntity(withNode node: SKNode) {
+        node.colorTint = .angryMonster
+    }
+    
+    override func update(deltaTime seconds: TimeInterval) {
+        guard let behaviorComponent = coComponent(EnemyBehaviorComponent.self) else { return }
+        behaviorComponent.chasePlayerWithExtraFervor()
+    }
+    
+    override func willRemoveFromEntity(withNode node: SKNode) {
+        node.colorTint = .mildlyInconveniencedMonster
+    }
+}
+```
+
+🛠 *Using a custom closure to change the animation based on player movement*
 
 ```swift
 // Add a component that executes the supplied closure every frame.
@@ -181,7 +205,7 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
 
 - 👾 **Entities** are simply collections of **Components**. They contain no logic, except for convenience constructors which initialize groups of related components. 
 
-- ⚙️ **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game. A component runs its code when it's added to an entity, when a frame is updated, and/or when it's removed from an entity. Components may query their entity for other components and affect each other's behavior to form dynamic dependencies during runtime. The engine comes with a library of customizable components for graphics, gameplay, physics etc. 
+- 🧩 **Components** (which could also be called Behaviors, Effects, Features, or Traits) are the core concept in OctopusKit, containing the properties as well as the logic\* which make up each visual or abstract element of the game. A component runs its code when it's added to an entity, when a frame is updated, and/or when it's removed from an entity. Components may query their entity for other components and affect each other's behavior to form dynamic dependencies during runtime. The engine comes with a library of customizable components for graphics, gameplay, physics etc. 
 
 - ⛓ **Systems** are simply collections of components *of a specific class.* They don't perform any logic\*, but they're arranged by a **Scene** in an array to execute components from all entities in a deterministic order every frame, so that components which rely on other components are updated after their dependencies.
 
@@ -203,7 +227,7 @@ Your primary workflow will be writing component classes for each "part" of the g
 
 - **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using technologies like SceneKit to render 3D content in 2D space, and it can be used for non-game apps.
 
-- **Shoulders of Giants**: The engine leverages SpriteKit, GameplayKit, SwiftUI and other technologies provided by Apple. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
+- **Shoulders of Ettins**: The engine leverages SpriteKit, GameplayKit, SwiftUI and other technologies provided by Apple. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
     
     > OK is mostly implemented through custom subclasses and extensions of the SpriteKit and GameplayKit classes, without "obscuring" them or blocking you from interacting with the base classes. This allows you to adopt this framework incrementally, and lets you integrate your game with the Xcode IDE tools such as the Scene Editor where possible.  
     
