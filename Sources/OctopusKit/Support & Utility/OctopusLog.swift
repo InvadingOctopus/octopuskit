@@ -45,12 +45,12 @@ public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {
 #else
 
 /// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set). Alias for `NSLog(_:_:)` in debug configurations.
-open func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {}
+public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {}
 
 /// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set).
 ///
 /// In debug configurations, prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
-open func debugLog(_ entry: String? = nil, _ callerFile: String = #file, _ callerFunction: String = #function, separator: String = " ") {}
+public func debugLog(_ entry: String? = nil, _ callerFile: String = #file, _ callerFunction: String = #function, separator: String = " ") {}
     
 #endif
 
