@@ -114,16 +114,13 @@ character.addComponents([
 ```swift
 class AngryEnemyComponent: OctopusComponent {
     
-    override var requiredComponents: [GKComponent.Type]? {
-        [EnemyBehaviorComponent.self]
-    }
-    
     override func didAddToEntity(withNode node: SKNode) {
         node.colorTint = .angryMonster
     }
     
     override func update(deltaTime seconds: TimeInterval) {
         guard let behaviorComponent = coComponent(EnemyBehaviorComponent.self) else { return }
+        behaviorComponent.regenerateHP()
         behaviorComponent.chasePlayerWithExtraFervor()
     }
     
