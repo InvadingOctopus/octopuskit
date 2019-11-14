@@ -72,6 +72,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         
         #endif
         
+        @inlinable
         public func location(in anotherNode: SKNode) -> CGPoint {
             self.node.convert(locationInNode, to: anotherNode)
         }
@@ -94,21 +95,50 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     #endif
     
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerBegan")
-    public private(set) var pointerBegan: PointerEvent? = nil
+    public private(set) var pointerBegan: PointerEvent? = nil {
+        didSet {
+            if  let pointerBegan = pointerBegan,
+                (lastEvent == nil || lastEvent!.timestamp < pointerBegan.timestamp)
+            {
+                lastEvent = pointerBegan
+            }
+        }
+    }
     
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerMoved")
-    public private(set) var pointerMoved: PointerEvent? = nil
+    public private(set) var pointerMoved: PointerEvent? = nil {
+           didSet {
+               if  let pointerMoved = pointerMoved,
+                   (lastEvent == nil || lastEvent!.timestamp < pointerMoved.timestamp)
+               {
+                   lastEvent = pointerMoved
+               }
+           }
+       }
     
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerEnded")
-    public private(set) var pointerEnded: PointerEvent? = nil
+    public private(set) var pointerEnded: PointerEvent? = nil {
+           didSet {
+               if  let pointerEnded = pointerEnded,
+                   (lastEvent == nil || lastEvent!.timestamp < pointerEnded.timestamp)
+               {
+                   lastEvent = pointerEnded
+               }
+           }
+       }
     
+    /// Returns the event which was received during this frame. To check the last event received in previous frames, use `lastEvent`
     @inlinable
     public var latestEvent: PointerEvent? {
         [pointerBegan, pointerMoved, pointerEnded]
             .compactMap { $0 }
-            .sorted { $0.timestamp > $1.timestamp }
+            .sorted     { $0.timestamp > $1.timestamp }
             .first
     }
+    
+    /// Returns the last event received during this *or any previous* previous frames. To check the *latest* event received during the current frame, use `latestEvent`.
+    @LogInputEventChanges(propertyName: "PointerEventComponent.lastEvent")
+    public private(set) var lastEvent: PointerEvent? = nil
     
     // MARK: - Frame Cycle
     
