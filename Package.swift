@@ -25,10 +25,18 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "OctopusKit",
-            dependencies: []),
+            dependencies: []
+//            swiftSettings: [
+//                 .define("DISABLELOGCHANGES"),   // Disable the `@LogChanges` property wrapper. May improve performance.
+//                 .define("LOGECSVERBOSE"),       // Log detailed ECS core events. ⚠️ May decrease performance.
+//                 .define("LOGINPUTEVENTS"),      // Log detailed mouse/touch/pointer input events. ⚠️ May decrease performance.
+//                 .define("LOGPHYSICS")           // Log physics contact/collision events. ⚠️ May decrease performance.
+//            ]
+        ),
         .testTarget(
             name: "OctopusKitTests",
             dependencies: ["OctopusKit"]),
     ],
     swiftLanguageVersions: [.v5]
 )
+
