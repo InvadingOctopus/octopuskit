@@ -12,6 +12,9 @@
 
 import CoreData
 
+public typealias OKHighScore = OctopusHighScore
+public typealias OKHighScoreChart = OctopusHighScoreChart
+
 /// TODO: Replace placeholder.
 open class HighScore: NSManagedObject {
     var name: String? = ""

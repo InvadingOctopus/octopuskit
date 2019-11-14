@@ -10,6 +10,9 @@
 
 import GameplayKit
 
+public typealias OKUpdatableComponent = OctopusUpdatableComponent
+public typealias OKComponent = OctopusComponent
+
 /// A protocol for components that must be updated every frame to perform their function.
 ///
 /// The component must be updated every frame during the scene's `update(_:)` method, by directly calling the component's `update(deltaTime:)` method, updating the component's entity, or updating the component system which this component is registered with.

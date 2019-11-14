@@ -10,6 +10,8 @@
 
 import Foundation
 
+public typealias OKLoader = OctopusLoader
+
 public final class OctopusLoader {
     
     /// Define a startupLoader() function or variable at the global scope.

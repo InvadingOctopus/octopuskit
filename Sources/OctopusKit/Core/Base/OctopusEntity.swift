@@ -8,6 +8,9 @@
 
 import GameplayKit
 
+public typealias OKEntityDelegate = OctopusEntityDelegate
+public typealias OKEntity = OctopusEntity
+
 /// A protocol for types that manage entities, such as `OctopusScene`.
 public protocol OctopusEntityDelegate: class {
     func entity(_ entity: GKEntity, didAddComponent component:     GKComponent)

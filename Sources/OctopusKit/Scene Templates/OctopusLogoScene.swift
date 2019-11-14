@@ -9,6 +9,8 @@
 import SpriteKit
 import AVFoundation
 
+public typealias OKLogoScene = OctopusLogoScene
+
 /// A template for presenting the OctopusKit logo.
 public final class OctopusLogoScene: OctopusScene {
     

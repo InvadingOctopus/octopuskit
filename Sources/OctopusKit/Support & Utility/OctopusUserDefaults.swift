@@ -11,6 +11,8 @@
 
 import Foundation
 
+public typealias OKUserDefault = OctopusUserDefault
+
 /// Represents a key and value pair saved in `UserDefaults.standard`, for storing user preferences and settings, as well as providing a default value if a key has not been saved.
 ///
 /// - IMPORTANT: The type of the value must be a type that can be saved in property lists.

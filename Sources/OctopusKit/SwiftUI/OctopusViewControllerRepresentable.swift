@@ -9,6 +9,8 @@
 import SwiftUI
 import SpriteKit
 
+public typealias OKViewControllerRepresentable = OctopusViewControllerRepresentable
+
 #if canImport(UIKit)
 
 /// Encapsulates an OctopusViewController for presenting SpriteKit/SceneKit/Metal content in a SwiftUI application.

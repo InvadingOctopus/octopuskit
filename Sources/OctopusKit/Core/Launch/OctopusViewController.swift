@@ -21,6 +21,8 @@ import Cocoa
 
 #endif
 
+public typealias OKViewController = OctopusViewController
+
 /// Coordinates between the SpriteKit view and game scenes. Signals the `OctopusGameCoordinator` to enter its initial state when the view is ready to present the first scene.
 ///
 /// - Important: The view controller of your main SpriteKit view must be an `OctopusSpriteKitViewController` or its subclass, for the OctopusKit to function.

@@ -8,6 +8,8 @@
 
 import GameplayKit
 
+public typealias OKEntityState = OctopusEntityState
+
 /// A logical state which may be associated with an entity's `StateMachineComponent`. Dictates the validity of state transitions and performs modifications to the entity upon entering from or exiting to specific states.
 open class OctopusEntityState: GKState {
     

@@ -9,6 +9,8 @@
 import Combine
 import GameplayKit
 
+public typealias OKGameCoordinator = OctopusGameCoordinator
+
 /// The primary coordinator for the various states a game may be in.
 ///
 /// This is a "controller" in the MVC sense; use this class to coordinate game states and scenes, and to manage global objects that must be shared across scenes, such as the game world, player data, and network connections etc.

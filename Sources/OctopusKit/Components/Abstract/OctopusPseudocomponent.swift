@@ -8,6 +8,8 @@
 
 import GameplayKit
 
+public typealias OKPseudocomponent = OctopusPseudocomponent
+
 /// A protocol for types that can perform per-frame updates and hold a reference to an `OctopusEntity`. Such types may be used as the properties of a component, but otherwise cannot be added to an entity or component system.
 public protocol OctopusPseudocomponent {
     var entity: OctopusEntity? { get }

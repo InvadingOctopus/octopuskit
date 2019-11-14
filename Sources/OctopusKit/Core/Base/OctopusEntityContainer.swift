@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+public typealias OKEntityContainer = OctopusEntityContainer
+
 /// A protocol for sharing common code between `OctopusScene` and `OctopusSubscene` (or other types which manage entities) via Default Implementation Extensions.
 public protocol OctopusEntityContainer: class {
     

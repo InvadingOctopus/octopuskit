@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+public typealias OKSceneDelegate = OctopusSceneDelegate
+
 /// A protocol for types that control game state transitions and scene presentation based on input from the current scene, such as `OctopusGameState`.
 public protocol OctopusSceneDelegate: class {
     

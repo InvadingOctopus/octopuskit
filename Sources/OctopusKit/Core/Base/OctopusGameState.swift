@@ -10,6 +10,9 @@ import SpriteKit
 import GameplayKit
 import SwiftUI
 
+public typealias OKGameStateDelegate = OctopusGameStateDelegate
+public typealias OKGameState = OctopusGameState
+
 /// A protocol for types that will receive notifications about state transitions, and can provide visual effects for scene transitions.
 public protocol OctopusGameStateDelegate: class {
     func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?)

@@ -11,6 +11,8 @@
 
 import SpriteKit
 
+public typealias OKDirection = OctopusDirection
+
 public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
     
     case north

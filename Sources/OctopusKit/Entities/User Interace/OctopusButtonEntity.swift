@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 
+public typealias OKButtonEntity = OctopusButtonEntity
+
 /// Encapsulates components for representing a tappable button on the screen.
 public final class OctopusButtonEntity: OctopusEntity {
     

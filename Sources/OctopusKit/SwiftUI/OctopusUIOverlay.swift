@@ -9,6 +9,8 @@
 import SwiftUI
 import Combine
 
+public typealias OKUIOverlay = OctopusUIOverlay
+
 /// Displays the SwiftUI overlay for the `OctopusGameCoordinatorType`'s current `OctopusGameState`.
 public struct OctopusUIOverlay <OctopusGameCoordinatorType> : View
     where OctopusGameCoordinatorType: OctopusGameCoordinator
