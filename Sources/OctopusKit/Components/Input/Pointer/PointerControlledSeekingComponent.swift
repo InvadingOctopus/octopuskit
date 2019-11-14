@@ -32,7 +32,7 @@ public final class PointerControlledSeekingComponent: OctopusComponent, OctopusU
         
         // ⚠️ Do not change the `positionSeekingComponent.isPaused` flag here; just control the `PositionSeekingComponent` via its `targetPosition`, and let other components pause or unpause the `PositionSeekingComponent`. e.g. a `NodeTouchClosureComponent` may want to allow seeking only if the node is being touched/clicked (and dragged.)
         
-        if let latestEvent = pointerEventComponent.latestEvent {
+        if let latestEvent = pointerEventComponent.latestEventForCurrentFrame {
             
             // CHECK: Should we unpause the `PositionSeekingComponent` on the `pointerBegan` event (so we don't set the property on every frame)?
             // if  pointerEventComponent.pointerBegan != nil {
@@ -50,7 +50,7 @@ public final class PointerControlledSeekingComponent: OctopusComponent, OctopusU
         }
         
         // If there was a `pointerEnded` event, pause the component, otherwise the agent may orbit around the last `targetPosition`.
-        // Do not use `else if` because the check for `latestEvent` above will always be true.
+        // Do not use `else if` because the check for `latestEventForCurrentFrame` above will always be true.
         
         if  pointerEventComponent.pointerEnded != nil {
             // Remove the target position.

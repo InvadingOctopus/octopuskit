@@ -15,7 +15,7 @@ import GameplayKit
 
 /// An intermediary component which tracks a pointer (touch or mouse) if it begins in the entity's `SpriteKitComponent` node, and updates its state depending on the position of the pointer in relation to the node's bounds.
 ///
-/// Other components can simply query this component's `state`, `latestEvent` and other properties to implement pointer-controlled behavior, such as moving a node while it's being touched or updating a sprite's visual state when it's clicked, without having to directly track touches or the mouse pointer.
+/// Other components can simply query this component's `state`, `latestEventForCurrentFrame` and other properties to implement pointer-controlled behavior, such as moving a node while it's being touched or updating a sprite's visual state when it's clicked, without having to directly track touches or the mouse pointer.
 ///
 /// - IMPORTANT: To ensure that the state reported by this component remains valid even if the node is modified during the frame, other components should call the `updateState(...)` method after modifying the node or before using this component's state.
 ///
@@ -50,7 +50,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
                 // Discard the last stored event if the state changed to `ready` or `disabled`, because we are no longer tracking a pointer event sequence.
                 
                 if  state == .ready || state == .disabled {
-                    self.latestEvent = nil
+                    self.latestEventForCurrentFrame = nil
                 }
             }
         }
@@ -72,16 +72,16 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// This property is set to `nil` whenever the `state` changes to `ready` and when there are no more pointer events related to the node.
     ///
     /// Changing this property resets the following properties: `previousTimestamp`, `timestampDelta`, `initialPointerLocationInScene` and `initialPointerLocationInParent`.
-    @LogInputEventChanges(propertyName: "NodePointerStateComponent.latestEvent")
-    public private(set) var latestEvent: PointerEventComponent.PointerEvent? = nil {
+    @LogInputEventChanges(propertyName: "NodePointerStateComponent.latestEventForCurrentFrame")
+    public private(set) var latestEventForCurrentFrame: PointerEventComponent.PointerEvent? = nil {
         didSet {
-            if  latestEvent != oldValue { // Reset properties only if we received a different event or no events.
+            if  latestEventForCurrentFrame != oldValue { // Reset properties only if we received a different event or no events.
                 
                 // Reset the previous timestamp here then let the `previousEvent` observer set it.
                 previousTimestamp = 0
                 timestampDelta    = 0
 
-                if  latestEvent == nil {
+                if  latestEventForCurrentFrame == nil {
                     initialPointerLocationInScene  = nil
                     initialPointerLocationInParent = nil
                 }
@@ -96,7 +96,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
         didSet {
             if  previousEvent    != oldValue,
                 let previousEvent = previousEvent,
-                let latestEvent   = latestEvent
+                let latestEvent   = latestEventForCurrentFrame
             {
                 // Reset the timestamps only if we received a different event or no events.
                 // If the `latestEvent` or `previousEvent` is `nil`, return a timestamp and delta of 0, to avoid having a large delta for the first event in a sequence.
@@ -120,7 +120,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     ///
     /// - NOTE: This is *not* a delta value from the last time that the translation was reported.
     public  var pointerTranslationInScene: CGPoint? {
-        if  let latestEvent = self.latestEvent,
+        if  let latestEvent = self.latestEventForCurrentFrame,
             let initialPointerLocationInScene = self.initialPointerLocationInScene,
             let node  = self.entityNode,
             let scene = node.scene
@@ -141,7 +141,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     ///
     /// - NOTE: This is *not* a delta value from the last time that the translation was reported.
     public  var pointerTranslationInParent: CGPoint? {
-        if  let latestEvent = self.latestEvent,
+        if  let latestEvent = self.latestEventForCurrentFrame,
             let initialPointerLocationInParent = self.initialPointerLocationInParent,
             let node   = self.entityNode,
             let parent = node.parent
@@ -156,7 +156,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     
     // PERFORMANCE: Comparing timestamps would be more performance-efficient than storing an optional `previousLocation` and comparing `CGPoint`s.
     
-    // ℹ️ It's pointless to make `previousTimestamp` `public` for use by other components, because `previousTimestamp = latestEvent.timeStamp` at the end of our `update(deltaTime:)`. Better to have a delta property for other components to observe.
+    // ℹ️ It's pointless to make `previousTimestamp` `public` for use by other components, because `previousTimestamp = latestEventForCurrentFrame.timeStamp` at the end of our `update(deltaTime:)`. Better to have a delta property for other components to observe.
     
     /// Stores the previous value of the `timestamp` for the most recent event.
     @LogInputEventChanges(propertyName: "NodePointerStateComponent.previousTimestamp")
@@ -202,7 +202,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
                 // ℹ️ The state should not be automatically set to `disabled` here; that case is meant to be set explicitly, and may affect visual effects from other components.
                 
                 if  state != .ready && state != .disabled {
-                    state  = .ready // Resets `latestEvent` and timestamps via the property observer.
+                    state  = .ready // Resets `latestEventForCurrentFrame` and timestamps via the property observer.
                 }
                 return
         }
@@ -216,7 +216,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
         
         // MARK: Event Processing
         
-        // NOTE: The timestamps will be updated by the `latestEvent` and `previousEvent` `didSet` observers when the properties are changed.
+        // NOTE: The timestamps will be updated by the `latestEventForCurrentFrame` and `previousEvent` `didSet` observers when the properties are changed.
         
         // ℹ️ We do not use a `switch` statement here, because a pointer may begin AND move in the same frame, generating both a `pointerBegan` event and `pointerMoved` event, so we check all cases every frame, instead of just the first matching case.
         
@@ -228,7 +228,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
             // Set the state to `pointing` if the pointer is inside our node.
             
             if  node.contains(pointerBegan.location(in: parent)) { // TODO: Verify, i.e. with nested nodes.
-                self.latestEvent = pointerBegan // CHECK: Should this be set here or outside the `if`s, regardless of any conditions?
+                self.latestEventForCurrentFrame = pointerBegan // CHECK: Should this be set here or outside the `if`s, regardless of any conditions?
                 self.initialPointerLocationInScene  = pointerBegan.location(in: scene)
                 self.initialPointerLocationInParent = pointerBegan.location(in: parent)
                 state = .pointing
@@ -244,7 +244,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
             
             if  let pointerMoved = pointerEventComponent.pointerMoved {
                 
-                self.latestEvent = pointerMoved // CHECK: Should this be set here or outside the `if`s, regardless of any conditions?
+                self.latestEventForCurrentFrame = pointerMoved // CHECK: Should this be set here or outside the `if`s, regardless of any conditions?
                 
                 // Avoid redundant state changes in case the property is being observed.
                 if   node.contains(pointerMoved.location(in: parent)) { // TODO: Verify, i.e. with nested nodes.
@@ -261,7 +261,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
                         
             if  let pointerEnded = pointerEventComponent.pointerEnded {
                 
-                self.latestEvent = pointerEnded // CHECK: Should this be set here or outside the `if`s, regardless of any conditions?
+                self.latestEventForCurrentFrame = pointerEnded // CHECK: Should this be set here or outside the `if`s, regardless of any conditions?
                 
                 // Avoid redundant state changes in case the property is being observed.
                 if   node.contains(pointerEnded.location(in: parent)) { // TODO: Verify, i.e. with nested nodes.
@@ -300,7 +300,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
         // If there's no pointer being tracked, or no node or scene, just set the state to `ready`.
         
         guard
-            let latestEvent = self.latestEvent,
+            let latestEvent = self.latestEventForCurrentFrame,
             let node        = self.entityNode,
             let parent      = node.parent
             else {
@@ -308,7 +308,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
                 // ℹ️ The state should not be automatically set to `disabled` here; that case is meant to be set explicitly, and may affect visual effects from other components.
                 
                 if  state != .ready || state != .disabled {
-                    state  = .ready // Resets `latestEvent` and timestamps via the property observer.
+                    state  = .ready // Resets `latestEventForCurrentFrame` and timestamps via the property observer.
                 }
                 return state
         }
@@ -347,7 +347,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     
     /// Sets the `latestEvent` to `nil` and if `state` is not `disabled`, sets it to `ready`.
     public func stopTracking() {
-        latestEvent = nil
+        latestEventForCurrentFrame = nil
         
         if  state  != .disabled {
             state   = .ready

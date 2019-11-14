@@ -62,7 +62,7 @@ final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
         guard
             let node = entityNode,
             let pointerEventComponent = coComponent(PointerEventComponent.self),
-            let pointerLocation = pointerEventComponent.latestEvent?.location(in: node)
+            let pointerLocation = pointerEventComponent.latestEventForCurrentFrame?.location(in: node)
             else { return }
         
         if let spinny = self.spinnyNode?.copy() as? SKShapeNode

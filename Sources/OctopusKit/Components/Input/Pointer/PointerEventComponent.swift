@@ -129,12 +129,15 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     
     /// Returns the event which was received during this frame. To check the last event received in previous frames, use `lastEvent`
     @inlinable
-    public var latestEvent: PointerEvent? {
+    public var latestEventForCurrentFrame: PointerEvent? {
         [pointerBegan, pointerMoved, pointerEnded]
             .compactMap { $0 }
             .sorted     { $0.timestamp > $1.timestamp }
             .first
     }
+    
+    @available(*, unavailable, renamed: "latestEventForCurrentFrame")
+    public var latestEvent: PointerEvent? = nil // TODO: Remove in 4.0.0 :)
     
     /// Returns the last event received during this *or any previous* previous frames. To check the *latest* event received during the current frame, use `latestEvent`.
     @LogInputEventChanges(propertyName: "PointerEventComponent.lastEvent")

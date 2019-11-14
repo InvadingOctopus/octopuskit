@@ -69,7 +69,7 @@ public final class PointerControlledDraggingComponent: OctopusComponent, Octopus
             let node = self.entityNode,
             let parent = node.parent,
             let nodePointerStateComponent = coComponent(NodePointerStateComponent.self),
-            let lastEvent = nodePointerStateComponent.latestEvent
+            let latestEvent = nodePointerStateComponent.latestEventForCurrentFrame
             else {
                 initialNodePosition = nil
                 isDragging = false
@@ -78,12 +78,12 @@ public final class PointerControlledDraggingComponent: OctopusComponent, Octopus
         
         // PERFORMANCE: Cache the pointer component's properties locally so that we don't have to query another class's properties too much. CHECK: Should this be the job of the compiler?
         
-        let currentPointerLocation = lastEvent.location(in: parent)
+        let currentPointerLocation = latestEvent.location(in: parent)
         
         #if LOGINPUTEVENTS
         let previousPointerLocation = nodePointerStateComponent.previousEvent?.location(in: parent) ?? currentPointerLocation // Instead of `CGPoint.zero` so we don't report a false delta for the first event in a sequence.
         let pointerLocationDelta    = currentPointerLocation - previousPointerLocation
-        debugLog("latestEvent.location in node parent: \(previousPointerLocation) → \(currentPointerLocation), delta: \(pointerLocationDelta), translation: \(nodePointerStateComponent.pointerTranslationInParent)")
+        debugLog("latestEventForCurrentFrame.location in node parent: \(previousPointerLocation) → \(currentPointerLocation), delta: \(pointerLocationDelta), translation: \(nodePointerStateComponent.pointerTranslationInParent)")
         #endif
         
         let currentPointerState  = nodePointerStateComponent.state
