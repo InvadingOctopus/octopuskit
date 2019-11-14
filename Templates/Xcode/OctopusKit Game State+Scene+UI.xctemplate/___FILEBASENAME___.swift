@@ -42,7 +42,6 @@ final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
             PointerEventComponent.self,
             NodePointerStateComponent.self,
             NodePointerClosureComponent.self,
-            MotionManagerComponent.self,
             
             // 3: Movement and physics.
             
@@ -62,6 +61,12 @@ final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
     override func prepareContents() {
         super.prepareContents()
         // Customize: This is where you construct entities to add to your scene.
+        
+        self.entity?.addComponents([sharedMouseOrTouchEventComponent, sharedPointerEventComponent])
+        
+        addEntity(OctopusEntity(name: "", components: [
+            // Customize
+        ]))
     }
     
 }

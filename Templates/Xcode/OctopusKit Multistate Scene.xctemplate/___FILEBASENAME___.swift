@@ -55,7 +55,6 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
             PointerEventComponent.self,
             NodePointerStateComponent.self,
             NodePointerClosureComponent.self,
-            MotionManagerComponent.self,
             
             // 3: Movement and physics.
             
@@ -75,7 +74,13 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     override func prepareContents() {
         super.prepareContents()
         // Customize: This is where you construct entities to add to your scene.
-        //
+        
+        self.entity?.addComponents([sharedMouseOrTouchEventComponent, sharedPointerEventComponent])
+        
+        addEntity(OctopusEntity(name: "", components: [
+            // Customize
+        ]))
+        
         // You may also perform scene construction and deconstruction in `gameCoordinatorDidEnterState(_:from:)` and `gameCoordinatorWillExitState(_:to:)`
     }
     
