@@ -1,8 +1,13 @@
 # OctopusKit 👾🐙⚙️
 
-A 2.5D game engine in pure Swift with ECS and SwiftUI, for iOS, macOS and tvOS.
+A 2.5D game engine in pure Swift for iOS, macOS and tvOS.
 
-OctopusKit encapsulates and extends Apple's frameworks: GameplayKit's flexible Entity-Component-System architecture lets you dynamically compose game behavior, while SpriteKit gives you full access to GPU shaders and SwiftUI's declarative syntax lets you quickly design fluid, scalable HUDs. Metal under the hood ensures the best native performance. 
+OctopusKit wraps and extends Apple's frameworks:  
+• **GameplayKit**'s flexible Entity-Component-System architecture lets you dynamically compose game behavior.  
+• **SpriteKit** gives you full access to textures and GPU shaders.  
+• **SwiftUI**'s declarative syntax lets you quickly design fluid, scalable HUDs.  
+• **Metal** under the hood ensures the best native performance.  
+• OS-agnostic components let you compile natively for iOS and macOS and handle mouse + touch input with the same code, without needing Catalyst etc.
 
 <p align="center">
     <img src="https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo.gif?raw=true" alt="OctopusKit Demo"/>
