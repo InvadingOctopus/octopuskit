@@ -17,8 +17,8 @@ import GameplayKit
 open class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableComponent {
     
     open override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                TapGestureRecognizerComponent.self]
+        [SpriteKitComponent.self,
+         TapGestureRecognizerComponent.self]
     }
     
     // MARK: - Properties

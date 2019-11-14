@@ -22,8 +22,8 @@ import GameplayKit
 public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [PhysicsComponent.self,
-                NodeTouchStateComponent.self]
+        [PhysicsComponent.self,
+         NodeTouchStateComponent.self]
     }
     
     /// If `true`, the body's angular velocity is set to `0` in every frame while the node is being held, but the body may still be rotated by other forces (such as contact with other bodies.)

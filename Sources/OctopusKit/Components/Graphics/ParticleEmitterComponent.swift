@@ -14,7 +14,7 @@ import GameplayKit
 public final class ParticleEmitterComponent: SpriteKitAttachmentComponent<SKEmitterNode> {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self]
+        [SpriteKitComponent.self]
     }
     
     public var emitterNode: SKEmitterNode

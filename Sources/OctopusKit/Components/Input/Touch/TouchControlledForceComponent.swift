@@ -24,9 +24,9 @@ import GameplayKit
 public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                PhysicsComponent.self,
-                TouchEventComponent.self]
+        [SpriteKitComponent.self,
+         PhysicsComponent.self,
+         TouchEventComponent.self]
     }
     
     public var boost: CGFloat

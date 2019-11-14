@@ -15,7 +15,7 @@ import GameplayKit
 public class SpriteKitActionComponent: OctopusComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self]
+        [SpriteKitComponent.self]
     }
     
     public let action: SKAction

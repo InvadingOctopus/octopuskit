@@ -19,7 +19,7 @@ import GameplayKit
 public final class ThrustComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [PhysicsComponent.self]
+        [PhysicsComponent.self]
     }
     
     /// The scalar that `thrustVector` will be multiplied by.

@@ -26,9 +26,9 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
     // ℹ️ DESIGN: Not pinning to the specific point of touch, because that would be inconvenient for the user to control on a [small] touchscreen, and also seems like overkill in the amount of code it takes and the temporary node it needs to create, as well as likely impacting performance.
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                PhysicsComponent.self,
-                NodeTouchStateComponent.self]
+        [SpriteKitComponent.self,
+         PhysicsComponent.self,
+         NodeTouchStateComponent.self]
     }
     
     @LogInputEventChanges(propertyName: "TouchControlledPhysicsDraggingComponent.isDragging")
@@ -39,7 +39,7 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
         
         // A scene itself is not really draggable, so...
         
-        if node is SKScene {
+        if  node is SKScene {
             OctopusKit.logForWarnings.add("A TouchControlledPhysicsDraggingComponent cannot be added to the scene entity — Removing.")
             OctopusKit.logForTips.add("See CameraPanComponent.")
             self.removeFromEntity()

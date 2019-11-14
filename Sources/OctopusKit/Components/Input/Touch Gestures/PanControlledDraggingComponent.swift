@@ -30,9 +30,9 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     public static let inertialMovementKey = "OctopusKit.PanControlledDraggingComponent.Move"
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                NodeTouchStateComponent.self,
-                PanGestureRecognizerComponent.self]
+        [SpriteKitComponent.self,
+         NodeTouchStateComponent.self,
+         PanGestureRecognizerComponent.self]
     }
     
     /// The minimum number of touches for a pan gesture to be processed.

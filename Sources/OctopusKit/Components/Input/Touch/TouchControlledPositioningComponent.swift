@@ -17,8 +17,8 @@ import GameplayKit
 public final class TouchControlledPositioningComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                TouchEventComponent.self]
+        [SpriteKitComponent.self,
+         TouchEventComponent.self]
     }
     
     public var trackLatestTouchInsteadOfFirst: Bool = false

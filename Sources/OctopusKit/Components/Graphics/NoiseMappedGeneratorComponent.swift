@@ -38,7 +38,7 @@ public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<S
         -> SKNode?
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self]
+        [SpriteKitComponent.self]
     }
     
     /// The noise field for the nodes generator.

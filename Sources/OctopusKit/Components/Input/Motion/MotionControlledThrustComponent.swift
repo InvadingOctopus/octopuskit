@@ -18,8 +18,8 @@ import GameplayKit
 public final class MotionControlledThrustComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [MotionManagerComponent.self,
-                ThrustComponent.self]
+        [MotionManagerComponent.self,
+         ThrustComponent.self]
     }
     
     public override func update(deltaTime seconds: TimeInterval) {

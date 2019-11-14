@@ -14,8 +14,8 @@ import GameplayKit
 open class PhysicsContactComponent: OctopusComponent, OctopusUpdatableComponent {
     
     open override var requiredComponents: [GKComponent.Type]? {
-        return [PhysicsComponent.self,
-                PhysicsEventComponent.self]
+        [PhysicsComponent.self,
+         PhysicsEventComponent.self]
     }
     
     open override func didAddToEntity() {

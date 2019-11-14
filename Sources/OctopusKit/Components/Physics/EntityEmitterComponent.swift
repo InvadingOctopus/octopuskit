@@ -17,7 +17,7 @@ import GameplayKit
 public final class EntityEmitterComponent: OctopusComponent {
 
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self]
+        [SpriteKitComponent.self]
     }
     
     // TODO: Add settings and change function parameters to overrides.

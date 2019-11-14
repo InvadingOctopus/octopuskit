@@ -18,7 +18,7 @@ import GameplayKit
 public final class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitSceneComponent.self]
+        [SpriteKitSceneComponent.self]
     }
     
     public var camera: SKCameraNode {

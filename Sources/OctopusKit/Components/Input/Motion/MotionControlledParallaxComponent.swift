@@ -21,8 +21,8 @@ import CoreMotion
 public class MotionControlledParallaxComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                MotionManagerComponent.self]
+        [SpriteKitComponent.self,
+         MotionManagerComponent.self]
     }
     
     public override func update(deltaTime seconds: TimeInterval) {

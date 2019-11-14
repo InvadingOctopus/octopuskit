@@ -17,7 +17,7 @@ import GameplayKit
 open class OctopusAgentGoalComponent: OctopusComponent {
     
     open override var requiredComponents: [GKComponent.Type]? {
-        return [OctopusAgent2D.self]
+        [OctopusAgent2D.self]
     }
     
     /// Returns the entity's `OctopusAgent2D` component, if available.

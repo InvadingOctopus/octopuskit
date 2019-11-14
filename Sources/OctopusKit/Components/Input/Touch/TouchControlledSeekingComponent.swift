@@ -18,9 +18,9 @@ import GameplayKit
 public final class TouchControlledSeekingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [PositionSeekingGoalComponent.self,
-                SpriteKitComponent.self,
-                TouchEventComponent.self]
+        [PositionSeekingGoalComponent.self,
+         SpriteKitComponent.self,
+         TouchEventComponent.self]
     }
     
     public override func update(deltaTime seconds: TimeInterval) {

@@ -21,8 +21,8 @@ import GameplayKit
 public final class CameraZoomComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [CameraComponent.self,
-                PinchGestureRecognizerComponent.self]
+        [CameraComponent.self,
+         PinchGestureRecognizerComponent.self]
     }
     
     public var isPaused: Bool = false

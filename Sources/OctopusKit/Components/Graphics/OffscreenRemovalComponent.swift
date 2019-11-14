@@ -14,7 +14,7 @@ import GameplayKit
 public final class OffscreenRemovalComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self]
+        [SpriteKitComponent.self]
     }
     
     public fileprivate(set) var secondsElapsedSinceOffscreen: TimeInterval = 0

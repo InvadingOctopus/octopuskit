@@ -31,8 +31,8 @@ public final class RandomlyPositionedGeneratorComponent: SpriteKitAttachmentComp
         -> SKNode?
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self,
-                RandomizationSourceComponent.self]
+        [SpriteKitComponent.self,
+         RandomizationSourceComponent.self]
     }
     
     /// The closure which returns a node for the given parameters. Called for a number of times equal to `numberOfNodes`.

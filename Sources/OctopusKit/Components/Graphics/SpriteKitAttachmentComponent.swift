@@ -18,7 +18,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponen
     // 💡 To use, simply subclass with the appropriate generic type, and implement (override) `createAttachment(for:)`.
     
     open override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitComponent.self]
+        [SpriteKitComponent.self]
     }
     
     /// The child node to add to the parent node specified by the entity's `SpriteKitComponent`. Subclasses of this component may create this node during `createAttachment(for:)`.

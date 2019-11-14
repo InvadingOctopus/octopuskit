@@ -14,7 +14,7 @@ import GameplayKit
 public final class PhysicsWorldComponent: OctopusComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitSceneComponent.self]
+        [SpriteKitSceneComponent.self]
     }
     
     public weak var physicsWorld: SKPhysicsWorld? // CHECK: Should this be weak?

@@ -28,9 +28,9 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
     public static let inertialMovementKey = "OctopusKit.CameraPanComponent.Move"
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitSceneComponent.self,
-                CameraComponent.self,
-                PanGestureRecognizerComponent.self]
+        [SpriteKitSceneComponent.self,
+         CameraComponent.self,
+         PanGestureRecognizerComponent.self]
     }
     
     /// The minimum number of touches for a pan gesture to be processed.

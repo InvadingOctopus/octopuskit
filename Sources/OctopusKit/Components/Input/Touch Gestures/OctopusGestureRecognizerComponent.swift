@@ -35,7 +35,7 @@ open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComp
     // https://forums.swift.org/t/xcode-11-2-runtime-error-type-metadata-accessor-failed-to-demangle-superclass-from-mangled-name/30604/9
     
     open override var requiredComponents: [GKComponent.Type]? {
-        return [SpriteKitSceneComponent.self]
+        [SpriteKitSceneComponent.self]
     }
     
     public fileprivate(set) var gestureRecognizer: GestureRecognizerType // CHECK: Should this be optional?

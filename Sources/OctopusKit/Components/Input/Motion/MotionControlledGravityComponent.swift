@@ -16,8 +16,8 @@ import GameplayKit
 public class MotionControlledGravityComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        return [PhysicsWorldComponent.self,
-                MotionManagerComponent.self]
+        [PhysicsWorldComponent.self,
+         MotionManagerComponent.self]
     }
     
     public override func update(deltaTime seconds: TimeInterval) {
