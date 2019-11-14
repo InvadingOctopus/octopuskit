@@ -4,7 +4,7 @@ A 2.5D game engine in pure Swift for iOS, macOS and tvOS.
 
 OctopusKit wraps and extends Apple's frameworks:  
 • **GameplayKit**'s flexible Entity-Component-System architecture lets you dynamically compose game behavior.  
-• **SpriteKit** gives you full access to textures and GPU shaders.  
+• **SpriteKit** gives you full access to textures, physics and GPU shaders.  
 • **SwiftUI**'s declarative syntax lets you quickly design fluid, scalable HUDs.  
 • **Metal** under the hood ensures the best native performance.  
 • OS-agnostic components let you compile natively for iOS and macOS and handle mouse + touch input with the same code, without needing Catalyst etc.
@@ -95,7 +95,7 @@ character.addComponents([
 🕹 *Dynamically removing player control or changing to a different input method*
 
 ```swift
-character.removeComponent(ofType: TouchControlledPositioningComponent.self)
+character.removeComponent(ofType: PointerControlledPositioningComponent.self)
     
 character.addComponents([
 
@@ -154,8 +154,8 @@ for turretNode in scene["//Turret"] {
         // Hypothetical game-specific components.
         HealthComponent(),
         AttackComponent(),
-        MonsterTargettingComponent(),
-        
+        MonsterTargetingComponent(),
+ 
         // Track the first touch that begins inside the sprite.
         NodeTouchStateComponent(),
                 
