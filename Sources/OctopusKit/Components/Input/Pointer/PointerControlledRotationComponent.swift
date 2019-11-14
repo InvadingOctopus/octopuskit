@@ -40,7 +40,7 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
             let node = entityNode,
             let scene = node.scene,
             let pointerEventComponent = coComponent(PointerEventComponent.self),
-            let lastEvent = pointerEventComponent.lastEvent
+            let lastEvent = pointerEventComponent.lastEvent // NOTE: Use `lastEvent` instead of `latestEventForCurrentFrame`, because we want to continue the rotation if needed, even if the pointer does not move.
             else { return }
         
         // #1: Get the target angle to rotate towards.

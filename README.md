@@ -71,21 +71,20 @@ var character = OctopusEntity(components: [
 // Other components that handle player input will query this component.
 // A shared event stream is more efficient than forwarding events to every entity.
 
-let sharedTouchEventComponent = TouchEventComponent()
-scene.entity?.addComponent(sharedTouchEventComponent)
+// PointerEventComponent is an OS-agnostic component for touch or mouse input.
+
+let sharedPointerEventComponent = PointerEventComponent()
+scene.entity?.addComponent(sharedPointerEventComponent)
 
 character.addComponents([
     
     // A relay component adds a reference to a component from another entity,
     // and also fulfills the dependencies of other components in this entity.
-    RelayComponent(for: sharedTouchEventComponent),
+    RelayComponent(for: sharedPointerEventComponent),
     
-    // This component checks the entity's TouchEventComponent (provided here by a relay)
-    // and syncs the entity's position to the touch location in every frame.
-    TouchControlledPositioningComponent() ])
-    
-    // There are OS-agnostic input components that work with touch or mouse,
-    // such as PointerEventComponent.
+    // This component checks the entity's PointerEventComponent (provided here by a relay)
+    // and syncs the entity's position to the touch or mouse location in every frame.
+    PointerControlledPositioningComponent() ])
 ```
 
 🕹 *Dynamically removing player control or changing to a different input method*
