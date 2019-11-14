@@ -25,8 +25,8 @@ public typealias OKLogEntry = OctopusLogEntry
 /// Available in debug configurations (when the `DEBUG` flag is set). A blank function in non-debug configurations.
 public func debugLog(
     _ entry: String? = nil,
-    _ callerFile: String = #file,
-    _ callerFunction: String = #function,
+    callerFile: String = #file,
+    callerFunction: String = #function,
     separator: String = " ")
 {
     // Trim and pad the calling file's name.
@@ -50,7 +50,7 @@ public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {}
 /// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set).
 ///
 /// In debug configurations, prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
-public func debugLog(_ entry: String? = nil, _ callerFile: String = #file, _ callerFunction: String = #function, separator: String = " ") {}
+public func debugLog(_ entry: String? = nil, callerFile: String = #file, callerFunction: String = #function, separator: String = " ") {}
     
 #endif
 
@@ -58,21 +58,22 @@ public func debugLog(_ entry: String? = nil, _ callerFile: String = #file, _ cal
 
 /// An entry in an `OctopusLog`.
 public struct OctopusLogEntry: CustomStringConvertible {
-    public let time: Date
-    public let text: String?
-    public let addedFromFile: String?
-    public let addedFromFunction: String?
+    
+    public let time:                Date
+    public let text:                String?
+    public let addedFromFile:       String?
+    public let addedFromFunction:   String?
     
     public init(
-        time: Date = Date(),
-        text: String? = nil,
-        addedFromFile: String = #file,
-        addedFromFunction: String = #function)
+        time:               Date    = Date(),
+        text:               String? = nil,
+        addedFromFile:      String  = #file,
+        addedFromFunction:  String  = #function)
     {
-        self.time = time
-        self.text = text
-        self.addedFromFile = addedFromFile
-        self.addedFromFunction = addedFromFunction
+        self.time                   = time
+        self.text                   = text
+        self.addedFromFile          = addedFromFile
+        self.addedFromFunction      = addedFromFunction
     }
     
     public var description: String {
@@ -142,14 +143,13 @@ public struct OctopusLog {
         
         // ⚠️ Trying to access `OctopusKit.shared.currentScene` at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so we delay it by checking something like `gameCoordinator.didEnterInitialState`
         
-        if OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false {
+        if  OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false {
             currentFrameNumber = OctopusKit.shared?.currentScene?.currentFrameNumber ?? 0
-        }
-        else {
+        } else {
             lastFrameLogged = 0
         }
         
-        if printEmptyLineBetweenFrames && currentFrameNumber > OctopusLog.lastFrameLogged {
+        if  printEmptyLineBetweenFrames && currentFrameNumber > OctopusLog.lastFrameLogged {
             // CHECK: Should this be the job of the time function?
             print("")
         }
@@ -165,7 +165,7 @@ public struct OctopusLog {
     
     /// Returns a string with the current time formatted by the global `OctopusLog.timeFormatter` and the number of the frame being rendered by the current scene, if any.
     public static func currentTimeAndFrame() -> String {
-        return currentTime() + currentFrame()
+        currentTime() + currentFrame()
     }
     
     // MARK: Instance properties and methods
@@ -194,6 +194,7 @@ public struct OctopusLog {
             OctopusKit.logForErrors.add("Index \(index) out of bounds (\(entries.count) entries) — Returning dummy `OctopusLogEntry`")
             return OctopusLogEntry(time: Date(), text: nil)
         }
+        
         return entries[index]
     }
     
@@ -204,12 +205,13 @@ public struct OctopusLog {
             OctopusKit.logForErrors.add("Index \(index) out of bounds (\(entries.count) entries) — Returning empty string")
             return ""
         }
+        
         return "\(entries[index])" // Simply return the `OctopusLogEntry` as it conforms to `CustomStringConvertible`.
     }
 
     /// - Returns: The `description` of the last entry added to the log, if any.
     public var lastEntryText: String? {
-        return entries.last?.text
+        entries.last?.text
     }
     
     /// If `true` then a `fatalError` is raised when a new entry is added.
@@ -220,23 +222,23 @@ public struct OctopusLog {
     // MARK: -
     
     public init(
-        title: String = "OctopusLog",
-        suffix: String? = nil,
-        useNSLog: Bool = false,
+        title:      String  = "OctopusLog",
+        suffix:     String? = nil,
+        useNSLog:   Bool    = false,
         haltApplicationOnNewEntry: Bool = false)
     {
-        self.title = title
-        self.suffix = suffix
-        self.useNSLog = useNSLog
+        self.title      = title
+        self.suffix     = suffix
+        self.useNSLog   = useNSLog
         self.haltApplicationOnNewEntry = haltApplicationOnNewEntry
     }
     
     /// Prints a new entry and adds it to the log.
     public mutating func add(
-        _ text: String? = nil,
-        _ callerFile: String = #file,
-        _ callerFunction: String = #function,
-        useNSLog: Bool? = nil)
+        _ text:         String? = nil,
+        callerFile:     String  = #file,
+        callerFunction: String  = #function,
+        useNSLog:       Bool?   = nil)
     {
         // CHECK: Cocoa Notifications for log observers etc.?
         
@@ -263,11 +265,12 @@ public struct OctopusLog {
         
         var consoleText: String = ""
         
-        if useNSLog {
+        if  useNSLog {
             NSLog("\(title) \(callerFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)")
+            
         } else {
           
-            if OctopusLog.printAsCSV {
+            if  OctopusLog.printAsCSV {
                 
                 consoleText = [
                     OctopusLog.currentTime(),
@@ -283,13 +286,14 @@ public struct OctopusLog {
                 // TODO: Truncate filenames with "…"
                 
                 let paddedTitle = title.padding(toLength: 8, withPad: " ", startingAt: 0)
-                let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
+                let paddedFile  = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
                  
-                if OctopusLog.printTextOnSecondLine {
+                if  OctopusLog.printTextOnSecondLine {
                     consoleText = """
                         \(OctopusLog.currentTimeAndFrame()) \(paddedTitle) \(callerFile)
                         \(String(repeating: " ", count: 35))\(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)
                         """
+                    
                 } else {
                     consoleText = "\(OctopusLog.currentTimeAndFrame()) \(paddedTitle) \(paddedFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)"
                 }
@@ -306,12 +310,12 @@ public struct OctopusLog {
         
         entries.append(OctopusLogEntry(time: Date(),
                                        text: text,
-                                       addedFromFile: callerFile,
+                                       addedFromFile:     callerFile,
                                        addedFromFunction: callerFunction))
         
         // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
         
-        if haltApplicationOnNewEntry {
+        if  haltApplicationOnNewEntry {
             fatalError(consoleText)
         }
     }
