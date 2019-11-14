@@ -24,9 +24,7 @@ extension OctopusScene: TouchEventProvider {
         debugLog()
         #endif
         
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesBegan = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
+        self.entity?[TouchEventComponent.self]?.touchesBegan = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
@@ -36,9 +34,7 @@ extension OctopusScene: TouchEventProvider {
         debugLog()
         #endif
         
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesMoved = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
+        self.entity?[TouchEventComponent.self]?.touchesMoved = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
@@ -48,9 +44,7 @@ extension OctopusScene: TouchEventProvider {
         debugLog()
         #endif
         
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesCancelled = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
+        self.entity?[TouchEventComponent.self]?.touchesCancelled = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
@@ -60,9 +54,7 @@ extension OctopusScene: TouchEventProvider {
         debugLog()
         #endif
         
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesEnded = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
-        }
+        self.entity?[TouchEventComponent.self]?.touchesEnded = TouchEventComponent.TouchEvent(touches: touches, event: event, node: self)
     }
     
     /// Relays touch-input events to the scene's `TouchEventComponent`.
@@ -72,9 +64,7 @@ extension OctopusScene: TouchEventProvider {
         debugLog()
         #endif
         
-        if let inputComponent = self.entity?.componentOrRelay(ofType: TouchEventComponent.self) {
-            inputComponent.touchesEstimatedPropertiesUpdated = TouchEventComponent.TouchEvent(touches: touches, event: nil, node: self)
-        }
+        self.entity?[TouchEventComponent.self]?.touchesEstimatedPropertiesUpdated = TouchEventComponent.TouchEvent(touches: touches, event: nil, node: self)
     }
 }
 
