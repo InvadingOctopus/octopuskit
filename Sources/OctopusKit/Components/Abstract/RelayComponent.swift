@@ -72,6 +72,7 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
     public var sceneComponentType: MasterComponentType.Type?
     
     /// This helps `GKEntity.componentOrRelay(ofType:)` see the correct concrete type at runtime, e.g. when comparing with `OctopusComponent.requiredComponents`.
+    @inlinable
     public override var componentType: GKComponent.Type {
         
         #if LOGECSVERBOSE

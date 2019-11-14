@@ -28,7 +28,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         public let node: SKNode
         public let locationInNode: CGPoint
         
-        public fileprivate(set) var shouldClear: Bool = false
+        public var shouldClear: Bool = false // Not private(set) so we can make update(deltaTime:) @inlinable
         
         public static func == (left: PointerEvent, right: PointerEvent) -> Bool {
             return (left.timestamp      == right.timestamp
@@ -95,7 +95,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     #endif
     
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerBegan")
-    public private(set) var pointerBegan: PointerEvent? = nil {
+    public var pointerBegan: PointerEvent? = nil { // Not private(set) so we can make update(deltaTime:) @inlinable
         didSet {
             if  let pointerBegan = pointerBegan,
                 (lastEvent == nil || lastEvent!.timestamp < pointerBegan.timestamp)
@@ -106,7 +106,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     }
     
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerMoved")
-    public private(set) var pointerMoved: PointerEvent? = nil {
+    public var pointerMoved: PointerEvent? = nil { // Not private(set) so we can make update(deltaTime:) @inlinable
            didSet {
                if  let pointerMoved = pointerMoved,
                    (lastEvent == nil || lastEvent!.timestamp < pointerMoved.timestamp)
@@ -117,7 +117,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
        }
     
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerEnded")
-    public private(set) var pointerEnded: PointerEvent? = nil {
+    public var pointerEnded: PointerEvent? = nil { // Not private(set) so we can make update(deltaTime:) @inlinable
            didSet {
                if  let pointerEnded = pointerEnded,
                    (lastEvent == nil || lastEvent!.timestamp < pointerEnded.timestamp)
@@ -145,6 +145,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     
     // MARK: - Frame Cycle
     
+    @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
         
         // #1: Discard all events if we are part of a scene that has displayed or dismissed a subscene in this frame.
@@ -219,6 +220,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     }
     
     /// Discards all events and touches.
+    @inlinable
     public func clearAllEvents() {
         
         // ℹ️ Since we have to set the properties themselves to `nil`, we cannot use an array etc. as that would only modify the array's members, not our properties. 2018-05-20

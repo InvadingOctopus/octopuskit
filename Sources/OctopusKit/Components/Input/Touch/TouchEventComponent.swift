@@ -52,7 +52,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         public let event: UIEvent?
         public let node: SKNode // CHECK: Should this be optional?
         
-        public fileprivate(set) var shouldClear: Bool = false
+        public var shouldClear: Bool = false // Not private(set) so we can make update(deltaTime:) @inlinable
         
         public var description: String {
             return "\(event)"
@@ -145,6 +145,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     /// Returns an array of all events for the current frame.
     ///
     /// - IMPORTANT: The array returned by this property is a *snapshot* of the events that are *currently* stored by this component; it does *not* automatically point to new events when they are received. To ensure that you have the latest events, either query the individual `touches...` properties or recheck this property at the point of use.
+    @inlinable
     public var allEvents: [TouchEvent?] {
         [touchesBegan,
          touchesMoved,
@@ -165,21 +166,24 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     /// Stores the first touch that begins when the list of touches is empty.
     ///
     /// Components that only need to track a single touch may simply observe this property.
+    @inlinable
     public var firstTouch: UITouch? {
-        return touches.first
+        touches.first
         // TODO: Confirm that this property correctly points to the next oldest touch after the first touch ends.
     }
     
     /// Stores the latest touch, which may be the same as the `firstTouch` property.
     ///
     /// Components that only need to track a single touch may simply observe this property.
+    @inlinable
     public var latestTouch: UITouch? {
-        return touches.last
+        touches.last
         // TODO: Confirm that this property correctly points to the next latest touch after the latest touch ends.
     }
     
     // MARK: - Frame Cycle
     
+    @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
   
         // #1: Discard all events if we are part of a scene that has displayed or dismissed a subscene in this frame.

@@ -15,6 +15,7 @@ import GameplayKit
 /// - IMPORTANT: As a temporary fix for APPLEBUG 20180515a, the `isPaused` property of the node is set to `false` when this component is added to an entity.
 public final class SpriteKitComponent: GKSKNodeComponent {
     
+    @inlinable
     public override var description: String {
         // NOTE: To reduce log clutter, only include the node's name here; full node description should only be in `didAddToEntity()`.
         if let name = super.node.name {
@@ -103,6 +104,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
     /// Notifies all other existing components of the entity that a `SpriteKitComponent` was added, so they can add their content, if any, to the node.
     ///
     /// This is useful for the case when other components that depend on a `SpriteKitComponent` were added to an entity before this component.
+    @inlinable
     public func notifyCoComponents() {
         // CHECK: Should this be `[file]private`?
         guard let entity = self.entity else { return }

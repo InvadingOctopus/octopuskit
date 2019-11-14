@@ -53,10 +53,11 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
         public let event: NSEvent
         public let node: SKNode // CHECK: Should this be optional?
         
-        public fileprivate(set) var shouldClear: Bool = false
+        public var shouldClear: Bool = false // Not private(set) so we can make update(deltaTime:) @inlinable
         
+        @inlinable
         public var description: String {
-            return "\(event)"
+            "\(event)"
         }
         
         public static func == (left: MouseEvent, right: MouseEvent) -> Bool {
@@ -95,6 +96,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     /// Returns an array of all events for the current frame.
     ///
     /// - IMPORTANT: The array returned by this property is a *snapshot* of the events that are *currently* stored by this component; it does *not* automatically point to new events when they are received. To ensure that you have the latest events, either query the individual `mouse...` properties or recheck this property at the point of use.
+    @inlinable
     public var allEvents: [MouseEvent?] {
         [mouseEntered,
          mouseMoved,
@@ -106,6 +108,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     // MARK: - Frame Cycle
     
+    @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
   
         // #1: Discard all events if we are part of a scene that has displayed or dismissed a subscene in this frame.
