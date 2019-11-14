@@ -18,11 +18,17 @@ public struct LogChanges <ValueType: Equatable> {
     public var wrappedValue: ValueType {
         didSet {
             if  wrappedValue != oldValue {
+                var text = ""
+                
                 if  omitOldValue {
-                    debugLog("\(propertyName) = \(wrappedValue)")
+                    text = "= \(wrappedValue)"
                 } else {
-                    debugLog("\(propertyName) = \(oldValue) → \(wrappedValue)")
+                    text = "= \(oldValue) → \(wrappedValue)"
                 }
+                
+                debugLog(text,
+                         callerFile:     propertyName.components(separatedBy: ".").first ?? propertyName,
+                         callerFunction: propertyName.components(separatedBy: ".").last ?? "")
             }
         }
     }
