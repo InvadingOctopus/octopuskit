@@ -30,7 +30,8 @@ public final class CameraZoomComponent: OctopusComponent, OctopusUpdatableCompon
     /// A flag that indicates whether there is a gesture to process in the `update(deltaTime:)` method.
     ///
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
-    @LogInputEventChanges private var haveGestureToProcess: Bool = false
+    @LogInputEventChanges(propertyName: "haveGestureToProcess")
+    private var haveGestureToProcess: Bool = false
     
     private var initialCameraScale: CGFloat?
     private var initialGestureScale: CGFloat?

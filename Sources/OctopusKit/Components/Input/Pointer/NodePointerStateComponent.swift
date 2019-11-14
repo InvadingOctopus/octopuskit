@@ -38,7 +38,8 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// The current state of player interaction with the entity's `SpriteKitComponent` node. See the descriptions for each case of `NodePointerState`.
     ///
     /// Changing this property copies the old value to `previousState.`
-    @LogInputEventChanges public fileprivate(set) var state: NodePointerState = .ready {
+    @LogInputEventChanges(propertyName: "state")
+    public fileprivate(set) var state: NodePointerState = .ready {
         didSet {
             // CHECK: PERFORMANCE: Will this observer degrade performance compared to just setting `previousState` in `update(deltaTime:)` etc.?
             if  state != oldValue { // Update only when changed.
@@ -61,7 +62,8 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     public fileprivate(set) var previousState: NodePointerState = .ready
     
     /// Set to `true` for a single frame after the `state` changes.
-    @LogInputEventChanges public fileprivate(set) var stateChangedThisFrame: Bool = false
+    @LogInputEventChanges(propertyName: "stateChangedThisFrame")
+    public fileprivate(set) var stateChangedThisFrame: Bool = false
     
     // MARK: Pointer
     
@@ -70,7 +72,8 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// This property is set to `nil` whenever the `state` changes to `ready` and when there are no more pointer events related to the node.
     ///
     /// Changing this property resets the following properties: `previousTimestamp`, `timestampDelta`, `initialPointerLocationInScene` and `initialPointerLocationInParent`.
-    @LogInputEventChanges public fileprivate(set) var lastEvent: PointerEventComponent.PointerEvent? {
+    @LogInputEventChanges(propertyName: "lastEvent")
+    public fileprivate(set) var lastEvent: PointerEventComponent.PointerEvent? = nil {
         didSet {
             if  lastEvent != oldValue { // Reset the timestamps only if we received a different event or no events.
                 
@@ -90,7 +93,8 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// The first observed location of the currently-tracked pointer, in scene coordinates.
     ///
     /// Other components can compare the current location of the pointer with this value to obtain the total translation over time.
-    @LogInputEventChanges public fileprivate(set) var initialPointerLocationInScene: CGPoint?
+    @LogInputEventChanges(propertyName: "initialPointerLocationInScene")
+    public fileprivate(set) var initialPointerLocationInScene: CGPoint? = nil
     
     // CHECK: Keep `pointerTranslationInScene`, or just `pointerTranslationInParent`?
     
@@ -112,7 +116,8 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     /// The first observed location of the currently-tracked pointer, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
     ///
     /// Other components can compare the current location of the pointer with this value to obtain the total translation over time.
-    @LogInputEventChanges public fileprivate(set) var initialPointerLocationInParent: CGPoint?
+    @LogInputEventChanges(propertyName: "initialPointerLocationInParent")
+    public fileprivate(set) var initialPointerLocationInParent: CGPoint? = nil
     
     /// Returns the total translation over time of the currently-tracked pointer's location, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
     ///
@@ -136,12 +141,14 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     // ℹ️ It's pointless to make `previousTimestamp` `public` for use by other components, because `previousTimestamp = lastEvent.timeStamp` at the end of our `update(deltaTime:)`. Better to have a delta property for other components to observe.
     
     /// Stores the previous value of the `timestamp` for the most recent event.
-    @LogInputEventChanges private var previousTimestamp: TimeInterval = 0
+    @LogInputEventChanges(propertyName: "previousTimestamp")
+    private var previousTimestamp: TimeInterval = 0
     
     /// Stores the change in the timestamp of the most recent event between the previous frame and the current frame.
     ///
     /// Useful for other components to see if the pointer has moved.
-    @LogInputEventChanges public fileprivate(set) var timestampDelta: TimeInterval = 0
+    @LogInputEventChanges(propertyName: "timestampDelta")
+    public fileprivate(set) var timestampDelta: TimeInterval = 0
     
     // MARK: Settings
     
@@ -151,6 +158,8 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     // MARK: - Update
     
     public override func update(deltaTime seconds: TimeInterval) {
+        
+        // TODO: FIX: guard statement passes every frame, even when there is no input.
         
         // Clear the state mutation flag until the state changes again.
         
@@ -162,9 +171,9 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
         
         guard
             self.state != .disabled,
-            let node = entityNode,
-            let parent = (node is SKScene ? node : node.parent), // If the component's node is a scene, `parent` would be set to the node itself.
-            let scene = (node.scene as? OctopusScene) ?? (node as? OctopusScene), // We need the scene to be an `OctopusScene`.
+            let node    = entityNode,
+            let parent  = (node is SKScene ? node : node.parent), // If the component's node is a scene, `parent` would be set to the node itself.
+            let scene   = (node.scene as? OctopusScene) ?? (node as? OctopusScene), // We need the scene to be an `OctopusScene`.
             !scene.didDismissSubsceneThisFrame, // CHECK: Include `didPresentSubsceneThisFrame`?
             let pointerEventComponent = coComponent(PointerEventComponent.self)
             else {
@@ -175,7 +184,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
                 // ℹ️ The state should not be automatically set to `disabled` here; that case is meant to be set explicitly, and may affect visual effects from other components.
                 
                 if  state != .ready && state != .disabled {
-                    state = .ready // Resets `lastEvent` and timestamps via the property observer.
+                    state  = .ready // Resets `lastEvent` and timestamps via the property observer.
                 }
                 return
         }
@@ -269,9 +278,9 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
     ///
     /// Other components should call this method after they have moved the entity's node, or if other components want to modify the interaction in some way, so that this component can reflect the correct state for other observers.
     @discardableResult public func updateState(
-        suppressStateChangedFlag: Bool = false,
-        suppressTappedState: Bool = false,
-        suppressCancelledState: Bool = false)
+        suppressStateChangedFlag:   Bool = false,
+        suppressTappedState:        Bool = false,
+        suppressCancelledState:     Bool = false)
         -> NodePointerState
     {
         #if LOGINPUTEVENTS
@@ -289,7 +298,7 @@ public final class NodePointerStateComponent: OctopusComponent, OctopusUpdatable
                 // ℹ️ The state should not be automatically set to `disabled` here; that case is meant to be set explicitly, and may affect visual effects from other components.
                 
                 if  state != .ready || state != .disabled {
-                    state = .ready // Resets `lastEvent` and timestamps via the property observer.
+                    state  = .ready // Resets `lastEvent` and timestamps via the property observer.
                 }
                 return state
         }

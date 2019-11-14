@@ -80,7 +80,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
     
     // ℹ️ NOTE: The system may send the same type of event (began, ended, etc.) multiple times during a single frame, each reporting different touches, so the `touches` array must be updated inside the event property observers, NOT inside the `update` method, because that could miss the beginning or end of some touches (if they are not reported in the latest event to be received during a frame.) 2018-07-17
     
-    @LogInputEventChanges(omitOldValue: true)
+    @LogInputEventChanges(propertyName: "touchesBegan", omitOldValue: true)
     public var touchesBegan: TouchEvent? = nil {
         didSet {
             
@@ -99,10 +99,11 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChanges(omitOldValue: true)
+    @LogInputEventChanges(propertyName: "touchesMoved", omitOldValue: true)
     public var touchesMoved: TouchEvent? = nil
     
-    @LogInputEventChanges(omitOldValue: true) public var touchesEnded: TouchEvent? = nil {
+    @LogInputEventChanges(propertyName: "touchesEnded", omitOldValue: true)
+    public var touchesEnded: TouchEvent? = nil {
         didSet {
             
             // Remove finished touches from our array.
@@ -119,7 +120,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChanges(omitOldValue: true)
+    @LogInputEventChanges(propertyName: "touchesCancelled", omitOldValue: true)
     public var touchesCancelled: TouchEvent? = nil  {
         didSet {
             
@@ -137,7 +138,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         }
     }
     
-    @LogInputEventChanges(omitOldValue: true)
+    @LogInputEventChanges(propertyName: "touchesEstimatedPropertiesUpdated", omitOldValue: true)
     public var touchesEstimatedPropertiesUpdated: TouchEvent? = nil
     
     /// Returns an array of all events for the current frame.

@@ -46,7 +46,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     /// The current state of player interaction with the entity's `SpriteKitComponent` node. See the descriptions for each case of `TouchStateComponent.TouchInteractionState`.
     ///
     /// Changing this property copies the old value to `previousState.`
-    @LogInputEventChanges
+    @LogInputEventChanges(propertyName: "state")
     public fileprivate(set) var state: NodeTouchState = .ready {
         didSet {
             // CHECK: PERFORMANCE: Will this observer degrade performance compared to just setting `previousState` in `update(deltaTime:)` etc.?
@@ -70,13 +70,14 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     public fileprivate(set) var previousState: NodeTouchState = .ready
     
     /// Set to `true` for a single frame after the `state` changes.
-    @LogInputEventChanges public fileprivate(set) var stateChangedThisFrame: Bool = false
+    @LogInputEventChanges(propertyName: "stateChangedThisFrame")
+    public fileprivate(set) var stateChangedThisFrame: Bool = false
     
     // MARK: Touch
     
     /// Tracks a touch which began inside the entity's `SpriteKitComponent` node.
-    @LogInputEventChanges
-    public fileprivate(set) var trackedTouch: UITouch? {
+    @LogInputEventChanges(propertyName: "trackedTouch")
+    public fileprivate(set) var trackedTouch: UITouch? = nil {
         didSet {
             if trackedTouch != oldValue { // Reset the timestamps only if we stopped tracking a touch or started tracking a different touch.
                 
@@ -96,7 +97,8 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     /// The first observed location of the currently-tracked touch, in scene coordinates.
     ///
     /// Other components can compare the current location of the touch with this value to obtain the total translation over time.
-    @LogInputEventChanges public fileprivate(set) var initialTouchLocationInScene: CGPoint?
+    @LogInputEventChanges(propertyName: "initialTouchLocationInScene")
+    public fileprivate(set) var initialTouchLocationInScene: CGPoint? = nil
     
     // CHECK: Keep `touchTranslationInScene`, or just `touchTranslationInParent`?
     
@@ -118,7 +120,8 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     /// The first observed location of the currently-tracked touch, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
     ///
     /// Other components can compare the current location of the touch with this value to obtain the total translation over time.
-    @LogInputEventChanges public fileprivate(set) var initialTouchLocationInParent: CGPoint?
+    @LogInputEventChanges(propertyName: "initialTouchLocationInParent")
+    public fileprivate(set) var initialTouchLocationInParent: CGPoint? = nil
     
     /// Returns the total translation over time of the currently-tracked touch's location, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
     ///
@@ -143,12 +146,14 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     // ℹ️ It's pointless to make `previousTouchTimestamp` `public` for use by other components, because `previousTouchTimestamp == trackedTouch.timeStamp` at the end of our `update(deltaTime:)`. Better to have a delta property for other components to observe.
     
     /// Stores the previous value of the `timestamp` for the tracked touch.
-    @LogInputEventChanges private var previousTouchTimestamp: TimeInterval = 0
+    @LogInputEventChanges(propertyName: "previousTouchTimestamp")
+    private var previousTouchTimestamp: TimeInterval = 0
     
     /// Stores the change in the timestamp of the tracked touch between the previous frame and the current frame.
     ///
     /// Useful for other components to see if the `trackedTouch` has moved.
-    @LogInputEventChanges public fileprivate(set) var trackedTouchTimestampDelta: TimeInterval = 0
+    @LogInputEventChanges(propertyName: "trackedTouchTimestampDelta")
+    public fileprivate(set) var trackedTouchTimestampDelta: TimeInterval = 0
     
     // MARK: Settings
     
@@ -158,6 +163,8 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
     // MARK: - Update
     
     public override func update(deltaTime seconds: TimeInterval) {
+        
+        // TODO: FIX: guard statement passes every frame, even when there is no input.
         
         // Clear the state mutation flag until the state changes again.
         
@@ -169,9 +176,9 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
         
         guard
             self.state != .disabled,
-            let node = entityNode,
-            let parent = (node is SKScene ? node : node.parent), // If the component's node is a scene, `parent` would be set to the node itself.
-            let scene = (node.scene as? OctopusScene) ?? (node as? OctopusScene), // We need the scene to be an `OctopusScene`.
+            let node    = entityNode,
+            let parent  = (node is SKScene ? node : node.parent), // If the component's node is a scene, `parent` would be set to the node itself.
+            let scene   = (node.scene as? OctopusScene) ?? (node as? OctopusScene), // We need the scene to be an `OctopusScene`.
             !scene.didDismissSubsceneThisFrame, // CHECK: Include `didPresentSubsceneThisFrame`?
             let touchEventComponent = coComponent(TouchEventComponent.self)
             else {
@@ -182,7 +189,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
                 // ℹ️ The state should not be automatically set to `disabled` here; that case is meant to be set explicitly, and may affect visual effects from other components.
                 
                 if  state != .ready && state != .disabled {
-                    state = .ready // Resets `trackedTouch` and timestamps via the property observer.
+                    state  = .ready // Resets `trackedTouch` and timestamps via the property observer.
                 }
                 return
         }
@@ -191,7 +198,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
         
         if  state == .tapped || state == .endedOutside {
             // CHECK: Should this be updated regardless of any guard conditions?
-            state = .ready // Resets `trackedTouch` and timestamps via the property observer.
+            state  = .ready // Resets `trackedTouch` and timestamps via the property observer.
         }
         
         // MARK: Touch Processing

@@ -31,7 +31,8 @@ public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, Oct
     /// Defaults to `false`.
     public var stopAngularVelocity: Bool = false
     
-    @LogInputEventChanges public var isHolding: Bool = false
+    @LogInputEventChanges(propertyName: "isHolding")
+    public var isHolding: Bool = false
     
     public override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)

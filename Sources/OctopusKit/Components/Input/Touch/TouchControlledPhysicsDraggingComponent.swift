@@ -31,7 +31,8 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
                 NodeTouchStateComponent.self]
     }
     
-    @LogInputEventChanges public var isDragging: Bool = false
+    @LogInputEventChanges(propertyName: "isDragging")
+    public var isDragging: Bool = false
     
     public override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)

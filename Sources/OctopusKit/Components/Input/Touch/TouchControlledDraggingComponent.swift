@@ -48,7 +48,8 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
     /// If `false`, the node's location is always updated to match the touch's location, even if the touch is stationary. This produced the correct and expected behavior in cases such as a moving camera, but may decrease performance.
     public var onlyMoveWhenTouchTimestampChanges: Bool = true
     
-    @LogInputEventChanges public var isDragging: Bool = false
+    @LogInputEventChanges(propertyName: "isDragging")
+    public var isDragging: Bool = false
     
     public override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)

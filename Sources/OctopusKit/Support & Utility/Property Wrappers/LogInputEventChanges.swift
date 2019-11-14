@@ -1,20 +1,20 @@
 //
-//  LogChanges.swift
+//  InputEventLogger.swift
 //  OctopusKit
 //
-//  Created by ShinryakuTako@invadingoctopus.io on 2019/11/4.
+//  Created by ShinryakuTako@invadingoctopus.io on 2019/11/3.
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 import Foundation
 
-/// A wrapper which prints a `debugLog` of any changes to the wrapped property.
+/// A wrapper which prints a `debugLog` of any changes to the wrapped property if the `LOGINPUTEVENTS` conditional compilation flag is set.
 ///
-/// You may suppress this logging with the `DISABLELOGCHANGES` conditional compilation flag is set.
+/// When you use an additional `didSet` observer on properties which have this wrapper, this wrapper's observer will execute first.
 @propertyWrapper
-public struct LogChanges <ValueType: Equatable> {
+public struct LogInputEventChanges <ValueType: Equatable> {
     
-    #if !DISABLELOGCHANGES
+    #if LOGINPUTEVENTS
     public var wrappedValue: ValueType {
         didSet {
             if  wrappedValue != oldValue {
@@ -51,7 +51,7 @@ public struct LogChanges <ValueType: Equatable> {
         self.name = "\(callerFile) \(callerFunction)"
     }
     */
- 
+    
     public init(wrappedValue: ValueType,
                 propertyName: String,
                 omitOldValue: Bool)
@@ -62,10 +62,11 @@ public struct LogChanges <ValueType: Equatable> {
     }
     
     public init(wrappedValue: ValueType,
-                 propertyName: String)
+                propertyName: String)
     {
         self.wrappedValue = wrappedValue
         self.propertyName = propertyName
         self.omitOldValue = false
     }
+    
 }
