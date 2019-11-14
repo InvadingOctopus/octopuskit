@@ -12,15 +12,17 @@ import GameplayKit
 /// A protocol for sharing common code between `OctopusScene` and `OctopusSubscene` (or other types which manage entities) via Default Implementation Extensions.
 public protocol OctopusEntityContainer: class {
     
+    // CHECK: Replace `GKEntity` with `OctopusEntity`?
+    
     // CHECK: Extract `createEntityFromChildNode(...)` and `addChildFromOrphanSpriteKitComponent(...)` out to an SKNode-specific protocol?
     
-    var entities: Set<GKEntity> { get set }
+    var entities:                     Set<GKEntity> { get set }
     var entitiesToRemoveOnNextUpdate: Set<GKEntity> { get set }
-    var componentSystems: [OctopusComponentSystem] { get set }
+    var componentSystems:  [OctopusComponentSystem] { get set }
     
     // MARK: Entities & Components
     
-    func addEntity(_ entity: GKEntity)
+    func addEntity  (_ entity:    GKEntity)
     func addEntities(_ entities: [GKEntity])
     
     func addAllComponentsFromAllEntities(to systemsCollection: [OctopusComponentSystem]?)
@@ -29,7 +31,7 @@ public protocol OctopusEntityContainer: class {
     func renameUnnamedEntitiesToNodeNames()
     
     @discardableResult func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool
-    @discardableResult func removeEntity(_ entityToRemove: GKEntity) -> Bool
+    @discardableResult func removeEntity            (_ entityToRemove: GKEntity) -> Bool
     
     // MARK: Frame Update
     
@@ -68,7 +70,7 @@ public extension OctopusEntityContainer {
         
         // If it's an `OctopusEntity` (as opposed to a basic `GKEntity`) set this scene as its delegate.
         
-        if let octopusEntity = entity as? OctopusEntity {
+        if  let octopusEntity = entity as? OctopusEntity {
             octopusEntity.delegate = self as? OctopusEntityDelegate // CHECK: Is this casting i
         }
         
@@ -114,21 +116,18 @@ public extension OctopusEntityContainer {
         
         let filteredSet = entities.filter {
             
-            if let entity = $0 as? OctopusEntity {
+            if  let entity = $0 as? OctopusEntity {
                 return entity.name == name
-            }
-            else {
+            } else {
                 return false
             }
         }
         
-        if
-            let filteredArray = Array(filteredSet) as? [OctopusEntity],
+        if  let filteredArray = Array(filteredSet) as? [OctopusEntity],
             !filteredArray.isEmpty
         {
             return filteredArray
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -136,8 +135,7 @@ public extension OctopusEntityContainer {
     /// Sets the names of all unnamed entities to the name of their `SpriteKitComponent` or `GKSKNodeComponent` nodes.
     func renameUnnamedEntitiesToNodeNames() {
         for case let entity as (OctopusEntity & Nameable) in entities {
-            if
-                let node = entity.node,
+            if  let node = entity.node,
                 entity.name == nil
             {
                 entity.name = node.name
@@ -187,7 +185,7 @@ public extension OctopusEntityContainer {
         if  let nodeToRemove = entityToRemove.node,
             (self as? SKNode)?.children.contains(nodeToRemove) ?? false // If the entity container is not an `SKNode` descendant, then let the entity's node remain in its parent. CHECK: Is this intuitive? PERFORMANCE: Any impact from casting?
         {
-            // CHECK: Does `self.children` only include top-level nodes or the entire node tree? Removing only top-level nodes would be the desirable behavior, and removing the entire tree may be unncessary and inefficient (especially if complex node sub-heirarchies may have to be rebuilt later.)
+            // CHECK: Does `self.children` only include top-level nodes or the entire node tree? Removing only top-level nodes would be the desirable behavior, and removing the entire tree may be unnecessary and inefficient (especially if complex node sub-hierarchies may have to be rebuilt later.)
             
             nodeToRemove.removeFromParent()
         }
@@ -203,11 +201,10 @@ public extension OctopusEntityContainer {
         
         // NOTE: Remove the entity after components have been removed, to avoid the "entity is not registered with scene" warnings and reduce the potential for other unexpected behavior.
         
-        if entities.remove(entityToRemove) != nil {
+        if  entities.remove(entityToRemove) != nil {
             OctopusKit.logForComponents.add("Removed \(entityToRemove.debugDescription), entities.count = \(entities.count)")
             return true
-        }
-        else {
+        } else {
             return false
         }
         
@@ -313,7 +310,7 @@ extension OctopusEntityDelegate where Self: OctopusEntityContainer {
         /// Register the component into our systems.
         
         for componentSystem in self.componentSystems {
-            if componentSystem.componentClass == type(of: component) {
+            if  componentSystem.componentClass == type(of: component) {
                 componentSystem.addComponent(component)
             }
         }
@@ -333,7 +330,7 @@ extension OctopusEntityDelegate where Self: OctopusEntityContainer {
         }
         
         for componentSystem in self.componentSystems {
-            if componentSystem.componentClass == type(of: component) {
+            if  componentSystem.componentClass == type(of: component) {
                 componentSystem.removeComponent(component)
             }
         }
