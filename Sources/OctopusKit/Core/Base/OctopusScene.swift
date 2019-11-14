@@ -124,9 +124,12 @@ open class OctopusScene: SKScene,
     /// Creates a new `MouseEventComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
     /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    @available(macOS 10.15, *)
+    @available(iOS, unavailable, message: "Use sharedTouchEventComponent or sharedMouseOrTouchEventComponent")
     public fileprivate(set) lazy var sharedMouseEventComponent = MouseEventComponent()
     
     /// Returns `sharedTouchEventComponent` on iOS, or `sharedMouseEventComponent` on macOS.
+    @available(macOS 10.15, iOS 13.0, *)
     public var sharedMouseOrTouchEventComponent: MouseEventComponent { sharedMouseEventComponent }
     
     #endif
@@ -136,14 +139,19 @@ open class OctopusScene: SKScene,
     /// Creates a new `TouchEventComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
     /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    @available(iOS 13.0, *)
+    @available(macOS, unavailable, message: "Use sharedMouseEventComponent or sharedMouseOrTouchEventComponent")
     public fileprivate(set) lazy var sharedTouchEventComponent = TouchEventComponent()
     
     /// Returns `sharedTouchEventComponent` on iOS, or `sharedMouseEventComponent` on macOS.
+    @available(macOS 10.15, iOS 13.0, *)
     public var sharedMouseOrTouchEventComponent: TouchEventComponent { sharedTouchEventComponent }
     
     /// Creates a new `MotionManagerComponent` when this property is first accessed, and returns that component on subsequent calls.
     ///
     /// This is a convenience for cases such as adding a single motion manager to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    @available(iOS 13.0, *)
+    @available(macOS, unavailable, message: "You can't shake a Mac!")
     public fileprivate(set) lazy var sharedMotionManagerComponent = MotionManagerComponent()
     
     #endif

@@ -28,11 +28,12 @@
 import SpriteKit
 import GameplayKit
 
-#if os(iOS)
+#if canImport(UIKit)
 
 /// Allows the player to drag the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchStateComponent`.
 ///
 /// **Dependencies:** `NodeTouchStateComponent, SpriteKitComponent`
+@available(iOS 13.0, *)
 public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -167,5 +168,6 @@ public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUp
 #endif
 
 #if !canImport(UIKit)
-public final class TouchControlledRepositioningComponent: iOSExclusiveComponent {}
+@available(macOS, unavailable, message: "Use PointerControlledDraggingComponent")
+public final class TouchControlledDraggingComponent: iOSExclusiveComponent {}
 #endif

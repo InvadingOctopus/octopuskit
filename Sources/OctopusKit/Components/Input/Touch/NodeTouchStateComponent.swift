@@ -32,6 +32,7 @@ import GameplayKit
 /// - NOTE: This component only tracks a single touch by design; specifically the first touch that begins inside the entity's `SpriteKitComponent` node. For multi-touch gestures, use components based on gesture-recognizers.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
+@available(iOS 13.0, *)
 public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -364,13 +365,12 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
 }
 
 @available(*, unavailable, renamed: "NodeTouchStateComponent")
+@available(macOS, unavailable, message: "Use NodePointerStateComponent")
 public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {}
 
 #endif
 
 #if !canImport(UIKit)
+@available(macOS, unavailable, message: "Use NodePointerStateComponent")
 public final class NodeTouchStateComponent: iOSExclusiveComponent {}
-
-@available(*, unavailable, renamed: "NodeTouchStateComponent")
-public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {}
 #endif

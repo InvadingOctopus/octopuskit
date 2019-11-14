@@ -18,6 +18,7 @@ import GameplayKit
 /// See also: `PositionSeekingGoalComponent` and `TouchControlledSeekingComponent`
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
+@available(iOS 13.0, *)
 public final class TouchControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -177,5 +178,6 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
 #endif
 
 #if !canImport(UIKit)
+@available(macOS, unavailable, message: "Use PointerControlledRotationComponent")
 public final class TouchControlledRotationComponent: iOSExclusiveComponent {}
 #endif

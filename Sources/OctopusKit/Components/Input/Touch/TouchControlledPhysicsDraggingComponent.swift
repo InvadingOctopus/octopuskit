@@ -13,7 +13,7 @@
 import SpriteKit
 import GameplayKit
 
-#if os(iOS)
+#if canImport(UIKit)
 
 /// Allows the player to drag the entity's `PhysicsComponent` body based on input from the entity's `NodeTouchStateComponent`.
 ///
@@ -21,6 +21,7 @@ import GameplayKit
 /// - Modifies the body's velocity.
 ///
 /// **Dependencies:** `NodeTouchStateComponent, PhysicsComponent.self, SpriteKitComponent`
+@available(iOS 13.0, *)
 public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     // ℹ️ DESIGN: Not pinning to the specific point of touch, because that would be inconvenient for the user to control on a [small] touchscreen, and also seems like overkill in the amount of code it takes and the temporary node it needs to create, as well as likely impacting performance.
@@ -133,5 +134,6 @@ public final class TouchControlledPhysicsDraggingComponent: OctopusComponent, Oc
 #endif
 
 #if !canImport(UIKit)
-public final class TouchControlledImpulseComponent: iOSExclusiveComponent {}
+@available(macOS, unavailable, message: "Use PointerControlledPhysicsDraggingComponent")
+public final class TouchControlledPhysicsDraggingComponent: iOSExclusiveComponent {}
 #endif

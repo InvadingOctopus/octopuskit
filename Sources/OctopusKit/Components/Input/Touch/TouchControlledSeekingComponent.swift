@@ -10,11 +10,12 @@
 
 import GameplayKit
 
-#if os(iOS)
+#if canImport(UIKit)
     
 /// Directs the `PositionSeekingGoalComponent` of the entity towards the point touched by the player.
 ///
 /// **Dependencies:** `PositionSeekingGoalComponent, SpriteKitComponent, TouchEventComponent`
+@available(iOS 13.0, *)
 public final class TouchControlledSeekingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -66,5 +67,6 @@ public final class TouchControlledSeekingComponent: OctopusComponent, OctopusUpd
 #endif
 
 #if !canImport(UIKit)
+@available(macOS, unavailable, message: "Use PointerControlledSeekingComponent")
 public final class TouchControlledSeekingComponent: iOSExclusiveComponent {}
 #endif

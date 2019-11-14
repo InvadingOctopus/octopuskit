@@ -27,6 +27,7 @@ import GameplayKit
 ///         .tapped             : { $1.run(.repeat(.blink(), count: 3)) }
 ///     ])
 ///
+@available(iOS 13.0, *)
 open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponent {
 
     // ℹ️ This class is not marked as `final` so that subclasses can be created, each providing a different set of event handlers for the same entity.
@@ -114,5 +115,6 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
 #endif
 
 #if !canImport(UIKit)
+@available(macOS, unavailable, message: "Use NodePointerClosureComponent")
 public final class NodeTouchClosureComponent: iOSExclusiveComponent {}
 #endif

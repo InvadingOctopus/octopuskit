@@ -14,6 +14,7 @@ import GameplayKit
 /// Sets the position of the entity's `SpriteKitComponent` node to the location of the first or latest touch received by the entity's `TouchEventComponent`.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
+@available(iOS 13.0, *)
 public final class TouchControlledPositioningComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -57,5 +58,6 @@ public final class TouchControlledPositioningComponent: OctopusComponent, Octopu
 #endif
 
 #if !canImport(UIKit)
+@available(macOS, unavailable, message: "Use PointerControlledPositioningComponent")
 public final class TouchControlledPositioningComponent: iOSExclusiveComponent {}
 #endif

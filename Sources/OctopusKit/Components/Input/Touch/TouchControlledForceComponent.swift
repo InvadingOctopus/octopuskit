@@ -17,10 +17,11 @@
 import SpriteKit
 import GameplayKit
 
-#if os(iOS)
+#if canImport(UIKit)
 
 ///
 /// **Dependencies:** `PhysicsComponent`, `SpriteKitComponent`, `TouchEventComponent`
+@available(iOS 13.0, *)
 public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -91,5 +92,6 @@ public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdat
 #endif
     
 #if !canImport(UIKit)
+@available(macOS, unavailable, message: "Use PointerControlledForceComponent")
 public final class TouchControlledForceComponent: iOSExclusiveComponent {}
 #endif

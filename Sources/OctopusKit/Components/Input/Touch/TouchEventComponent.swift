@@ -12,13 +12,14 @@
 
 import GameplayKit
 
-#if os(iOS)
+#if canImport(UIKit)
 
 /// Stores the input events received by a scene or interactive node and tracks touches to be used by other components on the next frame update.
 ///
 /// Stores each event category for a single frame for other components to process, and clears it on the next frame unless new events of the same category are received.
 ///
 /// - NOTE: Touch events are delivered by the system to a scene or a node with the `isUserInteractionEnabled` property set to `true`. The scene or node must forward the event data from its `touchesBegan(_,with:)` and related methods, to this component for it to function.
+@available(iOS 13.0, *)
 public final class TouchEventComponent: OctopusComponent, OctopusUpdatableComponent {
     
     // MARK: - Subtypes
@@ -231,6 +232,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
 }
 
 /// A placeholder protocol whose default implementation channels touch events from a SpriteKit node to the `TouchEventComponent` of the node's entity. Currently cannot be elegantly implemented because of the limitations and issues with Default Implementations and inheritance. 2018-05-08
+@available(iOS 13.0, *)
 public protocol TouchEventProvider {
     func touchesBegan       (_ touches: Set<UITouch>, with event: UIEvent?)
     func touchesMoved       (_ touches: Set<UITouch>, with event: UIEvent?)
@@ -242,6 +244,9 @@ public protocol TouchEventProvider {
 #endif
 
 #if !canImport(UIKit)
+@available(macOS, unavailable, message: "Use PointerEventComponent")
 public final class TouchEventComponent: iOSExclusiveComponent {}
+
+@available(macOS, unavailable, message: "Use PointerEventProvider")
 public protocol TouchEventProvider {}
 #endif

@@ -11,13 +11,14 @@
 
 import GameplayKit
 
-#if !canImport(UIKit)
+#if canImport(AppKit)
 
 /// Stores the mouse input events received by a scene or interactive node to be used by other components on the next frame update.
 ///
 /// Stores each event category for a single frame for other components to process, and clears it on the next frame unless new events of the same category are received.
 ///
 /// - NOTE: The scene or node must forward the event data from its `mouseEntered(with:)` and related methods, to this component for it to function.
+@available(macOS 10.15, *)
 public final class MouseEventComponent: OctopusComponent, OctopusUpdatableComponent {
     
     // MARK: - Subtypes
@@ -75,21 +76,21 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     // MARK: Events
         
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseEntered")
-    public var mouseEntered: MouseEvent?
+    public var mouseEntered: MouseEvent? = nil
     
-    public var mouseMoved: MouseEvent? // Logging these would flood the log.
+    public var mouseMoved: MouseEvent? = nil // Logging these would flood the log.
     
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseDown", omitOldValue: true)
-    public var mouseDown: MouseEvent?
+    public var mouseDown: MouseEvent? = nil
     
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseDragged", omitOldValue: true)
-    public var mouseDragged: MouseEvent?
+    public var mouseDragged: MouseEvent? = nil
     
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseUp", omitOldValue: true)
-    public var mouseUp: MouseEvent?
+    public var mouseUp: MouseEvent? = nil
     
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseExited", omitOldValue: true)
-    public var mouseExited: MouseEvent?
+    public var mouseExited: MouseEvent? = nil
         
     /// Returns an array of all events for the current frame.
     ///
@@ -158,6 +159,9 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
 }
 
 /// A placeholder protocol whose default implementation channels mouse events from a SpriteKit node to the `MouseEventComponent` of the node's entity. Currently cannot be elegantly implemented because of the limitations and issues with Default Implementations and inheritance. 2018-05-08
+
+@available(macOS 10.15, *)
+@available(iOS, unavailable, message: "Use PointerEventProvider")
 public protocol MouseEventProvider {
     func mouseEntered   (with event: NSEvent)
     func mouseMoved     (with event: NSEvent)
@@ -167,8 +171,9 @@ public protocol MouseEventProvider {
     func mouseExited    (with event: NSEvent)
 }
 
-#else
+#endif
     
+#if !canImport(AppKit)
+@available(iOS, unavailable, message: "Use PointerEventComponent")
 public final class MouseEventComponent: macOSExclusiveComponent {}
-    
 #endif

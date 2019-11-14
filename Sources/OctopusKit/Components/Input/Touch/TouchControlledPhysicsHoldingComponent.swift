@@ -19,6 +19,7 @@ import GameplayKit
 /// - These properties are reapplied every frame.
 ///
 /// **Dependencies:** `NodeTouchStateComponent`, `PhysicsComponent`
+@available(iOS 13.0, *)
 public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -78,5 +79,6 @@ public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, Oct
 #endif
 
 #if !canImport(UIKit)
+@available(macOS, unavailable, message: "Use PointerControlledPhysicsHoldingComponent")
 public final class TouchControlledPhysicsHoldingComponent: iOSExclusiveComponent {}
 #endif
