@@ -129,9 +129,9 @@ public final class PointerControlledDraggingComponent: OctopusComponent, Octopus
         
         // #5: Reposition the node.
         
-        // ⚠️ BUG: 20180502A: APPLEBUG? `UIPointer.location(in:)` and `UIPointer.previousLocation(in:)` are sometimes not updated for many frames, causing a node to remain stationary for 10 or so frames before "jumping" many pixels in one frame. Same issue with `preciseLocation(in:)` and `precisePreviousLocation(in:)`
+        // ⚠️ BUG: 20180502A: APPLEBUG? If using touch, see comments for `TouchControlledDraggingComponent.update(deltaTime:)`
 
-        // ⚠️ BUG: 20180504B: APPLEBUG RADAR 39997859: `UIPointer.location(in:)` and `UIPointer.preciseLocation(in:)` for a pointer "wobbles" when a 2nd pointer moves near it, even if the pointer is stationary. ⚠️ Seems to be a problem since iOS 11.3 on all devices, in all apps, including system apps like Photos.
+        // ⚠️ BUG: 20180504B: APPLEBUG RADAR 39997859: If using touch, see comments for `TouchControlledDraggingComponent.update(deltaTime:)`
     
         // ℹ️ NOTE: Do not move the node by comparing the `location` and `previousLocation` of the pointer. That does not seem to be accurate, and can cause "drifts" where the "pointer" ends up in a different point in the node than where it started pointing the node, at least in the iOS Simulator. Instead, store the initial position of the node, then compare the initial position of the pointer with its latest position, and directly set the node's position to the final translation. This works the same way as the `translation` property of a `UIPanGestureRecognizer`: https://developer.apple.com/documentation/uikit/uipangesturerecognizer/1621207-translation
         
