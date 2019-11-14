@@ -22,7 +22,7 @@ public typealias OKLogEntry = OctopusLogEntry
 
 /// Prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
 ///
-/// Available in debug configurations, but a blank function in non-debug configurations.
+/// Available in debug configurations (when the `DEBUG` flag is set). A blank function in non-debug configurations.
 public func debugLog(
     _ entry: String? = nil,
     _ callerFile: String = #file,
@@ -37,19 +37,19 @@ public func debugLog(
     print("\(OctopusLog.currentTimeAndFrame())\(separator)\(paddedFile)\(separator)\(callerFunction)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
 }
 
-/// Alias for `NSLog(_:_:)` in debug configurations, but a blank function in non-debug configurations.
+/// Alias for `NSLog(_:_:)` in debug configurations (when the `DEBUG` flag is set). A blank function in non-debug configurations.
 public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {
     NSLog(format, args)
 }
 
 #else
 
-/// A blank function in non-debug configurations. Alias for `NSLog(_:_:)` in debug configurations.
+/// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set). Alias for `NSLog(_:_:)` in debug configurations.
 open func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {}
 
-/// A blank function in non-debug configurations.
+/// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set).
 ///
-/// Prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
+/// In debug configurations, prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
 open func debugLog(_ entry: String? = nil, _ callerFile: String = #file, _ callerFunction: String = #function, separator: String = " ") {}
     
 #endif

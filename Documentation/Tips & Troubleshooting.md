@@ -76,13 +76,22 @@ If an entity needs multiple components of the same type but with different param
     
 ## Conditional Compilation Flags & Debugging Aids
 
-> [TODO: Instructions for where to enter these in Xcode]
+> Set these in the `Package.swift` manifest for OctopusKit. Example: 
+> 
+>     targets: [
+>         .target(
+>             name: "OctopusKit",
+>             dependencies: [],
+>             swiftSettings[.define("LOGINPUTEVENTS")])
+>
 
 * `LOGECSVERBOSE` - Logs detailed Entity-Component-System actions.
-* `LOGINPUTEVENTS` - Logs all input events and related information.
-* `LOGPHYSICS` - Logs all physics contact events.
+* `LOGINPUTEVENTS` - Logs all input events and related information via the `@LogInputEvents` property modifier.
+* `LOGPHYSICS` - Logs all physics contact/collision events.
 
-⚠️ Setting any of these flags may reduce engine performance.
+⚠️ Setting any of the logging flags may reduce engine performance.
+
+* `DISABLELOGCHANGES` - Suppresses the `@LogChanges` property modifier. May improve performance.
 
 ----
 
