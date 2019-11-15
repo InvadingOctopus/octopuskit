@@ -170,24 +170,24 @@ for turretNode in scene["//Turret"] {
     scene.addEntity(OctopusEntity(components: [
     
         SpriteKitComponent(node: turretNode),
-        RelayComponent(for: sharedTouchEventComponent),
+        RelayComponent(for: sharedPointerEventComponent),
                         
         // Hypothetical game-specific components.
         HealthComponent(),
         AttackComponent(),
         MonsterTargetingComponent(),
  
-        // Track the first touch that begins inside the sprite.
-        NodeTouchStateComponent(),
+        // Track the first touch or mouse drag that begins inside the sprite.
+        NodePointerStateComponent(),
                 
         // Let the player select and drag a specific sprite.
-        // This differs from the TouchControlledPositioningComponent in a previous example, 
-        // which repositions nodes regardless of where the touch began.
-        TouchControlledDraggingComponent() ]))
+        // This differs from the PointerControlledPositioningComponent in a previous example, 
+        // which repositions nodes regardless of where the pointer began.
+        PointerControlledDraggingComponent() ]))
 }
 
-// Once the first monster wave starts, you could replace TouchControlledDraggingComponent 
-// with TouchControlledShootingComponent to make the turrets immovable but manually-fired.
+// Once the first monster wave starts, you could replace PointerControlledDraggingComponent 
+// with PointerControlledShootingComponent to make the turrets immovable but manually-fired.
 ```
 
 ## Overview
