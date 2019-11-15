@@ -62,7 +62,7 @@ public final class TimeComponent: OctopusComponent, OctopusUpdatableComponent {
         secondsElapsed += seconds
         secondsElapsedSincePreviousSecond += seconds
         
-        if secondsElapsedSincePreviousSecond >= 1.0 {
+        if  secondsElapsedSincePreviousSecond >= 1.0 {
             secondsElapsedRounded += 1
             secondsElapsedSincePreviousSecond = 0
             hasNewSecondElapsed = true
@@ -96,8 +96,11 @@ public struct TimeComponentRecord {
     /// A dictionary that should record `true` for a value representing a given second, if any tasks was executed during that second.
     public var record: [Int : Bool] = [:]
     
+    public init() {}
+    
+    @inlinable
     public func didExecuteActions(duringSecond second: Int) -> Bool {
-        return record[second] == true
+        record[second] == true
     }
     
     /// Checks a `timeComponent` for a specific time and sets a `true` flag for the specified time in the record, to indicate not to perform the same actions again during that second. Call this method in an `if` conditional statement during an `update(deltaTime:)` method to execute specific actions once at specific times.
@@ -109,8 +112,7 @@ public struct TimeComponentRecord {
         {
             record[seconds] = true
             return true
-        }
-        else {
+        } else {
             return false
         }
     }
