@@ -8,6 +8,8 @@
 
 import SpriteKit
 
+public typealias OKFont = OctopusFont
+
 public struct OctopusFont {
     
     public var name: String?

@@ -8,6 +8,8 @@
 
 import GameplayKit
 
+public typealias OKAgent2D = OctopusAgent2D
+
 /// Adds a 2D agent to an entity, which may then be controlled via goal components.
 ///
 /// When added to an entity, automatically sets the agent's `delegate` to the entity's `SpriteKitComponent` node, and matches its initial `position` and `rotation` to the node.
