@@ -59,27 +59,6 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
             OctopusKit.logForFramework.add("\(oldValue) → \(currentGameState)")
         }
     }
-    
-    public var currentGameState0: OctopusGameState? {
-
-        // NOTE: SWIFT LIMITATION: This property should be @Published but we cannot do that because
-        // "Property wrapper cannot be applied to a computed property" and
-        // "willSet cannot be provided together with a getter"
-        // and we cannot provide a `willSet` for `GKStateMachine.currentState` because
-        // "Cannot observe read-only property currentState; it can't change" :(
-        // Okay so we'll just use objectWillChange.send() in the enter(_:) override below.
-        // HOWEVER, even without objectWillChange.send() the derived properties in SwiftUI views depending on `currentGameState` seem to update just fine. Not sure about all this yet.
-
-        get {
-            if  let currentGameState = self.currentState as? OctopusGameState {
-                return currentGameState
-            } else {
-                OctopusKit.logForWarnings.add("Cannot cast \(currentState) as OctopusGameState")
-                return nil
-            }
-        }
-        
-    }
         
     public weak var viewController: OctopusViewController? {
         didSet {
@@ -88,6 +67,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         }
     }
     
+    @inlinable
     public var spriteKitView: SKView? {
         viewController?.spriteKitView
     }
