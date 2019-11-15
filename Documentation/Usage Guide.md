@@ -185,6 +185,33 @@ systems. A typical game will create multiple instances of these objects.
 
 > ⁸ `OctopusComponentSystem` is used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame update cycle.
 
+The objects that actually present your game on screen:
+
+| SwiftUI View Hierarchy |
+| :-: |
+|📲 `AppDelegate` + `SceneDelegate` |
+|↓|
+|📦 `OctopusKitContainerView`|
+|↓|
+|🎛 `OctopusUIOverlay`|
+|📦 `OctopusViewControllerRepresentable`|
+|↓|
+|🎥 `OctopusViewController` ¹|
+|↓|
+|🎥 `SpriteKit.SKView`|
+
+| AppKit / UIKit Storyboard / XIB |
+| :-: |
+|📲 `AppDelegate` + `SceneDelegate` |
+|↓|
+|📦 `Main.storyboard`|
+|↓|
+|🎥 `OctopusViewController` ¹|
+|↓|
+|🎥 `SpriteKit.SKView`|
+
+> ¹ `OctopusViewController` displays the `OctopusGameCoordinator.currentScene` and may be subclassed for custom game-specific presentation management.
+
 ## Game Coordinator and Game States
 
 🎬 `OctopusGameCoordinator:`[`GKStateMachine`](https://developer.apple.com/documentation/gameplaykit/gkstatemachine)  
