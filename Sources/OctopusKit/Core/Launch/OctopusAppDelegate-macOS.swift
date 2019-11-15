@@ -11,7 +11,7 @@
 import SpriteKit
 import CoreData
 
-#if canImport(Cocoa)
+#if os(macOS)
 
 /// The intermediary between the `NSApplication` provided by the operating system and your OctopusKit game.
 ///

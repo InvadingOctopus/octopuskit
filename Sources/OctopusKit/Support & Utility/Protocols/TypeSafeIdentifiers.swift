@@ -16,7 +16,7 @@ import Foundation
 ///
 /// To add identifiers and access them conveniently, create an `extension` for the adopting `struct` and add identifiers as `static` instances of the adopting `struct`.
 ///
-/// **Example:**
+/// **Example**
 ///
 ///     struct TextureName: TypeSafeIdentifiers {
 ///         let rawValue: String

@@ -34,7 +34,7 @@ public final class ValueDisplayComponent: SpriteKitAttachmentComponent<SKLabelNo
     ///
     /// A value can be a closure which returns a `String` (`() -> String`), which you can use to display the dynamically-updated value of a value type, e.g. structs, such as the `CGPoint` position of a sprite.
     ///
-    /// **Example:**
+    /// **Example**
     ///
     ///     valueDisplayComponent["sprite.position"] = { [unowned sprite] in return "\(sprite.position)" }
     public var data: [String: Any] = [:]

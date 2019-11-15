@@ -9,7 +9,7 @@
 import SpriteKit
 import CoreData
 
-#if canImport(UIKit) // CHECK: Include tvOS?
+#if os(iOS) // CHECK: Include tvOS?
 
 /// The intermediary between the `UIApplication` provided by the operating system and your OctopusKit game.
 ///

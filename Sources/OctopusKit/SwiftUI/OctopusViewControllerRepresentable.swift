@@ -13,7 +13,7 @@ public typealias OKViewControllerRepresentable = OctopusViewControllerRepresenta
 
 #if canImport(UIKit)
 
-/// Encapsulates an OctopusViewController for presenting SpriteKit/SceneKit/Metal content in a SwiftUI application.
+/// Encapsulates an `OctopusViewController` to present SpriteKit/SceneKit/Metal content in a SwiftUI view hierarchy.
 public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, OctopusViewControllerType> : UIViewControllerRepresentable
     where OctopusGameCoordinatorType: OctopusGameCoordinator,
     OctopusViewControllerType: OctopusViewController
@@ -55,7 +55,7 @@ public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, Oc
 
 import AppKit
 
-/// Encapsulates an OctopusViewController for presenting SpriteKit/SceneKit/Metal content in a SwiftUI application.
+/// Encapsulates an `OctopusViewController` to present SpriteKit/SceneKit/Metal content in a SwiftUI view hierarchy.
 public struct OctopusViewControllerRepresentable <OctopusGameCoordinatorType, OctopusViewControllerType> : NSViewControllerRepresentable
     where OctopusGameCoordinatorType: OctopusGameCoordinator,
     OctopusViewControllerType: OctopusViewController

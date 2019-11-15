@@ -15,7 +15,7 @@ import GameplayKit
 
 import UIKit
 
-#elseif os(OSX)
+#elseif os(macOS)
 
 import Cocoa
 
@@ -23,9 +23,25 @@ import Cocoa
 
 public typealias OKViewController = OctopusViewController
 
-/// Coordinates between the SpriteKit view and game scenes. Signals the `OctopusGameCoordinator` to enter its initial state when the view is ready to present the first scene.
+/// Manages a SpriteKit `SKView` to present the game's scenes and handles device presentation such as rotation orientations.
 ///
-/// - Important: The view controller of your main SpriteKit view must be an `OctopusSpriteKitViewController` or its subclass, for the OctopusKit to function.
+/// One of the core objects for an OctopusKit game, along with `OctopusKit` and `OctopusGameCoordinator`.
+///
+/// **Usage**
+///
+/// 1. Use the `OctopusKit` and `OctopusGameCoordinator` initializers in your application's launch cycle to setup your game's structure.
+///
+/// 2. Connect a `OctopusViewController` (or its subclass) in your UI view hierarchy with the `OctopusGameCoordinator` to present your game's content. There are multiple ways to do this:
+///
+///     * Via code.
+///
+///     * Via the `OctopusKitContainerView` or `OctopusViewControllerRepresentable` in a SwiftUI application (macOS, iOS and tvOS.)
+///
+///     * Via Storyboards in an AppKit (macOS) or UIKit (iOS, tvOS) application.
+///
+/// 3. The `OctopusViewController` will present the current scene of your `OctopusGameCoordinator` in the SpriteKit view.
+///
+/// - NOTE: The recommended way to setup and present an OctopusKit game is to use the `OctopusKitContainerView` for **SwiftUI**.
 open class OctopusViewController: OSViewController {
     
     public fileprivate(set) var spriteKitView: SKView?
@@ -107,7 +123,7 @@ open class OctopusViewController: OSViewController {
         
         // To support SwiftUI, we create a child SKView using the root view's frame which will be provided by SwiftUI.
         
-        // CHECK: Should the SKView be set up here or in viewWillAppear? Confirm which function is the earliest point where we can get the correct screen dimensions for creating the view with.
+        // CHECK: Should the SKView be set up here or in `viewWillAppear`? Confirm which function is the earliest point where we can get the correct screen dimensions for creating the view with.
         
         if  let rootView = self.view as? SKView {
             self.spriteKitView = rootView
@@ -164,7 +180,7 @@ open class OctopusViewController: OSViewController {
     }
     
     open override var prefersStatusBarHidden: Bool {
-        return prefersStatusBarHiddenOverride
+        prefersStatusBarHiddenOverride
     }
     
     /// Specifies whether the system is allowed to hide the visual indicator for returning to the Home screen.
@@ -177,7 +193,7 @@ open class OctopusViewController: OSViewController {
     }
     
     open override var prefersHomeIndicatorAutoHidden: Bool {
-        return prefersHomeIndicatorAutoHiddenOverride
+        prefersHomeIndicatorAutoHiddenOverride
     }
     
     /// Specifies whether whether the view controller's contents should auto rotate.
@@ -186,7 +202,7 @@ open class OctopusViewController: OSViewController {
     open var shouldAutorotateOverride: Bool = false
     
     open override var shouldAutorotate: Bool {
-        return shouldAutorotateOverride
+        shouldAutorotateOverride
     }
     
     /// Contains a dictionary of the interface orientations (rotations) that the view controller supports.
@@ -198,7 +214,7 @@ open class OctopusViewController: OSViewController {
     
     open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         // If the `interfaceOrientations` dictionary does not contain a list of orientations for the current `userInterfaceIdiom`, return `all`.
-        return self.supportedInterfaceOrientationsOverride[UIDevice.current.userInterfaceIdiom] ?? .all
+        self.supportedInterfaceOrientationsOverride[UIDevice.current.userInterfaceIdiom] ?? .all
     }
     
     open override func viewWillAppear(_ animated: Bool) {

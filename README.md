@@ -1,6 +1,6 @@
 # OctopusKit 👾🐙⚙️
 
-A 2.5D game engine in pure Swift for iOS, macOS and tvOS.
+A 2.5D game engine in 100% Swift for iOS, macOS and tvOS.
 
 OctopusKit wraps and extends Apple's frameworks:  
 • **GameplayKit**'s flexible Entity-Component-System architecture lets you dynamically compose game behavior.  

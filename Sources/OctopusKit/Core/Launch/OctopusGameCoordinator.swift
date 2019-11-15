@@ -11,11 +11,40 @@ import GameplayKit
 
 public typealias OKGameCoordinator = OctopusGameCoordinator
 
-/// The primary coordinator for the various states a game may be in.
+/// Coordinates all the possible states and scenes of a game, and manages top-level state and game-specific data that must persist across different game states.
 ///
-/// This is a "controller" in the MVC sense; use this class to coordinate game states and scenes, and to manage global objects that must be shared across scenes, such as the game world, player data, and network connections etc.
+/// One of the core objects for an OctopusKit game, along with `OctopusKit` and `OctopusViewController`.
 ///
-/// You may use `OctopusGameCoordinator` as-is or subclass it to add any global/top-level functionality that is specific to your game.
+/// This is a "controller" in the MVC sense; use this class to maintain global objects such as the game world, player data, and network connections etc. You may use `OctopusGameCoordinator` as-is and add components to its `entity`, or subclass it to add complex top-level functionality specific to your game.
+///
+/// **Usage**
+///
+/// 1. Your application's launch cycle must initialize an instance of `OctopusGameCoordinator` or its subclass, specifying a list of all possible states your game can be in, represented by `OctopusGameState`. Each state must have an `OctopusGameScene` associated with, as well as an optional `SwiftUI` overlay view. See the documentation for `OctopusGameCoordinator`.
+///
+///     ```
+///     let myGameCoordinator = OctopusGameCoordinator(
+///         states: [MyOctopusGameStateSubclassA(),
+///                  PlayState(),
+///                  PausedState(),
+///                  GameOverState() ],
+///         initialStateClass: PlayState.self)
+///     ```
+///     or use a subclass:
+///     ```
+///     OctopusKit(gameCoordinator: MyCustomGameCoordinator())
+///     ```
+///     or simply, if your game has a single scene:
+///     ```
+///     let myGameCoordinator = OctopusGameCoordinator(
+///         states: [OctopusGameState(associatedSceneClass:  MyScene.self,
+///                                   associatedSwiftUIView: MyUI() ) ])
+///     ```
+///
+/// 2. Call `OctopusKit(gameCoordinator:)` to initialize the `OctopusKit.shared` singleton instance, which all other objects will refer to when they need to access the game coordinator and other top-level objects.
+///
+/// 3. Use an `OctopusViewController` in your UI hierarchy to present the game coordinator's scenes.
+///
+/// - NOTE: The recommended way to setup and present an OctopusKit game is to use the `OctopusKitContainerView` for **SwiftUI**.
 open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, ObservableObject {
     
     /// Invoked by the `OctopusSpriteKitViewController` to start the game after the system/application presents the view.

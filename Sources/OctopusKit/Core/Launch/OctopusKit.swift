@@ -15,14 +15,21 @@ import CoreMotion
 
 #endif
 
-/// The centralized point of control and coordination for the OctopusKit.
+/// Holds references to top-level objects such as the `gameCoordinator` and its `currentScene`, as well as various logs, which all other OctopusKit objects may need to access at any time.
 ///
-/// ----
+/// One of the core objects for an OctopusKit game, along with `OctopusGameCoordinator` and `OctopusViewController`.
 ///
-/// **Usage:**
-/// Your application must call `OctopusKit(gameCoordinator:)` during launch to initialize the `OctopusKit.shared` singleton instance, specifying a `OctopusGameCoordinator` or its subclass, with a list of `OctopusGameState`s and their associated scenes.
+/// The `OctopusKit` class represents the global environment for an OctopusKit application via its `shared` singleton instance, while the functionality *specific to your game* is managed by `OctopusGameCoordinator` or your subclass of that.
 ///
-/// - Note: The `OctopusKit` class contains the top-level objects common to launching all games based on the engine and interfacing with the operating system, but the functionality *specific to your game* is coordinated by `OctopusGameCoordinator` or your subclass of it.
+/// **Usage**
+///
+/// 1. Your application's launch cycle must initialize an instance of `OctopusGameCoordinator` or its subclass, specifying a list of all possible states your game can be in, represented by `OctopusGameState`. Each state must have an `OctopusGameScene` associated with, as well as an optional `SwiftUI` overlay view. See the documentation for `OctopusGameCoordinator`.
+///
+/// 2. Call `OctopusKit(gameCoordinator:)` to initialize the `OctopusKit.shared` singleton instance, which all other objects will refer to when they need to access the game coordinator and other top-level objects.
+///
+/// 3. Use an `OctopusViewController` in your UI hierarchy to present the game coordinator's scenes.
+///
+/// - NOTE: The recommended way to setup and present an OctopusKit game is to use the `OctopusKitContainerView` for **SwiftUI**.
 public final class OctopusKit {
     
     // ℹ️ Tried to make this a generic type for convenience in using different `OctopusGameCoordinator` subclasses, but it's not possible because "Static stored properties not supported in generic types" as of 2018-04-14.
@@ -30,7 +37,7 @@ public final class OctopusKit {
     // CHECK: PERFORMANCE: Make `shared` non-nil for better performance? Could just default it to a dummy `OctopusKit` instance.
     
     /// Returns the singleton OctopusKit instance, which must be created via `initSharedInstance(gameName:gameCoordinator:)` during `AppDelegate.applicationWillLaunchOctopusKit()`.
-    public fileprivate(set) static var shared: OctopusKit? {
+    public private(set) static var shared: OctopusKit? {
         
         willSet {
             guard OctopusKit.shared == nil else {
@@ -68,6 +75,7 @@ public final class OctopusKit {
     /// - Important: The game's first scene must be specified via the game coordinator's initial state.
     public let gameCoordinator: OctopusGameCoordinator
     
+    @inlinable
     public var gameCoordinatorView: SKView? {
         // ⚠️ - Warning: Trying to access this at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so users should delay it by checking something like `gameCoordinator.didEnterInitialState`
         if  let viewController = self.gameCoordinator.viewController,
@@ -80,6 +88,7 @@ public final class OctopusKit {
         }
     }
     
+    @inlinable
     public var currentScene: OctopusScene? {
         gameCoordinator.currentScene
     }
@@ -118,7 +127,7 @@ public final class OctopusKit {
     public static var motionManager: CMMotionManager? = {
         // CHECK: Should this be optional?
         // CHECK: When to stop device updates? On scene `deinit` or elsewhere?
-        return CMMotionManager()
+        CMMotionManager()
     }()
     
     #endif

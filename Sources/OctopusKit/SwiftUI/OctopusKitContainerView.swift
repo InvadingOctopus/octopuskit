@@ -10,11 +10,13 @@ import SwiftUI
 
 public typealias OKContainerView = OctopusKitContainerView
 
-/// The primary view for an OctopusKit game. Combines an `OctopusViewControllerRepresentable` with a SwiftUI overlay, for presenting SpriteKit content in a SwiftUI application along with the game user interface controls related to the current game state.
+/// The primary view for an OctopusKit game in a SwiftUI view hierarchy.
+///
+/// Combines an `OctopusViewControllerRepresentable` with a SwiftUI overlay, for presenting SpriteKit content in a SwiftUI application along with the game user interface controls related to the current game state.
 ///
 /// The views are combined in a static ZStack, so the UI layer is always displayed on top of the 2D sprite layer.
 ///
-/// To encompass the entire screen on iOS, add the following view modifiers:
+/// To use the entire screen on iOS, add the following view modifiers:
 ///
 ///     .edgesIgnoringSafeArea(.all)
 ///     .statusBar(hidden: true)
