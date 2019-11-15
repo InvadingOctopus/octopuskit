@@ -19,7 +19,7 @@ extension OctopusKit {
     public static var logForStates      = OctopusLog(title: "🐙🚦", suffix: "🚦")
     
     /// A log for the components architecture, including entities and component systems.
-    public static var logForComponents  = OctopusLog(title: "🐙⚙️", suffix: "⚙️")
+    public static var logForComponents  = OctopusLog(title: "🐙🧩", suffix: "🧩")
     
     /// A log for operations that involve loading, downloading, caching and writing game assets and related resources.
     public static var logForResources   = OctopusLog(title: "🐙📦", suffix: "📦")
