@@ -43,7 +43,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     /// The SwiftUI layer to display over the game's SpriteKit view.
     @Published public var associatedSwiftUIView: AnyView
     
-    public var gameCoordinator: OctopusGameCoordinator? {
+    open var gameCoordinator: OctopusGameCoordinator? {
         if  let gameCoordinator = self.stateMachine as? OctopusGameCoordinator {
             return gameCoordinator
         } else {
