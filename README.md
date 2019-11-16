@@ -1,6 +1,6 @@
 # OctopusKit 👾🐙⚙️
 
-A 2D game engine in 100% Swift for iOS, macOS and tvOS.
+A 2.5D game engine in 100% Swift for iOS, macOS and tvOS.
 
 OctopusKit wraps and extends Apple's frameworks:  
 • **GameplayKit**'s flexible Entity-Component-System architecture lets you dynamically compose game behavior.  
@@ -222,7 +222,7 @@ Your primary workflow will be writing component classes for each "part" of the g
 
 - **Tailored for Swift**: Swift, Swift, Swift! The framework must follow the [established guidelines][swift-api-guidelines] for Swift API design. Everything must make sense within Swift and flow seamlessly with Swift idioms as much as possible.
 
-- **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using 3D technologies like SceneKit (which I plan to add direct support for), and it can be used for non-game apps.
+- **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using technologies like SceneKit to render 3D content in 2D space, and it can be used for non-game apps.
 
 - **Shoulders of Ettins**: The engine leverages SpriteKit, GameplayKit, SwiftUI and other technologies provided by Apple. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
     
