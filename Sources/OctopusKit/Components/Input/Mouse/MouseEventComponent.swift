@@ -51,7 +51,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
         // NOTE: `Equatable` conformance cannot be automatically synthesized by Swift 4.1 for classes.
         
         public let event: NSEvent
-        public let node: SKNode // CHECK: Should this be optional?
+        public let node:  SKNode // CHECK: Should this be optional?
         
         public var shouldClear: Bool = false // Not private(set) so we can make update(deltaTime:) @inlinable
         
@@ -77,21 +77,21 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
     // MARK: Events
         
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseEntered")
-    public var mouseEntered: MouseEvent? = nil
+    public var mouseEntered:    MouseEvent? = nil
     
-    public var mouseMoved: MouseEvent? = nil // Logging these would flood the log.
+    public var mouseMoved:      MouseEvent? = nil // Logging these would flood the log.
     
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseDown", omitOldValue: true)
-    public var mouseDown: MouseEvent? = nil
+    public var mouseDown:       MouseEvent? = nil
     
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseDragged", omitOldValue: true)
-    public var mouseDragged: MouseEvent? = nil
+    public var mouseDragged:    MouseEvent? = nil
     
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseUp", omitOldValue: true)
-    public var mouseUp: MouseEvent? = nil
+    public var mouseUp:         MouseEvent? = nil
     
     @LogInputEventChanges(propertyName: "MouseEventComponent.mouseExited", omitOldValue: true)
-    public var mouseExited: MouseEvent? = nil
+    public var mouseExited:     MouseEvent? = nil
         
     /// Returns an array of all events for the current frame.
     ///
