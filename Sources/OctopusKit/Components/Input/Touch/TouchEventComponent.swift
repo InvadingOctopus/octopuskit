@@ -10,7 +10,7 @@
 // CHECK: Use arrays of each event category?
 // CHECK: Confirm that the first and latest touches are indeed tracked properly and update in order as arbitrary touches end.
 
-import GameplayKit
+import SpriteKit
 
 #if canImport(UIKit)
 

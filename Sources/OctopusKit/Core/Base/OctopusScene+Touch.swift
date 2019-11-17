@@ -6,7 +6,6 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-
 import SpriteKit
 
 #if canImport(UIKit) // CHECK: Include tvOS?

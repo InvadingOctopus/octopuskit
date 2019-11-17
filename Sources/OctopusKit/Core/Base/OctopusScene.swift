@@ -22,13 +22,12 @@ public typealias OKScene = OctopusScene
 // The top-level unit of visual content in a game. Contains components grouped by entities to represent visual and behavioral elements in the scene. Manages component systems to update components in a deterministic order every frame.
 ///
 /// Includes an entity to represent the scene itself.
-open class OctopusScene: SKScene,
-    OctopusEntityContainerNode,
-    OctopusGameStateDelegate,
-    OctopusEntityDelegate,
-    OctopusSubsceneDelegate,
-    SKPhysicsContactDelegate
-    // TouchEventProvider // Only #if canImport(UIKit)
+open class OctopusScene:    SKScene,
+                            OctopusEntityContainerNode,
+                            OctopusGameStateDelegate,
+                            OctopusEntityDelegate,
+                            OctopusSubsceneDelegate,
+                            SKPhysicsContactDelegate
 {
     // ℹ️ Also see SKScene+OctopusKit extensions.
     

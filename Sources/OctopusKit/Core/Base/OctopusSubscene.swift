@@ -13,13 +13,13 @@ import GameplayKit
 
 /// A protocol for types that display an `OctopusSubscene`.
 public protocol OctopusSubsceneDelegate: class {
-    func subsceneWillAppear(_ subscene: OctopusSubscene, on parentNode: SKNode)
-    func subsceneDidFinish(_ subscene: OctopusSubscene, withResult result: OctopusSubsceneResultType?)
+    func subsceneWillAppear (_ subscene: OctopusSubscene, on parentNode: SKNode)
+    func subsceneDidFinish  (_ subscene: OctopusSubscene, withResult result: OctopusSubsceneResultType?)
 }
 
 /// A list of possible results produced by the player's interaction with a subscene.
 public enum OctopusSubsceneResultType {
-    /// A result
+    
     case yes
     case no
     case cancelled
@@ -37,11 +37,10 @@ public enum OctopusSubsceneResultType {
 
 public typealias OKSubscene = OctopusSubscene
 
-/// Base class for special nodes that may contain entities and component subsystems of their own, to implement self-contained "pseudoscenes" inside the parent scene, such as paused-state overlays, modal dialogs, cutscenes or minigames.
+/// A base class for special nodes that may contain entities and component systems of their own, to implement self-contained "pseudoscenes" inside the parent scene, such as paused-state or inventory overlays, cutscenes or minigames.
 open class OctopusSubscene: SKNode,
-    OctopusEntityContainerNode,
-    OctopusEntityDelegate
-    // TouchEventProvider // Only #if canImport(UIKit)
+                            OctopusEntityContainerNode,
+                            OctopusEntityDelegate
 {
     
     // ℹ️ NOTE: This class currently contains a lot of duplicate code from `OctopusScene`. The `OctopusEntityContainer` protocol is meant to reduce code duplication in the future but cannot be elegantly implemented currently because of the issues associated with Default Implementations (via Extensions) and inheritance. 2018-05-08

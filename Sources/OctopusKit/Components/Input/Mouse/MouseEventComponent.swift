@@ -9,7 +9,7 @@
 // TODO: A way to associate each stored input with the node that received it.
 // CHECK: Use arrays of each event category?
 
-import GameplayKit
+import SpriteKit
 
 #if canImport(AppKit)
 
@@ -162,7 +162,6 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
 }
 
 /// A placeholder protocol whose default implementation channels mouse events from a SpriteKit node to the `MouseEventComponent` of the node's entity. Currently cannot be elegantly implemented because of the limitations and issues with Default Implementations and inheritance. 2018-05-08
-
 @available(macOS 10.15, *)
 @available(iOS, unavailable, message: "Use PointerEventProvider")
 public protocol MouseEventProvider {
