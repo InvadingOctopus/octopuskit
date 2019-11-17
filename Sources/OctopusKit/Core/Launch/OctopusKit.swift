@@ -97,26 +97,32 @@ public final class OctopusKit {
 
     #if canImport(UIKit)
     
+    /// Currently Unimplemented
     public lazy var managedObjectContext: NSManagedObjectContext? = {
-        
+        return nil
+        /*
         guard let appDelegate = UIApplication.shared.delegate as? OctopusAppDelegate else {
             // CHECK: Warning or error?
             fatalError("Cannot access UIApplication.shared.delegate as an OctopusAppDelegate.")
         }
         
         return appDelegate.persistentContainer.viewContext
+        */
     }()
     
     #elseif canImport(AppKit)
     
+    /// Currently Unimplemented
     public lazy var managedObjectContext: NSManagedObjectContext? = {
-        
+        return nil
+        /*
         guard let appDelegate = NSApplication.shared.delegate as? OctopusAppDelegate else {
             // CHECK: Warning or error?
             fatalError("Cannot access UIApplication.shared.delegate as an OctopusAppDelegate.")
         }
         
         return appDelegate.persistentContainer.viewContext
+        */
     }()
     
     #endif
