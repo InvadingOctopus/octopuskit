@@ -39,8 +39,12 @@
     > 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
 
     > 💡 Try out different components from the `Sources/OctopusKit/Components` folder.
+
+7. Check the documentation:
     
-7. For a detailed explanation of the engine, see the [Usage Guide][usage-guide] in the Documentation folder of the OctopusKit package/repository.
+    * For a detailed explanation of the engine architecture, see the [Architecture.md][architecture] file in the `Documentation` folder of the OctopusKit package/repository.
+
+    * **To see how to do common tasks, refer to [Usage Guide.md][guide]**
 
 ----
 
@@ -50,4 +54,5 @@
 [website]: https://invadingoctopus.io
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html
 
-[usage-guide]: https://github.com/InvadingOctopus/octopuskit/blob/master/Documentation/Usage%20Guide.md
+[guide]: https://github.com/InvadingOctopus/octopuskit/blob/master/Documentation/Usage%20Guide.md
+[architecture]: https://github.com/InvadingOctopus/octopuskit/blob/master/Documentation/Architecture.md
