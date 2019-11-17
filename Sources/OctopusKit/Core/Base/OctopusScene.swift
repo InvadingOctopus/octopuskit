@@ -131,7 +131,15 @@ open class OctopusScene:    SKScene,
     
     /// Returns `sharedTouchEventComponent` on iOS, or `sharedMouseEventComponent` on macOS.
     @available(macOS 10.15, iOS 13.0, *)
+    @inlinable
     public var sharedMouseOrTouchEventComponent: MouseEventComponent { sharedMouseEventComponent }
+    
+    /// Creates a new `KeyboardEventComponent` when this property is first accessed, and returns that component on subsequent calls.
+    ///
+    /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
+    @available(macOS 10.15, *)
+    @available(iOS, unavailable)
+    public fileprivate(set) lazy var sharedKeyboardEventComponent = KeyboardEventComponent()
     
     #endif
     
@@ -146,6 +154,7 @@ open class OctopusScene:    SKScene,
     
     /// Returns `sharedTouchEventComponent` on iOS, or `sharedMouseEventComponent` on macOS.
     @available(macOS 10.15, iOS 13.0, *)
+    @inlinable
     public var sharedMouseOrTouchEventComponent: TouchEventComponent { sharedTouchEventComponent }
     
     /// Creates a new `MotionManagerComponent` when this property is first accessed, and returns that component on subsequent calls.
@@ -169,6 +178,7 @@ open class OctopusScene:    SKScene,
 
     // MARK: Other
 
+    @inlinable
     public var gameCoordinator: OctopusGameCoordinator? {
         OctopusKit.shared?.gameCoordinator
     }
@@ -271,6 +281,7 @@ open class OctopusScene:    SKScene,
     /// - IMPORTANT: Components will be updated every frame in the exact order that is specified here, so a component must be listed after its dependencies.
     ///
     /// The `componentSystems` property can be modified again at any time.
+    @inlinable
     open func createComponentSystems() -> [GKComponent.Type] {
         []
     }
@@ -282,6 +293,7 @@ open class OctopusScene:    SKScene,
     /// - NOTE: If the scene requires the global `OctopusKit.shared.gameCoordinator.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
     ///
     /// - Note: A scene may choose to perform the tasks of this method in `gameCoordinatorDidEnterState(_:from:)` instead.
+    @inlinable
     open func prepareContents() {
         OctopusKit.logForFramework.add()
     }

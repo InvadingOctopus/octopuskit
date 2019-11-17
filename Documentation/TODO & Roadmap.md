@@ -15,7 +15,7 @@ permalink: documentation/todo.html
 *More-or-less in order of priority/necessity:*
 
 - Full tvOS support (currently in a preliminary state as of 2019-11-14.)
-- Components for keyboard, gamepad/joystick and Siri Remote input.
+- Components for gamepad/joystick and Siri Remote input.
 - Asset/resource loading system.
 - Saving and loading game/scene/entity/component states via `Codable`.
 - Support for describing scenes/entities/components in HTML/XML/JSON or a  similar format.
