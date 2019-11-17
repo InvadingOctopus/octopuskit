@@ -253,7 +253,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ## Getting Started
 
-1. **Read the [Quickstart and Usage Guide.][usage-guide]** You will need Xcode 11, iOS 13 and macOS Catalina (though OK may work on older versions with some manual modifications.)
+1. **Read the [Quickstart][quickstart] and [Usage Guide.][guide]** You will need Xcode 11, iOS 13 and macOS Catalina (though OK may work on older versions with some manual modifications.)
 
     > **Skill Level: Intermediate**: Although OK is not presented in a form designed for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
      
@@ -261,11 +261,13 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
     
     > Also see Apple's tutorials for [SwiftUI.][swiftui]
 
-2. Stuck? See [Tips & Troubleshooting.][tips-&-troubleshooting]
+2. For a detailed overview of the engine's architecture, see [Architecture.][architecture]
 
-3. Wondering whether something was intentionally done the way it is, or why? [Coding Conventions & Design Decisions][conventions-&-design] may have an explanation.
+3. Stuck? See [Tips & Troubleshooting.][tips]
 
-4. Want to keep tabs on what's coming or help out with the development of missing features? See the [TODO & Roadmap.][todo-&roadmap]
+4. Wondering whether something was intentionally done the way it is, or why? [Coding Conventions & Design Decisions][conventions-&-design] may have an explanation.
+
+5. Want to keep tabs on what's coming or help out with the development of missing features? See the [TODO & Roadmap.][todo]
 
 ## Etcetera
 
@@ -297,10 +299,12 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 [patreon]: https://www.patreon.com/invadingoctopus
 
 [quickstart]: https://github.com/InvadingOctopus/octopuskit/blob/master/QuickStart/README%20QuickStart.md
-[usage-guide]: https://invadingoctopus.io/octopuskit/documentation/usage.html
-[tips-&-troubleshooting]: https://invadingoctopus.io/octopuskit/documentation/tips.html
+[guide]: https://invadingoctopus.io/octopuskit/documentation/guide.html
+[architecture]: https://invadingoctopus.io/octopuskit/documentation/architecture.html
+[tutorials]: https://invadingoctopus.io/octopuskit/documentation/tutorials.html
+[tips]: https://invadingoctopus.io/octopuskit/documentation/tips.html
 [conventions-&-design]: https://invadingoctopus.io/octopuskit/documentation/conventions.html
-[todo-&roadmap]: https://invadingoctopus.io/octopuskit/documentation/todo.html
+[todo]: https://invadingoctopus.io/octopuskit/documentation/todo.html
 
 [swift-book]: https://docs.swift.org/swift-book/GuidedTour/GuidedTour.html
 [swift-api-guidelines]: https://swift.org/documentation/api-design-guidelines/

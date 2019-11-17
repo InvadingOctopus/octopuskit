@@ -4,7 +4,7 @@ permalink: documentation/conventions.html
 
 # OctopusKit Coding Conventions & Design Decisions
 
-[TODO: Revise this page]
+> TODO: Revise this page
 
 [Developer Diary](#developer-diary)  
 [Comments Key](#comments-key)
@@ -28,7 +28,7 @@ permalink: documentation/conventions.html
 
     - A strict convention may be adopted in the future to always write `self.` except for identifiers that are local to the method etc.
 
-    > [TODO: example]
+    > TODO: example
 
 - Say "player" instead of "user" whenever referring to the person playing the game. (^ - ^")
 

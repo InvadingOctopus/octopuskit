@@ -10,7 +10,9 @@ permalink: documentation/tips.html
 4. [Pitfalls & Gotchas](#pitfalls-&-gotchas)
 5. [Conditional Compilation Flags & Debugging Aids](#conditional-compilation-flags-&-debugging-aids)
 
-[TODO: Revise this page]
+* 🚀 **To quickly start using OctopusKit with a template project, see [QuickStart.][quickstart]**
+
+* 📖 **To see how to do common tasks, check the [Usage Guide.][guide]**
 
 ## Common Mistakes
 
@@ -38,21 +40,22 @@ permalink: documentation/tips.html
 
 - In most cases, try to access the object hierarchy from the "bottom up" instead of "top down."
 
-	> [TODO: Example]
+	> TODO: Example
 
 ## Tips & Tricks
 
-- [TODO: Tip for sharing "global" data via `RelayComponent`s.]
+* Advanced: Including the OctopusKit code in your main project (instead of as a package dependency) *may* provide the benefits of [Whole Module Optimization.](https://swift.org/blog/whole-module-optimizations/)
     
 ## Pitfalls & Gotchas
 
 - Many methods MUST be overridden in a subclass and/or chained to the superclass implementation, by calling `super.method()`. Some methods should call `super` at different points (i.e. beginning or end) in the subclass' implementation. Unfortunately, there is no language-level support for enforcing that, so your best bet is to read the source and comments of the method you're overriding.
-    > 💡 When in doubt, always call `super`, and call it at the top of your overriding method. [TODO: make this chaining automatic/enforced when/if Swift supports it]
+    > 💡 When in doubt, always call `super`, and call it at the top of your overriding method.  
+    > TODO: make this chaining automatic/enforced when/if Swift supports it
     
 - Components should try to perform their logic only during the `didAdd(...)`, `willRemove(...)`, and `update(deltaTime:)` methods. If a component's behavior must be modified outside of those methods, use flags that are then acted upon in the component's update method.  
 This ensures that a component does not affect anything outside of a frame update and can be reliably paused/unpaused.  
     > Note that this does not mean that a component should not _define_ any other methods at all.  
-    > [TODO: Example]
+    > TODO: Example
 
     - Components that respond to asynchronous events, such as a component that moves a node based on input from a gesture recognizer, like `PanControlledRepositioningComponent`, or networking components, MUST perform their function inside their `update(deltaTime:)` method, and just use the event-handling action method to mark a flag to denote that an event was received.  
 This prevents the component from being active outside the frame-update cycle, or when it's [temporarily] removed from the entity or the scene's systems.
@@ -98,3 +101,11 @@ If an entity needs multiple components of the same type but with different param
 [repository]: https://github.com/invadingoctopus/octopuskit
 [website]: https://invadingoctopus.io
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html
+
+[quickstart]: https://github.com/InvadingOctopus/octopuskit/blob/master/QuickStart/README%20QuickStart.md
+[guide]: https://invadingoctopus.io/octopuskit/documentation/guide.html
+[architecture]: https://invadingoctopus.io/octopuskit/documentation/architecture.html
+[tutorials]: https://invadingoctopus.io/octopuskit/documentation/tutorials.html
+[tips]: https://invadingoctopus.io/octopuskit/documentation/tips.html
+[conventions-&-design]: https://invadingoctopus.io/octopuskit/documentation/conventions.html
+[todo]: https://invadingoctopus.io/octopuskit/documentation/todo.html
