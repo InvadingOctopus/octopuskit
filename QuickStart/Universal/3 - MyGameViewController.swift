@@ -8,9 +8,9 @@
 
 //  🔶 STEP 3: The view controller for the SpriteKit view (SKView) that displays your game.
 //
-//  Creating a subclass of OctopusViewController is not necessary for a basic OctopusKit project, but complex games may require some view controller customization. This subclass does no customization but is provided for illustration.
+//  Creating a subclass of OKViewController is not necessary for a basic OctopusKit project, but complex games may require some view controller customization. This subclass does no customization but is provided for illustration.
 //
-//  In SwiftUI, an OctopusViewController is encapsulated by OctopusViewControllerRepresentable.
+//  In SwiftUI, an OKViewController is encapsulated by OKViewControllerRepresentable.
 //
 //  However, to use OctopusKit in a SwiftUI project, use:
 //
@@ -19,11 +19,11 @@
 //
 //  The OctopusKitContainerView presents SpriteKit and SwiftUI content together.
 //
-//  If you are using AppKit or UIKit, then the view controller for the SKView in your main storyboard must be the OctopusViewController class, or a subclass of it that is specific to your game, like the MyGameViewController in this project.
+//  If you are using AppKit or UIKit, then the view controller for the SKView in your main storyboard must be the OKViewController class, or a subclass of it that is specific to your game, like the MyGameViewController in this project.
 
 import OctopusKit
 
-final class MyGameViewController: OctopusViewController {
+final class MyGameViewController: OKViewController {
     
     override func viewDidLoad() {
         

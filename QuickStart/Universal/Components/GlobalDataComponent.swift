@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 /// A custom component for the QuickStart project that holds some simple data to be shared across multiple game states and scenes.
-final class GlobalDataComponent: OctopusComponent, OctopusUpdatableComponent, ObservableObject {
+final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableObject {
     
     @Published public var secondsElapsed: TimeInterval = 0
     
@@ -21,7 +21,7 @@ final class GlobalDataComponent: OctopusComponent, OctopusUpdatableComponent, Ob
         }
     }
     
-    @OctopusUserDefault(key: "emojiHighScore", defaultValue: 50) public var emojiHighScore: Int
+    @OKUserDefault(key: "emojiHighScore", defaultValue: 50) public var emojiHighScore: Int
     
     public var secondsElapsedTrimmed: String {
         String(secondsElapsed).prefix(6).padding(toLength: 7, withPad: " ", startingAt: 0)

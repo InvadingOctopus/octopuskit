@@ -14,7 +14,7 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class TitleScene: OctopusScene {
+final class TitleScene: OKScene {
     
     // MARK: - Life Cycle
     
@@ -30,7 +30,7 @@ final class TitleScene: OctopusScene {
     // MARK: 🔶 STEP 6B.2
     override func createComponentSystems() -> [GKComponent.Type] {
         
-        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to create a list of systems for each component type that must be updated in every frame of this scene.
+        // This method is called by the OKScene superclass, after the scene has been presented in a view, to create a list of systems for each component type that must be updated in every frame of this scene.
         //
         // ❗️ The order of components is important, as the functionality of some components depends on the output of other components.
         //
@@ -52,7 +52,7 @@ final class TitleScene: OctopusScene {
     // MARK: 🔶 STEP 6B.3
     override func prepareContents() {
         
-        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
+        // This method is called by the OKScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
         //
         // The most common tasks for every scene are to prepare the order of the component systems which the scene will update every frame, and to add entities to the scene.
         //
@@ -76,7 +76,7 @@ final class TitleScene: OctopusScene {
         // First we create a SpriteKit node.
         
         let title = SKLabelNode(text: "TOTALLY RAD GAME™",
-                                font: OctopusFont(name: "AvenirNextCondensed-Bold",
+                                font: OKFont(name: "AvenirNextCondensed-Bold",
                                                   size: 40,
                                                   color: .white))
         
@@ -110,7 +110,7 @@ final class TitleScene: OctopusScene {
         
         // Then we create an entity with the effect node (which contains the label node.)
         
-        self.addEntity(OctopusEntity(name: "TitleEntity", components: [
+        self.addEntity(OKEntity(name: "TitleEntity", components: [
             SpriteKitComponent(node: effectNode),
             ShaderComponent(shader: shader)
             ]))
@@ -131,7 +131,7 @@ final class TitleScene: OctopusScene {
         //
         // OctopusKit handles all the boilerplate per-frame logic, like timer calculations, frame counts, entity management and pause/unpause behavior.
         //
-        // The `OctopusScene.update(_:)` method, which is executed at the beginning of every frame by SpriteKit, calls this `shouldUpdateSystems(deltaTime:)` before updating the components of all entities.
+        // The `OKScene.update(_:)` method, which is executed at the beginning of every frame by SpriteKit, calls this `shouldUpdateSystems(deltaTime:)` before updating the components of all entities.
         //
         // This saves you from writing a lot of identical code for every scene, while still offering a customization point for your scenes that have custom pause/unpause behavior or need to perform other per-frame logic.
         //
@@ -146,9 +146,9 @@ final class TitleScene: OctopusScene {
     // MARK: - State & Scene Transitions
     
     // MARK: 🔶 STEP 5B.5
-    override func transition(for nextSceneClass: OctopusScene.Type) -> SKTransition? {
+    override func transition(for nextSceneClass: OKScene.Type) -> SKTransition? {
         
-        // This method is called by the game coordinator (via the OctopusScenePresenter protocol) to ask the current scene for a transition animation between the outgoing scene and the next scene.
+        // This method is called by the game coordinator (via the OKScenePresenter protocol) to ask the current scene for a transition animation between the outgoing scene and the next scene.
         //
         // Here we display transition effects if the next scene is the PlayScene.
         
@@ -164,7 +164,7 @@ final class TitleScene: OctopusScene {
         let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 1.0).withTimingMode(.easeIn)
         colorFill.run(fadeIn)
         
-        // Next, provide the OctopusScenePresenter with an animation to apply between the contents of this scene and the upcoming scene.
+        // Next, provide the OKScenePresenter with an animation to apply between the contents of this scene and the upcoming scene.
         
         let transition = SKTransition.doorsOpenVertical(withDuration: 2.0)
         

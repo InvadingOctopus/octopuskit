@@ -12,7 +12,7 @@ import GameplayKit
 import OctopusKit
 import SwiftUI
 
-final class TitleState: OctopusGameState {
+final class TitleState: OKGameState {
     
     init() {
         
@@ -26,7 +26,7 @@ final class TitleState: OctopusGameState {
                    associatedSwiftUIView: TitleUI())
     }
 
-    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
+    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
         
         // 🔶 STEP 5A.2: This method will be called by the TitleScene when the "Cycle Game States" button is tapped.
         
@@ -35,7 +35,7 @@ final class TitleState: OctopusGameState {
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         
-        // 🔶 STEP 5A.3: The OctopusGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
+        // 🔶 STEP 5A.3: The OKGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
         
         return stateClass == PlayState.self
     }

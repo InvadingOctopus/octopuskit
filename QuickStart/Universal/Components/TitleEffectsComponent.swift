@@ -11,13 +11,13 @@ import GameplayKit
 import OctopusKit
 
 /// A demonstration component that creates random effects for the title/main menu scene.
-final class TitleEffectsComponent: OctopusComponent, OctopusUpdatableComponent {
+final class TitleEffectsComponent: OKComponent, OKUpdatableComponent {
     
     override func update(deltaTime seconds: TimeInterval) {
         
         guard
             let parent = entityNode,
-            (parent.scene as? OctopusScene)?.currentFrameNumber.isMultiple(of: 3) ?? false,
+            (parent.scene as? OKScene)?.currentFrameNumber.isMultiple(of: 3) ?? false,
             let parentSize = (entityNode as? SKNodeWithDimensions)?.size
             else { return }
         

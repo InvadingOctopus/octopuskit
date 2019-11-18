@@ -16,7 +16,7 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class PlayScene: OctopusScene {
+final class PlayScene: OKScene {
     
     // MARK: - Life Cycle
     
@@ -32,7 +32,7 @@ final class PlayScene: OctopusScene {
     // MARK: 🔶 STEP 6B.2
     override func createComponentSystems() -> [GKComponent.Type] {
         
-        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to create a list of systems for each component type that must be updated in every frame of this scene.
+        // This method is called by the OKScene superclass, after the scene has been presented in a view, to create a list of systems for each component type that must be updated in every frame of this scene.
         //
         // ❗️ The order of components is important, as the functionality of some components depends on the output of other components.
         //
@@ -54,7 +54,7 @@ final class PlayScene: OctopusScene {
     // MARK: 🔶 STEP 6B.3
     override func prepareContents() {
         
-        // This method is called by the OctopusScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
+        // This method is called by the OKScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
         //
         // The most common tasks for every scene are to prepare the order of the component systems which the scene will update every frame, and to add entities to the scene.
         //
@@ -91,7 +91,7 @@ final class PlayScene: OctopusScene {
         //
         // OctopusKit handles all the boilerplate per-frame logic, like timer calculations, frame counts, entity management and pause/unpause behavior.
         //
-        // The `OctopusScene.update(_:)` method, which is executed at the beginning of every frame by SpriteKit, calls this `shouldUpdateSystems(deltaTime:)` before updating the components of all entities.
+        // The `OKScene.update(_:)` method, which is executed at the beginning of every frame by SpriteKit, calls this `shouldUpdateSystems(deltaTime:)` before updating the components of all entities.
         //
         // This saves you from writing a lot of identical code for every scene, while still offering a customization point for your scenes that have custom pause/unpause behavior or need to perform other per-frame logic.
         //
@@ -198,9 +198,9 @@ final class PlayScene: OctopusScene {
     }
     
     // MARK: 🔶 STEP 6B.7
-    override func transition(for nextSceneClass: OctopusScene.Type) -> SKTransition? {
+    override func transition(for nextSceneClass: OKScene.Type) -> SKTransition? {
         
-        // This method is called by the OctopusScenePresenter to ask the current scene for a transition animation between the outgoing scene and the next scene.
+        // This method is called by the OKScenePresenter to ask the current scene for a transition animation between the outgoing scene and the next scene.
         //
         // Here we display transition effects if the next scene is the TitleScene.
         
@@ -216,7 +216,7 @@ final class PlayScene: OctopusScene {
         let fadeOut = SKAction.fadeAlpha(to: 1.0, duration: 1.0).withTimingMode(.easeIn)
         colorFill.run(fadeOut)
         
-        // Next, provide the OctopusScenePresenter with an animation to apply between the contents of this scene and the upcoming scene.
+        // Next, provide the OKScenePresenter with an animation to apply between the contents of this scene and the upcoming scene.
         
         let transition = SKTransition.doorsCloseVertical(withDuration: 2.0)
         

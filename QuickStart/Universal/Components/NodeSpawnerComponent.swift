@@ -13,7 +13,7 @@ import OctopusKit
 /// A demonstration component that creates 2 sprites, then adds them to the entity's node at the touched position on every frame.
 ///
 /// A random emoji `SKLabelNode` with physics and an animated "spinny" `SKShapeNode` like the one in the Xcode SpriteKit game project template. :)
-final class NodeSpawnerComponent: OctopusComponent, OctopusUpdatableComponent {
+final class NodeSpawnerComponent: OKComponent, OKUpdatableComponent {
     
     override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,

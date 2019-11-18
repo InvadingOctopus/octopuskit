@@ -8,13 +8,13 @@
 
 //  🔶 STEP 4: This is the initial game state for the OctopusKit QuickStart project.
 //
-//  It displays the OctopusLogoScene which is provided by OctopusKit. When the logo scene finishes its animations, it tells the game coordinator to transition to the next state, which for this project is the TitleState.
+//  It displays the OKLogoScene which is provided by OctopusKit. When the logo scene finishes its animations, it tells the game coordinator to transition to the next state, which for this project is the TitleState.
 
 import GameplayKit
 import OctopusKit
 import SwiftUI
 
-final class LogoState: OctopusGameState {
+final class LogoState: OKGameState {
     
     init() {
         
@@ -23,19 +23,19 @@ final class LogoState: OctopusGameState {
         //
         // Note that the LogoState has no associated SwiftUI overlay, which we will see in the upcoming TitleState.
         
-        super.init(associatedSceneClass: OctopusLogoScene.self)
+        super.init(associatedSceneClass: OKLogoScene.self)
     }
     
-    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
+    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
         
-        // 🔶 STEP 4.2: This method will be called by the OctopusLogoScene after it finishes animating.
+        // 🔶 STEP 4.2: This method will be called by the OKLogoScene after it finishes animating.
         
         return stateMachine?.enter(TitleState.self) ?? false
     }
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         
-        // 🔶 STEP 4.3: The OctopusGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
+        // 🔶 STEP 4.3: The OKGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
         
         return stateClass == TitleState.self
     }
