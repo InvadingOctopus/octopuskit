@@ -64,36 +64,36 @@ systems. A typical game will create multiple instances of these objects.
 | :-: |
 |📲 `AppDelegate` + `SceneDelegate`|
 |↓|
-|🎬 `YourGameCoordinator: OctopusGameCoordinator` ¹|
+|🎬 `YourGameCoordinator: OKGameCoordinator` ¹|
 |↓|
-|🚦 `YourGameState: OctopusGameState` ²|
+|🚦 `YourGameState: OKGameState` ²|
 |↕|
 |🎛 `YourUI: SwiftUI.View` ³|
-|🏞 `YourScene: OctopusScene` ⁴|
+|🏞 `YourScene: OKScene` ⁴|
 |↓|
-|👾 `OctopusEntity` ⁵|
+|👾 `OKEntity` ⁵|
 |↓|
-|🚥 `YourEntityState: OctopusEntityState` ⁶|
+|🚥 `YourEntityState: OKEntityState` ⁶|
 |↕|
-|🧩 `YourComponent: OctopusComponent` ⁷|
+|🧩 `YourComponent: OKComponent` ⁷|
 |↑|
-|⛓ `OctopusComponentSystem` ⁸|
+|⛓ `OKComponentSystem` ⁸|
 
-> ¹ `OctopusGameCoordinator` must be initialized before any other OctopusKit objects.
+> ¹ `OKGameCoordinator` must be initialized before any other OctopusKit objects.
 
-> ² Every game must have at least one `OctopusGameState`.
+> ² Every game must have at least one `OKGameState`.
 
-> ³ `SwiftUI` presents a UI overlay on top of the `OctopusScene` contents. 
+> ³ `SwiftUI` presents a UI overlay on top of the `OKScene` contents. 
  
-> ⁴ `OctopusScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
+> ⁴ `OKScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
 
-> ⁵ `OctopusEntity` is optional; a simple scene may directly add sprites to itself.
+> ⁵ `OKEntity` is optional; a simple scene may directly add sprites to itself.
 
-> ⁶ `OctopusEntityState` is optional. An entity need not necessarily have states.  
+> ⁶ `OKEntityState` is optional. An entity need not necessarily have states.  
 
-> ⁷ `OctopusComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
+> ⁷ `OKComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
 
-> ⁸ `OctopusComponentSystem` is used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame update cycle.
+> ⁸ `OKComponentSystem` is used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame update cycle.
 
 The objects that actually present your game on screen:
 
@@ -103,10 +103,10 @@ The objects that actually present your game on screen:
 |↓|
 |📦 `OctopusKitContainerView`|
 |↓|
-|🎛 `OctopusUIOverlay`|
-|📦 `OctopusViewControllerRepresentable`|
+|🎛 `OKUIOverlay`|
+|📦 `OKViewControllerRepresentable`|
 |↓|
-|🎥 `OctopusViewController` ¹|
+|🎥 `OKViewController` ¹|
 |↓|
 |🎥 `SpriteKit.SKView`|
 
@@ -118,49 +118,49 @@ The objects that actually present your game on screen:
 |↓|
 |📦 `Main.storyboard`|
 |↓|
-|🎥 `OctopusViewController` ¹|
+|🎥 `OKViewController` ¹|
 |↓|
 |🎥 `SpriteKit.SKView`|
 
-> ¹ `OctopusViewController` displays the `OctopusGameCoordinator.currentScene` and may be subclassed for custom game-specific presentation management.
+> ¹ `OKViewController` displays the `OKGameCoordinator.currentScene` and may be subclassed for custom game-specific presentation management.
 
 ## Game Coordinator and Game States
 
-🎬 `OctopusGameCoordinator:`[`GKStateMachine`](https://developer.apple.com/documentation/gameplaykit/gkstatemachine)  
-🚦 `OctopusGameState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
+🎬 `OKGameCoordinator:`[`GKStateMachine`](https://developer.apple.com/documentation/gameplaykit/gkstatemachine)  
+🚦 `OKGameState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
 
 - At launch, the application configures a **Game Coordinator** object (which counts as a "controller" in the [MVC][mvc] hierarchy). The coordinator is a **State Machine** with one or more **Game States**, each associated with a **SpriteKit Scene** and a **SwiftUI** view. The coordinator may also manage global objects that are shared across states and scenes, i.e. the "model" of the game, such as the game world's map, player stats, multiplayer network sessions and so on.  
 
-- `OctopusGameCoordinator` need not always be subclassed; projects that do not require a custom coordinator may simply use `OctopusGameCoordinator(states:initialStateClass:)`.
+- `OKGameCoordinator` need not always be subclassed; projects that do not require a custom coordinator may simply use `OKGameCoordinator(states:initialStateClass:)`.
 
 - The game coordinator must be provided to the `OctopusKit(gameCoordinator:)` initializer and your SwiftUI view hierarchy's top-level `.environmentObject`, to make it available for the entire application.
 
-- `OctopusGameState` need not be subclassed if your game will have only one state and one scene; you may simply pass `OctopusGameState(associatedSceneClass: YourScene.self)` to the game coordinator initializer.
+- `OKGameState` need not be subclassed if your game will have only one state and one scene; you may simply pass `OKGameState(associatedSceneClass: YourScene.self)` to the game coordinator initializer.
 
 	> *Advanced: Although OctopusKit does not support this out of the box, a single application may contain multiple "games" by using multiple game coordinators, each with its own hierarchy of states and scenes.*
     
 ## Scenes
 
-🏞 `OctopusScene:`[`SKScene`](https://developer.apple.com/documentation/spritekit/skscene)
+🏞 `OKScene:`[`SKScene`](https://developer.apple.com/documentation/spritekit/skscene)
 
 - A **Scene** presents the visuals, plays audio, and receives player input events and device updates for each state or "act" of the game. A scene is itself an **Entity** with various **Components**, and it loads or creates sub-entities that represent the characters and other elements of the gameplay. 
 
     > A single scene may represent multiple game states.  
     > e.g. for most games, it may not be necessary to have a separate scene for a "Paused" game state, and a single scene may handle both "Play" and "Paused" game states by displaying a dark overlay and some text in the paused state.
 
-- Once a scene is presented on screen, the system calls the `OctopusScene.update(_:)` method at the beginning of every frame, which goes through the list of the scene's **Component Systems** and updates all the **Components** in each system. 
+- Once a scene is presented on screen, the system calls the `OKScene.update(_:)` method at the beginning of every frame, which goes through the list of the scene's **Component Systems** and updates all the **Components** in each system. 
 
 - The update method then calls the `shouldUpdateGameCoordinator(deltaTime:)` and `shouldUpdateSystems(deltaTime:)` methods to offer a customization point for complex game-specific scenes which perform their own per-frame logic.
     
     > See Apple's documentation for an overview of the [SpriteKit frame cycle][frame-cycle].
     
-🌠 `OctopusSubscene:`[`SKNode`](https://developer.apple.com/documentation/spritekit/sknode)
+🌠 `OKSubscene:`[`SKNode`](https://developer.apple.com/documentation/spritekit/sknode)
 
 - A **Subscene** is a node which may be added to a scene, but maintains its own hierarchy of entities and components. When a subscene is presented, the scene sets a special flag to pause the entities in the scene itself and any previous subscenes. This allows subscenes to be used for modal content which must be overlaid on top of the scene's content, while pausing the main action without pausing the engine, so that only the topmost subscene will be updated.
 
     > e.g. In an adventure game a subscene may be used to present a "cutscene" which shows an story event while pausing the gameplay.
     
-> TODO: OctopusScene API overview
+> TODO: OKScene API overview
 
 ### Scenes should:
 
@@ -174,18 +174,18 @@ The objects that actually present your game on screen:
 
 - Multiple states can share the same SwiftUI view, and a SwiftUI view may include the UI of other states as child views or `.background` or `.overlay`, thanks to the power of SwiftUI's composability.
 
-- Through the `OctopusGameCoordinator` which is passed as an `environmentObject`, SwiftUI views can inspect and modify the state of your game. An `OctopusComponent` may adopt the `ObservableObject` protocol to provide automatic data-driven updates for labels and HUD elements.
+- Through the `OKGameCoordinator` which is passed as an `environmentObject`, SwiftUI views can inspect and modify the state of your game. An `OKComponent` may adopt the `ObservableObject` protocol to provide automatic data-driven updates for labels and HUD elements.
  
 ## Entities
 
-👾 `OctopusEntity:`[`GKEntity`](https://developer.apple.com/documentation/gameplaykit/gkentity)  
-🚥 `OctopusEntityState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
+👾 `OKEntity:`[`GKEntity`](https://developer.apple.com/documentation/gameplaykit/gkentity)  
+🚥 `OKEntityState:`[`GKState`](https://developer.apple.com/documentation/gameplaykit/gkstate)
 
 - An **Entity** is a group of **Components** that may interact with each other. It may also have an **Entity State Machine** which is a special component comprising different **Entity States**. Each state has logic that decides which components to add to the entity and which components to remove depending on different conditions, as well as when to transition to a different state.
 
 	> e.g. A *GrueEntity* with a *SleepingState, HuntingState, EatingState and DeadState.*
 
-- `OctopusEntity` need not always be subclassed; `OctopusEntity(components:)` should be enough for most cases.
+- `OKEntity` need not always be subclassed; `OKEntity(components:)` should be enough for most cases.
 
 - Contain components which are the primary block of game functionality.
 
@@ -193,7 +193,7 @@ The objects that actually present your game on screen:
 
 - Have a delegate (which is by default the scene they're added to) to assist components with spawning new entities and removing themselves from their scene.
 
-- May be subclassed from `OctopusEntity` and offer `init` constructors that group sets of related components. The components may be customized according to the supplied arguments.
+- May be subclassed from `OKEntity` and offer `init` constructors that group sets of related components. The components may be customized according to the supplied arguments.
 
 	> e.g. A *PlayerShipEntity* with "mass", "speed" etc. parameters.
 
@@ -205,7 +205,7 @@ The objects that actually present your game on screen:
 
 - Every SpriteKit node has an optional `entity?` property. Since a scene also ultimately inherits from `SKNode`, it may also have an entity associated with it.
 
-- The `OctopusScene.entity?` property is initialized with a `SpriteKitComponent` and `SpriteKitSceneComponent` to represent the top of the node tree.
+- The `OKScene.entity?` property is initialized with a `SpriteKitComponent` and `SpriteKitSceneComponent` to represent the top of the node tree.
 
 - Other components may be added directly to the scene entity to represent elements such as background layers, HUD overlays, other high-level visual features or abstract logic that acts upon the scene as a whole.
 
@@ -213,31 +213,31 @@ The objects that actually present your game on screen:
 
 ### The Game Coordinator Entity
 
-- `OctopusGameCoordinator` also has an `entity` property (not optional) which is initialized when the game is launched and is accessible from every scene.
+- `OKGameCoordinator` also has an `entity` property (not optional) which is initialized when the game is launched and is accessible from every scene.
 
 - Games which need to share data or logic across multiple states and scenes can add persistent components to the game coordinator entity.
 
 ### Entities should *not:*
 
-- Be subclassed too much, i.e. inherited from a subclass of `OctopusEntity`. Do not fall into the traps of inheritance, which may defeat the advantages of composition that components are supposed to offer.
+- Be subclassed too much, i.e. inherited from a subclass of `OKEntity`. Do not fall into the traps of inheritance, which may defeat the advantages of composition that components are supposed to offer.
 
 - Contain properties or code other than initializers/constructors.
 
-> TODO: OctopusEntity API overview
+> TODO: OKEntity API overview
 
 ## Components
 
-🧩 `OctopusComponent:`[`GKComponent`](https://developer.apple.com/documentation/gameplaykit/gkcomponent)  
+🧩 `OKComponent:`[`GKComponent`](https://developer.apple.com/documentation/gameplaykit/gkcomponent)  
 
 - A **Component** represents each onscreen object or unit of game logic. It may contain properties and execute logic at specific moments in its lifetime: when it's added to an entity, removed from an entity, and/or once every frame. A component may signal its entity to enter a different state, or request the entity's scene to spawn new entities, or even to remove the component's own entity from the scene. 
 
     > Components may also access the game coordinator and its states. Nothing is "off limits" to a component; what a component may do is up to you. However, good practices dictate that a component should be polite and only access its own entity and its co-components.
 
-⛓ `OctopusComponentSystem:`[`GKComponentSystem`](https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem)
+⛓ `OKComponentSystem:`[`GKComponentSystem`](https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem)
 
 - Whenever a component is added to an entity, the scene registers the component with a **Component System** that matches the component's class. Only components that perform any logic during frame updates need to be registered with a system.
 
-- After enumerating all components from all entities and adding them to a list of **Component Systems**, the scene updates each system in a deterministic order during the `OctopusScene.update(_:)` method every frame. The array of systems should be arranged such that components which depend on other components are processed after their dependencies.
+- After enumerating all components from all entities and adding them to a list of **Component Systems**, the scene updates each system in a deterministic order during the `OKScene.update(_:)` method every frame. The array of systems should be arranged such that components which depend on other components are processed after their dependencies.
 
 	> e.g. An entity's `TouchControlledPositioningComponent` must be executed after its `TouchEventComponent`, so a scene's component systems array should place the system for `TouchEventComponent`s before the system for `TouchControlledPositioningComponent`s.
 
@@ -297,12 +297,12 @@ A component may be conceptually classified under one or more of the following ca
 
 - A spaceship, or a monster, are not components; they are entities. A spaceship may have a *ThrusterComponent*, and a *GunComponent*. A monster may have a *MonsterSpeciesComponent*. Both will have a `SpriteKitComponent`, `PhysicsComponent` etc.
 
-> TODO: OctopusComponent API overview
+> TODO: OKComponent API overview
 
 ## State Machines
 
 > TODO: Incomplete section  
-> TODO: OctopusGameState/OctopusEntityState API overview
+> TODO: OKGameState/OKEntityState API overview
 
 - If an entity can be in one of several conceptual states at a given time, it more makes sense to represent those states with a `GKStateMachine` (as encapsulated by a `StateMachineComponent`) instead of putting lots of conditional checks in multiple components.
 
@@ -311,14 +311,6 @@ A component may be conceptually classified under one or more of the following ca
 ### State classes should:
 
 - Only handle the logic of when and whether to transition to a different state.
-
-## Advanced Stuff
-
-### Using the Xcode Scene Editor as the primary design tool 
-
-> TODO: Incomplete section
-
-Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusViewController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
 
 ----
 

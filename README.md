@@ -40,7 +40,7 @@ struct ContentView: View {
     // The coordinator object manages your game's scenes and global state, 
     // and can be observed and controlled from SwiftUI.
     
-    var gameCoordinator = OctopusGameCoordinator(states: [
+    var gameCoordinator = OKGameCoordinator(states: [
         MainMenu(),
         Lobby(), 
         Gameplay() ])
@@ -57,7 +57,7 @@ struct ContentView: View {
 👾 *Creating an animated sprite*
 
 ```swift
-var character = OctopusEntity(components: [
+var character = OKEntity(components: [
     
     // Start with a blank texture.
     SpriteKitComponent(node: SKSpriteNode(color: .clear, size: CGSize(widthAndHeight: 42))),
@@ -114,7 +114,7 @@ character.addComponents([
 🧩 *A custom game-specific component*
 
 ```swift
-class AngryEnemyComponent: OctopusComponent {
+class AngryEnemyComponent: OKComponent {
     
     override func didAddToEntity(withNode node: SKNode) {
         node.colorTint = .angryMonster
@@ -169,7 +169,7 @@ if  let editorScene = SKReferenceNode(fileNamed: "EditorScene.sks") {
 for turretNode in scene["//Turret"] {
 
     // Create a new entity for each node found.
-    scene.addEntity(OctopusEntity(components: [
+    scene.addEntity(OKEntity(components: [
     
         SpriteKitComponent(node: turretNode),
         RelayComponent(for: sharedPointerEventComponent),
@@ -244,10 +244,10 @@ Your primary workflow will be writing component classes for each "part" of the g
     
     > 1. Perform the creation and placement of nodes mostly in code. Use the Xcode Scene Editor infrequently, to design and preview a few individual elements such as entities with specific positions etc., not entire scenes, and use `SKReferenceNode` to load them in code.  
     
-    > 2. Use the Xcode Scene Editor as your starting point, to create template scenes that may be loaded as top-level `SKReferenceNode` instances of an `OctopusScene`. This approach allows a modicum of "WYSIWYG" visual design and previewing.  
+    > 2. Use the Xcode Scene Editor as your starting point, to create template scenes that may be loaded as top-level `SKReferenceNode` instances of an `OKScene`. This approach allows a modicum of "WYSIWYG" visual design and previewing.  
     
     > 3. Create a scene almost entirely in the Xcode Scene Editor, adding any supported components, actions, physics bodies, navigation graphs and textures etc. right in the IDE.   
-Set the custom class of the scene as `OctopusScene` or a subclass of it. Load the scene by calling `OctopusViewController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OctopusGameState`.  
+Set the custom class of the scene as `OKScene` or a subclass of it. Load the scene by calling `OKViewController.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OKGameState`.  
     
     > 4. You don't *have* to use any of the architectures and patterns suggested here; you don't have to use game states, and your game objects don't even have to inherit from any OK classes. You could use your own architecture, and just use OK for a few helper methods etc., keeping only what you need from this framework and excluding the rest from compilation.
 

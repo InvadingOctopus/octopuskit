@@ -13,6 +13,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 2. [Player Input](#player-input)
 3. [Sharing Data](#sharing-data)
 4. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
+5. [Advanced Stuff](#advanced-stuff)
 
 ##### Other Documents
 
@@ -43,17 +44,17 @@ redirect_from: "/Documentation/Usage%2Guide.html"
         
     > Enter the URL for the GitHub [repository][repository]. Download the "develop" branch for the latest version.
     
-2. Create an instance of `OctopusGameCoordinator`.
+2. Create an instance of `OKGameCoordinator`.
 
     ```
-    let gameCoordinator = OctopusGameCoordinator(
-        states: [OctopusGameState()], // A placeholder for now.
-        initialStateClass: OctopusGameState.self)
+    let gameCoordinator = OKGameCoordinator(
+        states: [OKGameState()], // A placeholder for now.
+        initialStateClass: OKGameState.self)
     ```
 
     > The game coordinator is the top-level "controller" (in the Model-View-Controller sense) that manages the global state of your game.
     
-    > If your game needs to share complex logic or data across multiple scenes, you may create a subclass of `OctopusGameCoordinator`.
+    > If your game needs to share complex logic or data across multiple scenes, you may create a subclass of `OKGameCoordinator`.
 
 3. Displaying OctopusKit content in your view hierarchy requires different steps depending on whether you use SwiftUI or AppKit/UIKit:
 
@@ -72,13 +73,13 @@ redirect_from: "/Documentation/Usage%2Guide.html"
         
         > The `OctopusKitContainerView` combines a SpriteKit `SKView` with a SwiftUI overlay.
         
-        > ❗️ If you created a subclass of `OctopusGameCoordinator`, then you must provide a generic type parameter: `OctopusKitContainerView<MyGameCoordinator>()`
+        > ❗️ If you created a subclass of `OKGameCoordinator`, then you must provide a generic type parameter: `OctopusKitContainerView<MyGameCoordinator>()`
     
         > 💡 It's best to pass the game coordinator `environmentObject` to the top level content view created in the `SceneDelegate.swift` file, which will make it available to your entire view hierarchy.
     
-    * **AppKit or UIKit:** Your storyboard should have an `SKView` whose controller class is set to `OctopusViewController` or its subclass.
+    * **AppKit or UIKit:** Your storyboard should have an `SKView` whose controller class is set to `OKViewController` or its subclass.
         
-        * If you use `OctopusViewController` directly, then you must initialize OctopusKit early in your application launch cycle: 
+        * If you use `OKViewController` directly, then you must initialize OctopusKit early in your application launch cycle: 
 
             ```
             func application(_ application: UIApplication,
@@ -97,20 +98,20 @@ redirect_from: "/Documentation/Usage%2Guide.html"
                 super.init(coder: aDecoder)
             }
             
-            required init(gameCoordinator: OctopusGameCoordinator? = nil) {
+            required init(gameCoordinator: OKGameCoordinator? = nil) {
                 super.init(gameCoordinator: gameCoordinator)
             }
             ``` 
             
-            > ❗️ If you are starting with Xcode's SpriteKit Game template, you must **delete** the `GameViewController.viewDidLoad()` override, as that will prevent the `OctopusViewController` from presenting your game coordinator's scenes.
+            > ❗️ If you are starting with Xcode's SpriteKit Game template, you must **delete** the `GameViewController.viewDidLoad()` override, as that will prevent the `OKViewController` from presenting your game coordinator's scenes.
         
-4. Code the states, scenes and UI for your game. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes which inherit from `OctopusGameState` and `OctopusScene`. 
+4. Code the states, scenes and UI for your game. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes which inherit from `OKGameState` and `OKScene`. 
 
     > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow--object-hierarchy)
 
-    > If your scenes requires custom per-frame logic, you may override the `OctopusScene.shouldUpdateSystems(deltaTime:)` method.
+    > If your scenes requires custom per-frame logic, you may override the `OKScene.shouldUpdateSystems(deltaTime:)` method.
     
-    > If your game state classes also perform per-frame updates, then you may also override the `OctopusScene.shouldUpdateGameCoordinator(deltaTime:)` method.
+    > If your game state classes also perform per-frame updates, then you may also override the `OKScene.shouldUpdateGameCoordinator(deltaTime:)` method.
 
 5. Each of your game states can have a SwiftUI view associated with them to provide user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass an `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
 
@@ -185,7 +186,7 @@ if  let globalData = OctopusKit.shared.gameCoordinator.entity[DictionaryComponen
 ## Accessing Game State from SwiftUI Views
 
 ```swift
-class DataComponent: OctopusComponent, ObservableObject {
+class DataComponent: OKComponent, ObservableObject {
     
     @Published public var secondsElapsed: TimeInterval = 0
     
@@ -219,6 +220,14 @@ var body: some View {
 ```
 
 💡 You may write a custom property wrapper like say `@Component` to simplify accessing components from the current scene etc.
+
+## Advanced Stuff
+
+### Using the Xcode Scene Editor as the primary design tool 
+
+> TODO: Incomplete section
+
+Set the custom class of the scene as `OKScene` or a subclass of it. Load the scene by calling `OKGameCoordinator.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OKGameState`. 
 
 ----
 

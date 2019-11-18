@@ -11,7 +11,7 @@ permalink: documentation/conventions.html
 
 - Git workflow: [http://nvie.com/posts/a-successful-git-branching-model/](http://nvie.com/posts/a-successful-git-branching-model/)
 
-- OctopusKit's core types are named with the prefix "Octopus" instead of "OK" because I like it that way, so far. I may rename everything to begin with "OK" in the future to follow the common convention.
+- The style (indentation, formatting) is adaptive; I try to keep things readable and pleasant in their local context, at the point of use, even if they defy a global convention.
 
 - Classes are marked `final` where possible to improve performance. If you need to subclass them in a specific project, you could create a copy of the class (or entire engine source) and modify it to suit your project. See: [Increasing Performance by Reducing Dynamic Dispatch](https://developer.apple.com/swift/blog/?id=27)
 
@@ -24,7 +24,7 @@ permalink: documentation/conventions.html
 
 - `for each x in y` may be cleaner and self-explanatory compared to `y.forEach { x in ... }` or `$0.z` in most cases.
 
-- In subclasses, try to prefix properties with `super.` or `self.` if there might be any ambiguity at the use site about where the property is defined.
+- In subclasses, try to prefix properties with `super.` or `self.` if there might be any ambiguity at the point of use about where the property is defined.
 
     - A strict convention may be adopted in the future to always write `self.` except for identifiers that are local to the method etc.
 
