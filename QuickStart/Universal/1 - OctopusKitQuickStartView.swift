@@ -20,14 +20,14 @@ struct OctopusKitQuickStartView: View {
         
         #if os(iOS)
 
-        return OctopusKitContainerView<MyGameCoordinator, MyGameViewController>()
+        return OKContainerView<MyGameCoordinator, MyGameViewController>()
             .environmentObject(MyGameCoordinator())
             .edgesIgnoringSafeArea(.all)
             .statusBar(hidden: true)
 
         #elseif os(macOS)
 
-        return OctopusKitContainerView<MyGameCoordinator, MyGameViewController>()
+        return OKContainerView<MyGameCoordinator, MyGameViewController>()
             .environmentObject(MyGameCoordinator())
             .frame(width: 375, height: 812)
             .fixedSize()

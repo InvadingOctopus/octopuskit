@@ -14,10 +14,10 @@
 //
 //  However, to use OctopusKit in a SwiftUI project, use:
 //
-//  OctopusKitContainerView<MyGameCoordinator, MyGameViewController>()
+//  OKContainerView<MyGameCoordinator, MyGameViewController>()
 //      .environmentObject(MyGameCoordinator())
 //
-//  The OctopusKitContainerView presents SpriteKit and SwiftUI content together.
+//  The OKContainerView presents SpriteKit and SwiftUI content together.
 //
 //  If you are using AppKit or UIKit, then the view controller for the SKView in your main storyboard must be the OKViewController class, or a subclass of it that is specific to your game, like the MyGameViewController in this project.
 
