@@ -74,6 +74,8 @@ var character = OctopusEntity(components: [
 ```swift
 // Add a component to the scene that will be updated with input events.
 // Other components that handle player input will query this component.
+
+// This lets us handle asynchronous events in sync with the frame-update cycle.
 // A shared event stream is more efficient than forwarding events to every entity.
 
 // PointerEventComponent is an OS-agnostic component for touch or mouse input.
@@ -105,7 +107,7 @@ character.addComponents([
     // Use a hypothetical shared component.
     RelayComponent(for: sharedKeyboardEventComponent),
     
-    // Apply a force to the sprite's body based on joystick input in every frame.
+    // Apply a force to the sprite's body based on keyboard input in every frame.
     KeyboardControlledForceComponent() ])
 ```
 
@@ -253,7 +255,7 @@ Set the custom class of the scene as `OctopusScene` or a subclass of it. Load th
 
 ## Getting Started
 
-1. **Read the [Quickstart][quickstart] and [Usage Guide.][guide]** You will need Xcode 11, iOS 13 and macOS Catalina (though OK may work on older versions with some manual modifications.)
+1. **Read the [QuickStart][quickstart] and [Usage Guide.][guide]** You will need Xcode 11, iOS 13 and macOS Catalina (though OK may work on older versions with some manual modifications.)
 
     > **Skill Level: Intermediate**: Although OK is not presented in a form designed for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
      
