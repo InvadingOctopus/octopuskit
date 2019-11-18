@@ -41,8 +41,10 @@ struct PlayUI: View {
                 
                 Spacer()
                 
-                GlobalDataComponentLabel(component: globalDataComponent!)
-                    .opacity(0.8)
+                if  globalDataComponent != nil {
+                    GlobalDataComponentLabel(component: globalDataComponent!)
+                        .opacity(0.8)
+                }
                 
                 Spacer()
             }
