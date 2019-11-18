@@ -9,10 +9,10 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 > *This documentation assumes that the reader is using OctopusKit in a SwiftUI project, and has some prior experience with developing for Apple platforms in the Swift programming language.*
 
-1. [Start](#start)
+1. [Adding OctopusKit to your project](#adding-octopuskit-to-your-project)
 2. [Player Input](#player-input)
-3. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
-3. [Global Data](#global-data)
+3. [Sharing Data](#sharing-data)
+4. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
 
 ##### Other Documents
 
@@ -29,7 +29,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     >
     > The best way to learn may be to examine the engine source code.
         
-## Start
+## Adding OctopusKit to your project
 
 ### 🍰 **To begin from a template**:
 
@@ -152,6 +152,36 @@ yourPlayerEntity.addComponents([
 
 💡 See other components in `OctopusKit/Components/Input`
 
+## Sharing Data
+
+You can share data between states, scenes and entities in many ways.
+
+You may simply add custom properties to `OctopusKit.shared.gameCoordinator`
+
+Or use data components like a `DictionaryComponent`
+
+```swift
+OctopusKit.shared.gameCoordinator.entity.addComponent(
+    DictionaryComponent <String, Any> ([
+        "playerNode":  playerEntity.node as Any,
+        "playerStats": playerEntity[PlayerStatsComponent.self] as Any ]) )
+```
+
+To access that data:
+
+```swift
+if  let globalData = OctopusKit.shared.gameCoordinator.entity[DictionaryComponent<String, Any>.self] {
+    
+    let node  = globalData["playerNode"]  as? SKNode
+    let stats = globalData["playerStats"] as? PlayerStatsComponent
+    //  ...
+}
+```
+
+❕ Note that once an object is added to the dictionary, it holds a reference to the object.
+
+💡 Instead of typo-prone `String` keys, use `TypeSafeIdentifiers`
+
 ## Accessing Game State from SwiftUI Views
 
 ```swift
@@ -189,10 +219,6 @@ var body: some View {
 ```
 
 💡 You may write a custom property wrapper like say `@Component` to simplify accessing components from the current scene etc.
-
-## Global Data
-
-> TODO: Sharing "global" data via `RelayComponent`
 
 ----
 
