@@ -11,7 +11,7 @@ permalink: documentation/conventions.html
 
 - Git workflow: [http://nvie.com/posts/a-successful-git-branching-model/](http://nvie.com/posts/a-successful-git-branching-model/)
 
-- The style (indentation, formatting) is adaptive; I try to keep things readable and pleasant in their local context, at the point of use, even if they defy a global convention.
+- The style (indentation, formatting) is adaptive; I try to keep things readable and pleasant in their local context, at the point of use, even if they defy a global convention. There may be many exceptions to a rule wherever the rule may make things less clear.
 
 - Classes are marked `final` where possible to improve performance. If you need to subclass them in a specific project, you could create a copy of the class (or entire engine source) and modify it to suit your project. See: [Increasing Performance by Reducing Dynamic Dispatch](https://developer.apple.com/swift/blog/?id=27)
 
