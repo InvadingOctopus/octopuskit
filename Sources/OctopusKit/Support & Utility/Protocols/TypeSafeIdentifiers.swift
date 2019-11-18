@@ -39,7 +39,7 @@ public protocol TypeSafeIdentifiers: Hashable, RawRepresentable, CustomStringCon
     init(rawValue: RawValueType) // This is synthesized by Swift (for structs).
 }
 
-extension TypeSafeIdentifiers {
+public extension TypeSafeIdentifiers {
     
     // ☺️ Thanks to this default implementation and the synthesis of default initializers for structs by awesome Swift, an struct conforming to `TypeSafeIdentifiers` only needs to provide a `rawValue` property and its type.
     
