@@ -11,7 +11,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 1. [Start](#start)
 2. [Player Input](#player-input)
-3. [Accessing Game State From SwiftUI Views](#accessing-game-state-from-swiftui-views)
+3. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
 3. [Global Data](#global-data)
 
 ##### Other Documents
@@ -155,7 +155,7 @@ yourPlayerEntity.addComponents([
 ## Accessing Game State from SwiftUI Views
 
 ```swift
-class GlobalDataComponent: OctopusComponent, ObservableObject {
+class DataComponent: OctopusComponent, ObservableObject {
     
     @Published public var secondsElapsed: TimeInterval = 0
     
@@ -164,12 +164,12 @@ class GlobalDataComponent: OctopusComponent, ObservableObject {
     }
 }
 
-struct GlobalDataComponentLabel: View {
+struct DataComponentLabel: View {
 
-    @ObservedObject var component: GlobalDataComponent
+    @ObservedObject var component: DataComponent
     
     var body: some View {
-        Text("Seconds since activation: \(component.secondsElapsed)")
+        Text("Seconds elapsed: \(component.secondsElapsed)")
     }
 }
 ```
@@ -177,22 +177,22 @@ struct GlobalDataComponentLabel: View {
 In a container view, pass the component as an argument to the label view:
 
 ```swift
-var globalDataComponent: GlobalDataComponent? {
-    gameCoordinator.entity[GlobalDataComponent.self]
+var globalDataComponent: DataComponent? {
+    gameCoordinator.entity[DataComponent.self]
 }
 
 var body: some View {
     if  globalDataComponent != nil {
-        GlobalDataComponentLabel(component: globalDataComponent!)
+        DataComponentLabel(component: globalDataComponent!)
     }
 }
 ```
 
-💡 You may write a custom property wrapper like say `@Component` to simplify accessing components.
+💡 You may write a custom property wrapper like say `@Component` to simplify accessing components from the current scene etc.
 
 ## Global Data
 
-> TODO: Sharing "global" data via `RelayComponent`s
+> TODO: Sharing "global" data via `RelayComponent`
 
 ----
 

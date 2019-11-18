@@ -6,9 +6,9 @@ permalink: documentation/tips.html
 
 1. [Common Mistakes](#common-mistakes)
 2. [Best Practices](#best-practices)
-3. [Tips & Tricks](#tips-&-tricks)
-4. [Pitfalls & Gotchas](#pitfalls-&-gotchas)
-5. [Conditional Compilation Flags & Debugging Aids](#conditional-compilation-flags-&-debugging-aids)
+3. [Tips & Tricks](#tips--tricks)
+4. [Pitfalls & Gotchas](#pitfalls--gotchas)
+5. [Conditional Compilation Flags & Debugging Aids](#conditional-compilation-flags--debugging-aids)
 
 * 🚀 **To quickly start using OctopusKit with a template project, see [QuickStart.][quickstart]**
 

@@ -36,13 +36,13 @@
 
     > 🏷 Filenames are prefixed with a number denoting the order they come in during the application's life cycle. 
 	
-    > 🔍 Search for comments prefixed with "STEP #" for a quick overview of the flow of execution.
+    > 🔍 Search for comments prefixed with `STEP #` for a quick overview of the flow of execution.
 
     > 💡 Try out different components from the `Sources/OctopusKit/Components` folder.
 
 7. Check the documentation:
     
-    * For a detailed explanation of the engine architecture, see the [Architecture.md][architecture] file in the `Documentation` folder of the OctopusKit package/repository.
+    * For a detailed explanation of the engine architecture, see [Architecture.md][architecture] in the `Documentation` folder of the OctopusKit package/repository.
 
     * **To see how to do common tasks, refer to [Usage Guide.md][guide]**
 
