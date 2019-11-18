@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-#if os(iOS)
+#if os(iOS) // TODO: Add macOS trackpad and tvOS support.
 
 /// Creates a `UITapGestureRecognizer` and attaches it to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
 ///
@@ -36,8 +36,8 @@ public final class TapGestureRecognizerComponent: OctopusGestureRecognizerCompon
     
 }
 
-#else
+#endif
 
+#if !os(iOS) // TODO: Add macOS trackpad and tvOS support.
 public final class TapGestureRecognizerComponent: iOSExclusiveComponent {}
-
 #endif

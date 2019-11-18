@@ -6,9 +6,10 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-import CoreMotion
 
-#if canImport(UIKit)
+#if os(iOS)
+
+import CoreMotion
 
 extension CMMotionManager {
     

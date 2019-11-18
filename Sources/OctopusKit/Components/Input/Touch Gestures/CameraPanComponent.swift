@@ -7,7 +7,7 @@
 //
 
 // TODO: Subscene support.
-// TODO: Improve intertial scrolling.
+// TODO: Improve inertial scrolling.
 
 // CHECK: Should this component directly handle the gesture events itself (which may be many of during a single frame), or just poll the gesture recognizer in its `update(deltaTime:)` method for efficiency? (but that causes problems with missed states, such as `.ended`)
 
@@ -16,7 +16,7 @@
 import SpriteKit
 import GameplayKit
 
-#if canImport(UIKit)
+#if os(iOS) // TODO: Add macOS trackpad support.
 
 /// Moves the `CameraComponent` node based on input from a `PanGestureRecognizerComponent`
 ///
@@ -218,6 +218,6 @@ public final class CameraPanComponent: OctopusComponent, OctopusUpdatableCompone
 
 #endif
 
-#if !canImport(UIKit)
+#if !os(iOS) // TODO: Add macOS trackpad support.
 public final class CameraPanComponent: iOSExclusiveComponent {}
 #endif

@@ -127,7 +127,7 @@ public final class OctopusKit {
     
     #endif
     
-    #if canImport(UIKit) // #if os(iOS) // CHECK: Include tvOS?
+    #if os(iOS) // Not tvOS because TVs don't move :)
     
     /// As per Apple documentation: An app should create only a single instance of the `CMMotionManager` class, as multiple instances of this class can affect the rate at which data is received from the accelerometer and gyroscope.
     public static var motionManager: CMMotionManager? = {

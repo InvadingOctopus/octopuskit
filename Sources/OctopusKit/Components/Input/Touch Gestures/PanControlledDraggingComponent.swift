@@ -20,7 +20,7 @@
 import SpriteKit
 import GameplayKit
 
-#if os(iOS)
+#if os(iOS) // TODO: Add macOS trackpad and tvOS support.
 
 /// Drags the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchStateComponent` and `PanGestureRecognizerComponent`.
 ///
@@ -213,8 +213,8 @@ public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpda
     }
 }
 
-#else
+#endif
 
+#if !os(iOS) // TODO: Add macOS trackpad and tvOS support.
 public final class PanControlledRepositioningComponent: iOSExclusiveComponent {}
-    
 #endif

@@ -13,7 +13,7 @@
 import SpriteKit
 import GameplayKit
 
-#if os(iOS)
+#if canImport(UIKit) // TODO: Add macOS trackpad support.
 
 /// A base class for components that attach a `UIGestureRecognizer` to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
 ///
@@ -112,9 +112,9 @@ open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComp
     }
 }
 
-#else
+#endif
 
+#if !canImport(UIKit) // TODO: Add macOS trackpad support.
 public final class OctopusGestureRecognizerComponent<GestureRecognizerType: NSGestureRecognizer>: iOSExclusiveComponent {}
-
 #endif
 

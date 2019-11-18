@@ -12,7 +12,7 @@ import SpriteKit
 import GameplayKit
 //import UIKit
 
-#if os(iOS)
+#if os(iOS) // TODO: Add macOS trackpad support.
 
 /// Creates a `UIPanGestureRecognizer` and attaches it to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
 ///
@@ -42,8 +42,8 @@ public final class PanGestureRecognizerComponent: OctopusGestureRecognizerCompon
     
 }
 
-#else
+#endif
     
+#if !os(iOS) // TODO: Add macOS trackpad support.
 public final class PanGestureRecognizerComponent: iOSExclusiveComponent {}
-
 #endif

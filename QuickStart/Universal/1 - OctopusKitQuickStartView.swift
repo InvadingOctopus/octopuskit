@@ -34,6 +34,11 @@ struct OctopusKitQuickStartView: View {
             .frame(width: 375, height: 812)
             .fixedSize()
         
+        #elseif os(tvOS)
+        
+        return OKContainerView<MyGameCoordinator, MyGameViewController>()
+            .environmentObject(MyGameCoordinator())
+        
         #endif
         
     }

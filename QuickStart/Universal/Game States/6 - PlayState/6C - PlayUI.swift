@@ -99,10 +99,30 @@ struct GameStateLabel: View {
 struct GlobalDataComponentLabel: View {
     
     @ObservedObject var component: GlobalDataComponent
-
+    
     @State private var color = Color.green
     
     var body: some View {
+
+        #if !os(tvOS)
+
+        return universal
+            .onTapGesture {
+                withAnimation {
+                    var newColor = self.color
+                    repeat {
+                        newColor = .randomExcludingBlackWhite
+                    } while newColor == self.color
+                    self.color = newColor
+                }
+            }
+
+        #elseif os(tvOS)
+        return universal
+        #endif
+    }
+    
+    var universal: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("Global Data Component")
                 .font(.headline)
@@ -124,17 +144,8 @@ struct GlobalDataComponentLabel: View {
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 10)
-            .foregroundColor(color)
-            .shadow(radius: 10))
-        .onTapGesture {
-            withAnimation {
-                var newColor = self.color
-                repeat {
-                    newColor = .randomExcludingBlackWhite
-                } while newColor == self.color
-                self.color = newColor
-            }
-        }
+        .foregroundColor(color)
+        .shadow(radius: 10))
     }
 }
 

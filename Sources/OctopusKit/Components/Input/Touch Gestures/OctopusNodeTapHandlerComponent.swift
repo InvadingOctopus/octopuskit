@@ -9,7 +9,9 @@
 import SpriteKit
 import GameplayKit
 
-#if canImport(UIKit)
+#if os(iOS) // TODO: Add macOS trackpad and tvOS support.
+
+public typealias OKNodeTapHandlerComponent = OctopusNodeTapHandlerComponent
 
 /// Base class for components which handle tap gestures on the entity's `SpriteKitComponent` node.
 ///
@@ -103,4 +105,8 @@ open class OctopusNodeTapHandlerComponent: OctopusComponent, OctopusUpdatableCom
     }
 }
 
+#endif
+
+#if !os(iOS) // TODO: Add macOS trackpad and tvOS support.
+public class OctopusNodeTapHandlerComponent: iOSExclusiveComponent {}
 #endif

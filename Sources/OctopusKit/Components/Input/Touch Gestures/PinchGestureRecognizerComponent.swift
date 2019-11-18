@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-#if os(iOS)
+#if os(iOS) // TODO: Add macOS trackpad support.
 
 /// Creates a `UIPinchGestureRecognizer` and attaches it to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
 ///
@@ -37,8 +37,8 @@ public final class PinchGestureRecognizerComponent: OctopusGestureRecognizerComp
     
 }
 
-#else
+#endif
 
+#if !os(iOS) // TODO: Add macOS trackpad support.
 public final class PinchGestureRecognizerComponent: iOSExclusiveComponent {}
-
 #endif

@@ -31,7 +31,7 @@ final class MyGameViewController: OKViewController {
         
         super.viewDidLoad() // ❗️ Required. You must call super.viewDidLoad() before any other code in your overriding implementation.
         
-        #if canImport(UIKit)
+        #if os(iOS)
         
         supportedInterfaceOrientationsOverride[.phone] = .allButUpsideDown
         

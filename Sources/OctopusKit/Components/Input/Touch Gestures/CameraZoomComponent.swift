@@ -13,7 +13,7 @@
 import SpriteKit
 import GameplayKit
 
-#if canImport(UIKit)
+#if os(iOS) // TODO: Add macOS trackpad support.
 
 /// Scales the `CameraComponent` node based on input from a `PinchGestureRecognizerComponent`
 ///
@@ -82,7 +82,7 @@ public final class CameraZoomComponent: OctopusComponent, OctopusUpdatableCompon
             {
                 let gestureScaleDelta = pinchGestureRecognizer.scale - initialGestureScale
                 
-                // ⚠️ NOTE: Have to invert `gestureScaleDelta` for correct/convential/expected behavior (moving fingers closer = zoom out, moving fingers apart = zoom in.)
+                // ⚠️ NOTE: Have to invert `gestureScaleDelta` for correct/conventional/expected behavior (moving fingers closer = zoom out, moving fingers apart = zoom in.)
                 
                 camera.setScale(initialCameraScale + (-gestureScaleDelta))
             }
@@ -107,6 +107,6 @@ public final class CameraZoomComponent: OctopusComponent, OctopusUpdatableCompon
 
 #endif
 
-#if !canImport(UIKit)
+#if !os(iOS) // TODO: Add macOS trackpad support.
 public final class CameraZoomComponent: iOSExclusiveComponent {}
 #endif

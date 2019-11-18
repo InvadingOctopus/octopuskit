@@ -10,12 +10,12 @@ import GameplayKit
 
 #if os(iOS)
 
-/// A "dummy" base class for components that are not compatible with macOS.
+/// A "dummy" base class for components that are not compatible with macOS or tvOS.
 public typealias iOSExclusiveComponent = OctopusComponent
     
 #else
 
-/// A "dummy" base class for components that are not compatible with macOS.
+/// A "dummy" base class for components that are not compatible with macOS or tvOS.
 open class iOSExclusiveComponent: OctopusComponent {
     
     public override init() {
