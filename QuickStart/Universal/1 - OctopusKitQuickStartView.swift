@@ -14,6 +14,8 @@ import SwiftUI
 import OctopusKit
 import Combine
 
+typealias OKQuickStartView = OctopusKitQuickStartView // In case you prefer the shorter prefix :)
+
 struct OctopusKitQuickStartView: View {
     
     var body: some View {
