@@ -37,7 +37,7 @@ public final class OctopusKit {
     // CHECK: PERFORMANCE: Make `shared` non-nil for better performance? Could just default it to a dummy `OctopusKit` instance.
     
     /// Returns the singleton OctopusKit instance, which must be created via `initSharedInstance(gameName:gameCoordinator:)` during `AppDelegate.applicationWillLaunchOctopusKit()`.
-    public private(set) static var shared: OctopusKit? {
+    public private(set) static var shared: OctopusKit! {
         
         willSet {
             guard OctopusKit.shared == nil else {
