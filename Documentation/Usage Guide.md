@@ -152,13 +152,47 @@ yourPlayerEntity.addComponents([
 
 💡 See other components in `OctopusKit/Components/Input`
 
-## Accessing Game State From SwiftUI Views
+## Accessing Game State from SwiftUI Views
 
-> TODO
+```swift
+class GlobalDataComponent: OctopusComponent, ObservableObject {
+    
+    @Published public var secondsElapsed: TimeInterval = 0
+    
+    override func update(deltaTime seconds: TimeInterval) {
+        secondsElapsed += seconds
+    }
+}
+
+struct GlobalDataComponentLabel: View {
+
+    @ObservedObject var component: GlobalDataComponent
+    
+    var body: some View {
+        Text("Seconds since activation: \(component.secondsElapsed)")
+    }
+}
+```
+
+In a container view, pass the component as an argument to the label view:
+
+```swift
+var globalDataComponent: GlobalDataComponent? {
+    gameCoordinator.entity[GlobalDataComponent.self]
+}
+
+var body: some View {
+    if  globalDataComponent != nil {
+        GlobalDataComponentLabel(component: globalDataComponent!)
+    }
+}
+```
+
+💡 You may write a custom property wrapper like say `@Component` to simplify accessing components.
 
 ## Global Data
 
-> TODO: Tip for sharing "global" data via `RelayComponent`s
+> TODO: Sharing "global" data via `RelayComponent`s
 
 ----
 

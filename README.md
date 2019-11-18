@@ -103,13 +103,13 @@ character.addComponents([
     PhysicsComponent(),
     
     // Use a hypothetical shared component.
-    RelayComponent(for: sharedJoystickEventComponent),
+    RelayComponent(for: sharedKeyboardEventComponent),
     
     // Apply a force to the sprite's body based on joystick input in every frame.
-    JoystickControlledForceComponent() ])
+    KeyboardControlledForceComponent() ])
 ```
 
-🧩 *A custom game-specific component may look like this*
+🧩 *A custom game-specific component*
 
 ```swift
 class AngryEnemyComponent: OctopusComponent {

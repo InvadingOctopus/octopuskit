@@ -7,8 +7,8 @@ permalink: documentation/architecture.html
 > *This documentation assumes that the reader has some prior experience with developing for Apple platforms in the Swift programming language.*
 
 
-1. [Control Flow & Object Hierarchy](#control-flow--object-hierarchy)
-2. [Folder Organization](#folder-organization)
+1. [Folder Organization](#folder-organization)
+2. [Control Flow & Object Hierarchy](#control-flow--object-hierarchy)
 3. [Game Coordinator and Game States](#game-coordinator-and-game-states)
 4. [Scenes](#scenes)
 5. [User Interface](#user-interface)
@@ -109,6 +109,8 @@ The objects that actually present your game on screen:
 |🎥 `OctopusViewController` ¹|
 |↓|
 |🎥 `SpriteKit.SKView`|
+
+*or*
 
 | AppKit / UIKit Storyboard / XIB |
 | :-: |
