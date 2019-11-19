@@ -5,6 +5,8 @@
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/3.
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
+//  For more open-source SwiftUI controls and extensions, see the OctopusUI repository: https://github.com/InvadingOctopus/octopusui
+//
 
 import SwiftUI
 

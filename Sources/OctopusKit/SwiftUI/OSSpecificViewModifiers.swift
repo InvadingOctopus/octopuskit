@@ -5,6 +5,7 @@
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/19.
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
+//  For more open-source SwiftUI controls and extensions, see the OctopusUI repository: https://github.com/InvadingOctopus/octopusui
 
 //  These OS-specific "view modifier modifiers" reduce code duplication in cases when you have a view that has multiple universal (OS-agnostic) view modifiers but 1 OS-specific view modifier, such as `.onCommand(_:perform:)` for macOS menus or `onPlayPauseCommand(perform:)` for the Apple TV remote.
 //
