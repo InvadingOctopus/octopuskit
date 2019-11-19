@@ -2,7 +2,8 @@
 //  Entity.swift
 //  OctopusKit
 //
-//  Created by ShinryakuTako@invadingoctopus.io on 2019-10-20
+//  Created by ShinryakuTako@invadingoctopus.io on 2019/11/15.
+//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 import SwiftUI
