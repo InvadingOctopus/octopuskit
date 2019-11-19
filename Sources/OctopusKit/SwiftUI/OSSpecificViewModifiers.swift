@@ -12,7 +12,7 @@ public extension View {
 
     /// A wrapper for a view modifier that only applies on iOS/iPadOS.
     ///
-    /// **Example**: `.iOS { $0.foregroundColor(.pink) }`
+    /// **Example**: `.iOS { $0.foregroundColor(.green) }`
     @inlinable
     func iOS <ModifiedViewType: View> (_ modifier: (Self) -> ModifiedViewType) -> some View {
         #if os(iOS)
@@ -84,7 +84,7 @@ public extension View {
     
     /// A wrapper for a view modifier that only applies on watchOS.
     ///
-    /// **Example**: `.watchOS { $0.foregroundColor(.pink) }`
+    /// **Example**: `.watchOS { $0.foregroundColor(.green) }`
     @inlinable
     func watchOS <ModifiedViewType: View> (_ modifier: (Self) -> ModifiedViewType) -> some View {
         #if os(watchOS)
