@@ -43,7 +43,7 @@ final class MyGameViewController: OKViewController {
         
     }
     
-    #if canImport(UIKit)
+    #if canImport(UIKit) // iOS & tvOS
     
     override func didReceiveMemoryWarning() {
         // Customize this method to release any cached game-specific data, images, etc. that aren't in use, so that the operating system can free up some memory.

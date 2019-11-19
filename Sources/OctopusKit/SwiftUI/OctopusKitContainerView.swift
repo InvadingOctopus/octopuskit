@@ -22,7 +22,7 @@ public typealias OKContainerView = OctopusKitContainerView
 ///     .statusBar(hidden: true)
 public struct OctopusKitContainerView <OctopusGameCoordinatorType, OctopusViewControllerType> : View
     where OctopusGameCoordinatorType: OctopusGameCoordinator,
-    OctopusViewControllerType: OctopusViewController
+          OctopusViewControllerType:  OctopusViewController
 {
     
     @EnvironmentObject var gameCoordinator: OctopusGameCoordinatorType
@@ -32,9 +32,10 @@ public struct OctopusKitContainerView <OctopusGameCoordinatorType, OctopusViewCo
     public var body: some View {
         
         ZStack {
+            
             OctopusViewControllerRepresentable<OctopusGameCoordinatorType, OctopusViewControllerType>()
+            
             OctopusUIOverlay<OctopusGameCoordinatorType>()
         }
     }
-    
 }
