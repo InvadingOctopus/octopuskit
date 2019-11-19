@@ -38,6 +38,7 @@ struct OctopusKitQuickStartView: View {
         
         return OKContainerView<MyGameCoordinator, MyGameViewController>()
             .environmentObject(MyGameCoordinator())
+            .edgesIgnoringSafeArea(.all)
         
         #endif
         
