@@ -1,4 +1,4 @@
-# OctopusKit 👾🐙⚙️
+# OctopusKit ![OctopusKit Logo](https://github.com/InvadingOctopus/octopuskit/blob/develop/Assets/SinclairZXSpectrumOK-Slim.png?raw=true)
 
 A 2D game engine in 100% Swift for iOS, macOS and tvOS.
 
@@ -9,9 +9,7 @@ OctopusKit wraps and extends Apple's frameworks:
 • **Metal** under the hood ensures the best native performance.  
 • OS-agnostic components let you compile natively for iOS and macOS and handle mouse + touch input with the same code, without needing Catalyst etc.
 
-<p align="center">
-    <img src="https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo.gif?raw=true" alt="OctopusKit Demo"/>
-</p>
+![QuickStart Demo](https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo.gif?raw=true)
 
 🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
 
