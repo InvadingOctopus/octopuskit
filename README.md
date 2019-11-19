@@ -44,7 +44,7 @@ struct ContentView: View {
         Gameplay() ])
                                                 
     var body: some View {
-        OctopusKitContainerView()
+        OKContainerView()
             .environmentObject(gameCoordinator)
             .edgesIgnoringSafeArea(.all)
             .statusBar(hidden: true)
@@ -102,7 +102,6 @@ character.addComponents([
     // Add a physics body to the sprite.
     PhysicsComponent(),
     
-    // Use a hypothetical shared component.
     RelayComponent(for: sharedKeyboardEventComponent),
     
     // Apply a force to the sprite's body based on keyboard input in every frame.
