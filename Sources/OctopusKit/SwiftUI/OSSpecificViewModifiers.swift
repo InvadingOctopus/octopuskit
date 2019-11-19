@@ -6,6 +6,16 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+//  These OS-specific "view modifier modifiers" reduce code duplication in cases when you have a view that has multiple universal (OS-agnostic) view modifiers but 1 OS-specific view modifier, such as `.onCommand(_:perform:)` for macOS menus or `onPlayPauseCommand(perform:)` for the Apple TV Remote.
+//
+//  With these modifiers, you can avoid `#if os(...)` blocks or creating OS-specific copies of entire views:
+//
+//  Rectangle()
+//      .padding() // For all systems.
+//      .iOS   { $0.foregroundColor(.green) }
+//      .macOS { $0.foregroundColor(.blue) }
+//      .tvOSExcluded { $0.onTapGesture { self.dance() } } // tvOS doesn't have tap gestures.
+
 import SwiftUI
 
 public extension View {
