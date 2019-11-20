@@ -11,13 +11,13 @@ OctopusKit wraps and extends Apple's frameworks:
 
 ![QuickStart Demo](https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo.gif?raw=true)
 
-🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
-
 1. [Examples](#examples)
 2. [Overview](#overview)
 3. [Design Goals](#design-goals)
 4. [Getting Started](#getting-started)
 5. [Etcetera](#etcetera)
+
+🚀 *Eager to dive in? Add OctopusKit as a Swift Package Manager dependency to a SwiftUI project, and use the [**QuickStart** template][quickstart] (which also serves as a little demo.)*
 
 > OctopusKit is a constant **work in progress** and my first ever open-source project. I'm still learning as I go, so it may change rapidly without maintaining backwards compatibility or updating the documentation.
 

@@ -11,8 +11,7 @@ permalink: documentation/tips.html
 5. [Conditional Compilation Flags & Debugging Aids](#conditional-compilation-flags--debugging-aids)
 
 * 🚀 **To quickly start using OctopusKit with a template project, see [QuickStart.][quickstart]**
-
-* 📖 **To see how to do common tasks, check the [Usage Guide.][guide]**
+* ❓ **To see how to do common tasks, check the [Usage Guide.][guide]**
 
 ## Common Mistakes
 

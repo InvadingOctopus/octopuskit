@@ -4,9 +4,6 @@ permalink: documentation/architecture.html
 
 # OctopusKit Architecture
 
-> *This documentation assumes that the reader has some prior experience with developing for Apple platforms in the Swift programming language.*
-
-
 1. [Folder Organization](#folder-organization)
 2. [Control Flow & Object Hierarchy](#control-flow--object-hierarchy)
 3. [Game Coordinator and Game States](#game-coordinator-and-game-states)
@@ -17,7 +14,7 @@ permalink: documentation/architecture.html
 8. [State Machines](#state-machines)
 9. [Advanced Stuff](#advanced-stuff)
 
-##### Other Documents
+##### Related Documentation
 
 * [QuickStart][quickstart]
 * [Usage Guide][guide]
@@ -26,6 +23,8 @@ permalink: documentation/architecture.html
 * [TODO & Roadmap][todo]
 
 ##### Notes
+
+* This documentation assumes that the reader has some prior experience with developing for Apple platforms in the Swift programming language.
 
 * Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
 

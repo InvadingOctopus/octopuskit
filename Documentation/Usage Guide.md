@@ -5,24 +5,23 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 # OctopusKit Usage Guide
 
-### How-To and examples for common tasks.
-
-> *This documentation assumes that the reader is using OctopusKit in a SwiftUI project, and has some prior experience with developing for Apple platforms in the Swift programming language.*
+### Tutorials and examples for common tasks
 
 1. [Adding OctopusKit to your project](#adding-octopuskit-to-your-project)
-2. [Player Input](#player-input)
-3. [Sharing Data](#sharing-data)
-4. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
-5. [Advanced Stuff](#advanced-stuff)
+2. [Xcode File Templates](#xcode-file-templates)
+3. [Player Input](#player-input)
+4. [Sharing Data](#sharing-data)
+5. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
+6. [Advanced Stuff](#advanced-stuff)
 
-##### Other Documents
+##### Related Documentation
 
 * [OctopusKit Architecture][architecture]
 * [Tips & Troubleshooting][tips]
-* [Coding Conventions & Design Decisions][conventions-&-design]
-* [TODO & Roadmap][todo]
 
 ##### Notes
+
+* This documentation assumes that the reader is using OctopusKit in a SwiftUI project, and has some prior experience with developing for Apple platforms in the Swift programming language.
 
 * Currently, API documentation (i.e. for types/methods/properties) is only provided via extensive source-code comments, which can be viewed in Xcode's Quick Help.
 
@@ -56,9 +55,9 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     
     > If your game needs to share complex logic or data across multiple scenes, you may create a subclass of `OKGameCoordinator`.
 
-3. Displaying OctopusKit content in your view hierarchy requires different steps depending on whether you use SwiftUI or AppKit/UIKit:
+3. Presenting OctopusKit content in your view hierarchy requires different steps depending on whether you use SwiftUI or AppKit/UIKit:
 
-    * **SwiftUI:** Add a `OctopusKitContainerView` and pass the game coordinator as an `environmentObject` to it:
+    * **SwiftUI (iOS/iPadOS, macOS, tvOS):** Add a `OctopusKitContainerView` and pass the game coordinator as an `environmentObject` to it:
     
         ```
         import OctopusKit
@@ -77,7 +76,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     
         > 💡 It's best to pass the game coordinator `environmentObject` to the top level content view created in the `SceneDelegate.swift` file, which will make it available to your entire view hierarchy.
     
-    * **AppKit or UIKit:** Your storyboard should have an `SKView` whose controller class is set to `OKViewController` or its subclass.
+    * **AppKit (macOS) or UIKit (iOS/iPadOS, tvOS):** Your storyboard should have an `SKView` whose controller class is set to `OKViewController` or its subclass.
         
         * If you use `OKViewController` directly, then you must initialize OctopusKit early in your application launch cycle: 
 
@@ -115,13 +114,13 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 5. Each of your game states can have a SwiftUI view associated with them to provide user interface elements like text and HUDs. The SwiftUI view is overlaid on top of the SpriteKit gameplay view. To let SwiftUI interact with your game's state, make sure to pass an `.environmentObject(gameCoordinator)` to your SwiftUI view hierarchy.
 
-### 💡 Xcode File Templates
+## Xcode File Templates
 
 To save yourself from writing a lot of the same code for every new state, scene, component or method override, copy the contents of the `Templates/Xcode` subfolder of the OK package to your `~/Library/Developer/Xcode/Templates/OctopusKit`.
 
 This offers a section of templates for OctopusKit when you create a ⌘N New File in Xcode, including a very convenient template for creating a new game state class + its scene + UI in a single file, with just one click.
 
-> You may create a symbolic link (with the `ln` Terminal command) to keep the templates folders in sync whenever they're updated.
+💡 You may create a symbolic link (with the `ln` Terminal command) to keep the templates folders in sync whenever they're updated.
 
 ## Player Input
 
