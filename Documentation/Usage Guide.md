@@ -106,7 +106,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
         
 4. Code the states, scenes and UI for your game. The game coordinator must have at least one state that is associated with a scene, so your project must have custom classes which inherit from `OKGameState` and `OKScene`. 
 
-    > For an explanation of these classes, see [Control Flow & Object Hierarchy.](#control-flow--object-hierarchy)
+    > For an explanation of these classes, see the [Architecture][architecture] documentation.
 
     > If your scenes requires custom per-frame logic, you may override the `OKScene.shouldUpdateSystems(deltaTime:)` method.
     
@@ -242,8 +242,3 @@ Set the custom class of the scene as `OKScene` or a subclass of it. Load the sce
 [tips]: https://invadingoctopus.io/octopuskit/documentation/tips.html
 [conventions-&-design]: https://invadingoctopus.io/octopuskit/documentation/conventions.html
 [todo]: https://invadingoctopus.io/octopuskit/documentation/todo.html
-
-[mvc]: https://en.wikipedia.org/wiki/Model–view–controller
-[reducing-dynamic-dispatch]: https://developer.apple.com/swift/blog/?id=27
-[frame-cycle]: https://developer.apple.com/documentation/spritekit/skscene/responding_to_frame-cycle_events
-[sf-symbols]: https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/

@@ -209,9 +209,9 @@ OctopusKit uses an ["Entity-Component-System"][entity–component–system] arch
    
 - 🎛 **User Interface** elements like buttons, lists and HUDs are designed in **SwiftUI**. This allows fluid animations, sharp text, vector shapes, live previews, automatic data-driven updates, and over 1,500 high-quality icons from Apple's [SF Symbols.][sf-symbols]
 
-See the [Usage Guide][usage-guide] for a detailed breakdown of the object hierarchy.
+See the [Architecture documentation][architecture] for a detailed breakdown of the object hierarchy.
 
-Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen or abstract entities that handle data on the "backend", while SwiftUI lets you design slick HUDs and other UI in declarative code.
+Your primary workflow will be writing component classes for each "part" of the graphics and gameplay, then combining them to build entities which appear onscreen, or abstract entities that handle data on the "backend."
 
 > e.g. say a _ParallaxBackgroundEntity_ containing a _CloudsComponent_, a *HillsComponent* and a *TreesComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.
 
@@ -309,7 +309,7 @@ Set the custom class of the scene as `OKScene` or a subclass of it. Load the sce
 [swift-api-guidelines]: https://swift.org/documentation/api-design-guidelines/
 [wwdc-610]: https://developer.apple.com/videos/play/wwdc2016-610/?time=137
 [composition-over-inheritance]: https://en.wikipedia.org/wiki/Composition_over_inheritance
-[entity–component–system]: https://en.wikipedia.org/wiki/Entity–component–system
+[entity–component–system]: https://en.wikipedia.org/wiki/Entity_component_system
 [swiftui]: https://developer.apple.com/tutorials/swiftui/
 [sf-symbols]: https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/
 

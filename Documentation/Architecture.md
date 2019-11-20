@@ -12,7 +12,7 @@ permalink: documentation/architecture.html
 6. [Entities](#entities)
 7. [Components](#components)
 8. [State Machines](#state-machines)
-9. [Advanced Stuff](#advanced-stuff)
+9. [Further Reading](#further-reading)
 
 ##### Related Documentation
 
@@ -47,7 +47,7 @@ systems. A typical game will create multiple instances of these objects.
 
     > 💡 If your project crashes on startup, i.e. immediately returns to the home screen without showing anything, the classes in this folder are where you should look first.
         
-- `Entities`: Provides classes to quickly construct entities for common tasks, such as UI buttons, from groups of standard components.
+- `Entities`: Provides classes to quickly construct entities for common tasks, such as sprite-based buttons, from groups of standard components.
 
 - `Miscellaneous`: General types used by various components, such as compass directions.
 
@@ -311,6 +311,15 @@ A component may be conceptually classified under one or more of the following ca
 
 - Only handle the logic of when and whether to transition to a different state.
 
+## Further Reading
+
+For details on the non-OctopusKit-specific concepts used here, see Apple's documentation and Wikipedia:
+
+* [Entity-Component-System][ecs]
+* [Model-View-Controller][mvc]
+* [Composition Over Inheritance][composition-over-inheritance]
+* [SpriteKit Frame Update Cycle][frame-cycle]
+
 ----
 
 [OctopusKit][repository] © 2019 [Invading Octopus][website] • [Apache License 2.0][license]
@@ -327,6 +336,8 @@ A component may be conceptually classified under one or more of the following ca
 [todo]: https://invadingoctopus.io/octopuskit/documentation/todo.html
 
 [mvc]: https://en.wikipedia.org/wiki/Model–view–controller
+[composition-over-inheritance]: https://en.wikipedia.org/wiki/Composition_over_inheritance
+[ecs]: https://en.wikipedia.org/wiki/Entity_component_system
 [reducing-dynamic-dispatch]: https://developer.apple.com/swift/blog/?id=27
 [frame-cycle]: https://developer.apple.com/documentation/spritekit/skscene/responding_to_frame-cycle_events
 [sf-symbols]: https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/
