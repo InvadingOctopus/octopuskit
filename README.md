@@ -1,4 +1,4 @@
-# OctopusKit ![OctopusKit Logo](https://github.com/InvadingOctopus/octopuskit/blob/develop/Assets/SinclairZXSpectrumOK-Slim.png?raw=true)
+# OctopusKit ![OctopusKit Logo](https://github.com/InvadingOctopus/octopuskit/blob/develop/Assets/Images/SinclairZXSpectrumOK-Slim.png?raw=true)
 
 A 2D game engine in 100% Swift for iOS, macOS and tvOS.
 
