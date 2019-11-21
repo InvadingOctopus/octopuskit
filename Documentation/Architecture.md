@@ -36,7 +36,6 @@ permalink: documentation/architecture.html
 
 - `Apple API Extensions`: Adds engine-specific functionality and general convenience features to the classes provided by Apple.
 
-- `Assets`: A collection of basic images, shaders and sounds to get you started.
 
 - `Components`: A library of components for graphics, gameplay, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing dynamic dispatch][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
 
