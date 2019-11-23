@@ -43,7 +43,7 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
         // CHECK: Would it be more natural to follow the LATEST touch instead of just the first?
         
         guard
-            let node = entityNode,
+            let node  = entityNode,
             let scene = node.scene,
             let touchEventComponent = coComponent(TouchEventComponent.self),
             let touch = touchEventComponent.touches.first
@@ -53,7 +53,7 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
         
         var nodeRotationForThisFrame = node.zRotation // CHECK: .truncatingRemainder(dividingBy: CGFloat.pi * 2) // PERFORMANCE: Does this local variable help performance by reducing property accesses, or is that the compiler's job?
         
-        let touchLocation = touch.location(in: scene) // TODO: Verify with nested nodes etc.
+        let touchLocation  = touch.location(in: scene) // TODO: Verify with nested nodes etc.
         let targetRotation = node.position.radians(to: touchLocation) //CHECK: .truncatingRemainder(dividingBy: CGFloat.pi * 2)
         
         // #2: Calculate the maximum rotation for this frame, based on this component's property.
@@ -128,8 +128,8 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
             
             // #1: Get two points; one in front of the node, rotated slightly clockwise, and another in front of the node, rotated slightly counterclockwise.
             
-            let touchLocation = touch.location(in: scene) // TODO: Verify with nested nodes etc.
-            let touchDistance = node.position.distance(to: touchLocation)
+            let touchLocation  = touch.location(in: scene) // TODO: Verify with nested nodes etc.
+            let touchDistance  = node.position.distance(to: touchLocation)
             let targetRotation = node.position.radians(to: touchLocation)
             
             if Float(nodeRotationForThisFrame) == Float(targetRotation) { return }

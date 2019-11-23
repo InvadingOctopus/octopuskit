@@ -67,11 +67,11 @@ public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdat
         
         // Move the node if the touch we're tracking has moved.
         
-        if  let touchEvent = touchEventComponent.touchesMoved,
+        if  let touchEvent   = touchEventComponent.touchesMoved,
             let trackedTouch = self.trackedTouch,
             touchEvent.touches.contains(trackedTouch)
         {
-            let currentTouchLocation = trackedTouch.location(in: parent)
+            let currentTouchLocation  = trackedTouch.location(in: parent)
             let previousTouchLocation = trackedTouch.previousLocation(in: parent)
             let vector = CGVector(dx: (currentTouchLocation.x - previousTouchLocation.x) * boost,
                                   dy: (currentTouchLocation.y - previousTouchLocation.y) * boost)
@@ -80,7 +80,7 @@ public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdat
         
         // Stop tracking a touch if the player cancelled it.
         
-        if  let touchEvent = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled,
+        if  let touchEvent   = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled,
             let trackedTouch = self.trackedTouch,
             touchEvent.touches.contains(trackedTouch)
         {
