@@ -24,8 +24,10 @@ permalink: documentation/tips.html
 
 #### Components having *too* much effect? 
 - Make sure that a component is updated (if applicable) only once per frame.
-
 - Also make sure that a component *system* is added to a scene only once!
+
+#### Input event components not working?
+- The `OctopusScene.shared...` event components should be added to the `OctopusScene.entity` – Did you directly add one of them to a sub-entity, instead of a `RelayComponent` to them? Components can only be in one entity at a time! When you add the event components to a child entity, the default scene implementation cannot forward input events to it.
 
 #### Gesture recognizer components not working? 
 - Check their properties for the minimum and maximum number of touches.

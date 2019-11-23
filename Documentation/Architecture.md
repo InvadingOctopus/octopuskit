@@ -48,7 +48,7 @@ systems. A typical game will create multiple instances of these objects.
         
 - `Entities`: Provides classes to quickly construct entities for common tasks, such as sprite-based buttons, from groups of standard components.
 
-- `Miscellaneous`: General types used by various components, such as compass directions.
+- `Miscellaneous`: General types and data structures used by various components, such as two-dimensional arrays and compass directions.
 
 - `Scene Templates`: Prebuilt scenes, such as the OctopusKit logo.
 
