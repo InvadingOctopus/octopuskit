@@ -24,6 +24,8 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
     
     // MARK: - Subtypes
     
+    public typealias KeyCode = UInt16
+        
     /// Not currently used.
     public enum KeyboardEventCategory {
         
@@ -78,14 +80,25 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
     public var keyDown: KeyboardEvent? = nil {
         didSet {
             if  keyDown != oldValue,
-                let charactersDown = keyDown?.event.charactersIgnoringModifiers
+                let keyDown = keyDown?.event
             {
-                // Add the pressed keys to the relevant lists.
-                self.charactersDownForCurrentFrame.formUnion(charactersDown)
-                self.charactersPressed.formUnion(charactersDown)
+                let keyCode = keyDown.keyCode
                 
-                // Remove the pressed keys from the list of keys that were lifted.
-                self.charactersUpForCurrentFrame.subtract(charactersDown)
+                // Add the pressed code to the relevant lists.
+                self.codesDownForCurrentFrame.insert(keyCode)
+                self.codesPressed.insert(keyCode)
+                
+                // Remove the pressed code from the list of codes that were lifted.
+                self.codesUpForCurrentFrame.remove(keyCode)
+                
+                if  let charactersDown = keyDown.charactersIgnoringModifiers {
+                    // Add the pressed characters to the relevant lists.
+                    self.charactersDownForCurrentFrame.formUnion(charactersDown)
+                    self.charactersPressed.formUnion(charactersDown)
+                    
+                    // Remove the pressed character from the list of characters that were lifted.
+                    self.charactersUpForCurrentFrame.subtract(charactersDown)
+                }
             }
         }
     }
@@ -94,14 +107,25 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
     public var keyUp: KeyboardEvent? = nil {
         didSet {
             if  keyUp != oldValue,
-                let charactersUp = keyUp?.event.charactersIgnoringModifiers
+                let keyUp = keyUp?.event
             {
-                // Add the lifted keys to the `keysUpForCurrentFrame` list.
-                self.charactersUpForCurrentFrame.formUnion(charactersUp)
+                let keyCode = keyUp.keyCode
                 
-                // Remove the lifted keys from the list of keys that were pressed.
-                self.charactersDownForCurrentFrame.subtract(charactersUp)
-                self.charactersPressed.subtract(charactersUp)
+                // Add the lifted codes to the `codesUpForCurrentFrame` list.
+                self.codesUpForCurrentFrame.insert(keyCode)
+                
+                // Remove the lifted codes from the list of codes that were pressed.
+                self.codesDownForCurrentFrame.remove(keyCode)
+                self.codesPressed.remove(keyCode)
+                
+                if  let charactersUp = keyUp.charactersIgnoringModifiers {
+                    // Add the lifted characters to the `keysUpForCurrentFrame` list.
+                    self.charactersUpForCurrentFrame.formUnion(charactersUp)
+                    
+                    // Remove the lifted characters from the list of characters that were pressed.
+                    self.charactersDownForCurrentFrame.subtract(charactersUp)
+                    self.charactersPressed.subtract(charactersUp)
+                }
             }
         }
     }
@@ -119,7 +143,22 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
          flagsChanged]
     }
     
-    // The `characters...` properties are not private(set) so we can make update(deltaTime:) @inlinable
+    // DESIGN: The `codes-` and `characters-` properties are not `private(set)` so we can make update(deltaTime:) @inlinable
+    
+    // MARK: Key Codes
+    
+    // Key codes are hardware-independent.
+    
+    /// A set of the key codes that were included in the `keyDown` events received in the current frame.
+    public var codesDownForCurrentFrame: Set<KeyCode> = []
+    
+    /// A set of the key codes that were included in the `keyUp` events received in the current frame.
+    public var codesUpForCurrentFrame: Set<KeyCode> = []
+    
+    /// A set of the characters that were included in all `keyDown` events received so far but not in any `keyUp` events yet.
+    public var codesPressed: Set<KeyCode> = []
+    
+    // MARK: Characters
     
     /// A set of the characters that were included in the `keyDown` events received in the current frame.
     ///
@@ -139,7 +178,7 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
     public var charactersPressed: Set<Character> = []
     
     // MARK: - Frame Cycle
-    
+
     @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
   
@@ -164,6 +203,8 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
         // #3: Clear key lists.
         // CHECK: PERFORMANCE: Should we be `keepingCapacity`?
         
+        codesDownForCurrentFrame     .removeAll(keepingCapacity: true)
+        codesUpForCurrentFrame       .removeAll(keepingCapacity: true)
         charactersDownForCurrentFrame.removeAll(keepingCapacity: true)
         charactersUpForCurrentFrame  .removeAll(keepingCapacity: true)
         
@@ -202,6 +243,7 @@ public protocol KeyboardEventProvider {
 #endif
     
 #if !canImport(AppKit)
+// TODO: Add support for iOS/tvOS keyboards.
 @available(iOS, unavailable)
 public final class KeyboardEventComponent: macOSExclusiveComponent {}
 #endif
