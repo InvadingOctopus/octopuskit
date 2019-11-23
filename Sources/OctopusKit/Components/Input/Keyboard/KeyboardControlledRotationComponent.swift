@@ -13,6 +13,8 @@ import GameplayKit
 
 /// Rotates the entity's `SpriteKitComponent` node based on `KeyboardEventComponent` input.
 ///
+/// Set the `LOGINPUTEVENTS` compilation flag to log values.
+///
 /// **Dependencies:** `KeyboardEventComponent`, `SpriteKitComponent`
 @available(macOS 10.15, *)
 public final class KeyboardControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
