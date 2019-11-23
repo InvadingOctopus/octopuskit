@@ -9,7 +9,29 @@
 import CoreGraphics
 
 public extension CGFloat {
+        
+    /// Shorthand for `CGFloat(Int.random(in: range))`
+    static func randomInteger(in range: Range<Int>) -> CGFloat {
+        CGFloat(Int.random(in: range))
+    }
     
-    // NOTE: Randomization extensions removed in favor of `CGFloat(Int(CGFloat.random(in:)))` etc.
+    /// Shorthand for `CGFloat(Int.random(in: range))`
+    static func randomInteger(in range: ClosedRange<Int>) -> CGFloat {
+        CGFloat(Int.random(in: range))
+    }
+    
+    /// Shorthand for `CGFloat(Int.random(in: range, using: &generator))`
+    static func randomInteger <T> (in range: Range<Int>, using generator: inout T) -> CGFloat
+        where T: RandomNumberGenerator
+    {
+        CGFloat(Int.random(in: range, using: &generator))
+    }
+    
+    /// Shorthand for `CGFloat(Int.random(in: range, using: &generator))`
+    static func randomInteger <T> (in range: ClosedRange<Int>, using generator: inout T) -> CGFloat
+        where T: RandomNumberGenerator
+    {
+        CGFloat(Int.random(in: range, using: &generator))
+    }
     
 }
