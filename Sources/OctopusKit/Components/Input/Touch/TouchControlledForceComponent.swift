@@ -19,6 +19,7 @@ import GameplayKit
 
 #if canImport(UIKit)
 
+/// Applies a force to the entity's `PhysicsComponent` body on every frame, based on `TouchEventComponent` input.
 ///
 /// **Dependencies:** `PhysicsComponent`, `SpriteKitComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
@@ -44,19 +45,20 @@ public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdat
     public override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
         
-        guard let touchEventComponent = coComponent(TouchEventComponent.self),
+        guard
+            let touchEventComponent = coComponent(TouchEventComponent.self),
             let node = entityNode,
             let parent = node.scene,
-            let physicsBody = node.physicsBody
+            let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody ?? node.physicsBody // DESIGN: Get body from a physics component first.
             else { return }
         
         // Did player touch us?
         
-        if let touchEvent = touchEventComponent.touchesBegan {
+        if  let touchEvent = touchEventComponent.touchesBegan {
             
             for touch in touchEvent.touches {
                 
-                if node.contains(touch.location(in: parent)) { // TODO: Verify
+                if  node.contains(touch.location(in: parent)) { // TODO: Verify
                     self.trackedTouch = touch
                     break
                 }
@@ -65,8 +67,7 @@ public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdat
         
         // Move the node if the touch we're tracking has moved.
         
-        if
-            let touchEvent = touchEventComponent.touchesMoved,
+        if  let touchEvent = touchEventComponent.touchesMoved,
             let trackedTouch = self.trackedTouch,
             touchEvent.touches.contains(trackedTouch)
         {
@@ -79,8 +80,7 @@ public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdat
         
         // Stop tracking a touch if the player cancelled it.
         
-        if
-            let touchEvent = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled,
+        if  let touchEvent = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled,
             let trackedTouch = self.trackedTouch,
             touchEvent.touches.contains(trackedTouch)
         {
