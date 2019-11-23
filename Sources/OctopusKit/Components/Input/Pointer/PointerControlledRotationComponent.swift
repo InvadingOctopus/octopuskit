@@ -19,6 +19,8 @@ import GameplayKit
 /// **Dependencies:** `SpriteKitComponent`, `PointerEventComponent`
 public final class PointerControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
     
+    // TODO: Add acceleration, like `KeyboardControlledRotationComponent`.
+    
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,
          PointerEventComponent.self]
@@ -54,7 +56,7 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
         
         // #2: Calculate the maximum rotation for this frame, based on this component's property.
         
-        let rotationAmountForThisFrame = radiansPerSecond * CGFloat(seconds)
+        let rotationAmountForCurrentFrame = radiansPerSecond * CGFloat(seconds)
         
         /// A variation of the rotation calculation method, using `atan2`.
         func updateUsingAtan2(deltaTime seconds: TimeInterval) {
@@ -62,27 +64,27 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
             // #3: Exit if we're already aligned or the difference is very small.
             // CHECK: Make sure we snapped in the previous frame, before exiting early like this.
             
-            guard abs(targetRotation - nodeRotationForThisFrame) > rotationAmountForThisFrame else { return }
+            guard abs(targetRotation - nodeRotationForThisFrame) > rotationAmountForCurrentFrame else { return }
             
             // #4: Decide the direction to rotate in.
             
             let delta = node.deltaBetweenRotation(and: targetRotation)
             
             if  delta > 0 {
-                nodeRotationForThisFrame += rotationAmountForThisFrame
+                nodeRotationForThisFrame += rotationAmountForCurrentFrame
             }
             else if delta < 0 {
-                nodeRotationForThisFrame -= rotationAmountForThisFrame
+                nodeRotationForThisFrame -= rotationAmountForCurrentFrame
             }
             
             // #5: Snap to the target angle if we passed it this frame.
             
-            if  abs(delta) < abs(rotationAmountForThisFrame) {
+            if  abs(delta) < abs(rotationAmountForCurrentFrame) {
                 nodeRotationForThisFrame = targetRotation
             }
             
             #if LOGINPUTEVENTS
-            debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), pointerLocation = \(pointerLocation), targetRotation = \(targetRotation), delta = \(delta), rotationAmountForThisFrame = \(rotationAmountForThisFrame)")
+            debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), pointerLocation = \(pointerLocation), targetRotation = \(targetRotation), delta = \(delta), rotationAmountForCurrentFrame = \(rotationAmountForCurrentFrame)")
             #endif
         }
         
@@ -91,7 +93,7 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
             
             // #3: Exit if we're already aligned or the difference is very small.
             
-            guard abs(targetRotation - nodeRotationForThisFrame) > rotationAmountForThisFrame else { return }
+            guard abs(targetRotation - nodeRotationForThisFrame) > rotationAmountForCurrentFrame else { return }
             
             // #4: Decide the direction to rotate in.
             // THANKS: TheGreatDuck#9159 @ Reddit /r/GameDev Discord
@@ -101,20 +103,20 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
             let delta = a - b * floor(a / b) // `a modulo b` == `a - b * floor (a / b)` // PERFORMANCE: Should be more efficient than a lot of trigonometry math. Right?
             
             if  delta > CGFloat.pi {
-                nodeRotationForThisFrame -= rotationAmountForThisFrame
+                nodeRotationForThisFrame -= rotationAmountForCurrentFrame
             }
             else if delta <= CGFloat.pi {
-                nodeRotationForThisFrame += rotationAmountForThisFrame
+                nodeRotationForThisFrame += rotationAmountForCurrentFrame
             }
             
             #if LOGINPUTEVENTS
-            debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), targetRotation = \(targetRotation), delta = \(delta), rotationAmountForThisFrame = \(rotationAmountForThisFrame)")
+            debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), targetRotation = \(targetRotation), delta = \(delta), rotationAmountForCurrentFrame = \(rotationAmountForCurrentFrame)")
             #endif
             
             // #5: Snap to the target angle if we passed it this frame.
             // CHECK: Confirm that we are snapping after passing, not "jumping" ahead [a frame earlier] when the difference is small enough.
             
-            if  abs(targetRotation - nodeRotationForThisFrame) < rotationAmountForThisFrame {
+            if  abs(targetRotation - nodeRotationForThisFrame) < rotationAmountForCurrentFrame {
                 nodeRotationForThisFrame = targetRotation
             }
         }
@@ -133,14 +135,14 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
             if Float(nodeRotationForThisFrame) == Float(targetRotation) { return }
             
             let nodePosition = node.position // PERFORMANCE: Does this local variable help performance by reducing property accesses, or is that the compiler's job?
-            let rotationAmountForThisFrame = radiansPerSecond * CGFloat(seconds)
+            let rotationAmountForCurrentFrame = radiansPerSecond * CGFloat(seconds)
             
             let slightlyClockwisePoint = nodePosition.point(
-                atAngle: nodeRotationForThisFrame - rotationAmountForThisFrame,
+                atAngle: nodeRotationForThisFrame - rotationAmountForCurrentFrame,
                 distance: pointerDistance)
             
             let slightlyCounterclockwisePoint = nodePosition.point(
-                atAngle: nodeRotationForThisFrame + rotationAmountForThisFrame,
+                atAngle: nodeRotationForThisFrame + rotationAmountForCurrentFrame,
                 distance: pointerDistance)
             
             // #2: Get the Euclidean distance between each points and the pointer location.
@@ -151,17 +153,17 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
             // #3a: If the clockwise point is closer to the pointer location, rotate clockwise.
             
             if  pointerDistanceToClockwisePoint < pointerDistanceToCounterclockwisePoint {
-                nodeRotationForThisFrame -= rotationAmountForThisFrame
+                nodeRotationForThisFrame -= rotationAmountForCurrentFrame
             }
             // #3b: If the counterclockwise point is closer to the pointer location, rotate counterclockwise.
             else if pointerDistanceToClockwisePoint > pointerDistanceToCounterclockwisePoint {
-                nodeRotationForThisFrame += rotationAmountForThisFrame
+                nodeRotationForThisFrame += rotationAmountForCurrentFrame
             }
             
             // TODO: Snap
             
             #if LOGINPUTEVENTS
-            debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), targetRotation = \(targetRotation), delta = \(targetRotation - node.zRotation), pointerDistanceToClockwisePoint = \(pointerDistanceToClockwisePoint), pointerDistanceToCounterclockwisePoint = \(pointerDistanceToCounterclockwisePoint), rotationAmountForThisFrame = \(rotationAmountForThisFrame)")
+            debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), targetRotation = \(targetRotation), delta = \(targetRotation - node.zRotation), pointerDistanceToClockwisePoint = \(pointerDistanceToClockwisePoint), pointerDistanceToCounterclockwisePoint = \(pointerDistanceToCounterclockwisePoint), rotationAmountForCurrentFrame = \(rotationAmountForCurrentFrame)")
             #endif
         }
         
