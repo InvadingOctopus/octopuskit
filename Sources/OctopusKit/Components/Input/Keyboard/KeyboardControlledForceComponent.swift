@@ -71,7 +71,7 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         guard
             let keyboardEventComponent = coComponent(KeyboardEventComponent.self),
             !keyboardEventComponent.codesPressed.isEmpty,
-            let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody
+            let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody ?? entityNode?.physicsBody
             else {
                 acceleratedMagnitude = baseMagnitudePerSecond // TODO: PERFORMANCE: Figure out a better way than setting this every frame.
                 return
