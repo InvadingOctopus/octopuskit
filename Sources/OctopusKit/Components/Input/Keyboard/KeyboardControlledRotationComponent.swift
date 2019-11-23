@@ -32,11 +32,11 @@ public final class KeyboardControlledRotationComponent: OctopusComponent, Octopu
     public var arrowLeft:   UInt16 = .arrowLeft
 
     /// The minimum amount to rotate the node by in a single second.
-    public var baseRadiansPerSecond:     CGFloat = 1.0
+    public var baseRadiansPerSecond:     CGFloat
     
-    public var maximumRadiansPerSecond:  CGFloat = 1.0
+    public var maximumRadiansPerSecond:  CGFloat
     public var acceleratedRadians:       CGFloat = 0
-    public var accelerationPerSecond:    CGFloat = 0
+    public var accelerationPerSecond:    CGFloat
     
     public init(baseRadiansPerSecond:    CGFloat = 2.0,  // ÷ 60 per frame
                 maximumRadiansPerSecond: CGFloat = 4.0,
