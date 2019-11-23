@@ -6,10 +6,6 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: CHECK: Use deltaTime to determine thrust per update, instead of a fixed value?
-// CHECK: Should it be renamed to ForceComponent?
-//
-
 import SpriteKit
 import GameplayKit
 
@@ -17,6 +13,9 @@ import GameplayKit
 ///
 /// **Dependencies:** `PhysicsComponent`
 public final class ThrustComponent: OctopusComponent, OctopusUpdatableComponent {
+
+    // TODO: CHECK: Use deltaTime to determine thrust per update, instead of a fixed value?
+    // CHECK: Should it be renamed to ForceComponent?
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PhysicsComponent.self]
@@ -26,27 +25,28 @@ public final class ThrustComponent: OctopusComponent, OctopusUpdatableComponent 
     public var thrustBoostFactor: CGFloat = 1.0
     
     /// The scalar to clamp the `thrustVector` to, after applying the `thrustBoostFactor`.
-    public var maxThrust: CGFloat?
+    public var maximumThrust: CGFloat?
     
     public var thrustVector: CGVector?
     
     public init(thrustBoostFactor: CGFloat = 1.0,
-                maxThrust: CGFloat? = nil)
+                maximumThrust: CGFloat? = nil)
     {
         self.thrustBoostFactor = thrustBoostFactor
-        self.maxThrust = maxThrust
+        self.maximumThrust = maximumThrust
         
         super.init()
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
+    @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
         
         guard
             var thrustVector = self.thrustVector,
-            let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody
+            let physicsBody  = coComponent(PhysicsComponent.self)?.physicsBody
             else { return }
         
         // Multiply the thrust by the boost factor,
@@ -55,12 +55,11 @@ public final class ThrustComponent: OctopusComponent, OctopusUpdatableComponent 
         // then multiply it by the time that has passed since the last update?
         // thrustVector *= CGFloat(seconds)
         
-        if let maxThrust = self.maxThrust {
-            thrustVector.clampMagnitude(to: maxThrust)
+        if  let maximumThrust = self.maximumThrust {
+            thrustVector.clampMagnitude(to: maximumThrust)
         }
         
         physicsBody.applyForce(thrustVector)
-        
     }
 }
 
