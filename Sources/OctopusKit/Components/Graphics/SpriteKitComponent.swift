@@ -18,10 +18,9 @@ public final class SpriteKitComponent: GKSKNodeComponent {
     @inlinable
     public override var description: String {
         // NOTE: To reduce log clutter, only include the node's name here; full node description should only be in `didAddToEntity()`.
-        if let name = super.node.name {
+        if  let name = super.node.name {
             return "\(super.description) \"\(name)\""
-        }
-        else {
+        } else {
             return  "\(super.description) \(super.node)"
         }
     }
@@ -60,8 +59,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         
         // Does our node already has a different entity? Check this before calling `super` which may set the node's `entity` property to ours.
         
-        if
-            let entity = self.entity,
+        if  let entity = self.entity,
             let nodeEntity = self.node.entity,
             nodeEntity !== entity
         {
@@ -74,14 +72,14 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         
         // CHECK: Will copying names like this aid in logging etc. or will it hinder searches for nodes/entities?
         
-        if let octopusEntity = entity as? OctopusEntity {
+        if  let octopusEntity = entity as? OctopusEntity {
             if  self.node.name == nil
                 && octopusEntity.name != nil
             {
                 self.node.name = octopusEntity.name
             }
             else if octopusEntity.name == nil
-                    && self.node.name != nil
+                && self.node.name != nil
             {
                 octopusEntity.name = self.node.name
             }
@@ -89,7 +87,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         
         // Inform co-components that their entity now has a visual representation.
         
-        if shouldNotifyCoComponentsWhenAddedToEntity {
+        if  shouldNotifyCoComponentsWhenAddedToEntity {
             notifyCoComponents()
         }
         
@@ -110,7 +108,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         guard let entity = self.entity else { return }
         
         for component in entity.components {
-            if let octopusComponent = component as? OctopusComponent {
+            if  let octopusComponent = component as? OctopusComponent {
                 octopusComponent.didAddToEntity(withNode: super.node)
             }
         }
@@ -121,8 +119,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         
         // Warn if our node somehow ended up in a different entity by now. Check this before calling `super` which may set the node's `entity` property to `nil`.
         
-        if
-            let entity = self.entity,
+        if  let entity = self.entity,
             let nodeEntity = self.node.entity,
             nodeEntity !== entity
         {
@@ -137,7 +134,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         
         // NOTE: Do not remove the node's children here, as adding them to the node may have taken a lot of work, and in any case they should be left in a state as to be readily added to an entity or scene again.
         
-        if super.node.parent != nil {
+        if  super.node.parent != nil {
             super.node.removeFromParent()
         }
     }

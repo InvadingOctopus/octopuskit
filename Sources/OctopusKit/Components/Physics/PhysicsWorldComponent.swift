@@ -29,7 +29,7 @@ public final class PhysicsWorldComponent: OctopusComponent {
         
         self.physicsWorld = scene.physicsWorld
         
-        if scene.physicsWorld.contactDelegate == nil {
+        if  scene.physicsWorld.contactDelegate == nil {
             scene.physicsWorld.contactDelegate = scene // as? SKPhysicsContactDelegate
         }
         else if scene.physicsWorld.contactDelegate !== scene {
@@ -39,7 +39,7 @@ public final class PhysicsWorldComponent: OctopusComponent {
         // If the physics simulation is paused, start it, as this would be the expected behavior upon adding a `PhysicsWorld` component.
         // NOTE: If the world is NOT paused, then leave the speed as is, in case it was directly slowed down or sped up before this component was added.
         
-        if let physicsWorld = self.physicsWorld, physicsWorld.speed <= 0 {
+        if  let physicsWorld = self.physicsWorld, physicsWorld.speed <= 0 {
             physicsWorld.speed = 1
         }
     }
