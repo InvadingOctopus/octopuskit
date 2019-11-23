@@ -64,6 +64,22 @@ extension SKNode {
         return convert(position, to: node)
     }
     
+    /// Returns this node with the specified position.
+    ///
+    /// Convenient for specifying the position of a new node by chaining the initializer with this method.
+    open func position(_ newPosition: CGPoint) -> Self {
+        self.position = newPosition
+        return self
+    }
+    
+    /// Returns this node with the specified position.
+    ///
+    /// Convenient for specifying the position of a new node by chaining the initializer with this method.
+    open func position(x: CGFloat, y: CGFloat) -> Self {
+        self.position = CGPoint(x: x, y: y)
+        return self
+    }
+    
     /// Converts a point from the coordinate system of this node's parent to the coordinate system of this node.
     ///
     /// Returns unconverted point if parent is `nil`.
