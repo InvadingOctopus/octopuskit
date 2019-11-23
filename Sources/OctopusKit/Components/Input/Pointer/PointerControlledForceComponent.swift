@@ -15,6 +15,7 @@
 import SpriteKit
 import GameplayKit
 
+/// Applies a force to the entity's `PhysicsComponent` body on every frame, based on `PointerEventComponent` input.
 ///
 /// **Dependencies:** `PhysicsComponent`, `SpriteKitComponent`, `PointerEventComponent`
 public final class PointerControlledForceComponent: OctopusComponent, OctopusUpdatableComponent {
@@ -42,7 +43,7 @@ public final class PointerControlledForceComponent: OctopusComponent, OctopusUpd
             let pointerEventComponent = coComponent(PointerEventComponent.self),
             let node        = entityNode,
             let parent      = node.scene,
-            let physicsBody = node.physicsBody
+            let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody ?? node.physicsBody // DESIGN: Get body from a physics component first.
             else { return }
         
         // Did player touch/click us?
