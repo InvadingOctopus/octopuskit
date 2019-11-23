@@ -1,6 +1,8 @@
 // swift-tools-version:5.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
+//  https://github.com/InvadingOctopus/octopuskit
+
 import PackageDescription
 
 let package = Package(
