@@ -89,7 +89,7 @@ public final class KeyboardControlledThrustComponent: OctopusComponent, OctopusU
         // Apply the final vector to the body.
         
         #if LOGINPUTEVENTS
-        debugLog("acceleratedMagnitude: \(acceleratedMagnitude), magnitudeForCurrentFrame: \(magnitudeForCurrentFrame), horizontalFactor: \(horizontalFactor), verticalFactor: \(horizontalFactor), rotation: \(node.zRotation), force: \(vector)")
+        debugLog("acceleratedMagnitude: \(acceleratedMagnitude), magnitudeForCurrentFrame: \(magnitudeForCurrentFrame), factor: \(factor), rotation: \(node.zRotation), force: \(vector)")
         #endif
         
         physicsBody.applyForce(vector)
