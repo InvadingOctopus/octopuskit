@@ -62,7 +62,8 @@ final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
         super.prepareContents()
         // Customize: This is where you construct entities to add to your scene.
         
-        self.entity?.addComponents([sharedMouseOrTouchEventComponent, sharedPointerEventComponent])
+        self.entity?.addComponents([sharedMouseOrTouchEventComponent,
+                                    sharedPointerEventComponent])
         
         addEntity(OctopusEntity(name: "", components: [
             // Customize
