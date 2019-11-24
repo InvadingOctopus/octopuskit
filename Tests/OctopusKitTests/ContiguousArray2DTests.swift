@@ -72,6 +72,71 @@ final class ContiguousArray2DTests: XCTestCase {
                                               rows:    Self.rowCount)
         
         XCTAssertEqual  (copiedArray2D, Self.testArray2D)
+        
+        // #3: Initializing with a literal sequence should correctly handle leftover columns.
+        
+        let fillerValue = -1
+        
+        XCTContext.runActivity(named: "Data Initialization with Fewer Columns and 1 Extra Row") { _ in
+            
+            let array1D = Array<Int>(1...3)
+            let array2D = ContiguousArray2D(data:    array1D,
+                                            columns: 2,
+                                            repeatingInitialValueForLeftoverCells: fillerValue)!
+            
+            // #3A: A 2D array of 3 elements in 2 columns should correctly add 1 extra row.
+            XCTAssertEqual(array2D.rowCount, 2)
+            
+            // #3B: The last (bottom-right) element should be the filler value.
+            XCTAssertEqual(array2D[1, 1], fillerValue)
+        }
+        
+        XCTContext.runActivity(named: "Data Initialization with Multiple Extra Rows") { _ in
+            
+            let array1D = Array<Int>(1...10)
+            let array2D = ContiguousArray2D(data:    array1D,
+                                            columns: 2,
+                                            repeatingInitialValueForLeftoverCells: fillerValue)!
+            
+            // #3C: A 2D array of 10 elements in 2 columns should correctly add 4 extra rows.
+            XCTAssertEqual(array2D.rowCount, 5)
+            
+            // #3D: The last element should have the correct data.
+            XCTAssertEqual(array2D[array2D.lastColumnIndex, array2D.lastRowIndex],
+                           array1D.last!)
+        }
+        
+        XCTContext.runActivity(named: "Data Initialization with Fewer Data") { _ in
+        
+            let array1D = Array<Int>(1...3)
+            let array2D = ContiguousArray2D(data:    array1D,
+                                            columns: 5,
+                                            repeatingInitialValueForLeftoverCells: fillerValue)!
+            
+            // #3C: A 2D array of 3 elements in 5 columns should have 1 row with filler values.
+            XCTAssertEqual(array2D.rowCount, 1)
+            for columnIndex in array1D.count ..< array2D.columnCount {
+                XCTAssertEqual(array2D[columnIndex, 0], fillerValue)
+            }
+        }
+        
+        // #3D: Test with multiple dimensions.
+        
+        for elementCount in 1...10 {
+            for columnCount in 1...10 {
+                
+                let array1D = Array<Int>(1...elementCount)
+                let array2D = ContiguousArray2D(data:    array1D,
+                                                columns: columnCount,
+                                                repeatingInitialValueForLeftoverCells: -1)!
+                
+                // TODO: Don't use the `quotientAndRemainder` equation as that's what's used in `ContiguousArray2D` so it would always test equal; use a different method.
+                
+                let division = elementCount.quotientAndRemainder(dividingBy: columnCount)
+                
+                XCTAssertEqual(array2D.rowCount, division.quotient + division.remainder.signum())
+            }
+        }
     }
     
     func testSingleElementAccess() {

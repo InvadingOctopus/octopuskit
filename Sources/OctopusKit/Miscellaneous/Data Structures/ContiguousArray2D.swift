@@ -40,6 +40,19 @@ public struct ContiguousArray2D <Element> {
     public var flippedHorizontally:     Bool = false
     public var flippedVertically:       Bool = false
     
+    /// Transpose rows and columns.
+    public var transpose:               Bool = false
+    
+    public var transformedColumnCount:  IndexUnit {
+        didSet { lastColumnIndex = transformedColumnCount - 1 }
+    }
+    
+    public var transformedRowCount:     IndexUnit {
+        didSet { lastRowIndex = transformedRowCount - 1 }
+    }
+    
+    public fileprivate(set) var lastColumnIndex, lastRowIndex: IndexUnit
+    
     // MARK: Initializers
     
     public init(columns: IndexUnit,
@@ -50,10 +63,15 @@ public struct ContiguousArray2D <Element> {
         precondition(columns > 0, "columns < 1: \(columns)")
         precondition(rows    > 0, "rows < 1: \(rows)")
         
-        self.columnCount = columns
-        self.rowCount    = rows
+        self.columnCount            = columns
+        self.rowCount               = rows
+        self.transformedColumnCount = columnCount
+        self.transformedRowCount    = rowCount
+        self.lastColumnIndex        = columnCount - 1
+        self.lastRowIndex           = rowCount - 1
         
-        self.storage = ContiguousArray(repeating: repeatingInitialValue, count: Int(rows * columns))
+        self.storage = ContiguousArray(repeating: repeatingInitialValue,
+                                       count: Int(rows * columns))
     }
     
     public init(existingStorage: ContiguousArray<Element>,
@@ -67,8 +85,13 @@ public struct ContiguousArray2D <Element> {
         precondition(columns * rows <= existingStorage.count,
                      "columns × rows \(columns * rows) > existingStorage.count \(existingStorage.count)")
         
-        self.rowCount    = rows
-        self.columnCount = columns
+        self.rowCount               = rows
+        self.columnCount            = columns
+        self.transformedColumnCount = columnCount
+        self.transformedRowCount    = rowCount
+        self.lastColumnIndex        = columnCount - 1
+        self.lastRowIndex           = rowCount - 1
+        
         self.storage = existingStorage
     }
     
@@ -91,22 +114,23 @@ public struct ContiguousArray2D <Element> {
         
         // Calculate rows, allocating an extra row if there are any leftover columns.
         
-        let rowsCalculated = storage.count.quotientAndRemainder(dividingBy: columns)
+        let division = storage.count.quotientAndRemainder(dividingBy: columns)
         
-        if  rowsCalculated.remainder > 0 {
-            self.rowCount = rowsCalculated.quotient + 1
-        } else {
-            self.rowCount = rowsCalculated.quotient
-        }
+        self.rowCount = division.quotient + division.remainder.signum() // 1 if > 0
+        
+        self.transformedColumnCount = columnCount
+        self.transformedRowCount    = rowCount
+        self.lastColumnIndex        = columnCount - 1
+        self.lastRowIndex           = rowCount - 1
         
         // Pad the leftover columns at the end.
         
-        for _ in 0 ..< rowsCalculated.remainder {
+        for _ in 0 ..< division.remainder {
             self.storage.append(repeatingInitialValueForLeftoverCells)
         }
     }
     
-    // MARK: - Basic Access
+    // MARK: - Single Element Access
     
     /// Returns an index into the underlying 1D storage for the beginning of the specified row.
     @inlinable
@@ -126,19 +150,19 @@ public struct ContiguousArray2D <Element> {
     public subscript(column: IndexUnit, row: IndexUnit) -> Element {
         
         get {
-            precondition(column >= 0 && column < columnCount,
-                         "Column index (\(column)) is out of range (0 to \(columnCount - 1))")
-            precondition(row >= 0 && row < rowCount,
-                         "Row index (\(row)) is out of range (0 to \(rowCount - 1))")
+            precondition(column >= 0 && column < transformedColumnCount,
+                         "Column index (\(column)) is out of range (0 to \(transformedColumnCount - 1))")
+            precondition(row >= 0 && row < transformedRowCount,
+                         "Row index (\(row)) is out of range (0 to \(transformedRowCount - 1))")
             
             return storage[row * columnCount + column]
         }
         
         set {
-            precondition(column >= 0 && column < columnCount,
-                         "Column index (\(column)) is out of range (0 to \(columnCount - 1))")
-            precondition(row >= 0 && row < rowCount,
-                         "Row index (\(row)) is out of range (0 to \(rowCount - 1))")
+            precondition(column >= 0 && column < transformedColumnCount,
+                         "Column index (\(column)) is out of range (0 to \(transformedColumnCount - 1))")
+            precondition(row >= 0 && row < transformedRowCount,
+                         "Row index (\(row)) is out of range (0 to \(transformedRowCount - 1))")
             
             return storage[row * columnCount + column] = newValue
         }
@@ -157,15 +181,17 @@ public struct ContiguousArray2D <Element> {
         return []
     }
     
+    // MARK: - Multiple Element Access
+    
     @inlinable
     public func column(_ columnIndex: IndexUnit) -> ArraySlice<Element> {
         
-        precondition(column >= 0 && column < columnCount,
-                     "Column index (\(column)) is out of range (0 to \(columnCount - 1))")
+        precondition(columnIndex >= 0 && columnIndex < transformedColumnCount,
+                     "Column index (\(columnIndex)) is out of range (0 to \(transformedColumnCount - 1))")
         
         var column: ArraySlice<Element> = []
         
-        for row in 0 ..< rowCount {
+        for row in 0 ..< transformedRowCount {
             column.append(self[columnIndex, row]) // ❕ Use the subscript so we can get rotated/flipped transformations, if any.
         }
         
@@ -175,12 +201,12 @@ public struct ContiguousArray2D <Element> {
     @inlinable
     public func row(_ rowIndex: IndexUnit) -> ArraySlice<Element> {
         
-        precondition(row >= 0 && row < rowCount,
-                     "Row index (\(row)) is out of range (0 to \(rowCount - 1))")
+        precondition(rowIndex >= 0 && rowIndex < transformedRowCount,
+                     "Row index (\(rowIndex)) is out of range (0 to \(transformedRowCount - 1))")
         
         var row: ArraySlice<Element> = []
         
-        for column in 0 ..< columnCount {
+        for column in 0 ..< transformedColumnCount {
             row.append(self[column, rowIndex]) // ❕ Use the subscript so we can get rotated/flipped transformations, if any.
         }
         
@@ -191,7 +217,7 @@ public struct ContiguousArray2D <Element> {
     public func allColumns() -> [ArraySlice<Element>] {
         var columns: [ArraySlice<Element>] = []
         
-        for columnIndex in 0 ..< columnCount {
+        for columnIndex in 0 ..< transformedColumnCount {
             columns.append(self.column(columnIndex))
         }
         
@@ -202,7 +228,7 @@ public struct ContiguousArray2D <Element> {
     public func allRows() -> [ArraySlice<Element>] {
         var rows: [ArraySlice<Element>] = []
         
-        for rowIndex in 0 ..< rowCount {
+        for rowIndex in 0 ..< transformedRowCount {
             rows.append(self.row(rowIndex))
         }
         
