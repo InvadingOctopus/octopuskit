@@ -15,6 +15,7 @@ public struct ContiguousArray2D <Element> {
     // TODO: Viewports
     // TODO: Rotation
     // TODO: Standard collections protocols conformance
+    // TODO: Improve naming
     // TODO: Tests
     
     // MARK: Subtypes
@@ -74,9 +75,11 @@ public struct ContiguousArray2D <Element> {
     /// Constructs a 2D array from a 1D array or other linear sequence.
     ///
     /// - RETURNS: `nil` if `data` is empty.
-    public init?(data: AnySequence<Element>,
-                 columns: IndexUnit,
-                 repeatingInitialValueForLeftoverCells: Element)
+    public init? <SequenceType> (data: SequenceType,
+                                 columns: IndexUnit,
+                                 repeatingInitialValueForLeftoverCells: Element)
+        where SequenceType: Sequence,
+        SequenceType.Element == Element
     {
         precondition(columns > 0, "columns < 1: \(columns)")
         
@@ -89,7 +92,7 @@ public struct ContiguousArray2D <Element> {
         // Calculate rows, allocating an extra row if there are any leftover columns.
         
         let rowsCalculated = storage.count.quotientAndRemainder(dividingBy: columns)
-
+        
         if  rowsCalculated.remainder > 0 {
             self.rows = rowsCalculated.quotient + 1
         } else {
@@ -103,7 +106,7 @@ public struct ContiguousArray2D <Element> {
         }
     }
     
-    // MARK: Basic Access
+    // MARK: - Basic Access
     
     /// Returns an index into the underlying 1D storage for the beginning of the specified row.
     @inlinable
@@ -112,10 +115,13 @@ public struct ContiguousArray2D <Element> {
                      "Row index (\(row)) is out of range (0 to \(rows - 1))")
         
         if rows == 1 { return 0 } // If there's just one row there's no need to do anything.
-
+        
         return row * columns
     }
     
+    /// Returns the element at `[column, index]`
+    ///
+    /// Affected by rotations and transformations.
     @inlinable
     public subscript(column: IndexUnit, row: IndexUnit) -> Element {
         
@@ -138,7 +144,34 @@ public struct ContiguousArray2D <Element> {
         }
     }
     
-    // MARK: Advanced Operations
+    /// Writes the `elements` sequence into the array starting at the specified column and row, overwriting existing elements and ignoring any elements which may not fit.
+    ///
+    /// - Returns: An array of elements which were written.
+    @inlinable
+    @discardableResult
+    public mutating func overwrite(startingColumn: IndexUnit,
+                                   startingRow:    IndexUnit,
+                                   elements:       AnySequence<Element>) -> [Element]
+    {
+        // TODO
+        return []
+    }
+    
+    @inlinable
+    @available(*, unavailable, message: "Not Yet Implemented")
+    public var allRows: [Element] {
+        // TODO
+        return []
+    }
+    
+    @inlinable
+    @available(*, unavailable, message: "Not Yet Implemented")
+    public var allColumns: [Element] {
+        // TODO
+        return []
+    }
+    
+    // MARK: - Advanced Operations
     
     /// Returns a smaller section of the 2D array, using the existing underlying storage.
     @inlinable
@@ -192,3 +225,20 @@ public struct ContiguousArray2D <Element> {
     }
     
 }
+
+// MARK: - Protocol Conformance
+
+// MARK: Equatable
+
+extension ContiguousArray2D: Equatable where Element: Equatable {
+    
+    public static func == (left: ContiguousArray2D, right: ContiguousArray2D) -> Bool {
+        return (left.storage    == right.storage // CHECK: Use `==` or `===`?
+            &&  left.columns    == right.columns
+            &&  left.rows       == right.rows
+            &&  left.rotation   == right.rotation
+            &&  left.flippedHorizontally == right.flippedHorizontally
+            &&  left.flippedVertically   == right.flippedVertically)
+    }
+}
+
