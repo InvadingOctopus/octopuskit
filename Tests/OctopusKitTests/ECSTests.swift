@@ -12,7 +12,7 @@ import GameplayKit
 /// Tests for the Entity-Component-System core objects.
 final class ECSTests: XCTestCase {
     
-    // MARK: - Test Types
+    // MARK: - Types
     
     /// An entity that gives itself a default name including a random number.
     class TestEntity: OctopusEntity {
