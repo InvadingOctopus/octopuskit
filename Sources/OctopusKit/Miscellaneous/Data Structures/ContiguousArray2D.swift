@@ -33,12 +33,12 @@ public struct ContiguousArray2D <Element> {
     
     // DESIGN: Properties are not private or read-only so we can use @inlinable and let other components modify them if needed.
     
-    public let columns, rows:       IndexUnit
-    public var storage:             ContiguousArray<Element>
+    public let columnCount, rowCount:   IndexUnit
+    public var storage:                 ContiguousArray<Element>
     
-    public var rotation:            Rotation = .none
-    public var flippedHorizontally: Bool = false
-    public var flippedVertically:   Bool = false
+    public var rotation:                Rotation = .none
+    public var flippedHorizontally:     Bool = false
+    public var flippedVertically:       Bool = false
     
     // MARK: Initializers
     
@@ -50,8 +50,8 @@ public struct ContiguousArray2D <Element> {
         precondition(columns > 0, "columns < 1: \(columns)")
         precondition(rows    > 0, "rows < 1: \(rows)")
         
-        self.columns = columns
-        self.rows    = rows
+        self.columnCount = columns
+        self.rowCount    = rows
         
         self.storage = ContiguousArray(repeating: repeatingInitialValue, count: Int(rows * columns))
     }
@@ -67,8 +67,8 @@ public struct ContiguousArray2D <Element> {
         precondition(columns * rows <= existingStorage.count,
                      "columns × rows \(columns * rows) > existingStorage.count \(existingStorage.count)")
         
-        self.rows    = rows
-        self.columns = columns
+        self.rowCount    = rows
+        self.columnCount = columns
         self.storage = existingStorage
     }
     
@@ -87,16 +87,16 @@ public struct ContiguousArray2D <Element> {
         
         guard !storage.isEmpty else { return nil }
         
-        self.columns = columns
+        self.columnCount = columns
         
         // Calculate rows, allocating an extra row if there are any leftover columns.
         
         let rowsCalculated = storage.count.quotientAndRemainder(dividingBy: columns)
         
         if  rowsCalculated.remainder > 0 {
-            self.rows = rowsCalculated.quotient + 1
+            self.rowCount = rowsCalculated.quotient + 1
         } else {
-            self.rows = rowsCalculated.quotient
+            self.rowCount = rowsCalculated.quotient
         }
         
         // Pad the leftover columns at the end.
@@ -111,12 +111,12 @@ public struct ContiguousArray2D <Element> {
     /// Returns an index into the underlying 1D storage for the beginning of the specified row.
     @inlinable
     public func rowFirstIndexInStorage(for row: IndexUnit) -> IndexUnit {
-        precondition(row >= 0 && row < rows,
-                     "Row index (\(row)) is out of range (0 to \(rows - 1))")
+        precondition(row >= 0 && row < rowCount,
+                     "Row index (\(row)) is out of range (0 to \(rowCount - 1))")
         
-        if rows == 1 { return 0 } // If there's just one row there's no need to do anything.
+        if rowCount == 1 { return 0 } // If there's just one row there's no need to do anything.
         
-        return row * columns
+        return row * columnCount
     }
     
     /// Returns the element at `[column, index]`
@@ -126,21 +126,21 @@ public struct ContiguousArray2D <Element> {
     public subscript(column: IndexUnit, row: IndexUnit) -> Element {
         
         get {
-            precondition(column >= 0 && column < columns,
-                         "Column index (\(column)) is out of range (0 to \(columns - 1))")
-            precondition(row >= 0 && row < rows,
-                         "Row index (\(row)) is out of range (0 to \(rows - 1))")
+            precondition(column >= 0 && column < columnCount,
+                         "Column index (\(column)) is out of range (0 to \(columnCount - 1))")
+            precondition(row >= 0 && row < rowCount,
+                         "Row index (\(row)) is out of range (0 to \(rowCount - 1))")
             
-            return storage[row * columns + column]
+            return storage[row * columnCount + column]
         }
         
         set {
-            precondition(column >= 0 && column < columns,
-                         "Column index (\(column)) is out of range (0 to \(columns - 1))")
-            precondition(row >= 0 && row < rows,
-                         "Row index (\(row)) is out of range (0 to \(rows - 1))")
+            precondition(column >= 0 && column < columnCount,
+                         "Column index (\(column)) is out of range (0 to \(columnCount - 1))")
+            precondition(row >= 0 && row < rowCount,
+                         "Row index (\(row)) is out of range (0 to \(rowCount - 1))")
             
-            return storage[row * columns + column] = newValue
+            return storage[row * columnCount + column] = newValue
         }
     }
     
@@ -158,17 +158,55 @@ public struct ContiguousArray2D <Element> {
     }
     
     @inlinable
-    @available(*, unavailable, message: "Not Yet Implemented")
-    public var allRows: [Element] {
-        // TODO
-        return []
+    public func column(_ columnIndex: IndexUnit) -> ArraySlice<Element> {
+        
+        precondition(column >= 0 && column < columnCount,
+                     "Column index (\(column)) is out of range (0 to \(columnCount - 1))")
+        
+        var column: ArraySlice<Element> = []
+        
+        for row in 0 ..< rowCount {
+            column.append(self[columnIndex, row]) // ❕ Use the subscript so we can get rotated/flipped transformations, if any.
+        }
+        
+        return column
     }
     
     @inlinable
-    @available(*, unavailable, message: "Not Yet Implemented")
-    public var allColumns: [Element] {
-        // TODO
-        return []
+    public func row(_ rowIndex: IndexUnit) -> ArraySlice<Element> {
+        
+        precondition(row >= 0 && row < rowCount,
+                     "Row index (\(row)) is out of range (0 to \(rowCount - 1))")
+        
+        var row: ArraySlice<Element> = []
+        
+        for column in 0 ..< columnCount {
+            row.append(self[column, rowIndex]) // ❕ Use the subscript so we can get rotated/flipped transformations, if any.
+        }
+        
+        return row
+    }
+    
+    @inlinable
+    public func allColumns() -> [ArraySlice<Element>] {
+        var columns: [ArraySlice<Element>] = []
+        
+        for columnIndex in 0 ..< columnCount {
+            columns.append(self.column(columnIndex))
+        }
+        
+        return columns
+    }
+    
+    @inlinable
+    public func allRows() -> [ArraySlice<Element>] {
+        var rows: [ArraySlice<Element>] = []
+        
+        for rowIndex in 0 ..< rowCount {
+            rows.append(self.row(rowIndex))
+        }
+        
+        return rows
     }
     
     // MARK: - Advanced Operations
@@ -180,23 +218,23 @@ public struct ContiguousArray2D <Element> {
         
         // Check arguments.
         
-        precondition(x >= 0 && x < columns,
-                     "x (origin column index: \(x)) is out of range (0 to \(columns - 1))")
-        precondition(y >= 0 && y < rows,
-                     "y (origin row index: \(y)) is out of range (0 to \(rows - 1))")
+        precondition(x >= 0 && x < columnCount,
+                     "x (origin column index: \(x)) is out of range (0 to \(columnCount - 1))")
+        precondition(y >= 0 && y < rowCount,
+                     "y (origin row index: \(y)) is out of range (0 to \(rowCount - 1))")
         
-        precondition(width >= 1 && width <= columns,
-                     "width (\(width)) is out of range (1 to \(columns))")
-        precondition(height >= 1 && height <= rows,
-                     "height (\(height)) is out of range (1 to \(rows))")
+        precondition(width >= 1 && width <= columnCount,
+                     "width (\(width)) is out of range (1 to \(columnCount))")
+        precondition(height >= 1 && height <= rowCount,
+                     "height (\(height)) is out of range (1 to \(rowCount))")
         
         let right  = x + width
         let bottom = y + height
         
-        precondition(right >= 0 && right < columns,
-                     "right (x + width: \(right)) is out of range (0 to \(columns - 1))")
-        precondition(bottom >= 0 && bottom < rows,
-                     "y (y + height: \(bottom)) is out of range (0 to \(rows - 1))")
+        precondition(right >= 0 && right < columnCount,
+                     "right (x + width: \(right)) is out of range (0 to \(columnCount - 1))")
+        precondition(bottom >= 0 && bottom < rowCount,
+                     "y (y + height: \(bottom)) is out of range (0 to \(rowCount - 1))")
         
         // Build a stack of rows.
         
@@ -234,8 +272,8 @@ extension ContiguousArray2D: Equatable where Element: Equatable {
     
     public static func == (left: ContiguousArray2D, right: ContiguousArray2D) -> Bool {
         return (left.storage    == right.storage // CHECK: Use `==` or `===`?
-            &&  left.columns    == right.columns
-            &&  left.rows       == right.rows
+            &&  left.columnCount    == right.columnCount
+            &&  left.rowCount       == right.rowCount
             &&  left.rotation   == right.rotation
             &&  left.flippedHorizontally == right.flippedHorizontally
             &&  left.flippedVertically   == right.flippedVertically)

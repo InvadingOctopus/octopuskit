@@ -28,9 +28,9 @@ final class ContiguousArray2DTests: XCTestCase {
         case bottomRight    = "↘️"
     }
     
-    static let (columns, rows) = (3, 3)
-    static var testArray2D: ContiguousArray2D<TestElement> = .init(columns: columns,
-                                                                   rows: rows,
+    static let (columnCount, rowCount) = (3, 3)
+    static var testArray2D: ContiguousArray2D<TestElement> = .init(columns: columnCount,
+                                                                   rows: rowCount,
                                                                    repeatingInitialValue: .invalid)
     
     override class func setUp() {
@@ -59,7 +59,7 @@ final class ContiguousArray2DTests: XCTestCase {
         
         let dataInitializedArray2D = ContiguousArray2D (
             data:    flatArray1D,
-            columns: Self.columns,
+            columns: Self.columnCount,
             repeatingInitialValueForLeftoverCells: .invalid)
         
         XCTAssertNotNil (dataInitializedArray2D)
@@ -68,35 +68,84 @@ final class ContiguousArray2DTests: XCTestCase {
         // #2: Copying an existing `ContiguousArray2D` storage should generate the same object.
         
         let copiedArray2D = ContiguousArray2D(existingStorage: Self.testArray2D.storage,
-                                            columns: Self.columns,
-                                            rows:    Self.rows)
+                                              columns: Self.columnCount,
+                                              rows:    Self.rowCount)
         
         XCTAssertEqual  (copiedArray2D, Self.testArray2D)
     }
     
-    func testElementAccess() {
+    func testSingleElementAccess() {
     
+        let testArray2D = Self.testArray2D
+        
         // #1A: The subscript should correctly return the expected elements.
         
-        XCTAssertEqual(Self.testArray2D[0, 0], .topLeft)
-        XCTAssertEqual(Self.testArray2D[1, 0], .topCenter)
-        XCTAssertEqual(Self.testArray2D[2, 0], .topRight)
+        XCTAssertEqual(testArray2D[0, 0], .topLeft)
+        XCTAssertEqual(testArray2D[1, 0], .topCenter)
+        XCTAssertEqual(testArray2D[2, 0], .topRight)
         
-        XCTAssertEqual(Self.testArray2D[0, 1], .middleLeft)
-        XCTAssertEqual(Self.testArray2D[1, 1], .middleCenter)
-        XCTAssertEqual(Self.testArray2D[2, 1], .middleRight)
+        XCTAssertEqual(testArray2D[0, 1], .middleLeft)
+        XCTAssertEqual(testArray2D[1, 1], .middleCenter)
+        XCTAssertEqual(testArray2D[2, 1], .middleRight)
         
-        XCTAssertEqual(Self.testArray2D[0, 2], .bottomLeft)
-        XCTAssertEqual(Self.testArray2D[1, 2], .bottomCenter)
-        XCTAssertEqual(Self.testArray2D[2, 2], .bottomRight)
+        XCTAssertEqual(testArray2D[0, 2], .bottomLeft)
+        XCTAssertEqual(testArray2D[1, 2], .bottomCenter)
+        XCTAssertEqual(testArray2D[2, 2], .bottomRight)
         
         // #1B: Test inequality.
         
-        for row in 0 ..< Self.rows {
-            for column in 0 ..< Self.columns {
-                XCTAssertNotEqual(Self.testArray2D[column, row], .invalid)
+        for row in 0 ..< Self.rowCount {
+            for column in 0 ..< Self.columnCount {
+                XCTAssertNotEqual(testArray2D[column, row], .invalid)
             }
         }
+    }
+    
+    func testMultipleElementAccess() {
+        
+        let testArray2D = Self.testArray2D
+        
+        // #1A: row(_:) must correctly return an array of an entire row.
+        XCTAssertEqual(testArray2D.row(0),      [.topLeft,    .topCenter,    .topRight])
+        XCTAssertEqual(testArray2D.row(1),      [.middleLeft, .middleCenter, .middleRight])
+        XCTAssertEqual(testArray2D.row(2),      [.bottomLeft, .bottomCenter, .bottomRight])
+        
+        // #1B: column(_:) must correctly return an array of an entire column.
+        XCTAssertEqual(testArray2D.column(0),   [.topLeft,   .middleLeft,   .bottomLeft])
+        XCTAssertEqual(testArray2D.column(1),   [.topCenter, .middleCenter, .bottomCenter])
+        XCTAssertEqual(testArray2D.column(2),   [.topRight,  .middleRight,  .bottomRight])
+        
+        // Multiple rows
+        
+        let allRows = testArray2D.allRows()
+        
+        // #2A: `allRows()` should return the correct number of rows.
+        XCTAssertEqual(allRows.count, Self.rowCount)
+        
+        // #2B: `allRows()` should return the correct rows.
+        XCTAssertEqual(allRows[0],      [.topLeft,    .topCenter,    .topRight])
+        XCTAssertEqual(allRows[1],      [.middleLeft, .middleCenter, .middleRight])
+        XCTAssertEqual(allRows[2],      [.bottomLeft, .bottomCenter, .bottomRight])
+        
+        // Multiple columns
+        
+        let allColumns = testArray2D.allColumns()
+        
+        // #3A: `allColumns()` should return the correct number of columns.
+        XCTAssertEqual(allColumns.count, Self.columnCount)
+        
+        // #3B: `allColumns()` should return the correct columns.
+        XCTAssertEqual(allColumns[0],   [.topLeft,   .middleLeft,   .bottomLeft])
+        XCTAssertEqual(allColumns[1],   [.topCenter, .middleCenter, .bottomCenter])
+        XCTAssertEqual(allColumns[2],   [.topRight,  .middleRight,  .bottomRight])
+    }
+    
+    func testSingleElementModification() {
+        
+    }
+    
+    func testMultipleElementModification() {
+        
     }
     
     func toTest() {
