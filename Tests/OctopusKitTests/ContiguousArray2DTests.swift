@@ -69,9 +69,34 @@ final class ContiguousArray2DTests: XCTestCase {
         
         let copiedArray2D = ContiguousArray2D(existingStorage: Self.testArray2D.storage,
                                             columns: Self.columns,
-                                            rows: Self.rows)
+                                            rows:    Self.rows)
         
         XCTAssertEqual  (copiedArray2D, Self.testArray2D)
+    }
+    
+    func testElementAccess() {
+    
+        // #1A: The subscript should correctly return the expected elements.
+        
+        XCTAssertEqual(Self.testArray2D[0, 0], .topLeft)
+        XCTAssertEqual(Self.testArray2D[1, 0], .topCenter)
+        XCTAssertEqual(Self.testArray2D[2, 0], .topRight)
+        
+        XCTAssertEqual(Self.testArray2D[0, 1], .middleLeft)
+        XCTAssertEqual(Self.testArray2D[1, 1], .middleCenter)
+        XCTAssertEqual(Self.testArray2D[2, 1], .middleRight)
+        
+        XCTAssertEqual(Self.testArray2D[0, 2], .bottomLeft)
+        XCTAssertEqual(Self.testArray2D[1, 2], .bottomCenter)
+        XCTAssertEqual(Self.testArray2D[2, 2], .bottomRight)
+        
+        // #1B: Test inequality.
+        
+        for row in 0 ..< Self.rows {
+            for column in 0 ..< Self.columns {
+                XCTAssertNotEqual(Self.testArray2D[column, row], .invalid)
+            }
+        }
     }
     
     func toTest() {
