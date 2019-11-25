@@ -366,13 +366,13 @@ final class ECSTests: XCTestCase {
     }
     
     static var allTests = [
-        ("Test entity basics", testEntity),
-        ("Test adding components", testComponentAdd),
-        ("Test removing components", testComponentRemove),
-        ("Test moving components", testComponentMove),
-        ("Test duplicate components", testComponentDuplicates),
-        ("Test co-components", testCoComponents),
+        ("Test entity basics",          testEntity),
+        ("Test adding components",      testComponentAdd),
+        ("Test removing components",    testComponentRemove),
+        ("Test moving components",      testComponentMove),
+        ("Test duplicate components",   testComponentDuplicates),
+        ("Test co-components",          testCoComponents),
         ("Test component dependencies", testComponentDependencies),
-        ("Test RelayComponent", testRelayComponent)
+        ("Test RelayComponent",         testRelayComponent)
     ]
 }
