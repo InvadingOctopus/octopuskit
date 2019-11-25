@@ -102,7 +102,7 @@ final class ContiguousArray2DTests: XCTestCase {
             XCTAssertEqual(array2D.rowCount, 5)
             
             // #3D: The last element should have the correct data.
-            XCTAssertEqual(array2D[array2D.lastColumnIndex, array2D.lastRowIndex],
+            XCTAssertEqual(array2D[array2D.endColumnIndex, array2D.endRowIndex],
                            array1D.last!)
         }
         
@@ -139,8 +139,32 @@ final class ContiguousArray2DTests: XCTestCase {
         }
     }
     
-    func testSingleElementAccess() {
+    func testCoordinatesForStorageIndex() {
+        // For an array of 5 columns...
+        let columnCount = 5
+        let array2D = ContiguousArray2D(columns: columnCount,
+                                        rows:    5,
+                                        repeatingInitialValue: 0)
+        
+        // #1: The first element should be at (0,0)
+        XCTAssert(array2D.coordinatesForStorageIndex(0) == (column: 0, row: 0))
+        
+        // #2: The 5th element (index 4) should be on the first row, at (4,0)
+        XCTAssert(array2D.coordinatesForStorageIndex(columnCount - 1) == (column: columnCount - 1, row: 0))
+        
+        // #3: The 6th element (index 5) should be on the second row, at (0,1)
+        XCTAssert(array2D.coordinatesForStorageIndex(columnCount) == (column: 0, row: 1))
+
+        // #4: The 7th element (index 6) should be at (1,1)
+        XCTAssert(array2D.coordinatesForStorageIndex(columnCount + 1) == (column: 1, row: 1))
+        
+        // #5: Elements at indexes which are multiples of 5 should be at the beginning of each row.
+        for multiplier in 2...array2D.endRowIndex {
+            XCTAssert(array2D.coordinatesForStorageIndex(columnCount * multiplier) == (column: 0, row: multiplier))
+        }
+    }
     
+    func testSingleElementAccess() {
         let testArray2D = Self.testArray2D
         
         // #1A: The subscript should correctly return the expected elements.
@@ -167,7 +191,6 @@ final class ContiguousArray2DTests: XCTestCase {
     }
     
     func testMultipleElementAccess() {
-        
         let testArray2D = Self.testArray2D
         
         // #1A: row(_:) must correctly return an array of an entire row.
@@ -181,7 +204,6 @@ final class ContiguousArray2DTests: XCTestCase {
         XCTAssertEqual(testArray2D.column(2),   [.topRight,  .middleRight,  .bottomRight])
         
         // Multiple rows
-        
         let allRows = testArray2D.allRows()
         
         // #2A: `allRows()` should return the correct number of rows.
@@ -193,7 +215,6 @@ final class ContiguousArray2DTests: XCTestCase {
         XCTAssertEqual(allRows[2],      [.bottomLeft, .bottomCenter, .bottomRight])
         
         // Multiple columns
-        
         let allColumns = testArray2D.allColumns()
         
         // #3A: `allColumns()` should return the correct number of columns.
@@ -219,4 +240,13 @@ final class ContiguousArray2DTests: XCTestCase {
         // TODO: Test memory with `Int` and other elements of known, fixed sizes.
         // TODO: Test memory sharing
     }
+    
+    static var allTests = [
+        ("Test initializers",                   testInitializers),
+        ("Test coordinatesForStorageIndex(_:)", testCoordinatesForStorageIndex),
+        ("Test single-element access",          testSingleElementAccess),
+        ("Test multiple-element access",        testMultipleElementAccess),
+        ("Test single-element modification",    testSingleElementModification),
+        ("Test multiple-element modification",  testMultipleElementModification)
+    ]
 }

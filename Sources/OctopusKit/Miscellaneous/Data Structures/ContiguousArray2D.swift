@@ -44,14 +44,14 @@ public struct ContiguousArray2D <Element> {
     public var transpose:               Bool = false
     
     public var transformedColumnCount:  IndexUnit {
-        didSet { lastColumnIndex = transformedColumnCount - 1 }
+        didSet { endColumnIndex = transformedColumnCount - 1 }
     }
     
     public var transformedRowCount:     IndexUnit {
-        didSet { lastRowIndex = transformedRowCount - 1 }
+        didSet { endRowIndex = transformedRowCount - 1 }
     }
     
-    public fileprivate(set) var lastColumnIndex, lastRowIndex: IndexUnit
+    public fileprivate(set) var endColumnIndex, endRowIndex: IndexUnit
     
     // MARK: Initializers
     
@@ -67,8 +67,8 @@ public struct ContiguousArray2D <Element> {
         self.rowCount               = rows
         self.transformedColumnCount = columnCount
         self.transformedRowCount    = rowCount
-        self.lastColumnIndex        = columnCount - 1
-        self.lastRowIndex           = rowCount - 1
+        self.endColumnIndex         = columnCount - 1
+        self.endRowIndex            = rowCount - 1
         
         self.storage = ContiguousArray(repeating: repeatingInitialValue,
                                        count: Int(rows * columns))
@@ -89,8 +89,8 @@ public struct ContiguousArray2D <Element> {
         self.columnCount            = columns
         self.transformedColumnCount = columnCount
         self.transformedRowCount    = rowCount
-        self.lastColumnIndex        = columnCount - 1
-        self.lastRowIndex           = rowCount - 1
+        self.endColumnIndex         = columnCount - 1
+        self.endRowIndex            = rowCount - 1
         
         self.storage = existingStorage
     }
@@ -120,8 +120,8 @@ public struct ContiguousArray2D <Element> {
         
         self.transformedColumnCount = columnCount
         self.transformedRowCount    = rowCount
-        self.lastColumnIndex        = columnCount - 1
-        self.lastRowIndex           = rowCount - 1
+        self.endColumnIndex         = columnCount - 1
+        self.endRowIndex            = rowCount - 1
         
         // Pad the leftover columns at the end.
         
@@ -129,7 +129,7 @@ public struct ContiguousArray2D <Element> {
             self.storage.append(repeatingInitialValueForLeftoverCells)
         }
     }
-    
+
     // MARK: - Single Element Access
     
     /// Returns an index into the underlying 1D storage for the beginning of the specified row.
@@ -215,23 +215,21 @@ public struct ContiguousArray2D <Element> {
     
     @inlinable
     public func allColumns() -> [ArraySlice<Element>] {
-        var columns: [ArraySlice<Element>] = []
         
+        var columns: [ArraySlice<Element>] = []
         for columnIndex in 0 ..< transformedColumnCount {
             columns.append(self.column(columnIndex))
         }
-        
         return columns
     }
     
     @inlinable
     public func allRows() -> [ArraySlice<Element>] {
-        var rows: [ArraySlice<Element>] = []
         
+        var rows: [ArraySlice<Element>] = []
         for rowIndex in 0 ..< transformedRowCount {
             rows.append(self.row(rowIndex))
         }
-        
         return rows
     }
     
@@ -288,6 +286,22 @@ public struct ContiguousArray2D <Element> {
         // TODO
     }
     
+    // MARK: - Miscellaneous
+    
+    /// Returns the column and row coordinates (in a tuple) for the specific index in the underlying 1D storage array.
+      ///
+      /// Respects transformations.
+      @inlinable
+      public func coordinatesForStorageIndex(_ index: IndexUnit) -> (column: IndexUnit, row: IndexUnit) {
+        
+          precondition(index >= 0 && index < storage.endIndex,
+                       "index \(index) is out of range (0 to \(storage.endIndex - 1))")
+          
+          let division = index.quotientAndRemainder(dividingBy: transformedColumnCount) // quotient = row, remainder = column
+
+          return (column: division.remainder,
+                  row:    division.quotient)
+      }
 }
 
 // MARK: - Protocol Conformance
