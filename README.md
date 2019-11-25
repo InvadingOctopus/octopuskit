@@ -221,13 +221,13 @@ Your primary workflow will be writing component classes for each "part" of the g
 
 - **Tailored for Swift**: Swift, Swift, Swift! The framework must follow the [established guidelines][swift-api-guidelines] for Swift API design. Everything must make sense within Swift and flow seamlessly with Swift idioms as much as possible.
 
-- **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using technologies like SceneKit (which I plan to add direct support for), and it can be used for non-game apps.
+- **Vitamin 2D**: At the moment, OK is primarily a framework for 2D games, but it does not prevent you from using technologies like SceneKit or low-level Metal views, and it may be used for non-game apps.
 
 - **Shoulders of Ettins**: The engine leverages SpriteKit, GameplayKit, SwiftUI and other technologies provided by Apple. It should not try to "fight" them, replace them, or hide them behind too many abstractions.
     
-    > OK is mostly implemented through custom subclasses and extensions of the SpriteKit and GameplayKit classes, without "obscuring" them or blocking you from interacting with the base classes. This allows you to adopt this framework incrementally, and lets you integrate your game with the Xcode IDE tools such as the Scene Editor where possible.  
+    > OK is mostly implemented through custom subclasses and extensions of SpriteKit and GameplayKit classes, without "obscuring" them or blocking you from interacting with the base classes. This allows you to adopt this framework incrementally, and lets you integrate your game with the Xcode IDE tools such as the Scene Editor where possible.  
     
-    > Most importantly, the tight coupling with Apple APIs ensures that your game is future-proof; whenever Apple improves these frameworks, OctopusKit and your games should also get some benefits "for free." For example, when Metal was introduced, SpriteKit was updated to automatically use Metal instead of OpenGL under the hood, giving many existing games a performance boost. [(WWDC 2016, Session 610)][wwdc-610]    
+    > The tight coupling with Apple APIs also ensures that your game is future-proof; whenever Apple improves these frameworks, OctopusKit and your games should also get some benefits "for free." For example, when Metal was introduced, SpriteKit was updated to automatically use Metal instead of OpenGL under the hood, giving many existing games a performance boost. [(WWDC 2016, Session 610)][wwdc-610]    
 
 - **Code Comes First**: OK is primarily a "programmatical" engine; almost everything is done in code. This also helps with source control. The Xcode Scene Editor is relegated to "second-class citizen" status because of its incompleteness and bugs (as of  May 2018, Xcode 9.4), but it is supported wherever convenient. See the next point.
 
