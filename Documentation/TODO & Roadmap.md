@@ -16,13 +16,13 @@ permalink: documentation/todo.html
 
 - Full tvOS support (currently in a preliminary state as of 2019-11-14.)
 - Components for gamepad/joystick and Siri Remote input.
+- Options for per-frame and per-second for every time-based component.
 - Asset/resource loading system.
-- Saving and loading game/scene/entity/component states via `Codable`.
-- Support for describing scenes/entities/components in HTML/XML/JSON or a  similar format.
+- Saving and loading game/scene/entity/component graphs via `Codable`.
 - Networking components.
-- SceneKit support in 2D scenes, and 3D components.
-- Declarative SwiftUI-like syntax for describing scenes and entities. 🤫
-- Custom Scene Editor & Live Previewer?
+- SceneKit support.
+- Declarative syntax like SwiftUI for describing scenes and entities. 🤫
+- Custom Scene Editor & Live Previews?
 
 
 ## To Do
