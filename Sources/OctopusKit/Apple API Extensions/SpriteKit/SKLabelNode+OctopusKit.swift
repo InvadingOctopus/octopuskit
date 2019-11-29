@@ -13,25 +13,44 @@ extension SKLabelNode {
     /// Creates an `SKLabelNode` and sets its properties to match the `OctopusFont`.
     public convenience init(font: OctopusFont) {
         // In case initializing the font is an expensive process, try to init with the font if name is provided.
-        if font.name != nil {
+        if  font.name != nil {
             self.init(fontNamed: font.name)
         } else {
             self.init()
         }
         
-        if font.color != nil {
+        if  font.color != nil {
             self.fontColor = font.color!
         }
         
-        if font.size != nil {
+        if  font.size != nil {
             self.fontSize = font.size!
         }
     }
     
-    /// Creates an `SKLabelNode` with the specified text and sets its font properties to matchthe `OctopusFont`.
+    /// Creates an `SKLabelNode` with the specified text and sets its font properties to match the `OctopusFont`.
+    @inlinable
     public convenience init(text: String, font: OctopusFont) {
         self.init(text: text)
         self.font = font
+    }
+    
+    /// Creates an `SKLabelNode` with the specified character.
+    ///
+    /// This may be convenient in cases like creating labels from random characters, e.g. `SKLabelNode(character: "🟥🟧🟨🟩🟦🟪".randomElement()!)`
+    ///
+     /// Calls `init(text:)`.
+    @inlinable
+    public convenience init(character: Character) {
+        self.init(text: String(character))
+    }
+    
+    /// Creates an `SKLabelNode` with the specified character and sets its font properties to match the `OctopusFont`.
+    ///
+    /// This may be convenient in cases like creating labels from random characters, e.g. `SKLabelNode(character: "🟥🟧🟨🟩🟦🟪".randomElement()!, font: font)`
+    @inlinable
+    public convenience init(character: Character, font: OctopusFont) {
+        self.init(text: String(character), font: font)
     }
     
     /// Convenient shorthand for setting alignment at initialization.
@@ -40,11 +59,11 @@ extension SKLabelNode {
     public convenience init(
         text: String,
         horizontalAlignment: SKLabelHorizontalAlignmentMode,
-        verticalAlignment: SKLabelVerticalAlignmentMode)
+        verticalAlignment:   SKLabelVerticalAlignmentMode)
     {
         self.init(text: text)
         self.horizontalAlignmentMode = horizontalAlignment
-        self.verticalAlignmentMode = verticalAlignment
+        self.verticalAlignmentMode   = verticalAlignment
     }
     
     /// Convenient shorthand for setting font and alignment at initialization.
@@ -54,49 +73,50 @@ extension SKLabelNode {
         text: String,
         font: OctopusFont,
         horizontalAlignment: SKLabelHorizontalAlignmentMode,
-        verticalAlignment: SKLabelVerticalAlignmentMode)
+        verticalAlignment:   SKLabelVerticalAlignmentMode)
     {
         self.init(font: font)
         self.horizontalAlignmentMode = horizontalAlignment
-        self.verticalAlignmentMode = verticalAlignment
+        self.verticalAlignmentMode   = verticalAlignment
         self.text = text
     }
     
     /// Encapsulates the label's font-related properties in an `OctopusFont`.
     public var font: OctopusFont {
-        get {
-            return OctopusFont(name: self.fontName, size: self.fontSize, color: self.fontColor)
-        }
+        get { OctopusFont(name: self.fontName, size: self.fontSize, color: self.fontColor) }
         set {
-            if newValue.name != nil {
-                self.fontName = newValue.name!
+            if  newValue.name  != nil {
+                self.fontName   = newValue.name!
             }
-            if newValue.color != nil {
-                self.fontColor = newValue.color!
+            if  newValue.color != nil {
+                self.fontColor  = newValue.color!
             }
-            if newValue.size != nil {
-                self.fontSize = newValue.size!
+            if  newValue.size  != nil {
+                self.fontSize   = newValue.size!
             }
         }
     }
     
     open func setAlignment(horizontal: SKLabelHorizontalAlignmentMode,
-                             vertical: SKLabelVerticalAlignmentMode) {
+                           vertical:   SKLabelVerticalAlignmentMode)
+    {
         self.horizontalAlignmentMode = horizontal
-        self.verticalAlignmentMode = vertical
+        self.verticalAlignmentMode   = vertical
     }
     
     /// Encapsulates the `horizontalAlignmentMode` and `verticalAlignmentMode` in a tuple.
-    public var alignment: (horizontal: SKLabelHorizontalAlignmentMode, vertical: SKLabelVerticalAlignmentMode) {
+    public var alignment: (horizontal: SKLabelHorizontalAlignmentMode,
+                           vertical:   SKLabelVerticalAlignmentMode)
+        {
         // CHECK: Is assigning multiple properties via tuples a good "idiomatic" idea?
         get {
             return (horizontal: self.horizontalAlignmentMode,
-                    vertical: self.verticalAlignmentMode)
+                    vertical:   self.verticalAlignmentMode)
         }
         set {
             self.horizontalAlignmentMode = newValue.horizontal
-            self.verticalAlignmentMode = newValue.vertical
+            self.verticalAlignmentMode   = newValue.vertical
         }
     }
-    
+
 }
