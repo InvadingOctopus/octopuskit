@@ -16,7 +16,7 @@ public enum TimeStep {
     /// Use this when slower gameplay is preferred to losing frames.
     case perFrame
     
-    /// Variable timestep; Multiples each `…perUpdate` change by `deltaTime` in `update(deltaTime:)` every frame.
+    /// Variable timestep; multiples each `…perUpdate` change by `deltaTime` in `update(deltaTime:)` every frame.
     ///
     /// Use this when losing frames is preferred to slower gameplay.
     case perSecond
