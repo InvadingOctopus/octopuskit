@@ -1,5 +1,5 @@
 //
-//  Timestep.swift
+//  TimeStep.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/28.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// Specifies the timestep for time-dependent components.
-public enum Timestep {
+public enum TimeStep {
     
     /// Fixed timestep; applies a constant `…perUpdate` change to the affected values in `update(deltaTime:)` every frame.
     ///
