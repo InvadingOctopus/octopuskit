@@ -11,7 +11,7 @@ import GameplayKit
 
 #if canImport(Appkit)
 
-/// Applies a force to the entity's `PhysicsComponent` body on every frame, based on `KeyboardEventComponent` input.
+/// Applies a force to the entity's `PhysicsComponent` body on every update, based on `KeyboardEventComponent` input.
 ///
 /// Set the `LOGINPUTEVENTS` compilation flag to log values.
 ///
@@ -33,33 +33,41 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
     /// Change this to a different code to customize the keys.
     public var arrowLeft:   UInt16 = .arrowLeft
     
-    public var baseMagnitudePerSecond:      CGFloat
-    public var maximumMagnitudePerSecond:   CGFloat
-    public var acceleratedMagnitude:        CGFloat = 0
+    public var baseMagnitude:           CGFloat
+    public var maximumMagnitude:        CGFloat
+    public var acceleratedMagnitude:    CGFloat = 0
     
-    /// The amount to increase `acceleratedMagnitude` by per second, while there is keyboard input. `acceleratedMagnitude` is reset to `baseMagnitudePerSecond` when there is no keyboard input.
-    public var accelerationPerSecond:       CGFloat
+    /// The amount to increase `acceleratedMagnitude` by, per update, while there is keyboard input. `acceleratedMagnitude` is reset to `baseMagnitude` when there is no keyboard input.
+    public var acceleration:            CGFloat
     
-    public var horizontalFactor:            CGFloat = 1
-    public var verticalFactor:              CGFloat = 1
+    public var horizontalFactor:        CGFloat = 1
+    public var verticalFactor:          CGFloat = 1
+    
+    /// Specifies a fixed or variable timestep for per-update changes.
+    ///
+    /// For physics effects, a per-second timestep may be suitable.
+    public var timestep:            TimeStep
     
     /// - Parameters:
-    ///   - baseMagnitudePerSecond: The minimum magnitude to apply to the physics body every second.
-    ///   - maximumMagnitudePerSecond: The maximum magnitude to allow after acceleration has been applied.
-    ///   - accelerationPerSecond: The amount to increase the magnitude by per second, while there is keyboard input. The magnitude is reset to the `baseMagnitudePerSecond` when there is no keyboard input.
+    ///   - baseMagnitude: The minimum magnitude to apply to the physics body on every update.
+    ///   - maximumMagnitude: The maximum magnitude to allow after acceleration has been applied.
+    ///   - acceleration: The amount to increase the magnitude by, per update, while there is keyboard input. The magnitude is reset to the `baseMagnitude` when there is no keyboard input.
     ///   - horizontalFactor: Multiply the X axis force by this factor. Default: `1`. To reverse the X axis, specify a negative value like `-1`. To disable the X axis, specify `0`.
     ///   - verticalFactor: Multiply the Y axis force by this factor. Default: `1`. To reverse the Y axis, specify a negative value like `-1`. To disable the Y axis, specify `0`.
-    public init(baseMagnitudePerSecond:     CGFloat = 600,  // ÷ 60 = 10 per frame
-                maximumMagnitudePerSecond:  CGFloat = 1200, // ÷ 60 = 20 per frame
-                accelerationPerSecond:      CGFloat = 600,
-                horizontalFactor:           CGFloat = 1,
-                verticalFactor:             CGFloat = 1)
+    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    public init(baseMagnitude:      CGFloat = 600,  // ÷ 60 = 10 per frame
+                maximumMagnitude:   CGFloat = 1200, // ÷ 60 = 20 per frame
+                acceleration:       CGFloat = 600,
+                horizontalFactor:   CGFloat = 1,
+                verticalFactor:     CGFloat = 1,
+                timestep:           TimeStep = .perSecond)
     {
-        self.baseMagnitudePerSecond     = baseMagnitudePerSecond
-        self.maximumMagnitudePerSecond  = maximumMagnitudePerSecond
-        self.accelerationPerSecond      = accelerationPerSecond
-        self.horizontalFactor           = horizontalFactor
-        self.verticalFactor             = verticalFactor
+        self.baseMagnitude      = baseMagnitude
+        self.maximumMagnitude   = maximumMagnitude
+        self.acceleration       = acceleration
+        self.horizontalFactor   = horizontalFactor
+        self.verticalFactor     = verticalFactor
+        self.timestep           = timestep
         super.init()
     }
     
@@ -73,7 +81,7 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
             !keyboardEventComponent.codesPressed.isEmpty,
             let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody ?? entityNode?.physicsBody
             else {
-                acceleratedMagnitude = baseMagnitudePerSecond // TODO: PERFORMANCE: Figure out a better way than setting this every frame.
+                acceleratedMagnitude = baseMagnitude // TODO: PERFORMANCE: Figure out a better way than setting this every update.
                 return
         }
         
@@ -81,13 +89,13 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         // ❕ NOTE: Don't use `switch` or `else` because we want to process multiple keypresses, to generate diagonal forces and also cancel out opposing directions.
         
         let codesPressed = keyboardEventComponent.codesPressed
-        let magnitudeForCurrentFrame = acceleratedMagnitude * CGFloat(seconds)
+        let magnitudeForCurrentUpdate = acceleratedMagnitude * ((timestep == .perFrame) ? 1 : CGFloat(seconds))
         var vector = CGVector.zero
 
-        if codesPressed.contains(self.arrowUp)    { vector.dy += magnitudeForCurrentFrame } // ⬆️
-        if codesPressed.contains(self.arrowRight) { vector.dx += magnitudeForCurrentFrame } // ➡️
-        if codesPressed.contains(self.arrowDown)  { vector.dy -= magnitudeForCurrentFrame } // ⬇️
-        if codesPressed.contains(self.arrowLeft)  { vector.dx -= magnitudeForCurrentFrame } // ⬅️
+        if codesPressed.contains(self.arrowUp)    { vector.dy += magnitudeForCurrentUpdate } // ⬆️
+        if codesPressed.contains(self.arrowRight) { vector.dx += magnitudeForCurrentUpdate } // ➡️
+        if codesPressed.contains(self.arrowDown)  { vector.dy -= magnitudeForCurrentUpdate } // ⬇️
+        if codesPressed.contains(self.arrowLeft)  { vector.dx -= magnitudeForCurrentUpdate } // ⬅️
         
         // Apply any multipliers.
         
@@ -97,17 +105,17 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         // Apply the final vector to the body.
         
         #if LOGINPUTEVENTS
-        debugLog("acceleratedMagnitude: \(acceleratedMagnitude), magnitudeForCurrentFrame: \(magnitudeForCurrentFrame), horizontalFactor: \(horizontalFactor), verticalFactor: \(horizontalFactor), force: \(vector)")
+        debugLog("acceleratedMagnitude: \(acceleratedMagnitude), magnitudeForCurrentUpdate: \(magnitudeForCurrentUpdate), acceleration: \(acceleration), horizontalFactor: \(horizontalFactor), verticalFactor: \(horizontalFactor), force: \(vector)")
         #endif
         
         physicsBody.applyForce(vector)
         
-        // Apply acceleration for the next frame.
+        // Apply acceleration for the next update.
         
-        if  acceleratedMagnitude < maximumMagnitudePerSecond {
-            acceleratedMagnitude += (accelerationPerSecond * CGFloat(seconds))
-            if  acceleratedMagnitude > maximumMagnitudePerSecond {
-                acceleratedMagnitude = maximumMagnitudePerSecond
+        if  acceleratedMagnitude < maximumMagnitude {
+            timestep.apply(acceleration, to: &acceleratedMagnitude, deltaTime: CGFloat(seconds)) // acceleratedMagnitude += (acceleration * CGFloat(seconds))
+            if  acceleratedMagnitude > maximumMagnitude {
+                acceleratedMagnitude = maximumMagnitude
             }
         }
     }
