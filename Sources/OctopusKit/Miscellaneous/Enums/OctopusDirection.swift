@@ -24,29 +24,20 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
     case west
     case northWest
 
-    case up
-    case down
-    case left
-    case right
+    case up,    down
+    case left,  right
 
-    case top
-    case bottom
+    case top,   bottom
     
-    case front
-    case forward
-    case back
-    case backward
+    case front, forward
+    case back,  backward
     
-    case fore
-    case aft
-    case port
-    case starboard
+    case fore,  aft
+    case port,  starboard
     
-    case clockwise
-    case counterClockwise
+    case clockwise, counterClockwise
     
-    case inside
-    case outside
+    case inside,    outside
     
     /// An array of directions moving counter-clockwise from east to southeast, compatible with SpriteKit's rotation notation (where 0 radians is east.)
     public static let compassDirections: [OctopusDirection] = [
@@ -98,13 +89,13 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
         // CHECK: Does this need better formulas?
         switch self {
         case .east:             return 0
-        case .northEast:        return CGFloat.pi / 4
-        case .north:            return CGFloat.pi / 2
-        case .northWest:        return CGFloat.pi - (CGFloat.pi / 4)
-        case .west:             return CGFloat.pi
-        case .southWest:        return CGFloat.pi + (CGFloat.pi / 4)
-        case .south:            return CGFloat.pi + (CGFloat.pi / 2)
-        case .southEast:        return (CGFloat.pi * 2) - (CGFloat.pi / 2)
+        case .northEast:        return .pi / 4
+        case .north:            return .pi / 2
+        case .northWest:        return .pi - (.pi / 4)
+        case .west:             return .pi
+        case .southWest:        return .pi + (.pi / 4)
+        case .south:            return .pi + (.pi / 2)
+        case .southEast:        return (.pi * 2) - (.pi / 2)
         default:                return nil
         }
     }
@@ -120,7 +111,7 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
         case .southWest:        return CGVector(dx: -1.0, dy: -1.0)
         case .west:             return CGVector(dx: -1.0, dy:  0.0)
         case .northWest:        return CGVector(dx: -1.0, dy:  1.0)
-        default:                return CGVector.zero
+        default:                return .zero
         }
     }
 
@@ -131,9 +122,9 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
         // CHECK: Does this need better formulas?
         switch self {
         case .forward,  .fore, .front:  return 0
-        case .backward, .aft,  .back:   return CGFloat.pi
-        case .left,     .port:          return +(CGFloat.pi / 2)
-        case .right,    .starboard:     return -(CGFloat.pi / 2)
+        case .backward, .aft,  .back:   return .pi
+        case .left,     .port:          return +(.pi / 2)
+        case .right,    .starboard:     return -(.pi / 2)
         default:                        return nil
         }
     }
@@ -143,7 +134,7 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
     }
 
     /// Creates a new `FacingDirection` for a given `zRotation` in radians.
-    init(zRotation: CGFloat) {
+    public init(zRotation: CGFloat) {
         // CREDIT: Apple DemoBots Sample. (C) 2016 Apple Inc. All Rights Reserved. TODO: Note the license.
         // TODO: Test
         
@@ -166,16 +157,13 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
 // MARK: - Orientations
 
 public enum OctopusOrientation {
-    case horizontal
-    case vertical
+    case horizontal, vertical
 }
 
 public enum OctopusHorizontalOrientation {
-    case left
-    case right
+    case left, right
 }
 
 public enum OctopusVerticalOrientation {
-    case up
-    case down   
+    case up, down
 }
