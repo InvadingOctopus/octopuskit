@@ -38,11 +38,14 @@ public typealias OKUserDefault = OctopusUserDefault
     }
     
     /// Sets the value for `key` in `UserDefaults.standard`, or gets the value if `key` exists in `UserDefaults.standard`, otherwise returns `defaultValue`.
+    @inlinable
     public var wrappedValue: ValueType {
+        
+        // CHECK: Add caching to avoid accessing UserDefaults every frame?
         
         get {
             if  let value = UserDefaults.standard.object(forKey: key) as? ValueType {
-                OctopusKit.logForDebug.add("\"\(key)\" \(ValueType.self) = \(value)")
+                // OctopusKit.logForDebug.add("\"\(key)\" \(ValueType.self) = \(value)") // ❕ May spam the log when this is accessed every frame.
                 return value
             } else {
                 OctopusKit.logForDebug.add("\"\(key)\" \(ValueType.self) not found, defaultValue = \(defaultValue) ❗️")
@@ -57,8 +60,9 @@ public typealias OKUserDefault = OctopusUserDefault
         }
     }
     
+    @inlinable
     public var description: String {
-        return "UserDefault \"\(key)\" \(ValueType.self): \(wrappedValue)"
+        "UserDefault \"\(key)\" \(ValueType.self): \(wrappedValue)"
     }
 
     // MARK: - Static Functions
@@ -66,6 +70,7 @@ public typealias OKUserDefault = OctopusUserDefault
     /// - Returns: The user default (preference/setting) for `key` if `key` exists in `UserDefaults.standard` and matches the specified `ValueType`, otherwise `nil`.
     ///
     /// This function may be chained with the `??` operator to provide a [different] default value at each call site.
+    @inlinable
     public static func preference <ValueType> (forKey key: String) -> ValueType? {
         if  let value = UserDefaults.standard.object(forKey: key) as? ValueType {
             OctopusKit.logForDebug.add("\"\(key)\" \(ValueType.self) = \(value)")
