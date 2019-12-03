@@ -35,7 +35,7 @@ extension SKColor {
         return SKColor(displayP3Red: red, green: green, blue: blue, alpha: 1.0)
     }
     
-    /// Returns a random color in the SRGB gamut with RGB values within the specified range, where the maximum saturation is `1.0`.
+    /// Returns a random color in the sRGB gamut with RGB values within the specified range, where the maximum saturation is `1.0`.
     @inlinable
     public static func randomSRGB(in range: ClosedRange<CGFloat>) -> SKColor {
         // TODO: Add rounding parameter
@@ -43,7 +43,12 @@ extension SKColor {
         let red   = CGFloat.random(in: range)
         let green = CGFloat.random(in: range)
         let blue  = CGFloat.random(in: range)
+        
+        #if os(macOS)
         return SKColor(srgbRed: red, green: green, blue: blue, alpha: 1.0)
+        #else
+        return SKColor(red: red, green: green, blue: blue, alpha: 1.0)
+        #endif
     }
     
     // MARK: - Custom Color Collections
@@ -102,7 +107,11 @@ extension SKColor {
     @inlinable
     public static var brightColorsSRGB: [SKColor] {
         brightRGBValues.map {
-            SKColor(srgbRed: $0.red, green: $0.green, blue: $0.blue, alpha: 1.0)
+            #if os(macOS)
+            return SKColor(srgbRed: $0.red, green: $0.green, blue: $0.blue, alpha: 1.0)
+            #else
+            return SKColor(red: $0.red, green: $0.green, blue: $0.blue, alpha: 1.0)
+            #endif
         }
     }
 }
