@@ -22,6 +22,8 @@ public enum TimeStep {
     case perSecond
     
     /// Shorthand for `value += (timestep == .perFrame) ? change : change * deltaTime`
+    ///
+    /// **Example:** `timestep.apply(acceleration, to: &acceleratedMagnitude, deltaTime: CGFloat(seconds))`
     @inlinable
     public func apply <Number> (_ change:  Number,
                                 to value:  inout Number,

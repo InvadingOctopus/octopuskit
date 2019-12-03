@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// A 2D array that supports viewports.
+/// A 2D array that supports viewports and rotation.
 public struct ContiguousArray2D <Element> {
     
     // TODO: Interop with arrays of arrays, and literals
