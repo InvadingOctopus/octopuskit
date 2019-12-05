@@ -19,6 +19,7 @@ import GameplayKit
 @available(macOS 10.15, *)
 public final class KeyboardControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
     
+    // TODO: TimeStep options
     // TODO: Reset the acceleration when the direction reverses, as that is more natural.
     
     public override var requiredComponents: [GKComponent.Type]? {

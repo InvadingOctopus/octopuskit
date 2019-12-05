@@ -19,9 +19,9 @@ import GameplayKit
 @available(macOS 10.15, *)
 public final class KeyboardControlledTorqueComponent: OctopusComponent, OctopusUpdatableComponent {
     
+    // TODO: TimeStep options
     // TODO: Reset the acceleration when the direction reverses, as that is more natural.
     // TODO: Move `maximumAngularVelocity` to `PhysicsComponent`
-    // TODO: Improve
     
     public override var requiredComponents: [GKComponent.Type]? {
         [KeyboardEventComponent.self,
