@@ -46,12 +46,12 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
     /// Specifies a fixed or variable timestep for per-update changes.
     ///
     /// For physics effects, a per-second timestep may be suitable.
-    public var timestep:            TimeStep
+    public var timestep:                TimeStep
     
     /// - Parameters:
-    ///   - baseMagnitude: The minimum magnitude to apply to the physics body on every update.
+    ///   - baseMagnitude: The minimum magnitude to apply to the physics body on every update. Affected by `timestep`.
     ///   - maximumMagnitude: The maximum magnitude to allow after acceleration has been applied.
-    ///   - acceleration: The amount to increase the magnitude by, per update, while there is keyboard input. The magnitude is reset to the `baseMagnitude` when there is no keyboard input.
+    ///   - acceleration: The amount to increase the magnitude by, per update, while there is keyboard input. The magnitude is reset to the `baseMagnitude` when there is no keyboard input. Affected by `timestep`.
     ///   - horizontalFactor: Multiply the X axis force by this factor. Default: `1`. To reverse the X axis, specify a negative value like `-1`. To disable the X axis, specify `0`.
     ///   - verticalFactor: Multiply the Y axis force by this factor. Default: `1`. To reverse the Y axis, specify a negative value like `-1`. To disable the Y axis, specify `0`.
     ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
@@ -89,7 +89,7 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         // ❕ NOTE: Don't use `switch` or `else` because we want to process multiple keypresses, to generate diagonal forces and also cancel out opposing directions.
         
         let codesPressed = keyboardEventComponent.codesPressed
-        let magnitudeForCurrentUpdate = acceleratedMagnitude * ((timestep == .perFrame) ? 1 : CGFloat(seconds))
+        let magnitudeForCurrentUpdate = timestep.applying(acceleratedMagnitude, deltaTime: CGFloat(seconds))
         var vector = CGVector.zero
 
         if codesPressed.contains(self.arrowUp)    { vector.dy += magnitudeForCurrentUpdate } // ⬆️
@@ -113,7 +113,8 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         // Apply acceleration for the next update.
         
         if  acceleratedMagnitude < maximumMagnitude {
-            timestep.apply(acceleration, to: &acceleratedMagnitude, deltaTime: CGFloat(seconds)) // acceleratedMagnitude += (acceleration * CGFloat(seconds))
+            timestep.apply(acceleration, to: &acceleratedMagnitude, deltaTime: CGFloat(seconds))
+            
             if  acceleratedMagnitude > maximumMagnitude {
                 acceleratedMagnitude = maximumMagnitude
             }
