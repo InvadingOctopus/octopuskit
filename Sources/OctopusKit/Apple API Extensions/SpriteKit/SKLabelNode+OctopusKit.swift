@@ -82,6 +82,7 @@ extension SKLabelNode {
     }
     
     /// Encapsulates the label's font-related properties in an `OctopusFont`.
+    @inlinable
     public var font: OctopusFont {
         get { OctopusFont(name: self.fontName, size: self.fontSize, color: self.fontColor) }
         set {
@@ -97,6 +98,7 @@ extension SKLabelNode {
         }
     }
     
+    @inlinable
     open func setAlignment(horizontal: SKLabelHorizontalAlignmentMode,
                            vertical:   SKLabelVerticalAlignmentMode)
     {
@@ -105,6 +107,7 @@ extension SKLabelNode {
     }
     
     /// Encapsulates the `horizontalAlignmentMode` and `verticalAlignmentMode` in a tuple.
+    @inlinable
     public var alignment: (horizontal: SKLabelHorizontalAlignmentMode,
                            vertical:   SKLabelVerticalAlignmentMode)
         {

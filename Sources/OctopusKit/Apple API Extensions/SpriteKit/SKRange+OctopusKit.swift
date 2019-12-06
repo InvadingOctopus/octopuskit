@@ -8,8 +8,8 @@
 
 import SpriteKit
 
-extension SKRange {
+public extension SKRange {
     
-    public static let zero = SKRange(constantValue: 0)
+    static let zero = SKRange(constantValue: 0)
     
 }

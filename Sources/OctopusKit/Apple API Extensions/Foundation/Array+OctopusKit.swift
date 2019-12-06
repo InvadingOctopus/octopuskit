@@ -25,19 +25,19 @@ public extension Array {
     /// Calls `Int.random(upto:skipping:maximumAttempts:)` which uses `arc4random_uniform()`.
     ///
     /// Can be used with array literals, e.g.: `[4, 8, 16, 42].randomElement(skippingIndices: [0, 1, 2])`
+    @inlinable
     func randomElement(skippingIndices exclusions: Set<Int>,
-                              maximumAttempts: UInt = 100) -> Element?
+                       maximumAttempts: UInt = 100) -> Element?
     {
         guard self.count > 0 else { return nil }
         guard self.count > 1 else { return self[0] }
         
-        if let randomIndex = Int.randomFromZero(to: self.count,
-                                                skipping: exclusions,
-                                                maximumAttempts: maximumAttempts)
+        if  let randomIndex = Int.randomFromZero(to: self.count,
+                                                 skipping: exclusions,
+                                                 maximumAttempts: maximumAttempts)
         {
             return self[randomIndex]
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -49,28 +49,27 @@ public extension Array {
     /// If the array has only 1 element, then that is returned without generating any random indices.
     ///
     /// Can be used with array literals, e.g.: `[4, 8, 16, 42].randomElement(usingDistribution: GKRandomDistribution.d20(), skippingIndices: [0, 1, 2])`
+    @inlinable
     func randomElement(usingDistribution randomDistribution: GKRandomDistribution,
-                              skippingIndices exclusions: Set<Int>? = nil,
-                              maximumAttempts: UInt = 100) -> Element?
+                       skippingIndices exclusions: Set<Int>? = nil,
+                       maximumAttempts: UInt = 100) -> Element?
     {
         guard self.count > 0 else { return nil }
         guard self.count > 1 else { return self[0] }
         
         var randomIndex: Int?
         
-        if let exclusions = exclusions {
+        if  let exclusions = exclusions {
             randomIndex = randomDistribution.nextInt(upperBound: self.count,
                                                      skipping: exclusions,
                                                      maximumAttempts: maximumAttempts)
-        }
-        else {
+        } else {
             randomIndex = randomDistribution.nextInt(upperBound: self.count)
         }
         
-        if let randomIndex = randomIndex {
+        if  let randomIndex = randomIndex {
             return self[randomIndex]
-        }
-        else {
+        } else {
             return nil
         }
     }

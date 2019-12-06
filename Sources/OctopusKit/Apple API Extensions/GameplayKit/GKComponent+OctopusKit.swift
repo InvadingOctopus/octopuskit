@@ -81,7 +81,8 @@ extension GKComponent {
     /// This property is used to accurately determine the type of generic components at runtime.
     ///
     /// A `RelayComponent` overrides this property to return the type of its `target`. This lets `GKEntity.componentOrRelay(ofType:)` return a `RelayComponent.target` that matches the requested component class.
-    @objc open var componentType: GKComponent.Type {
+    @objc
+    open var componentType: GKComponent.Type {
         // This is a workaround for the bug where `OctopusComponent.requiredComponents` could not be correctly matched with `GKEntity.component(ofType:)` at runtime when the entity has a `RelayComponent` for the dependency.
         // See comments for `GKEntity.componentOrRelay(ofType:)`
         // THANKS: https://forums.swift.org/u/TellowKrinkle

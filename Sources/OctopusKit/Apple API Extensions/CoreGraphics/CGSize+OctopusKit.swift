@@ -29,25 +29,31 @@ public extension CGSize {
     // MARK: - Common Tasks
     
     /// Returns a `CGSize` equal to the half of this size.
+    @inlinable
     var halved: CGSize {
-        return CGSize(width: width / 2, height: height / 2)
+        CGSize(width:  width  / 2,
+               height: height / 2)
     }
     
     /// Returns a `CGPoint` with a position equal to half the width and height of this size.
+    @inlinable
     var center: CGPoint {
-        return CGPoint(x: width / 2, y: height / 2)
+        CGPoint(x: width  / 2,
+                y: height / 2)
     }
     
     /// Returns a new `CGSize` that is equivalent to this size scaled by the specified factors.
+    @inlinable
     func scaled(byX xScale: CGFloat, y yScale: CGFloat) -> CGSize {
-        return CGSize(
-            width: self.width * xScale,
-            height: self.height * yScale)
+        CGSize(width:  self.width  * xScale,
+               height: self.height * yScale)
     }
     
     /// Scales this size by the specified factors.
+    @inlinable
     mutating func scale(byX xScale: CGFloat, y yScale: CGFloat) {
-        self = self.scaled(byX: xScale, y: yScale)
+        self = self.scaled(byX: xScale,
+                           y:   yScale)
     }
     
     // MARK: - iOS Device Dimensions
@@ -56,22 +62,22 @@ public extension CGSize {
     ///
     /// The resolution is assumed to be in absolute pixels, not points.
     struct OrientationDependentSize {
-        public let portrait: CGSize
+        public let portrait:  CGSize
         public let landscape: CGSize
         
         public init (portrait: CGSize, landscape: CGSize) {
-            self.portrait = portrait
+            self.portrait  = portrait
             self.landscape = landscape
         }
         
         public init (portraitWidth: CGFloat, portraitHeight: CGFloat) {
-            self.portrait = CGSize(width: portraitWidth, height: portraitHeight)
+            self.portrait  = CGSize(width: portraitWidth,  height: portraitHeight)
             self.landscape = CGSize(width: portraitHeight, height: portraitWidth)
         }
         
         public init (landscapeWidth: CGFloat, landscapeHeight: CGFloat) {
-            self.landscape = CGSize(width: landscapeWidth, height: landscapeHeight)
-            self.portrait = CGSize(width: landscapeHeight, height: landscapeWidth)
+            self.landscape = CGSize(width: landscapeWidth,  height: landscapeHeight)
+            self.portrait  = CGSize(width: landscapeHeight, height: landscapeWidth)
         }
     }
     
@@ -94,19 +100,19 @@ public extension CGSize {
          iPhone SE           640px × 1136px      1136px × 640px
          */
         
-        public static let iPhoneSE = OrientationDependentSize(portraitWidth: 640, portraitHeight: 1136)
+        public static let iPhoneSE      = OrientationDependentSize(portraitWidth: 640, portraitHeight: 1136)
         
-        public static let iPhone5 = iPhoneSE
+        public static let iPhone5       = iPhoneSE
         
-        public static let iPhone6s = OrientationDependentSize(portraitWidth: 750, portraitHeight: 1334)
-        public static let iPhone6sPlus = OrientationDependentSize(portraitWidth: 1242, portraitHeight: 2208)
-        public static let iPhoneX = OrientationDependentSize(portraitWidth: 1125, portraitHeight: 2436)
+        public static let iPhone6s      = OrientationDependentSize(portraitWidth: 750, portraitHeight: 1334)
+        public static let iPhone6sPlus  = OrientationDependentSize(portraitWidth: 1242, portraitHeight: 2208)
+        public static let iPhoneX       = OrientationDependentSize(portraitWidth: 1125, portraitHeight: 2436)
         
-        public static let iPhone7 = iPhone6s
-        public static let iPhone7Plus = iPhone6sPlus
-        public static let iPhone8Plus = iPhone6sPlus
+        public static let iPhone7       = iPhone6s
+        public static let iPhone7Plus   = iPhone6sPlus
+        public static let iPhone8Plus   = iPhone6sPlus
         
-        public static let iPadPro9point7inch = OrientationDependentSize(portraitWidth: 1536, portraitHeight: 2048)
+        public static let iPadPro9point7inch  = OrientationDependentSize(portraitWidth: 1536, portraitHeight: 2048)
         public static let iPadPro10point5inch = OrientationDependentSize(portraitWidth: 1668, portraitHeight: 2224)
         public static let iPadPro12point9inch = OrientationDependentSize(portraitWidth: 2048, portraitHeight: 2732)
         
@@ -119,61 +125,65 @@ public extension CGSize {
     
     // MARK: CGSize with CGSize
     
+    @inlinable
     static func + (left: CGSize, right: CGSize) -> CGSize {
-        return CGSize(
-            width: left.width + right.width,
-            height: left.height + right.height)
+        CGSize(width:  left.width  + right.width,
+               height: left.height + right.height)
     }
     
+    @inlinable
     static func - (left: CGSize, right: CGSize) -> CGSize {
-        return CGSize(
-            width: left.width - right.width,
-            height: left.height - right.height)
+        CGSize(width:  left.width  - right.width,
+               height: left.height - right.height)
     }
     
     // MARK: CGSize with CGFloat
     
+    @inlinable
     static func + (left: CGSize, right: CGFloat) -> CGSize {
-        return CGSize(
-            width: left.width + right,
-            height: left.height + right)
+        CGSize(width:  left.width  + right,
+               height: left.height + right)
     }
     
+    @inlinable
     static func += (left: inout CGSize, right: CGFloat) {
-        left.width += right
+        left.width  += right
         left.height += right
     }
     
+    @inlinable
     static func - (left: CGSize, right: CGFloat) -> CGSize {
-        return CGSize(
-            width: left.width - right,
-            height: left.height - right)
+        CGSize(width:  left.width  - right,
+               height: left.height - right)
     }
     
+    @inlinable
     static func -= (left: inout CGSize, right: CGFloat) {
-        left.width -= right
+        left.width  -= right
         left.height -= right
     }
     
+    @inlinable
     static func * (left: CGSize, right: CGFloat) -> CGSize {
-        return CGSize(
-            width: left.width * right,
-            height: left.height * right)
+        CGSize(width:  left.width  * right,
+               height: left.height * right)
     }
     
+    @inlinable
     static func *= (left: inout CGSize, right: CGFloat) {
-        left.width *= right
+        left.width  *= right
         left.height *= right
     }
     
+    @inlinable
     static func / (left: CGSize, right: CGFloat) -> CGSize {
-        return CGSize(
-            width: left.width / right,
-            height: left.height / right)
+        CGSize(width:  left.width  / right,
+               height: left.height / right)
     }
     
+    @inlinable
     static func /= (left: inout CGSize, right: CGFloat) {
-        left.width /= right
+        left.width  /= right
         left.height /= right
     }
 

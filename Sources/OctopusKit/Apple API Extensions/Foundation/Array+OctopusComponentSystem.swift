@@ -16,6 +16,7 @@ public extension Array where Element == OctopusComponentSystem {
     /// Creates a `OctopusComponentSystem` for the specified `GKComponent` class and adds it to this array.
     ///
     /// The new system is added to the end of the list, so it will be updated after all currently-added systems.
+    @inlinable
     mutating func createSystem(forClass componentClass: GKComponent.Type) {
         // TODO: Warn against or discard duplicates.
         
@@ -28,6 +29,7 @@ public extension Array where Element == OctopusComponentSystem {
     /// Creates `OctopusComponentSystem`s for the specified `GKComponent` classes and adds them to this array.
     ///
     /// The new systems are added to the end of the list in the order provided.
+    @inlinable
     mutating func createSystems(forClasses componentClasses: [GKComponent.Type]) {
         for componentClass in componentClasses {
             self.createSystem(forClass: componentClass)
@@ -35,6 +37,7 @@ public extension Array where Element == OctopusComponentSystem {
     }
     
     /// Attempts to add the specified component to all the systems in this array that match the type of the component.
+    @inlinable
     func addComponent(_ component: GKComponent) {
         for componentSystem in self {
             componentSystem.addComponent(component)
@@ -42,6 +45,7 @@ public extension Array where Element == OctopusComponentSystem {
     }
     
     /// Attempts to add all of the components from the specified entity, to all the systems in this array that match the types of the components.
+    @inlinable
     func addComponents(foundIn entity: GKEntity) {
         for componentSystem in self {
             componentSystem.addComponent(foundIn: entity)
@@ -49,6 +53,7 @@ public extension Array where Element == OctopusComponentSystem {
     }
     
     /// Attempts to remove all of the components found in the specified entity, from all the systems in this array that match the types of the components.
+    @inlinable
     func removeComponents(foundIn entity: GKEntity) {
         for componentSystem in self {
             componentSystem.removeComponent(foundIn: entity)

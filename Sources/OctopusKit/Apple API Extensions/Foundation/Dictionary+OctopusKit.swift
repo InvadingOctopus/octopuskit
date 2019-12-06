@@ -11,18 +11,18 @@ import Foundation
 public extension Dictionary {
     
     /// Returns the value for the specified key. If none exists, adds the result of the supplied closure as the value for that key.
-    mutating func getOrSetValue(
-        for key: Key,
-        with valueClosure: @autoclosure () -> Value)
-        -> Value
+    @inlinable
+    mutating func getOrSetValue(for key: Key,
+                                with valueClosure: @autoclosure () -> Value)
+                                -> Value
     {
         // CREDIT: https://twitter.com/johnsundell/status/822097067648700418
         // CREDIT: https://github.com/JohnSundell/SwiftTips
             
-        if let existingValue = self[key] {
+        if  let existingValue = self[key] {
             return existingValue
-        }
-        else {
+        
+        } else {
             let newValue = valueClosure()
             self[key] = newValue
             return newValue

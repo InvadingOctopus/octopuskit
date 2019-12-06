@@ -11,10 +11,10 @@ import SpriteKit
 extension SKNode {
     
     /// Cycles the node's `isHidden` state between `true` and `false` for the specified number of times, optionally removing the node from its parent at the end.
-    open func blink(
-        times: Int,
-        withDelay delay: TimeInterval = 0.1,
-        removeFromParentOnCompletion: Bool = false)
+    @inlinable
+    open func blink(times: Int,
+                    withDelay delay: TimeInterval = 0.1,
+                    removeFromParentOnCompletion: Bool = false)
     {
         guard times > 0 else { return }
         
@@ -24,12 +24,12 @@ extension SKNode {
         
         var sequence: SKAction
         
-        if removeFromParentOnCompletion {
+        if  removeFromParentOnCompletion {
             sequence = SKAction.sequence([
                 blink,
                 .removeFromParent()])
-        }
-        else {
+        
+        } else {
             sequence = blink
         }
         

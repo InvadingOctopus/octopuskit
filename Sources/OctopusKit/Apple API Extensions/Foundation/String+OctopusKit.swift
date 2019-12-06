@@ -25,6 +25,7 @@ public extension String {
     }
     
     /// Generates and returns a function that concatenates strings in the order they're sent, with an optional (comma by default) separator.
+    @inlinable
     static func createConcatenator(withSeparator separator: String = ", ")
         -> (String?) -> String
     {
@@ -59,6 +60,7 @@ public extension String {
     }
     
     /// Generates and returns a function that concatenates strings in the order they're sent, with a separator that may be overridden per each call.
+    @inlinable
     static func createConcatenatorWithOverridableSeparator(withDefaultSeparator defaultSeparator: String = ", ")
         -> (String?, String?) -> String
     {
@@ -99,11 +101,13 @@ extension DefaultStringInterpolation {
     /// Fixes the warnings about "String interpolation produces a debug description for an optional value; did you mean to make this explicit?"
     ///
     /// When a debug description for an optional value is needed, use `String(describing:)`
+    @inlinable
     mutating func appendInterpolation <T> (optional optionalValue: T?) {
         appendInterpolation(String(optional: optionalValue))
     }
     
     /// Shorthand for `"\(optional: someValue)"`
+    @inlinable
     mutating func appendInterpolation <T> (_ optionalValue: T?) {
         appendInterpolation(String(optional: optionalValue))
     }

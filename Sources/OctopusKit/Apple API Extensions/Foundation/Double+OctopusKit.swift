@@ -15,6 +15,7 @@ public extension Double {
     /// Returns a `Double` between 0 to 1.
     ///
     /// Uses `arc4random(_:)`
+    @inlinable
     static func unitRandom() -> Double {
         // CREDIT: Apple Adventure Sample
         

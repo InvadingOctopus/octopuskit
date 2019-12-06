@@ -19,6 +19,7 @@ public extension UIGestureRecognizer {
     /// Returns `false` when the `state` is `.possible`, `.cancelled`, `.failed` or `.ended`.
     ///
     /// Use this flag to avoid unnecessary processing in gesture-controlled objects.
+    @inlinable
     var isHandlingGesture: Bool {
         switch self.state {
             // CHECK: Is this all the correct states?

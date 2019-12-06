@@ -13,10 +13,10 @@ import SpriteKit
 extension SKLabelNode {
     
     /// Changes the font color to the specified value, then cycles it between the original color and the specified alternate color for the specified number of times.
-    open func cycleColor(
-        with alternateColor: SKColor = .clear,
-        durationPerCycle duration: TimeInterval = 0.075,
-        repeat count: Int = 1)
+    @inlinable
+    open func cycleColor(with alternateColor: SKColor = .clear,
+                         durationPerCycle duration: TimeInterval = 0.075,
+                         repeat count: Int = 1)
     {
         guard count > 0 else { return }
         
@@ -40,12 +40,12 @@ extension SKLabelNode {
     /// Creates a "ghost" of this label behind it, adds it to the label's parent, scales it to the specified size while fading it to an alpha of `0.0` then removes it from the parent.
     ///
     /// - Returns: The ghost label, or `nil` if this label has no parent or text.
-    open func animateGhost(
-        xScale: CGFloat = 1.25,
-        yScale: CGFloat = 1.0,
-        initialAlpha: CGFloat = 0.5,
-        duration: TimeInterval = 0.5)
-        -> SKLabelNode?
+    @inlinable
+    open func animateGhost(xScale: CGFloat = 1.25,
+                           yScale: CGFloat = 1.0,
+                           initialAlpha: CGFloat = 0.5,
+                           duration: TimeInterval = 0.5)
+                        -> SKLabelNode?
     {
         guard
             let parent = self.parent,

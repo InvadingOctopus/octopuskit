@@ -15,18 +15,21 @@ extension SKScene {
     // MARK: - Properties
     
     /// Returns the ratio of the scene's width to the view's width, or `0` if the scene is not part of a view.
+    @inlinable
     public var xSizeToViewRatio: CGFloat {
         guard let view = self.view else { return 0 }
         return self.frame.size.width / view.frame.size.width // CHECK: Should it be `self.frame` or `self.size`?
     }
     
     /// Returns the ratio of the scene's height to the view's height, or `0` if the scene is not part of a view.
+    @inlinable
     public var ySizeToViewRatio: CGFloat {
         guard let view = self.view else { return 0 }
         return self.frame.size.height / view.frame.size.height // CHECK: Should it be `self.frame` or `self.size`?
     }
     
     /// Returns the scene's frame inset by the view's `safeAreaInsets`, or a zero-sized rectangle if the scene is not part of a view.
+    @inlinable
     public var safeAreaFrame: CGRect {
         #if os(iOS)
         
@@ -52,20 +55,20 @@ extension SKScene {
     }
     
     /// Returns the `CGRect` for the scene's `camera`, if any, or its `view` modified by the scaling ratio. If the scene has no camera and no view, returns a zero-sized `CGRect`.
+    @inlinable
     public var viewport: CGRect {
         
         // TODO: Account for `anchorPoint` and scaling.
         
         var rect: CGRect
         
-        if let view = self.view {
+        if  let view = self.view {
             rect = view.frame
-        }
-        else {
+        } else {
             rect = self.frame
         }
         
-        if let camera = self.camera {
+        if  let camera = self.camera {
             rect.origin = camera.position
             rect.size.width *= camera.xScale
             rect.size.height *= camera.yScale

@@ -14,6 +14,7 @@ public extension GKRandom {
     /// Returns a random integer from `INT32_MIN` to `INT32_MAX` or `upperBound-1` if specified (**not** including `upperBound`) that does not match any of the numbers provided in the exclusion list.
     ///
     /// This method repeatedly generates a random number until it finds a number that is not in the exclusions list. If no acceptable number can be generated in `maximumAttempts` then `nil` will returned.
+    @inlinable
     func nextInt(upperBound: Int? = nil,
                         skipping exclusions: Set<Int>,
                         maximumAttempts: UInt = 100) -> Int?

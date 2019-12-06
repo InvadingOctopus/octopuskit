@@ -12,6 +12,7 @@ import SwiftUI
 public extension SwiftUI.Color {
     
     /// Returns a random `Color` from the list of preset colors (as of 2019/10/23), **excluding** `clear`, `primary`, `secondary` and `accentColor`.
+    @inlinable
     static var random: Color {
         // NOTE: This must be a COMPUTED property! Assigning a value makes this a static variable, which will always be the first color it got. :)
         [black,
@@ -28,6 +29,7 @@ public extension SwiftUI.Color {
     }
     
     /// Returns a random `Color` from the list of preset colors (as of 2019/10/23), **excluding** `black`, `white`, `clear`, `primary`, `secondary` and `accentColor`.
+    @inlinable
     static var randomExcludingBlackWhite: Color {
         // NOTE: This must be a COMPUTED property! Assigning a value makes this a static variable, which will always be the first color it got. :)
         [gray,

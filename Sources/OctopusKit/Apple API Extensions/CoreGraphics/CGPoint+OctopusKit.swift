@@ -18,8 +18,9 @@ public extension CGPoint {
     /// The point with location `(0.5,0.5)`.
     ///
     /// Useful for setting the `anchorPoint` of SpriteKit scenes and sprites at their center.
+    @inlinable
     static var half: CGPoint {
-        return CGPoint(x: 0.5, y: 0.5)
+        CGPoint(x: 0.5, y: 0.5)
     }
     
     // MARK: - Initializers
@@ -39,18 +40,20 @@ public extension CGPoint {
     // MARK: - Common Tasks
     
     /// Returns the distance between two points.
+    @inlinable
     static func distance(between a: CGPoint, and b: CGPoint) -> CGFloat {
-        return a.distance(to: b)
+        a.distance(to: b)
     }
     
     /// Returns the distance from this point to the specified point.
+    @inlinable
     func distance(to otherPoint: CGPoint) -> CGFloat {
         // CREDIT: Apple Adventure Sample and https://developer.apple.com/documentation/spritekit/skaction
         
         // CURIOUS: Does it matter if it's "A - B" or "B - A"? Most examples I've seen write "B - A", why?
         
-        return hypot(otherPoint.x - self.x,
-                     otherPoint.y - self.y)
+        hypot(otherPoint.x - self.x,
+              otherPoint.y - self.y)
         
         // CHECK: Is there a difference in performance between `hypot` and the `sqrtf` formula?
         // The formula below results in a different value after 7 decimal digits.
@@ -61,6 +64,7 @@ public extension CGPoint {
     }
     
     /// Returns a new point with the position of this point limited to a rectangle.
+    @inlinable
     func clamped(to rect: CGRect) -> CGPoint {
         var newPoint = self
         switch newPoint.x {
@@ -77,29 +81,32 @@ public extension CGPoint {
     }
     
     /// Clamps this point inside a rectangle.
+    @inlinable
     mutating func clamp(to rect: CGRect) {
         self = self.clamped(to: rect)
     }
     
     /// Returns a point in the specified direction at the specified distance from the source point.
+    @inlinable
     static func point(from source: CGPoint,
                              atAngle radians: CGFloat,
                              distance: CGFloat) -> CGPoint
     {
-        return source.point(atAngle: radians, distance: distance)
+        source.point(atAngle: radians, distance: distance)
     }
     
     /// Returns a point in the specified direction at the specified distance from this point.
+    @inlinable
     func point(atAngle radians: CGFloat,
                       distance: CGFloat) -> CGPoint
     {
         // TODO: Eliminate the possibility of round-off errors, e.g. 9.99999999999999 instead of 10.
-        return CGPoint(
-            x: self.x + (cos(radians) * distance),
-            y: self.y + (sin(radians) * distance))
+        CGPoint(x: self.x + (cos(radians) * distance),
+                y: self.y + (sin(radians) * distance))
     }
     
     /// Moves this point in the specified direction for the specified distance.
+    @inlinable
     mutating func move(inAngle radians: CGFloat, distance: CGFloat) {
         // ℹ️ DESIGN: CHECK: Duplicating `point(atAngle:distance:)` instead of calling it for the possibility of slightly increased performance when we're moving points around very often.
         // TODO: Eliminate the possibility of round-off errors, e.g. 9.99999999999999 instead of 10.
@@ -108,54 +115,58 @@ public extension CGPoint {
     }
     
     /// Returns the angle between this point and the specified point.
+    @inlinable
     func radians(to point: CGPoint) -> CGFloat {
         // CREDIT: Apple Adventure Sample
-        return atan2(
-            point.y - self.y,
-            point.x - self.x)
+        atan2(point.y - self.y,
+              point.x - self.x)
     }
     
     // MARK: - Operators
     
+    @inlinable
     static func + (left: CGPoint, right: CGPoint) -> CGPoint {
-        return CGPoint(
-            x: left.x + right.x,
-            y: left.y + right.y)
+        CGPoint(x: left.x + right.x,
+                y: left.y + right.y)
     }
     
+    @inlinable
     static func += (left: inout CGPoint, right: CGPoint) {
         left.x += right.x
         left.y += right.y
     }
     
+    @inlinable
     static func - (left: CGPoint, right: CGPoint) -> CGPoint {
-        return CGPoint(
-            x: left.x - right.x,
-            y: left.y - right.y)
+        CGPoint(x: left.x - right.x,
+                y: left.y - right.y)
     }
     
+    @inlinable
     static func -= (left: inout CGPoint, right: CGPoint) {
         left.x -= right.x
         left.y -= right.y
     }
     
+    @inlinable
     static func * (left: CGPoint, right: CGPoint) -> CGPoint {
-        return CGPoint(
-            x: left.x * right.x,
-            y: left.y * right.y)
+        CGPoint(x: left.x * right.x,
+                y: left.y * right.y)
     }
     
+    @inlinable
     static func *= (left: inout CGPoint, right: CGPoint) {
         left.x *= right.x
         left.y *= right.y
     }
     
+    @inlinable
     static func / (left: CGPoint, right: CGPoint) -> CGPoint {
-        return CGPoint(
-            x: left.x / right.x,
-            y: left.y / right.y)
+        CGPoint(x: left.x / right.x,
+                y: left.y / right.y)
     }
     
+    @inlinable
     static func /= (left: inout CGPoint, right: CGPoint) {
         left.x /= right.x
         left.y /= right.y

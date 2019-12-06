@@ -11,10 +11,11 @@ import Foundation
 public extension Equatable {
     
     /// - Returns: `true` if the provided list of items contains this object or value.
+    @inlinable
     func isAny(of candidates: Self...) -> Bool {
         // CREDIT: https://twitter.com/johnsundell/status/943510426586959873
         // CREDIT: https://github.com/JohnSundell/SwiftTips
-        return candidates.contains(self)
+        candidates.contains(self)
     }
     
 }

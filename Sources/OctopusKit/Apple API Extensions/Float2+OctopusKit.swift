@@ -30,6 +30,7 @@ public extension SIMD2 where Scalar == Float {
     // MARK: - Common Tasks
     
     /// Returns the nearest point to this point on a line from `startPoint` to `endPoint`.
+    @inlinable
     func nearestPointOnLineSegment(lineSegment: (startPoint: SIMD2<Float>, endPoint: SIMD2<Float>)) -> SIMD2<Float> {
         // CREDIT: Apple DemoBots Sample
         

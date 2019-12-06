@@ -11,16 +11,19 @@ import CoreGraphics
 public extension CGFloat {
         
     /// Shorthand for `CGFloat(Int.random(in: range))`
+    @inlinable
     static func randomInteger(in range: Range<Int>) -> CGFloat {
         CGFloat(Int.random(in: range))
     }
     
     /// Shorthand for `CGFloat(Int.random(in: range))`
+    @inlinable
     static func randomInteger(in range: ClosedRange<Int>) -> CGFloat {
         CGFloat(Int.random(in: range))
     }
     
     /// Shorthand for `CGFloat(Int.random(in: range, using: &generator))`
+    @inlinable
     static func randomInteger <T> (in range: Range<Int>, using generator: inout T) -> CGFloat
         where T: RandomNumberGenerator
     {
@@ -28,6 +31,7 @@ public extension CGFloat {
     }
     
     /// Shorthand for `CGFloat(Int.random(in: range, using: &generator))`
+    @inlinable
     static func randomInteger <T> (in range: ClosedRange<Int>, using generator: inout T) -> CGFloat
         where T: RandomNumberGenerator
     {

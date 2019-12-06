@@ -27,8 +27,9 @@ extension SKSpriteNode {
     // MARK: - Properties
     
     /// Returns the center point of the sprite's frame.
+    @inlinable
     public var center: CGPoint {
-        return CGPoint(x: frame.midX, y: frame.midY)
+        CGPoint(x: frame.midX, y: frame.midY)
     }
     
     // MARK: - Common Tasks
@@ -36,6 +37,7 @@ extension SKSpriteNode {
     /// Creates a rectangular `SKPhysicsBody` equal to the sprite's size, ignoring its children if any.
     ///
     /// Does not assign the new physics body to the sprite.
+    @inlinable
     @discardableResult open func makePhysicsBodyFromRect() -> SKPhysicsBody? {
         
         // ⚠️ This functionality cannot be added as an `SKPhysicsBody` extension, because of the usage of an inaccessible `PKPhysicsBody` superclass, as of 2017-10.
@@ -44,7 +46,7 @@ extension SKSpriteNode {
         
         guard
             self.size.width > 0
-                && self.size.height > 0
+         && self.size.height > 0
             else {
                 OctopusKit.logForWarnings.add("\(self.name ?? String(describing: self)) has a width or height of 0")
                 return nil
@@ -54,6 +56,7 @@ extension SKSpriteNode {
     }
     
     /// Creates a rectangular `SKPhysicsBody` equal to the sprite's size, ignoring its children if any, and assigns it to the sprite.
+    @inlinable
     @discardableResult open func setPhysicsBodyToRect() -> SKPhysicsBody? {
         
         guard let newPhysicsBody = self.makePhysicsBodyFromRect() else {
@@ -61,7 +64,7 @@ extension SKSpriteNode {
             return nil
         }
         
-        if let currentPhysicsBody = self.physicsBody {
+        if  let currentPhysicsBody = self.physicsBody {
             OctopusKit.logForWarnings.add("\(self) already has \(currentPhysicsBody)")
         }
         
@@ -72,6 +75,7 @@ extension SKSpriteNode {
     /// Creates a `SKPhysicsBody` from the sprite's texture.
     ///
     /// Does not assign the new physics body to the sprite.
+    @inlinable
     open func makePhysicsBodyFromTexture(withAlphaThreshold alphaThreshold: Float? = nil) -> SKPhysicsBody? {
         
         // ⚠️ This functionality cannot be added as an `SKPhysicsBody` extension, because of the usage of an inaccessible `PKPhysicsBody` superclass, as of 2017-10.
@@ -83,10 +87,9 @@ extension SKSpriteNode {
         
         let newPhysicsBody: SKPhysicsBody
         
-        if let alphaThreshold = alphaThreshold {
+        if  let alphaThreshold = alphaThreshold {
             newPhysicsBody = SKPhysicsBody(texture: texture, alphaThreshold: alphaThreshold, size: self.size)
-        }
-        else {
+        } else {
             newPhysicsBody = SKPhysicsBody(texture: texture, size: self.size)
         }
         
@@ -116,6 +119,7 @@ extension SKSpriteNode {
     /// The following properties are copied: `alpha, anchorPoint, blendMode, color, colorBlendFactor, constraints, entity, isHidden, isPaused, lightingBitMask, physicsBody, position, reachConstraints, shadowedBitMask, shadowCastBitMask, size, speed, xScale, yScale, zPosition, zRotation`
     ///
     /// - Returns: `true` if a sprite matching `name` was found and replaced.
+    @inlinable
     @discardableResult open func copyPropertiesFromNode(
         named name: String,
         in placeholderParent: SKNode,
@@ -133,33 +137,33 @@ extension SKSpriteNode {
             return false
         }
         
-        self.alpha = placeholder.alpha
-        self.anchorPoint = placeholder.anchorPoint
-        self.blendMode = placeholder.blendMode
-        self.color = placeholder.color
-        self.colorBlendFactor = placeholder.colorBlendFactor
-        self.constraints = placeholder.constraints
-        self.entity = placeholder.entity
-        self.isHidden = placeholder.isHidden
-        self.isPaused = placeholder.isPaused
-        self.lightingBitMask = placeholder.lightingBitMask
-        self.physicsBody = placeholder.physicsBody
-        self.position = placeholder.position
-        self.reachConstraints = placeholder.reachConstraints
-        self.shadowedBitMask = placeholder.shadowedBitMask
-        self.shadowCastBitMask = placeholder.shadowCastBitMask
-        self.size = placeholder.size
-        self.speed = placeholder.speed
-        self.xScale = placeholder.xScale
-        self.yScale = placeholder.yScale
-        self.zPosition = placeholder.zPosition
-        self.zRotation = placeholder.zRotation
+        self.alpha                  = placeholder.alpha
+        self.anchorPoint            = placeholder.anchorPoint
+        self.blendMode              = placeholder.blendMode
+        self.color                  = placeholder.color
+        self.colorBlendFactor       = placeholder.colorBlendFactor
+        self.constraints            = placeholder.constraints
+        self.entity                 = placeholder.entity
+        self.isHidden               = placeholder.isHidden
+        self.isPaused               = placeholder.isPaused
+        self.lightingBitMask        = placeholder.lightingBitMask
+        self.physicsBody            = placeholder.physicsBody
+        self.position               = placeholder.position
+        self.reachConstraints       = placeholder.reachConstraints
+        self.shadowedBitMask        = placeholder.shadowedBitMask
+        self.shadowCastBitMask      = placeholder.shadowCastBitMask
+        self.size                   = placeholder.size
+        self.speed                  = placeholder.speed
+        self.xScale                 = placeholder.xScale
+        self.yScale                 = placeholder.yScale
+        self.zPosition              = placeholder.zPosition
+        self.zRotation              = placeholder.zRotation
         
         // self.focusBehavior = placeholder.focusBehavior
         
         // Remove the placeholder from the parent?
         
-        if replacingPlaceholder {
+        if  replacingPlaceholder {
             self.replaceNode(placeholder)
         }
         

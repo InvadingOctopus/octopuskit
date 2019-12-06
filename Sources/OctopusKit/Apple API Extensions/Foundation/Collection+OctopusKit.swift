@@ -10,6 +10,7 @@ import Foundation
 
 public extension Collection {
     
+    @inlinable
     func apply<T>(_ transform: (Self) -> T) -> T {
         // CREDIT: Rudolf Adamkovič (salutis), https://forums.swift.org/t/add-function-application-to-swifts-standard-library/12361
         return transform(self)

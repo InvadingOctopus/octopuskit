@@ -31,6 +31,7 @@ extension SKAction {
     /// Sets the `timingMode` and returns self.
     ///
     /// Useful for chaining calls to an `SKAction` initializer.
+    @inlinable
     open func withTimingMode(_ timingMode: SKActionTimingMode) -> SKAction {
         self.timingMode = timingMode
         return self
@@ -39,9 +40,10 @@ extension SKAction {
     /// Creates an action that idles for a specified period of time then executes the supplied closure.
     ///
     /// - Important: Take care to use capture lists to avoid strong reference cycles in closures.
+    @inlinable
     open func waitForDurationAndRunClosure(interval: TimeInterval,
-                                             closure: @escaping () -> Void)
-        -> SKAction
+                                           closure: @escaping () -> Void)
+                                        -> SKAction
     {
         return SKAction.sequence([
             SKAction.wait(forDuration: interval),
