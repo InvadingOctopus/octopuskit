@@ -31,6 +31,14 @@ public struct AcceleratedValue <Number: Numeric & Comparable> {
     /// The amount to change (or decrease, if negative) the `current` value by on every update.
     public var acceleration:  Number
     
+    /// `true` if the `current` value is greater than `minimum` and less than `maximum`.
+    @inlinable
+    public var isWithinBounds: Bool {
+        // CHECK: PERFORMANCE: Should this be set whenever `current` is modified, or is it better to check this only when the bounds are important?
+        current > minimum
+        && current < maximum
+    }
+    
     /// - Parameters:
     ///   - base: The base value, without any `acceleration`. Default: `1`
     ///   - current: The initial value to start with. Default: `base`
@@ -87,4 +95,5 @@ public struct AcceleratedValue <Number: Numeric & Comparable> {
     public mutating func reset() {
         current = base
     }
+    
 }

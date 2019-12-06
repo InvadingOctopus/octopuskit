@@ -119,11 +119,15 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
         }
         
         // #6: Apply the calculated rotation to the node.
+        
         node.zRotation = nodeRotationForThisFrame
         
         // #7: Apply any acceleration, and clamp the radians to the pre-specified bounds.
-        radiansPerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
-        radiansPerUpdate.clamp()
+        
+        if  radiansPerUpdate.isWithinBounds { // CHECK: PERFORMANCE
+            radiansPerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            radiansPerUpdate.clamp()
+        }
     }
 }
 

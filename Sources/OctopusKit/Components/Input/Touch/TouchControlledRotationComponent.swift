@@ -23,6 +23,7 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
     
     // TODO: Add acceleration, like `KeyboardControlledRotationComponent`
     // TODO: Tests
+    // TODO: FIX: The node "shakes" when the target is stationary and very close.
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,
@@ -128,8 +129,11 @@ public final class TouchControlledRotationComponent: OctopusComponent, OctopusUp
         node.zRotation = nodeRotationForThisFrame
         
         // #7: Apply any acceleration, and clamp the radians to the pre-specified bounds.
-        radiansPerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
-        radiansPerUpdate.clamp()
+        
+        if  radiansPerUpdate.isWithinBounds { // CHECK: PERFORMANCE
+            radiansPerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            radiansPerUpdate.clamp()
+        }
     }
 }
 
