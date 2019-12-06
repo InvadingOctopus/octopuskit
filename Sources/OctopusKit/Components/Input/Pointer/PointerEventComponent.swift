@@ -20,32 +20,50 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     
     // MARK: - Subtypes
     
+    public enum PointerEventCategory {
+        
+        /// A `pointerBegan` event, when a touch or click has occurred.
+        case began
+        
+        /// A `pointerMoved` event, when a touch has moved or the mouse pointer has been dragged.
+        case moved
+        
+        /// A `pointerEnded` event, when a touch or mouse button has been lifted.
+        case ended
+    }
+    
     public final class PointerEvent: Equatable {
         
         // NOTE: `Equatable` conformance cannot be automatically synthesized by Swift 4.1 for classes.
         
+        public let category:  PointerEventCategory
         public let timestamp: TimeInterval
+        
         public let node: SKNode
         public let locationInNode: CGPoint
         
         public var shouldClear: Bool = false // Not private(set) so we can make update(deltaTime:) @inlinable
         
         public static func == (left: PointerEvent, right: PointerEvent) -> Bool {
-            return (left.timestamp      == right.timestamp
+            return (left.category       ==  right.category
+                &&  left.timestamp      ==  right.timestamp
                 &&  left.node           === right.node
-                &&  left.locationInNode == right.locationInNode)
+                &&  left.locationInNode ==  right.locationInNode)
         }
         
         #if canImport(AppKit)
         
-        public init?(event: NSEvent? = nil,
-                     node:  SKNode?  = nil)
+        public init?(category: PointerEventCategory? = nil,
+                     event:    NSEvent? = nil,
+                     node:     SKNode?  = nil)
         {
             guard
-                let event = event,
-                let node  = node
+                let category = category,
+                let event    = event,
+                let node     = node
                 else { return nil }
             
+            self.category       = category
             self.timestamp      = event.timestamp
             self.node           = node
             self.locationInNode = event.location(in: node)
@@ -55,16 +73,19 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         
         #if canImport(UIKit)
         
-        public init?(firstTouch: UITouch? = nil,
+        public init?(category:   PointerEventCategory? = nil,
+                     firstTouch: UITouch? = nil,
                      event:      UIEvent? = nil,
                      node:       SKNode?  = nil)
         {
             guard
-                let firstTouch = firstTouch,
-                let event      = event,
-                let node       = node
+                let category    = category,
+                let firstTouch  = firstTouch,
+                let event       = event,
+                let node        = node
                 else { return nil }
             
+            self.category       = category
             self.timestamp      = event.timestamp
             self.node           = node
             self.locationInNode = firstTouch.location(in: node)
@@ -165,15 +186,21 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         if let mouseEventComponent = coComponent(MouseEventComponent.self) {
             
             if let mouseDown = mouseEventComponent.mouseDown {
-                pointerBegan = PointerEvent(event: mouseDown.event, node: mouseDown.node)
+                pointerBegan = PointerEvent(category:  .began,
+                                            event:      mouseDown.event,
+                                            node:       mouseDown.node)
             }
             
             if let mouseDragged = mouseEventComponent.mouseDragged {
-                pointerMoved = PointerEvent(event: mouseDragged.event, node: mouseDragged.node)
+                pointerMoved = PointerEvent(category:  .moved,
+                                            event:      mouseDragged.event,
+                                            node:       mouseDragged.node)
             }
             
             if let mouseUp = mouseEventComponent.mouseUp {
-                pointerEnded = PointerEvent(event: mouseUp.event, node: mouseUp.node)
+                pointerEnded = PointerEvent(category:  .ended,
+                                            event:      mouseUp.event,
+                                            node:       mouseUp.node)
             }
         }
         
@@ -182,13 +209,15 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         if let touchEventComponent = coComponent(TouchEventComponent.self) {
             
             if let touchesBegan = touchEventComponent.touchesBegan {
-                pointerBegan = PointerEvent(firstTouch: touchesBegan.touches.first,
+                pointerBegan = PointerEvent(category:  .began,
+                                            firstTouch: touchesBegan.touches.first,
                                             event:      touchesBegan.event,
                                             node:       touchesBegan.node)
             }
             
             if let touchesMoved = touchEventComponent.touchesMoved {
-                pointerMoved = PointerEvent(firstTouch: touchesMoved.touches.first,
+                pointerMoved = PointerEvent(category:  .moved,
+                                            firstTouch: touchesMoved.touches.first,
                                             event:      touchesMoved.event,
                                             node:       touchesMoved.node)
             }
@@ -196,7 +225,8 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
             // ⚠️ TODO: CHECK: Safeguard against different touches being ended or cancelled, which may cause jumps in touch-dependent nodes when using multiple fingers.
             
             if let touchesEnded = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled {
-                pointerEnded = PointerEvent(firstTouch: touchesEnded.touches.first,
+                pointerEnded = PointerEvent(category:  .ended,
+                                            firstTouch: touchesEnded.touches.first,
                                             event:      touchesEnded.event,
                                             node:       touchesEnded.node)
             }
