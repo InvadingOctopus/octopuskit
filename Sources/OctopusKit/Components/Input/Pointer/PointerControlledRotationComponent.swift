@@ -68,7 +68,8 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
             let node = entityNode,
             let scene = node.scene,
             let pointerEventComponent = coComponent(PointerEventComponent.self),
-            let lastEvent = pointerEventComponent.lastEvent // NOTE: Use `lastEvent` instead of `latestEventForCurrentFrame`, because we want to continue the rotation if needed, even if the pointer does not move.
+            let lastEvent = pointerEventComponent.lastEvent, // NOTE: Use `lastEvent` instead of `latestEventForCurrentFrame`, because we want to continue the rotation if needed, even if the pointer does not move.
+            lastEvent.category != .ended // We shouldn't continue rotating if the pointer ended. // TODO: Test with multi-touch.
             else {
                 radiansPerUpdate.reset() // TODO: PERFORMANCE: Figure out a better way than setting this every update.
                 return
