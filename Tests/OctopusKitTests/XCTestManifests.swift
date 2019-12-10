@@ -6,7 +6,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(OctopusKitLaunchTests.allTests),
         testCase(OctopusLogTests.allTests),
         testCase(ECSTests.allTests),
-        testCase(AppleAPIExtensionsTests.allTests),
+        testCase(StringTests.allTests),
         testCase(ContiguousArray2DTests.allTests)
     ]
 }

@@ -1,5 +1,5 @@
 //
-//  AppleAPIExtensionsTests.swift
+//  StringTests.swift
 //  OctopusKitTests
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/12.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import OctopusKit
 
-class AppleAPIExtensionsTests: XCTestCase {
+class StringTests: XCTestCase {
 
     func testString() {
         
