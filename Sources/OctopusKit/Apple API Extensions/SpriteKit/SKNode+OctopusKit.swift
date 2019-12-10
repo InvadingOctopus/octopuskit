@@ -115,9 +115,7 @@ extension SKNode {
     /// Returns the radians between this node's `zRotation` and the target angle in radians.
     @inlinable
     open func deltaBetweenRotation(and targetAngle: CGFloat) -> CGFloat {
-        // CREDIT: https://stackoverflow.com/a/2007279/1948215 by https://stackoverflow.com/users/210964/peter-b
-        atan2(sin(targetAngle - zRotation),
-              cos(targetAngle - zRotation))
+        self.zRotation.deltaBetweenAngle(targetAngle)
     }
     
     /// Removes a node and adds this node to the former parent of the removed node.
