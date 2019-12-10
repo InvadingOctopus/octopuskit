@@ -88,9 +88,9 @@ public extension CGPoint {
     
     /// Returns a point in the specified direction at the specified distance from the source point.
     @inlinable
-    static func point(from source: CGPoint,
-                             atAngle radians: CGFloat,
-                             distance: CGFloat) -> CGPoint
+    static func point(from source:     CGPoint,
+                      atAngle radians: CGFloat,
+                      distance:        CGFloat) -> CGPoint
     {
         source.point(atAngle: radians, distance: distance)
     }
@@ -114,10 +114,11 @@ public extension CGPoint {
         self.y += sin(radians) * distance
     }
     
-    /// Returns the angle between this point and the specified point.
+    /// Returns the angle between this point and the specified point, where directly east is `0` radians and positive values indicate a counter-clockwise direction.
     @inlinable
     func radians(to point: CGPoint) -> CGFloat {
         // CREDIT: Apple Adventure Sample
+        // NOTE: Apparently, `atan2` generally takes Y as the first argument.
         atan2(point.y - self.y,
               point.x - self.x)
     }
