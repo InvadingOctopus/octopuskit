@@ -228,6 +228,17 @@ var body: some View {
 
 Set the custom class of the scene as `OKScene` or a subclass of it. Load the scene by calling `OKGameCoordinator.loadAndPresentScene(fileNamed:withTransition:)`, e.g. during the `didEnter.from(_:)` event of an `OKGameState`. 
 
+### Parallel Execution
+
+You may be able to update multiple components simultaneously in parallel, if they do not depend upon each other and will not cause conflicts by accessing/modifying the same data.
+
+For example, you may have multiple arrays of component systems with different dependency graphs, such as:
+
+* `[MouseEventComponent, MouseControlledRotationComponent, MouseControlledShootingComponent]`
+* `[KeyboardEventComponent, KeyboardControlledMovementComponent]`
+
+If all these components are thread-safe, you could update those systems in parallel.
+
 ----
 
 [OctopusKit][repository] © 2019 [Invading Octopus][website] • [Apache License 2.0][license]
