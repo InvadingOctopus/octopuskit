@@ -31,6 +31,21 @@ class CGPointTests: XCTestCase {
         XCTAssertEqual(CGPoint.half, CGPoint(x: 0.5, y: 0.5))
     }
     
+    /// Test custom operators.
+    func testOperators() {
+        let xA     = CGFloat.random(in: -100...100)
+        let yA     = CGFloat.random(in: -100...100)
+        let xB     = CGFloat.random(in: -100...100)
+        let yB     = CGFloat.random(in: -100...100)
+        let pointA = CGPoint(x: xA, y: yA)
+        let pointB = CGPoint(x: xB, y: yB)
+        
+        XCTAssertEqual(pointA + pointB, CGPoint(x: xA + xB, y: yA + yB))
+        XCTAssertEqual(pointA - pointB, CGPoint(x: xA - xB, y: yA - yB))
+        XCTAssertEqual(pointA * pointB, CGPoint(x: xA * xB, y: yA * yB))
+        XCTAssertEqual(pointA / pointB, CGPoint(x: xA / xB, y: yA / yB))
+    }
+    
     /// Test `CGPoint.distance(to:)`
     func testDistance() {
         
@@ -108,6 +123,7 @@ class CGPointTests: XCTestCase {
         
         // #1: Test common angles and cardinal directions.
         // East/right should be `0` in radians, with positive values indicating counter-clockwise rotation.
+        // Should return closest angle; southern quadrants should return a positive value for clockwise rotation.
         
         XCTAssertEqual(fixedPoint.radians(to: CGPoint(x:  0, y:  0)), 0)            // Center/Identity
         XCTAssertEqual(fixedPoint.radians(to: CGPoint(x:  1, y:  0)), 0)            // ➡️
@@ -124,6 +140,7 @@ class CGPointTests: XCTestCase {
     
     static var allTests = [
         ("Test convenience extensions", testConveniences),
+        ("Test operators", testOperators),
         ("Test distance(to:)", testDistance),
         ("Test radians(to:)", testRadians)
     ]
