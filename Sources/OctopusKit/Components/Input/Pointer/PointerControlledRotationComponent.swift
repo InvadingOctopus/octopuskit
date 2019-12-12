@@ -29,14 +29,22 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
     /// Specifies a fixed or variable timestep for per-update changes.
     public var timestep: TimeStep
     
+    /// If `true`, `radiansPerUpdate` is reset to its base value when there is no rotation, for realistic inertia.
+    ///
+    /// `radiansPerUpdate` is always reset when there is no player input.
+    public var resetAccelerationWhenNoMovement: Bool
+    
     /// - Parameters:
     ///   - radiansPerUpdate: The amount of rotation to apply every update, with optional acceleration. Affected by `timestep`.
     ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
-    public init(radiansPerUpdate: AcceleratedValue<CGFloat>,
-                timestep:         TimeStep = .perSecond)
+    ///   - resetAccelerationWhenNoMovement: When `true`, `radiansPerUpdate` is reset to its base value when there is no rotation. Default: `true`
+    public init(radiansPerUpdate:                AcceleratedValue<CGFloat>,
+                timestep:                        TimeStep = .perSecond,
+                resetAccelerationWhenNoMovement: Bool = true)
     {
         self.radiansPerUpdate = radiansPerUpdate
         self.timestep = timestep
+        self.resetAccelerationWhenNoMovement = resetAccelerationWhenNoMovement
         super.init()
     }
     
@@ -45,23 +53,28 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
     ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
     ///   - acceleration: The amount to increase the rotation by on every update, while there is pointer input. The rotation is reset to `radiansPerUpdate` when there is no input. Affected by `timestep`.
     ///   - maximum: The maximum permitted rotation per update.
+    ///   - resetAccelerationWhenNoMovement: When `true`, `radiansPerUpdate` is reset to its base value when there is no rotation. Default: `true`
     public convenience init(radiansPerUpdate:   CGFloat  = 1.0, // ÷ 60 = 0.01666666667 per frame
                             acceleration:       CGFloat  = 0,
                             maximum:            CGFloat  = 1.0,
-                            timestep:           TimeStep = .perSecond)
+                            timestep:           TimeStep = .perSecond,
+                            resetAccelerationWhenNoMovement: Bool = true)
     {
         self.init(radiansPerUpdate: AcceleratedValue<CGFloat>(base:    radiansPerUpdate,
                                                               current: radiansPerUpdate,
                                                               maximum: maximum,
                                                               minimum: 0,
                                                               acceleration: acceleration),
-                  timestep: timestep)
+                  timestep: timestep,
+                  resetAccelerationWhenNoMovement: resetAccelerationWhenNoMovement)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
+        
+        // TODO: PERFORMANCE: Update values only when needed.
         
         guard
             let node = entityNode,
@@ -70,6 +83,7 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
             let lastEvent = pointerEventComponent.lastEvent, // NOTE: Use `lastEvent` instead of `latestEventForCurrentFrame`, because we want to continue the rotation if needed, even if the pointer does not move.
             lastEvent.category != .ended // We shouldn't continue rotating if the pointer ended. // TODO: Test with multi-touch.
             else {
+                // CHECK: BUG: Acceleration continues if the app goes inactive before a `pointerEnded` event is received.
                 radiansPerUpdate.reset() // TODO: PERFORMANCE: Figure out a better way than setting this every update.
                 return
         }
@@ -83,16 +97,43 @@ public final class PointerControlledRotationComponent: OctopusComponent, Octopus
         
         let rotationAmountForCurrentFrame = timestep.applying(radiansPerUpdate.current, deltaTime: CGFloat(seconds))
         
-        // #3: Rotate Your Owl
+        // #3: Just snap and exit if we're already aligned or the difference is very small.
+        
+        // DESIGN: We do not use `CGFloat.rotated(towards:by:)` because we need some extra logic here, like resetting the acceleration.
+        
+        guard abs(targetRotation - node.zRotation) > abs(rotationAmountForCurrentFrame) else {
+            if resetAccelerationWhenNoMovement { radiansPerUpdate.reset() }
+            node.zRotation = targetRotation
+            return
+        }
+        
+        // #4: Decide the direction to rotate in.
+        
+        var rotationToApply = node.zRotation // CHECK: .truncatingRemainder(dividingBy: .pi * 2)
+        let delta = node.zRotation.deltaBetweenAngle(targetRotation)
+        
+        if  delta > 0 {
+            rotationToApply += rotationAmountForCurrentFrame
+        
+        } else if delta < 0 {
+            rotationToApply -= rotationAmountForCurrentFrame
+        }
+        
+        // #5: Snap to the target angle if we passed it this frame.
+        
+        if  abs(delta) < abs(rotationAmountForCurrentFrame) {
+            rotationToApply = targetRotation
+        }
+        
+        // #6: Apply the calculated rotation.
         
         #if LOGINPUTEVENTS
-        let nodeRotationForThisFrame = node.zRotation.rotated(towards: targetRotation, by: rotationAmountForCurrentFrame)
-        debugLog("node.zRotation = \(node.zRotation) → \(nodeRotationForThisFrame), targetRotation = \(targetRotation), delta = \(delta), rotationAmountForCurrentFrame = \(rotationAmountForCurrentFrame)")
+        debugLog("node.zRotation = \(node.zRotation) → \(rotationToApply), targetRotation = \(targetRotation), rotationAmountForCurrentFrame = \(rotationAmountForCurrentFrame), radiansPerUpdate = \(radiansPerUpdate)")
         #endif
         
-        node.zRotation.rotate(towards: targetRotation, by: rotationAmountForCurrentFrame)
+        node.zRotation = rotationToApply
         
-        // #4: Apply any acceleration, and clamp the radians to the pre-specified bounds.
+        // #4: Apply any acceleration, and clamp the speed to the pre-specified bounds.
         
         if  radiansPerUpdate.isWithinBounds { // CHECK: PERFORMANCE
             radiansPerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
