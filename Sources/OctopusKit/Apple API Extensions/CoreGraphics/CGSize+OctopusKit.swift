@@ -18,10 +18,6 @@ public extension CGSize {
         self.init(width: widthAndHeight, height: widthAndHeight)
     }
     
-    init(widthAndHeight: Double) {
-        self.init(width: widthAndHeight, height: widthAndHeight)
-    }
-    
     init(widthAndHeight: Int) {
         self.init(width: widthAndHeight, height: widthAndHeight)
     }
