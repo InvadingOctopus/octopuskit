@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-#if canImport(UIKit) // CHECK: Include tvOS?
+#if canImport(UIKit) // Includes tvOS
 
 extension OctopusScene: TouchEventProvider {
     

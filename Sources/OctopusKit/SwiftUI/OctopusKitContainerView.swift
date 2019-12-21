@@ -34,8 +34,10 @@ public struct OctopusKitContainerView <OctopusGameCoordinatorType, OctopusViewCo
         ZStack {
             
             OctopusViewControllerRepresentable<OctopusGameCoordinatorType, OctopusViewControllerType>()
-            
+
             OctopusUIOverlay<OctopusGameCoordinatorType>()
+            
+            // CHECK: Should `OctopusUIOverlay` be an `.overlay` modifier for `OctopusViewControllerRepresentable`?
         }
     }
 }

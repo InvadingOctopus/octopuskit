@@ -9,6 +9,7 @@
 //  Wherever the AppKit (macOS) "NS-" and UIKit (iOS, iPadOS, tvOS) "UI-" variants of an object can be interchanged, OctopusKit uses an OS-agnostic type alias to reduce the amount of duplicated code.
 
 // TODO: Check with Catalyst.
+// TODO: Use `GCEventViewController` for game controller input.
 
 import Foundation
 
