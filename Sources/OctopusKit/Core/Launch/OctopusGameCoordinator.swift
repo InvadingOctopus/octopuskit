@@ -170,6 +170,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         #endif
     }
     
+    @discardableResult
     open override func enter(_ stateClass: AnyClass) -> Bool {
         
         // We override this method to send `ObservableObject` updates for `currentGameState` to support SwiftUI.
