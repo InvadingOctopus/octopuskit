@@ -15,8 +15,8 @@ public protocol OctopusScenePresenter: class {
 
     // DESIGN: This functionality is presented as a protocol so that it may be swapped between the view controller, game coordinator or game state, depending on the needs of the underlying system framework (such as SwiftUI or UIKit.)
 
-    var spriteKitView: SKView?              { get }
-    var currentScene: OctopusScene?         { get set }
+    var spriteKitView:    SKView?           { get }
+    var currentScene:     OctopusScene?     { get set }
     var currentGameState: OctopusGameState? { get }
     
     func loadScene(fileNamed fileName: String) -> OctopusScene?
@@ -117,7 +117,7 @@ public extension OctopusScenePresenter {
         
         // If an overriding transition has not been specified, let the current scene decide the visual effect for the transition to the next scene.
             
-        if let transition = transition {
+        if  let transition = transition {
             spriteKitView.presentScene(incomingScene, transition: transition)
         } else {
             spriteKitView.presentScene(incomingScene)
@@ -125,12 +125,20 @@ public extension OctopusScenePresenter {
         
         // ⚠️ BUG? NOTE: Set `currentScene` to `incomingScene`, because the `spriteKitView.scene` will still be the previous (outgoing) scene at this point for some reason.
                 
-        if spriteKitView.scene is OctopusScene {
+        if  spriteKitView.scene is OctopusScene {
             self.currentScene = incomingScene
         } else {
             OctopusKit.logForErrors.add("Cannot cast spriteKitView.scene as OctopusScene: \(spriteKitView.scene)")
         }
 
+        // Let the new scene determine UI focus for the Apple TV Remote.
+        // CHECK: Necessary?
+        
+        #if os(tvOS)
+        spriteKitView.setNeedsFocusUpdate()
+        // CHECK: Also call `spriteKitView.updateFocusIfNeeded()`?
+        #endif
+        
     }
     
     /// - Parameter sceneClass: The scene class to create an instance of.

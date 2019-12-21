@@ -169,8 +169,7 @@ open class OctopusViewController: OSViewController {
         }
     }
     
-    #if os(iOS)
-    // MARK: iOS-Specific
+    #if os(iOS) // MARK: - iOS
     
     /// Specifies whether the view controller prefers the status bar to be hidden or shown.
     ///
@@ -217,6 +216,10 @@ open class OctopusViewController: OSViewController {
         self.supportedInterfaceOrientationsOverride[UIDevice.current.userInterfaceIdiom] ?? .all
     }
     
+    #endif
+
+    #if os(iOS) || os(tvOS) // MARK: - iOS & tvOS
+    
     open override func viewWillAppear(_ animated: Bool) {
         OctopusKit.logForFramework.add()
         super.viewWillAppear(animated)
@@ -242,9 +245,9 @@ open class OctopusViewController: OSViewController {
         OctopusKit.clearAllCaches()
     }
     
-    #elseif os(OSX)
-    
-    // MARK: macOS-specific
+    #endif
+
+    #if os(OSX) // MARK: - macOS
     
     public override func loadView() {
         // ℹ️ If you pass in nil for nibNameOrNil, nibName returns nil and loadView() throws an exception; in this case you must set view before view is invoked, or override loadView().
@@ -274,5 +277,3 @@ open class OctopusViewController: OSViewController {
     #endif
     
 }
-
-
