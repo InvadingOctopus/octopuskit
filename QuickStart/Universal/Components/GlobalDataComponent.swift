@@ -13,9 +13,20 @@ import OctopusKit
 /// A custom component for the QuickStart project that holds some simple data to be shared across multiple game states and scenes.
 final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableObject {
     
-    @Published public var secondsElapsed: TimeInterval = 0
+    public var secondsElapsed: TimeInterval = 0
     
-    @Published public var emojiCount: Int = 0 {
+    /// A more slowly-updated version of `secondsElapsed`. Should reduce strain on SwiftUI updates? :)
+    public var secondsElapsedRounded: Int = 0 {
+        willSet {
+            // ℹ️ We don't use @Published here because that causes a SwiftUI update every frame, even when this value does not change between seconds.
+            if newValue != secondsElapsedRounded {
+                self.objectWillChange.send()
+            }
+        }
+    }
+    
+    @Published
+    public var emojiCount: Int = 0 {
         didSet {
             emojiHighScore = max(emojiCount, emojiHighScore)
         }
@@ -23,12 +34,9 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
     
     @OKUserDefault(key: "emojiHighScore", defaultValue: 50) public var emojiHighScore: Int
     
-    public var secondsElapsedTrimmed: String {
-        String(secondsElapsed).prefix(6).padding(toLength: 7, withPad: " ", startingAt: 0)
-    }
-    
     override func update(deltaTime seconds: TimeInterval) {
         secondsElapsed += seconds
+        secondsElapsedRounded = Int(secondsElapsed.rounded(.down))
     }
 }
 

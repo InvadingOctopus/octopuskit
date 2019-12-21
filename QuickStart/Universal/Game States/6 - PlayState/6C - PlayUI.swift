@@ -6,9 +6,9 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-//  🔶 STEP 5C: The user interface overlay for the PlayState.
+//  🔶 STEP 6C: The user interface overlay for PlayState, PausedState and GameOverState.
 //
-//  As you can see, PlayUI includes TitleUI. The power of SwiftUI makes it very easy to compose user interfaces from different self-contained parts.
+//  Once you understand how everything works, you may delete this file and replace it with your own UI.
 
 import SwiftUI
 import OctopusKit
@@ -17,31 +17,49 @@ struct PlayUI: View {
     
     @EnvironmentObject var gameCoordinator:  MyGameCoordinator
     
+    /// Hides the UI on tvOS so that it doesn't intercept remote input from the gameplay.
+    private var showUI: Bool {
+        #if os(tvOS)
+        return !(gameCoordinator.currentGameState is PlayState)
+        #else
+        return true
+        #endif
+    }
+    
     private var globalDataComponent: GlobalDataComponent? {
         gameCoordinator.entity.component(ofType: GlobalDataComponent.self)
     }
     
+    let instructions: String = {
+        #if os(macOS)
+        let systemDependentText = "Click and drag on the background to spawn physics entities in PlayState."
+        #elseif os(tvOS)
+        let systemDependentText = "Slide on the remote to spawn physics entities in PlayState. Press the Play/Pause button to view the UI."
+        #else
+        let systemDependentText = "Tap and drag on the background to spawn physics entities in PlayState."
+        #endif
+        
+        return systemDependentText + "\n\nThe text and UI is a SwiftUI overlay on top of a SpriteKit view."
+    }()
+    
     var body: some View {
-        ZStack {
+        VStack {
             
             VStack(spacing: 20) {
                 
-                GameStateLabel().padding(.top, 40)
+                GameStateLabel().padding(.top, 50)
                     .opacity(0.9)
                     .blendMode(.lighten)
                 
-                Text("""
-                    Tap and drag on the background to spawn physics entities in PlayState.
-
-                    All this text and UI is a SwiftUI overlay on top of a SpriteKit view, all powered by Metal.
-                    """)
+                Text(instructions)
                     .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .blendMode(.difference)
                 
                 Spacer()
                 
-                if  globalDataComponent != nil {
+                if  showUI && globalDataComponent != nil {
                     GlobalDataComponentLabel(component: globalDataComponent!)
                         .opacity(0.8)
                 }
@@ -51,9 +69,25 @@ struct PlayUI: View {
             .frame(alignment: .top)
             .padding()
             
-            // Include the TitleUI in its entirety as a child view of PlayUI, so we don't have to recreate its contents here.
-            
-            TitleUI()
+            if  showUI {
+                cycleStateButton
+            }
+        }
+        .tvOSExcluded { $0.padding(.bottom, 50) }
+        .tvOS { $0.padding(.bottom, 100) } // BUG? APPLEBUG? This seems necessary to prevent the bottom edge of the button from stretching.
+    }
+    
+    var cycleStateButton: some View {
+        Button(action: cycleGameState) {
+            Text("CYCLE GAME STATES")
+                .fontWeight(.bold)
+        }
+        .tvOSExcluded { $0.buttonStyle(FatButtonStyle(color: .purple)) }
+    }
+    
+    func cycleGameState() {
+        if  let currentScene = gameCoordinator.currentScene {
+            currentScene.octopusSceneDelegate?.octopusSceneDidChooseNextGameState(currentScene)
         }
     }
     
@@ -89,8 +123,7 @@ struct GameStateLabel: View {
     var body: some View {
         Text(stateName)
             .fontWeight(.bold)
-            .font(Font(OSFont(name: "AvenirNextCondensed-Bold", size: 25)!))
-            .foregroundColor(stateColor)
+            .tvOSExcluded { $0.font(Font(OSFont(name: "AvenirNextCondensed-Bold", size: 25)!)) }
             .shadow(color: stateColor, radius: 10, x: 0, y: 0)
     }
 }
@@ -100,29 +133,9 @@ struct GlobalDataComponentLabel: View {
     
     @ObservedObject var component: GlobalDataComponent
     
-    @State private var color = Color.green
+    var color = Color.randomExcludingBlackWhite
     
     var body: some View {
-
-        #if !os(tvOS)
-
-        return universal
-            .onTapGesture {
-                withAnimation {
-                    var newColor = self.color
-                    repeat {
-                        newColor = .randomExcludingBlackWhite
-                    } while newColor == self.color
-                    self.color = newColor
-                }
-            }
-
-        #elseif os(tvOS)
-        return universal
-        #endif
-    }
-    
-    var universal: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("Global Data Component")
                 .font(.headline)
@@ -131,7 +144,7 @@ struct GlobalDataComponentLabel: View {
                 .font(.callout)
                 .foregroundColor(.black)
             Text("""
-                Seconds since activation: \(component.secondsElapsedTrimmed)
+                Seconds since activation: \(component.secondsElapsedRounded)
                 Emojis spawned: \(component.emojiCount)
                 High Score: \(component.emojiHighScore)
                 """)

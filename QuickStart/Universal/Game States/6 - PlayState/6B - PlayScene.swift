@@ -250,6 +250,36 @@ final class PlayScene: OKScene {
         self.physicsWorld.speed = 1.0
         self.isPaused = false
     }
+    
+    // MARK: - tvOS
+    
+    #if os(tvOS)
+    
+    // 🔶 STEP 6B.?: These methods and properties ensures that both the SpriteKit gameplay and the SwiftUI buttons etc. can receive Apple TV Remote input events when appropriate.
+    
+    override var canBecomeFocused: Bool {
+        gameCoordinator?.currentGameState is PlayState
+    }
+    
+    override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if  presses.contains(where: { $0.type == .playPause }) {
+            gameCoordinator?.enter(PausedState.self)
+            parentFocusEnvironment?.setNeedsFocusUpdate()
+            parentFocusEnvironment?.updateFocusIfNeeded()
+        }
+    }
+
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        if  self.gameCoordinator?.currentGameState is PlayState {
+            return [self]
+        } else {
+            return [self.view?.parentFocusEnvironment ?? self]
+        }
+    }
+    
+    #endif
+    
 }
 
 // NEXT: See PausedState (STEP 7)
+
