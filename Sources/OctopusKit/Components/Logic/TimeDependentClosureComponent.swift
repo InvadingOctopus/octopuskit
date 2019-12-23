@@ -42,7 +42,7 @@ public final class TimeDependentClosureComponent: OctopusComponent, OctopusUpdat
     /// The seconds elapsed since this component was initialized.
     public fileprivate(set) var totalTime: TimeInterval = 0
     
-    public isPaused: Bool = false
+    public var isPaused: Bool = false
     
     /// - Parameter closure: The block of code to execute every frame.
     ///
