@@ -6,26 +6,22 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: macOS compatibility?
-
-// CHECK: Does it impact performance if each gesture recognizer component is its own delegate? Should `OctopusScene` be the single `UIGestureRecognizerDelegate`?
+// CHECK: Does it impact performance if each gesture recognizer component is its own delegate? Should `OctopusScene` be the single `OSGestureRecognizerDelegate`?
 
 import SpriteKit
 import GameplayKit
 
-#if canImport(UIKit) // TODO: Add macOS trackpad support.
-
-/// A base class for components that attach a `UIGestureRecognizer` to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
+/// A base class for components that attach an `OSGestureRecognizer` to the `SKView` of the `SpriteKitSceneComponent` when this component is added to the scene entity.
 ///
 /// By default, there is no action (handler) for the gesture events. To use this component, call `gestureRecognizer.addTarget(_:action:)` to assign your event handlers.
 ///
-/// To allow the simultaneous recognition of multiple gesture types, for example pan and pinch, set `self.gestureRecognizer.delegate = self` and add compatible recognizer types to this component's `compatibleGestureRecognizerTypes` array.
+/// To allow the simultaneous recognition of multiple gesture types, for example pan and zoom, set `self.gestureRecognizer.delegate = self` and add compatible recognizer types to this component's `compatibleGestureRecognizerTypes` array.
 ///
-/// - Note: Adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
+/// - Note: On iOS, adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
 ///
 /// **Dependencies:** `SpriteKitSceneComponent`
-open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComponent, UIGestureRecognizerDelegate
-    where GestureRecognizerType: UIGestureRecognizer
+open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComponent, OSGestureRecognizerDelegate
+    where GestureRecognizerType: OSGestureRecognizer
 {
         
     open override var requiredComponents: [GKComponent.Type]? {
@@ -35,17 +31,19 @@ open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComp
     public fileprivate(set) var gestureRecognizer: GestureRecognizerType // CHECK: Should this be optional?
     
     /// To allow the simultaneous recognition of multiple gesture types, for example pan and pinch, the subclass should set `self.gestureRecognizer.delegate = self` and add compatible recognizer types to this array.
-    public var compatibleGestureRecognizerTypes: [UIGestureRecognizer.Type] = []
+    public var compatibleGestureRecognizerTypes: [OSGestureRecognizer.Type] = []
     
     public override init() {
         self.gestureRecognizer = GestureRecognizerType(target: nil, action: nil)
         super.init()
     }
     
+    #if canImport(UIKit)
     public convenience init(cancelsTouchesInView: Bool) {
         self.init()
         self.gestureRecognizer.cancelsTouchesInView = cancelsTouchesInView
     }
+    #endif
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
@@ -91,8 +89,8 @@ open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComp
     // MARK: - UIGestureRecognizerDelegate
     
     open func gestureRecognizer(
-        _ gestureRecognizer: UIGestureRecognizer,
-        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)
+        _ gestureRecognizer: OSGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: OSGestureRecognizer)
         -> Bool
     {
         guard
@@ -105,10 +103,3 @@ open class OctopusGestureRecognizerComponent<GestureRecognizerType>: OctopusComp
         return self.compatibleGestureRecognizerTypes.contains { $0 == type(of: otherGestureRecognizer) }
     }
 }
-
-#endif
-
-#if !canImport(UIKit) // TODO: Add macOS trackpad support.
-public final class OctopusGestureRecognizerComponent<GestureRecognizerType: NSGestureRecognizer>: iOSExclusiveComponent {}
-#endif
-

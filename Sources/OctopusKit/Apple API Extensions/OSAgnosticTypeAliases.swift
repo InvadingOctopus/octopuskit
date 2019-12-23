@@ -22,8 +22,13 @@ public typealias OSFont             = NSFont
 public typealias OSImage            = NSImage
 public typealias OSViewController   = NSViewController
 
-public typealias OSMouseOrTouchEventComponent = MouseEventComponent
-public typealias OSTouchOrMouseEventComponent = MouseEventComponent
+public typealias OSGestureRecognizer            = NSGestureRecognizer
+public typealias OSGestureRecognizerDelegate    = NSGestureRecognizerDelegate
+public typealias OSClickOrTapGestureRecognizer  = NSClickGestureRecognizer
+public typealias OSPanGestureRecognizer         = NSPanGestureRecognizer
+
+public typealias OSMouseOrTouchEventComponent   = MouseEventComponent
+public typealias OSClickOrTapGestureRecognizerComponent = ClickGestureRecognizerComponent
 
 #elseif canImport(UIKit)
 
@@ -34,7 +39,12 @@ public typealias OSFont             = UIFont
 public typealias OSImage            = UIImage
 public typealias OSViewController   = UIViewController
 
-public typealias OSMouseOrTouchEventComponent = TouchEventComponent
-public typealias OSTouchOrMouseEventComponent = TouchEventComponent
+public typealias OSGestureRecognizer            = UIGestureRecognizer
+public typealias OSGestureRecognizerDelegate    = UIGestureRecognizerDelegate
+public typealias OSClickOrTapGestureRecognizer  = UITapGestureRecognizer
+public typealias OSPanGestureRecognizer         = UIPanGestureRecognizer
+
+public typealias OSMouseOrTouchEventComponent   = TouchEventComponent
+public typealias OSClickOrTapGestureRecognizerComponent = TapGestureRecognizerComponent
 
 #endif
