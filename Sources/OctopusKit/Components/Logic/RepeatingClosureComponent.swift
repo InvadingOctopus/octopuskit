@@ -33,10 +33,10 @@ public final class RepeatingClosureComponent: OctopusComponent, OctopusUpdatable
     
     /// The block of code to execute every frame.
     ///
-    /// For a description of the closure's signature and parameters, see `RepeatedClosureComponent.ClosureType`.
+    /// For a description of the closure's signature and parameters, see `RepeatingClosureComponent.ClosureType`.
     public var closure: ClosureType
 
-    /// The number of frames to execute the `closure` for. If `nil`, the `closure` is executed every frame until the `RepeatedClosureComponent` is removed from the entity or the scene's update cycle.
+    /// The number of frames to execute the `closure` for. If `nil`, the `closure` is executed every frame until the `RepeatingClosureComponent` is removed from the entity or the scene's update cycle.
     ///
     /// - NOTE: When this property is modified, the repetition counter is reset to `0`.
     public var framesToStopAfter: UInt64? {
