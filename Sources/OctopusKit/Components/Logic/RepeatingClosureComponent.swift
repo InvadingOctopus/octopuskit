@@ -19,10 +19,8 @@ import GameplayKit
 ///
 /// **Example**
 ///
-///     RepeatingClosureComponent() {
-///         $0.coComponent(ofType: SpriteKitComponent.self)?.node
-///     }
-open class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+///     RepeatingClosureComponent() { $0.entityNode?.zRotation -= 0.01 }
+public final class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     
     /// The block of code to be executed every frame by a `RepeatingClosureComponent`.
     ///
@@ -36,12 +34,12 @@ open class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponen
     /// The block of code to execute every frame.
     ///
     /// For a description of the closure's signature and parameters, see `RepeatedClosureComponent.ClosureType`.
-    open var closure: ClosureType
+    public var closure: ClosureType
 
     /// The number of frames to execute the `closure` for. If `nil`, the `closure` is executed every frame until the `RepeatedClosureComponent` is removed from the entity or the scene's update cycle.
     ///
     /// - NOTE: When this property is modified, the repetition counter is reset to `0`.
-    open var framesToStopAfter: UInt64? {
+    public var framesToStopAfter: UInt64? {
         didSet {
             if  framesToStopAfter != oldValue { // Reset only when the value actually changes.
                 self.repetitionCounter = 0
@@ -49,7 +47,7 @@ open class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponen
         }
     }
     
-    open fileprivate(set) var repetitionCounter: UInt64 = 0
+    public fileprivate(set) var repetitionCounter: UInt64 = 0
     
     /// - Parameter framesToStopAfter: The number of frames to stop executing this closure after. If `nil`, the closure will be executed every frame until the `RepeatingClosureComponent` is removed from the entity or the scene's update cycle.
     ///
@@ -68,7 +66,7 @@ open class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponen
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    open override func update(deltaTime seconds: TimeInterval) {
+    public override func update(deltaTime seconds: TimeInterval) {
         
         // Have we been specified a limit on the number of repetitions?
         
@@ -84,7 +82,7 @@ open class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponen
     }
     
     /// Resets the repetition counter to `0`. Does not affect anything if `framesToStopAfter` is `nil`.
-    open func reset() {
+    public func reset() {
         self.repetitionCounter = 0
     }
 }
