@@ -21,9 +21,9 @@ import GameplayKit
 /// **Example**
 ///
 ///     DelayedClosureComponent(executionDelay: 60.0) {
-///         $0.coComponent(ofType: SpriteKitComponent.self)?.node
+///         $0.entityNode?.alpha = 0.1
 ///     }
-open class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent {
     
     /// The block of code to be executed by a `DelayedClosureComponent`.
     ///
@@ -39,13 +39,13 @@ open class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent 
     /// The closure is executed only once. It may be repeated by calling `reset()`.
     ///
      /// For a description of the closure's signature and parameters, see `DelayedCustomClosureComponent.ClosureType`.
-    open var closure: ClosureType
+    public var closure: ClosureType
     
     // The duration in seconds to wait before executing the closure.
-    open var executionDelay: TimeInterval
+    public var executionDelay: TimeInterval
     
-    open fileprivate(set) var secondsElapsed: TimeInterval = 0
-    open fileprivate(set) var didExecuteClosure = false
+    public fileprivate(set) var secondsElapsed: TimeInterval = 0
+    public fileprivate(set) var didExecuteClosure = false
     
     /// - Parameter executionDelay: The duration in seconds (or fractions of seconds) to wait before executing the closure.
     /// - Parameter closure: The block of code to execute after the time specified by `executionDelay` has passed.
@@ -61,7 +61,7 @@ open class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent 
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    open override func update(deltaTime seconds: TimeInterval) {
+    public override func update(deltaTime seconds: TimeInterval) {
 
         guard !didExecuteClosure else { return }
         
@@ -75,7 +75,7 @@ open class DelayedClosureComponent: OctopusComponent, OctopusUpdatableComponent 
     }
     
     /// Resets the component's timer so that it executes the closure again after its specified delay.
-    open func reset() {
+    public func reset() {
         self.secondsElapsed = 0
         self.didExecuteClosure = false
     }
