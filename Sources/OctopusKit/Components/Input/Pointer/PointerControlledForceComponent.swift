@@ -10,7 +10,7 @@
 
 // CHECKED: This component works whether the `PointerEventComponent` is added to a sprite entity or the scene entity. :)
 
-// TODO: Fix physics and grabbing behavior etc.
+// TODO: Improve physics and grabbing behavior etc.
 
 import SpriteKit
 import GameplayKit
@@ -57,20 +57,22 @@ public final class PointerControlledForceComponent: OctopusComponent, OctopusUpd
         // Move the node if the pointer we're tracking has moved.
         
         if  self.pointing,
-            let currentEvent = pointerEventComponent.pointerMoved,
-            let lastEvent    = pointerEventComponent.lastEvent
+            let currentEvent  = pointerEventComponent.pointerMoved,
+            let previousEvent = pointerEventComponent.secondLastEvent,
+            previousEvent.category != .ended
         {
             let currentPointerLocation  = currentEvent.location(in: parent)
-            let previousPointerLocation = lastEvent.location(in: parent)
+            let previousPointerLocation = previousEvent.location(in: parent)
             let vector = CGVector(dx: (currentPointerLocation.x - previousPointerLocation.x) * boost,
                                   dy: (currentPointerLocation.y - previousPointerLocation.y) * boost)
             physicsBody.applyForce(vector)
+            
         }
-        
+
         // Stop tracking a pointer if the player cancelled it.
         
         if  self.pointing,
-            pointerEventComponent.pointerEnded != nil
+            pointerEventComponent.pointerEnded != nil // CHECK: Should we use `PointerEventComponent.lastEvent`?
         {
             self.pointing = false
         }
