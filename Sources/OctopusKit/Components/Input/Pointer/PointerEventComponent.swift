@@ -118,51 +118,78 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerBegan")
     public var pointerBegan: PointerEvent? = nil { // Not private(set) so we can make update(deltaTime:) @inlinable
         didSet {
-            if  let pointerBegan = pointerBegan,
-                (lastEvent == nil || lastEvent!.timestamp < pointerBegan.timestamp)
-            {
-                lastEvent = pointerBegan
+            if  let pointerBegan = pointerBegan {
+                
+                if  lastEvent == nil || lastEvent!.timestamp < pointerBegan.timestamp {
+                    lastEvent = pointerBegan
+                }
+                
+                if  latestEventForCurrentFrame == nil || latestEventForCurrentFrame!.timestamp < pointerBegan.timestamp {
+                    latestEventForCurrentFrame = pointerBegan
+                }
             }
         }
     }
     
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerMoved")
     public var pointerMoved: PointerEvent? = nil { // Not private(set) so we can make update(deltaTime:) @inlinable
-           didSet {
-               if  let pointerMoved = pointerMoved,
-                   (lastEvent == nil || lastEvent!.timestamp < pointerMoved.timestamp)
-               {
-                   lastEvent = pointerMoved
-               }
-           }
-       }
+        didSet {
+            if  let pointerMoved = pointerMoved {
+                
+                if  lastEvent == nil || lastEvent!.timestamp < pointerMoved.timestamp {
+                    lastEvent = pointerMoved
+                }
+                
+                if  latestEventForCurrentFrame == nil || latestEventForCurrentFrame!.timestamp < pointerMoved.timestamp {
+                    latestEventForCurrentFrame = pointerMoved
+                }
+            }
+        }
+    }
     
     @LogInputEventChanges(propertyName: "PointerEventComponent.pointerEnded")
     public var pointerEnded: PointerEvent? = nil { // Not private(set) so we can make update(deltaTime:) @inlinable
-           didSet {
-               if  let pointerEnded = pointerEnded,
-                   (lastEvent == nil || lastEvent!.timestamp < pointerEnded.timestamp)
-               {
-                   lastEvent = pointerEnded
-               }
-           }
-       }
+        didSet {
+            if  let pointerEnded = pointerEnded {
+                
+                if  lastEvent == nil || lastEvent!.timestamp < pointerEnded.timestamp {
+                    lastEvent = pointerEnded
+                }
+                
+                if  latestEventForCurrentFrame == nil || latestEventForCurrentFrame!.timestamp < pointerEnded.timestamp {
+                    latestEventForCurrentFrame = pointerEnded
+                }
+                
+            }
+        }
+    }
     
     /// Returns the event which was received during this frame. To check the last event received in previous frames, use `lastEvent`
-    @inlinable
-    public var latestEventForCurrentFrame: PointerEvent? {
-        [pointerBegan, pointerMoved, pointerEnded]
-            .compactMap { $0 }
-            .sorted     { $0.timestamp > $1.timestamp }
-            .first
-    }
+//    @inlinable
+    public var latestEventForCurrentFrame: PointerEvent? = nil // Not private(set) so update(deltaTime:) can be @inlinable
+//    {
+//        [pointerBegan, pointerMoved, pointerEnded]
+//            .compactMap { $0 }
+//            .sorted     { $0.timestamp > $1.timestamp }
+//            .first
+//    }
     
     @available(*, unavailable, renamed: "latestEventForCurrentFrame")
     public var latestEvent: PointerEvent? = nil // TODO: Remove in 4.0.0 :)
     
-    /// Returns the last event received during this *or any previous* previous frames. To check the *latest* event received during the current frame, use `latestEvent`.
+    /// Returns the last event received during this *or any previous* frames. To check the *latest* event received during the current frame, use `latestEventForCurrentFrame`.
     @LogInputEventChanges(propertyName: "PointerEventComponent.lastEvent")
-    public private(set) var lastEvent: PointerEvent? = nil
+    public private(set) var lastEvent: PointerEvent? = nil {
+        didSet {
+            if  lastEvent != oldValue {
+                secondLastEvent = oldValue
+            }
+        }
+    }
+    
+    /// Returns the second last event received in previous updates. Use this for comparing pointer movement and state between events.
+    @LogInputEventChanges(propertyName: "PointerEventComponent.secondLastEvent")
+    public private(set) var secondLastEvent: PointerEvent? = nil
     
     // MARK: - Frame Cycle
     
@@ -179,25 +206,29 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
             return
         }
         
-        // #2: Mirror a `TouchEventComponent` on iOS or a `MouseEventComponent` on macOS.
+        // #2: Clear latestEventForCurrentFrame until we have an event.
+        
+        latestEventForCurrentFrame = nil
+        
+        // #3: Mirror a `TouchEventComponent` on iOS or a `MouseEventComponent` on macOS.
         
         #if canImport(AppKit)
         
         if let mouseEventComponent = coComponent(MouseEventComponent.self) {
             
-            if let mouseDown = mouseEventComponent.mouseDown {
+            if  let mouseDown = mouseEventComponent.mouseDown {
                 pointerBegan = PointerEvent(category:  .began,
                                             event:      mouseDown.event,
                                             node:       mouseDown.node)
             }
             
-            if let mouseDragged = mouseEventComponent.mouseDragged {
+            if  let mouseDragged = mouseEventComponent.mouseDragged {
                 pointerMoved = PointerEvent(category:  .moved,
                                             event:      mouseDragged.event,
                                             node:       mouseDragged.node)
             }
             
-            if let mouseUp = mouseEventComponent.mouseUp {
+            if  let mouseUp = mouseEventComponent.mouseUp {
                 pointerEnded = PointerEvent(category:  .ended,
                                             event:      mouseUp.event,
                                             node:       mouseUp.node)
@@ -206,16 +237,16 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         
         #elseif canImport(UIKit)
         
-        if let touchEventComponent = coComponent(TouchEventComponent.self) {
+        if  let touchEventComponent = coComponent(TouchEventComponent.self) {
             
-            if let touchesBegan = touchEventComponent.touchesBegan {
+            if  let touchesBegan = touchEventComponent.touchesBegan {
                 pointerBegan = PointerEvent(category:  .began,
                                             firstTouch: touchesBegan.touches.first,
                                             event:      touchesBegan.event,
                                             node:       touchesBegan.node)
             }
             
-            if let touchesMoved = touchEventComponent.touchesMoved {
+            if  let touchesMoved = touchEventComponent.touchesMoved {
                 pointerMoved = PointerEvent(category:  .moved,
                                             firstTouch: touchesMoved.touches.first,
                                             event:      touchesMoved.event,
@@ -224,7 +255,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
             
             // ⚠️ TODO: CHECK: Safeguard against different touches being ended or cancelled, which may cause jumps in touch-dependent nodes when using multiple fingers.
             
-            if let touchesEnded = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled {
+            if  let touchesEnded = touchEventComponent.touchesEnded ?? touchEventComponent.touchesCancelled {
                 pointerEnded = PointerEvent(category:  .ended,
                                             firstTouch: touchesEnded.touches.first,
                                             event:      touchesEnded.event,
@@ -234,7 +265,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         
         #endif
         
-        // #3: Clear stale events whose flags have been set.
+        // #4: Clear stale events whose flags have been set.
         
         // ℹ️ We cannot use `if let` unwrapping as we need to modify the actual properties themselves, not their values.
         
@@ -242,7 +273,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         if pointerMoved?.shouldClear ?? false { pointerMoved = nil }
         if pointerEnded?.shouldClear ?? false { pointerEnded = nil }
         
-        // #4: Flag non-`nil` events to be cleared on the next frame, so that other components do not see any stale input data.
+        // #5: Flag non-`nil` events to be cleared on the next frame, so that other components do not see any stale input data.
         
         pointerBegan?.shouldClear = true
         pointerMoved?.shouldClear = true
