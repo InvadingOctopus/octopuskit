@@ -128,20 +128,20 @@ public extension CGVector {
                  dy: left.dy + right.dy)
     }
     
-    /// Adds two vectors, storing the result in the left vector.
+    /// Adds two vectors and stores the result in the left vector.
     @inlinable
     static func += (left: inout CGVector, right: CGVector) {
         left = left + right
     }
     
-    /// Subtracts two vectors and returns the result as a new `CGVector`.
+    /// Subtracts the right vector from the left vector and returns the result as a new `CGVector`.
     @inlinable
     static func - (left: CGVector, right: CGVector) -> CGVector {
         CGVector(dx: left.dx - right.dx,
                  dy: left.dy - right.dy)
     }
     
-    /// Subtracts the right vector from the left vector, storing the result in the left vector.
+    /// Subtracts the right vector from the left vector and stores the result in the left vector.
     @inlinable
     static func -= (left: inout CGVector, right: CGVector) {
         left = left - right
@@ -154,10 +154,51 @@ public extension CGVector {
                  dy: left.dy * right.dy)
     }
     
-    /// Multiplies the vector with another, storing the result in the left vector.
+    /// Multiplies two vectors and stores the result in the left vector.
     @inlinable
     static func *= (left: inout CGVector, right: CGVector) {
         left = left * right
+    }
+    
+    /// Divides the left vector by the right vector and returns the result as a new `CGVector`.
+    @inlinable
+    static func / (left: CGVector, right: CGVector) -> CGVector {
+        CGVector(dx: left.dx / right.dx,
+                 dy: left.dy / right.dy)
+    }
+    
+    /// Divides the left vector by the right vector and stores the result in the left vector.
+    @inlinable
+    static func /= (left: inout CGVector, right: CGVector) {
+        left = left / right
+    }
+    
+    // MARK: Operators, Scalars
+    
+    /// Adds a scalar value to a vector and returns the result as a new `CGVector`.
+    @inlinable
+    static func + (vector: CGVector, scalar: CGFloat) -> CGVector {
+        CGVector(dx: vector.dx + scalar,
+                 dy: vector.dy + scalar)
+    }
+    
+    /// Adds a scalar to the vector and stores the result in the vector.
+    @inlinable
+    static func += (vector: inout CGVector, scalar: CGFloat) {
+        vector = vector + scalar
+    }
+    
+    /// Subtracts a scalar value from a vector and returns the result as a new `CGVector`.
+    @inlinable
+    static func - (vector: CGVector, scalar: CGFloat) -> CGVector {
+        CGVector(dx: vector.dx - scalar,
+                 dy: vector.dy - scalar)
+    }
+    
+    /// Subtracts a scalar from the vector and stores the result in the vector.
+    @inlinable
+    static func -= (vector: inout CGVector, scalar: CGFloat) {
+        vector = vector - scalar
     }
     
     /// Multiplies a vector with a scalar value and returns the result as a new `CGVector`.
@@ -167,23 +208,10 @@ public extension CGVector {
                  dy: vector.dy * scalar)
     }
     
-    /// Multiplies the vector with a scalar, storing the result in the vector.
+    /// Multiplies the vector with a scalar and stores the result in the vector.
     @inlinable
     static func *= (vector: inout CGVector, scalar: CGFloat) {
         vector = vector * scalar
-    }
-    
-    /// Divides two vectors and returns the result as a new `CGVector`.
-    @inlinable
-    static func / (left: CGVector, right: CGVector) -> CGVector {
-        CGVector(dx: left.dx / right.dx,
-                 dy: left.dy / right.dy)
-    }
-    
-    /// Divides the left vector by the right vector, storing the result in the left vector.
-    @inlinable
-    static func /= (left: inout CGVector, right: CGVector) {
-        left = left / right
     }
     
     /// Divides a vector by a scalar value and returns the result as a new `CGVector`.
@@ -193,10 +221,9 @@ public extension CGVector {
                  dy: vector.dy / scalar)
     }
     
-    /// Divides the vector by a scalar, storing the result in the vector.
+    /// Divides the vector by a scalar and stores the result in the vector.
     @inlinable
     static func /= (vector: inout CGVector, scalar: CGFloat) {
         vector = vector / scalar
     }
-    
 }
