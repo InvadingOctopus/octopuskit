@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-/// Prevents the physics body of the entity's `SpriteKitComponent` node from moving while the node is touched or clicked by the player.
+/// Prevents the physics body of the entity's `PhysicsComponent` from moving while the node is touched or clicked by the player.
 ///
 /// - Prevents the body from being affected by gravity while it is being held.
 /// - Sets the body's velocity to `0` every frame while it is being held.
@@ -31,6 +31,13 @@ public final class PointerControlledPhysicsHoldingComponent: OctopusComponent, O
     
     @LogInputEventChanges(propertyName: "PointerControlledPhysicsHoldingComponent.isHolding")
     public var isHolding: Bool = false
+    
+    public init(stopAngularVelocity: Bool = false) {
+        super.init()
+        self.stopAngularVelocity = stopAngularVelocity
+    }
+    
+    public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     public override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)
