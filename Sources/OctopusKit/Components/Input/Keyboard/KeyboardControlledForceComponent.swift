@@ -19,6 +19,8 @@ import GameplayKit
 @available(macOS 10.15, *)
 public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUpdatableComponent {
     
+    // TODO: Tests
+    
     public override var requiredComponents: [GKComponent.Type]? {
         [KeyboardEventComponent.self,
         PhysicsComponent.self]
@@ -33,42 +35,55 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
     /// Change this to a different code to customize the keys.
     public var arrowLeft:   UInt16 = .arrowLeft
     
-    public var baseMagnitude:           CGFloat
-    public var maximumMagnitude:        CGFloat
-    public var acceleratedMagnitude:    CGFloat = 0
-    
-    /// The amount to increase `acceleratedMagnitude` by, per update, while there is keyboard input. `acceleratedMagnitude` is reset to `baseMagnitude` when there is no keyboard input.
-    public var acceleration:            CGFloat
-    
-    public var horizontalFactor:        CGFloat = 1
-    public var verticalFactor:          CGFloat = 1
+    public var magnitude:   AcceleratedValue<CGFloat>
+
+    public var horizontalFactor:    CGFloat
+    public var verticalFactor:      CGFloat
     
     /// Specifies a fixed or variable timestep for per-update changes.
     ///
     /// For physics effects, a per-second timestep may be suitable.
-    public var timestep:                TimeStep
+    public var timestep:            TimeStep
+    
+    /// - Parameters:
+    ///   - magnitude: The magnitude to apply to the physics body on every update. Affected by `timestep`.
+    ///   - horizontalFactor: Multiply the X axis force by this factor. Default: `1.0`. To reverse the X axis, specify a negative value like `-1`. To disable the X axis, specify `0`.
+    ///   - verticalFactor: Multiply the Y axis force by this factor. Default: `1.0`. To reverse the Y axis, specify a negative value like `-1`. To disable the Y axis, specify `0`.
+    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    public init(magnitude:          AcceleratedValue<CGFloat>,
+                horizontalFactor:   CGFloat  = 1.0,
+                verticalFactor:     CGFloat  = 1.0,
+                timestep:           TimeStep = .perSecond)
+    {
+        self.magnitude          = magnitude
+        self.horizontalFactor   = horizontalFactor
+        self.verticalFactor     = verticalFactor
+        self.timestep           = timestep
+        super.init()
+    }
     
     /// - Parameters:
     ///   - baseMagnitude: The minimum magnitude to apply to the physics body on every update. Affected by `timestep`.
     ///   - maximumMagnitude: The maximum magnitude to allow after acceleration has been applied.
     ///   - acceleration: The amount to increase the magnitude by, per update, while there is keyboard input. The magnitude is reset to the `baseMagnitude` when there is no keyboard input. Affected by `timestep`.
-    ///   - horizontalFactor: Multiply the X axis force by this factor. Default: `1`. To reverse the X axis, specify a negative value like `-1`. To disable the X axis, specify `0`.
-    ///   - verticalFactor: Multiply the Y axis force by this factor. Default: `1`. To reverse the Y axis, specify a negative value like `-1`. To disable the Y axis, specify `0`.
+    ///   - horizontalFactor: Multiply the X axis force by this factor. Default: `1.0`. To reverse the X axis, specify a negative value like `-1`. To disable the X axis, specify `0`.
+    ///   - verticalFactor: Multiply the Y axis force by this factor. Default: `1.0`. To reverse the Y axis, specify a negative value like `-1`. To disable the Y axis, specify `0`.
     ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
-    public init(baseMagnitude:      CGFloat = 600,  // ÷ 60 = 10 per frame
-                maximumMagnitude:   CGFloat = 1200, // ÷ 60 = 20 per frame
-                acceleration:       CGFloat = 600,
-                horizontalFactor:   CGFloat = 1,
-                verticalFactor:     CGFloat = 1,
-                timestep:           TimeStep = .perSecond)
+    public convenience init(baseMagnitude:      CGFloat  = 600,  // ÷ 60 = 10 per frame
+                            maximumMagnitude:   CGFloat  = 1200, // ÷ 60 = 20 per frame
+                            acceleration:       CGFloat  = 600,
+                            horizontalFactor:   CGFloat  = 1.0,
+                            verticalFactor:     CGFloat  = 1.0,
+                            timestep:           TimeStep = .perSecond)
     {
-        self.baseMagnitude      = baseMagnitude
-        self.maximumMagnitude   = maximumMagnitude
-        self.acceleration       = acceleration
-        self.horizontalFactor   = horizontalFactor
-        self.verticalFactor     = verticalFactor
-        self.timestep           = timestep
-        super.init()
+        self.init(magnitude: AcceleratedValue<CGFloat>(base:         baseMagnitude,
+                                                       current:      baseMagnitude,
+                                                       maximum:      maximumMagnitude,
+                                                       minimum:      0,
+                                                       acceleration: acceleration),
+                  horizontalFactor: horizontalFactor,
+                  verticalFactor: verticalFactor,
+                  timestep: timestep)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -81,7 +96,7 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
             !keyboardEventComponent.codesPressed.isEmpty,
             let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody ?? entityNode?.physicsBody
             else {
-                acceleratedMagnitude = baseMagnitude // TODO: PERFORMANCE: Figure out a better way than setting this every update.
+                magnitude.reset() // TODO: PERFORMANCE: Figure out a better way than setting this every update.
                 return
         }
         
@@ -89,7 +104,7 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         // ❕ NOTE: Don't use `switch` or `else` because we want to process multiple keypresses, to generate diagonal forces and also cancel out opposing directions.
         
         let codesPressed = keyboardEventComponent.codesPressed
-        let magnitudeForCurrentUpdate = timestep.applying(acceleratedMagnitude, deltaTime: CGFloat(seconds))
+        let magnitudeForCurrentUpdate = timestep.applying(magnitude.current, deltaTime: CGFloat(seconds))
         var vector = CGVector.zero
 
         if codesPressed.contains(self.arrowUp)    { vector.dy += magnitudeForCurrentUpdate } // ⬆️
@@ -105,19 +120,16 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         // Apply the final vector to the body.
         
         #if LOGINPUTEVENTS
-        debugLog("acceleratedMagnitude: \(acceleratedMagnitude), magnitudeForCurrentUpdate: \(magnitudeForCurrentUpdate), acceleration: \(acceleration), horizontalFactor: \(horizontalFactor), verticalFactor: \(horizontalFactor), force: \(vector)")
+        debugLog("magnitude: \(magnitude), magnitudeForCurrentUpdate: \(magnitudeForCurrentUpdate), horizontalFactor: \(horizontalFactor), verticalFactor: \(horizontalFactor), force: \(vector)")
         #endif
         
         physicsBody.applyForce(vector)
         
         // Apply acceleration for the next update.
         
-        if  acceleratedMagnitude < maximumMagnitude {
-            timestep.apply(acceleration, to: &acceleratedMagnitude, deltaTime: CGFloat(seconds))
-            
-            if  acceleratedMagnitude > maximumMagnitude {
-                acceleratedMagnitude = maximumMagnitude
-            }
+        if  magnitude.isWithinBounds {
+            magnitude.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            magnitude.clamp()
         }
     }
 }
