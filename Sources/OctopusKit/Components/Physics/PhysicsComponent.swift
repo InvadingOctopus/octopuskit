@@ -152,6 +152,5 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
         if  let maxVelocity = self.maxVelocity {
             physicsBody.velocity.clampMagnitude(to: maxVelocity)
         }
-        
     }
 }

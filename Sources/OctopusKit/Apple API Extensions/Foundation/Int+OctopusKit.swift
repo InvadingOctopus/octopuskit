@@ -22,9 +22,9 @@ public extension Int {
     ///
     /// Uses `arc4random_uniform(_:)`. For GameplayKit-based randomization, use the extensions of `GKRandom`.
     @inlinable
-    static func randomFromZero(to upperBound: Int,
+    static func randomFromZero(to upperBound:       Int,
                                skipping exclusions: Set<Int>,
-                               maximumAttempts: UInt = 100) -> Int?
+                               maximumAttempts:     UInt = 100) -> Int?
     {
         guard upperBound >= 0 else { return nil }
         if upperBound == 0 { return 0 }

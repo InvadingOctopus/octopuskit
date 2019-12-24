@@ -179,7 +179,6 @@ public extension FloatingPoint {
         
         return rotationToApply
     }
-    
 }
 
 #endif
