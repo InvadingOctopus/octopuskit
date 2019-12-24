@@ -10,7 +10,7 @@ import GameplayKit
 
 /// Directs the `PositionSeekingGoalComponent` of the entity towards the point touched or clicked by the player.
 ///
-/// **Dependencies:** `PositionSeekingGoalComponent, SpriteKitComponent, TouchEventComponent`
+/// **Dependencies:** `PositionSeekingGoalComponent, SpriteKitComponent, PointerEventComponent`
 public final class PointerControlledSeekingComponent: OctopusComponent, OctopusUpdatableComponent {
 
     // TODO: A way to not rely on a `SpriteKitComponent` so that entities without a visual representation (i.e. only agents or "ghosts") may be able to use this component.

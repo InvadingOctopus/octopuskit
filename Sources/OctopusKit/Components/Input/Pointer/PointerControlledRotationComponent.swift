@@ -11,6 +11,8 @@ import GameplayKit
 
 /// Modifies the `zRotation` of the entity's `SpriteKitComponent` node to gradually turn it towards the pointed location as received via a `PointerEventComponent`.
 ///
+/// Set the `LOGINPUTEVENTS` compilation flag to log values.
+/// 
 /// See also: `PositionSeekingGoalComponent` and `PointerControlledSeekingComponent`
 ///
 /// **Dependencies:** `SpriteKitComponent`, `PointerEventComponent`
