@@ -32,7 +32,7 @@ public final class KeyboardControlledRotationComponent: OctopusComponent, Octopu
     /// Change this to a different code to customize the keys.
     public var arrowLeft:           UInt16 = .arrowLeft
 
-    /// The amount to rotate the node by in a single update, with optional acceleration.
+    /// The amount to rotate the node by in a single update, with optional acceleration. Affected by `timestep`.
     public var radiansPerUpdate:    AcceleratedValue<CGFloat>
     
     /// Specifies a fixed or variable timestep for per-update changes.
@@ -146,7 +146,7 @@ public final class KeyboardControlledRotationComponent: OctopusComponent, Octopu
 
 #if !canImport(AppKit)
 // TODO: Add support for iOS/tvOS keyboards.
-@available(iOS, unavailable)
+@available(iOS,  unavailable)
 @available(tvOS, unavailable)
 public final class KeyboardControlledRotationComponent: macOSExclusiveComponent {}
 #endif
