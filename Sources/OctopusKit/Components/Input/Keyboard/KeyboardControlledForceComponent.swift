@@ -141,7 +141,7 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
 
 #if !canImport(AppKit)
 // TODO: Add support for iOS/tvOS keyboards.
-@available(iOS, unavailable)
+@available(iOS,  unavailable)
 @available(tvOS, unavailable)
 public final class KeyboardControlledForceComponent: macOSExclusiveComponent {}
 #endif

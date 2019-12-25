@@ -244,6 +244,7 @@ public protocol KeyboardEventProvider {
     
 #if !canImport(AppKit)
 // TODO: Add support for iOS/tvOS keyboards.
-@available(iOS, unavailable)
+@available(iOS,  unavailable)
+@available(tvOS, unavailable)
 public final class KeyboardEventComponent: macOSExclusiveComponent {}
 #endif

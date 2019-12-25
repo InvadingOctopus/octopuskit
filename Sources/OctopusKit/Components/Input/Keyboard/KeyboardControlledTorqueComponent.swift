@@ -109,7 +109,7 @@ public final class KeyboardControlledTorqueComponent: OctopusComponent, OctopusU
 
 #if !canImport(AppKit)
 // TODO: Add support for iOS/tvOS keyboards.
-@available(iOS, unavailable)
+@available(iOS,  unavailable)
 @available(tvOS, unavailable)
 public final class KeyboardControlledTorqueComponent: macOSExclusiveComponent {}
 #endif
