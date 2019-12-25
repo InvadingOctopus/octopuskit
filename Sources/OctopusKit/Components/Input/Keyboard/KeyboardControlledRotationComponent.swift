@@ -20,6 +20,7 @@ import GameplayKit
 public final class KeyboardControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
     
     // TODO: Tests
+    // TODO: Reset the acceleration when the direction reverses, as that is more natural.
     
     public override var requiredComponents: [GKComponent.Type]? {
         [KeyboardEventComponent.self,
