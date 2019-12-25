@@ -19,8 +19,7 @@ import GameplayKit
 @available(macOS 10.15, *)
 public final class KeyboardControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    // TODO: TimeStep options
-    // TODO: Reset the acceleration when the direction reverses, as that is more natural.
+    // TODO: Tests
     
     public override var requiredComponents: [GKComponent.Type]? {
         [KeyboardEventComponent.self,
@@ -28,25 +27,48 @@ public final class KeyboardControlledRotationComponent: OctopusComponent, Octopu
     }
     
     /// Change this to a different code to customize the keys.
-    public var arrowRight:  UInt16 = .arrowRight
+    public var arrowRight:          UInt16 = .arrowRight
+    
     /// Change this to a different code to customize the keys.
-    public var arrowLeft:   UInt16 = .arrowLeft
+    public var arrowLeft:           UInt16 = .arrowLeft
 
-    /// The minimum amount to rotate the node by in a single second.
-    public var baseRadiansPerSecond:     CGFloat
+    /// The amount to rotate the node by in a single update, with optional acceleration.
+    public var radiansPerUpdate:    AcceleratedValue<CGFloat>
     
-    public var maximumRadiansPerSecond:  CGFloat
-    public var acceleratedRadians:       CGFloat = 0
-    public var accelerationPerSecond:    CGFloat
+    /// Specifies a fixed or variable timestep for per-update changes.
+    public var timestep:            TimeStep
+
+    /// If `true`, `radiansPerUpdate` is reset to its base value when there is no rotation, for realistic inertia.
+    ///
+    /// `radiansPerUpdate` is always reset when there is no player input.
+    public var resetAccelerationWhenChangingDirection: Bool
     
-    public init(baseRadiansPerSecond:    CGFloat = 2.0,  // ÷ 60 per frame
-                maximumRadiansPerSecond: CGFloat = 4.0,
-                accelerationPerSecond:   CGFloat = 2.0)
+    /// Records the previous direction for use with `resetAccelerationWhenChangingDirection`, where `1` is counter-clockwise, `-1` is clockwise, and `0` is stationary.
+    public var directionForPreviousFrame: Int = 0 // Not private(set) so update(deltaTime:) can be @inlinable
+    
+    public init(radiansPerUpdate:   AcceleratedValue<CGFloat>,
+                timestep:           TimeStep = .perSecond,
+                resetAccelerationWhenChangingDirection: Bool = true)
     {
-        self.baseRadiansPerSecond    = baseRadiansPerSecond
-        self.maximumRadiansPerSecond = maximumRadiansPerSecond
-        self.accelerationPerSecond   = accelerationPerSecond
+        self.radiansPerUpdate       = radiansPerUpdate
+        self.timestep               = timestep
+        self.resetAccelerationWhenChangingDirection = resetAccelerationWhenChangingDirection
         super.init()
+    }
+
+    public convenience init(radiansPerUpdate:   CGFloat  = 1.0, // ÷ 60 = 0.01666666667 per frame
+                            acceleration:       CGFloat  = 0,
+                            maximum:            CGFloat  = 1.0,
+                            timestep:           TimeStep = .perSecond,
+                            resetAccelerationWhenChangingDirection: Bool = true)
+    {
+        self.init(radiansPerUpdate: AcceleratedValue<CGFloat>(base:    radiansPerUpdate,
+                                                              current: radiansPerUpdate,
+                                                              maximum: maximum,
+                                                              minimum: 0,
+                                                              acceleration: acceleration),
+                  timestep: timestep,
+                  resetAccelerationWhenChangingDirection: resetAccelerationWhenChangingDirection)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -54,35 +76,68 @@ public final class KeyboardControlledRotationComponent: OctopusComponent, Octopu
     @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
         
+        // #0: If there is no input for this frame, reset the acceleration and exit.
+        
         guard
             let keyboardEventComponent = coComponent(KeyboardEventComponent.self),
             !keyboardEventComponent.codesPressed.isEmpty,
             let node = entityNode
             else {
-                acceleratedRadians = baseRadiansPerSecond // TODO: PERFORMANCE: Figure out a better way than setting this every frame.
+                // TODO: PERFORMANCE: Figure out a better way than setting these every frame.
+                radiansPerUpdate.reset()
+                directionForPreviousFrame = 0
                 return
         }
         
-        // Did player press a directional arrow key?
+        // #1: Did player press a directional arrow key?
+        
         // ❕ NOTE: Don't use `switch` or `else` because we want to process multiple keypresses, to cancel out opposing directions.
         // ❕ NOTE: Positive rotation = counter-clockwise :)
         
         let codesPressed = keyboardEventComponent.codesPressed
-        let radiansForCurrentFrame = acceleratedRadians * CGFloat(seconds)
+        var directionForCurrentFrame: Int = 0
+        
+        if  codesPressed.contains(self.arrowRight) { directionForCurrentFrame += 1 } // ➡️
+        if  codesPressed.contains(self.arrowLeft)  { directionForCurrentFrame -= 1 } // ➡️
+        
+        // #2: Reset the acceleration if the player changed the direction between updates.
+        
+        if  resetAccelerationWhenChangingDirection,
+            self.directionForPreviousFrame != directionForCurrentFrame
+        {
+            radiansPerUpdate.reset()
+        }
+        
+        self.directionForPreviousFrame = directionForCurrentFrame
+        
+        // #3: Exit if multiple directional inputs cancel each other out, this prevents accumulation of acceleration when there is no movement.
+        
+        guard directionForCurrentFrame != 0 else { return }
+        
+        // #4: Apply the rotation.
+        
+        let radiansForCurrentFrame = timestep.applying(radiansPerUpdate.current, deltaTime: CGFloat(seconds))
         var rotationAmountForCurrentFrame: CGFloat = 0
         
-        if codesPressed.contains(self.arrowRight) { rotationAmountForCurrentFrame -= radiansForCurrentFrame } // ➡️
-        if codesPressed.contains(self.arrowLeft)  { rotationAmountForCurrentFrame += radiansForCurrentFrame } // ⬅️
+        if  codesPressed.contains(self.arrowRight) { // ➡️
+            rotationAmountForCurrentFrame -= radiansForCurrentFrame
+        }
+        
+        if  codesPressed.contains(self.arrowLeft)  { // ⬅️
+            rotationAmountForCurrentFrame += radiansForCurrentFrame
+        }
         
         node.zRotation += rotationAmountForCurrentFrame
         
-        // Apply acceleration for the next frame.
+        #if LOGINPUTEVENTS
+        debugLog("node.zRotation = \(node.zRotation), rotationAmountForCurrentFrame =  \(rotationAmountForCurrentFrame), radiansPerUpdate = \(radiansPerUpdate), \(timestep)")
+        #endif
         
-        if  acceleratedRadians < maximumRadiansPerSecond {
-            acceleratedRadians += (accelerationPerSecond * CGFloat(seconds))
-            if  acceleratedRadians > maximumRadiansPerSecond {
-                acceleratedRadians = maximumRadiansPerSecond
-            }
+        // #5: Apply any acceleration, and clamp the speed to the pre-specified bounds.
+        
+        if  radiansPerUpdate.isWithinBounds { // CHECK: PERFORMANCE
+            radiansPerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            radiansPerUpdate.clamp()
         }
     }
 }
