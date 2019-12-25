@@ -21,6 +21,8 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
     
     // TODO: Tests
     
+    // DESIGN: A `resetAccelerationWhenChangingDirection` is probably not needed because the inertia and friction of the physics body should take care of that anyway, right?
+    
     public override var requiredComponents: [GKComponent.Type]? {
         [KeyboardEventComponent.self,
         PhysicsComponent.self]
@@ -101,6 +103,7 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         }
         
         // Did player press a directional arrow key?
+        
         // ❕ NOTE: Don't use `switch` or `else` because we want to process multiple keypresses, to generate diagonal forces and also cancel out opposing directions.
         
         let codesPressed = keyboardEventComponent.codesPressed
