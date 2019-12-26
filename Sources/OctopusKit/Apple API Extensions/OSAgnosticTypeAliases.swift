@@ -45,6 +45,11 @@ public typealias OSClickOrTapGestureRecognizer  = UITapGestureRecognizer
 public typealias OSPanGestureRecognizer         = UIPanGestureRecognizer
 
 public typealias OSMouseOrTouchEventComponent   = TouchEventComponent
-public typealias OSClickOrTapGestureRecognizerComponent = TapGestureRecognizerComponent
+
+#endif
+
+#if os(iOS)
+
+public typealias OSClickOrTapGestureRecognizerComponent = TapGestureRecognizerComponent // Not available on tvOS
 
 #endif

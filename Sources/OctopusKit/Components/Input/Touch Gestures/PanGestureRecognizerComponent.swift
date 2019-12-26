@@ -30,14 +30,14 @@ public final class PanGestureRecognizerComponent: OctopusGestureRecognizerCompon
         super.init()
         self.gestureRecognizer.delegate = self
         
-        #if canImport(AppKit)
-        self.compatibleGestureRecognizerTypes = [NSMagnificationGestureRecognizer.self]
-        #elseif canImport(UIKit)
+        #if os(iOS)
         self.compatibleGestureRecognizerTypes = [UIPinchGestureRecognizer.self]
+        #elseif os(macOS)
+        self.compatibleGestureRecognizerTypes = [NSMagnificationGestureRecognizer.self]
         #endif
     }
     
-    #if canImport(UIKit) // MARK: - iOS
+    #if os(iOS) // MARK: - iOS
     
     /// - NOTE: Unless specified, `maximumNumberOfTouches` will be set equal to `minimumNumberOfTouches`.
     public convenience init(minimumNumberOfTouches: Int  = 1,
@@ -52,7 +52,7 @@ public final class PanGestureRecognizerComponent: OctopusGestureRecognizerCompon
     
     #endif
     
-    #if canImport(AppKit) // MARK: - macOS
+    #if os(macOS) // MARK: - macOS
     
     public convenience init(buttonMask:              Int = 0x1,
                             numberOfTouchesRequired: Int = 1)
