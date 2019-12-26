@@ -42,21 +42,25 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
     }
     
     /// The scalar to limit the velocity of the `physicsBody` to.
-    public var maxVelocity: CGFloat?
+    public var maximumVelocity: CGFloat?
+    
+    /// The angular velocity in Newton-meters to limit the `physicsBody` to.
+    public var maximumAngularVelocity: CGFloat?
     
     /// Overrides this component's `physicsBody` property and creates a new rectangular `SKPhysicsBody` from the frame of the entity's `SpriteKitComponent` node.
     ///
     /// As creating physics bodies may be a costly runtime operation, this setting defaults to `false`.
     public var createBodyFromNodeFrame: Bool = false
     
-    public init(
-        physicsBody: SKPhysicsBody? = nil,
-        maxVelocity: CGFloat? = nil,
-        createBodyFromNodeFrame: Bool = false)
+    public init(physicsBody:             SKPhysicsBody? = nil,
+                createBodyFromNodeFrame: Bool           = false,
+                maximumVelocity:         CGFloat?       = nil,
+                maximumAngularVelocity:  CGFloat?       = nil)
     {
-        self.physicsBody = physicsBody
-        self.maxVelocity = maxVelocity
+        self.physicsBody             = physicsBody
         self.createBodyFromNodeFrame = createBodyFromNodeFrame
+        self.maximumVelocity         = maximumVelocity
+        self.maximumAngularVelocity  = maximumAngularVelocity
         super.init()
     }
     
@@ -113,8 +117,8 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
             
             if  physicsBody.node == nil {
                 node.physicsBody = self.physicsBody
-            }
-            else if physicsBody.node! != node {
+            
+            } else if physicsBody.node! != node {
                 // ℹ️ DESIGN: Log an error and detach from the entity, as an `PhysicsComponent` with a body that belongs to another node, has no valid behavior.
                 OctopusKit.logForErrors.add("\(physicsBody) already associated with \(physicsBody.node!) — Detaching from entity")
                 self.removeFromEntity()
@@ -146,11 +150,18 @@ public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent
     }
     
     public override func update(deltaTime seconds: TimeInterval) {
-        super.update(deltaTime: seconds)
+
         guard let physicsBody = self.physicsBody else { return }
         
-        if  let maxVelocity = self.maxVelocity {
-            physicsBody.velocity.clampMagnitude(to: maxVelocity)
+        if  let maximumVelocity = self.maximumVelocity {
+            physicsBody.velocity.clampMagnitude(to: maximumVelocity)
+        }
+
+        if  let maximumAngularVelocity = self.maximumAngularVelocity,
+            abs(physicsBody.angularVelocity) > maximumAngularVelocity
+        {
+            // CHECK: Find a better way?
+            physicsBody.angularVelocity = maximumAngularVelocity * CGFloat(sign(Float(physicsBody.angularVelocity)))
         }
     }
 }
