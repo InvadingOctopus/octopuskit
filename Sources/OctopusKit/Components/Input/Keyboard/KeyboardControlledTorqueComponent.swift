@@ -19,8 +19,8 @@ import GameplayKit
 @available(macOS 10.15, *)
 public final class KeyboardControlledTorqueComponent: OctopusComponent, OctopusUpdatableComponent {
     
-    // TODO: TimeStep options
-    // TODO: Reset the acceleration when the direction reverses, as that is more natural.
+    // TODO: Tests
+    // TODO: Improve the feel
     // TODO: Move `maximumAngularVelocity` to `PhysicsComponent`
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -33,24 +33,40 @@ public final class KeyboardControlledTorqueComponent: OctopusComponent, OctopusU
     /// Change this to a different code to customize the keys.
     public var arrowLeft:   UInt16 = .arrowLeft
 
-    /// The minimum amount to rotate the node by in a single second.
-    public var baseMagnitudePerSecond:      CGFloat
+    /// The torque in Newton-meters to apply to the node every update, with optional acceleration. Affected by `timestep`.
+    public var torquePerUpdate:      AcceleratedValue<CGFloat>
     
-    public var maximumMagnitudePerSecond:   CGFloat
-    public var acceleratedMagnitude:        CGFloat = 0
-    public var accelerationPerSecond:       CGFloat
-    public var maximumAngularVelocity:      CGFloat
+    /// Specifies a fixed or variable timestep for per-update changes.
+    public var timestep:                TimeStep
     
-    public init(baseMagnitudePerSecond:     CGFloat = 1.0,  // ÷ 60 per frame
-                maximumMagnitudePerSecond:  CGFloat = 1.0,
-                maximumAngularVelocity:     CGFloat = 2.0,
-                accelerationPerSecond:      CGFloat = 0)
+    /// - Parameters:
+    ///   - torquePerUpdate: The amount of torque to apply every update, with optional acceleration. Affected by `timestep`.
+    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    public init(torquePerUpdate:        AcceleratedValue<CGFloat>,
+                maximumAngularVelocity: CGFloat  = 2.0,
+                timestep:               TimeStep = .perSecond)
     {
-        self.baseMagnitudePerSecond     = baseMagnitudePerSecond
-        self.maximumMagnitudePerSecond  = maximumMagnitudePerSecond
-        self.maximumAngularVelocity     = maximumAngularVelocity
-        self.accelerationPerSecond      = accelerationPerSecond
+        self.torquePerUpdate     = torquePerUpdate
+        self.timestep               = timestep
         super.init()
+    }
+    
+    /// - Parameters:
+    ///   - torquePerUpdate: The torque in Newton-meters to apply to the physics body every second. Affected by `timestep`.
+    ///   - acceleration: The amount to increase the torque by per second, while there is keyboard input. The torque is reset to the `torquePerUpdate` when there is no keyboard input. Affected by `timestep`.
+    ///   - maximum: The maximum torque to allow after acceleration has been applied.
+    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    public convenience init(torquePerUpdate:    CGFloat  = 1.0, // ÷ 60 per frame
+                            acceleration:       CGFloat  = 0,
+                            maximum:            CGFloat  = 1.0, // ÷ 60 per frame
+                            timestep:           TimeStep = .perSecond)
+    {
+        self.init(torquePerUpdate: AcceleratedValue<CGFloat>(base:    torquePerUpdate,
+                                                             current: torquePerUpdate,
+                                                             maximum: maximum,
+                                                             minimum: 0,
+                                                             acceleration: acceleration),
+                  timestep: timestep)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -58,49 +74,52 @@ public final class KeyboardControlledTorqueComponent: OctopusComponent, OctopusU
     @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
         
+        // #0: If there is no input or valid entity for this frame, reset the acceleration and exit.
+        
         guard
             let keyboardEventComponent = coComponent(KeyboardEventComponent.self),
             !keyboardEventComponent.codesPressed.isEmpty,
             let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody ?? entityNode?.physicsBody
             else {
-                acceleratedMagnitude = baseMagnitudePerSecond // TODO: PERFORMANCE: Figure out a better way than setting this every frame.
+                torquePerUpdate.reset() // TODO: PERFORMANCE: Figure out a better way than setting this every frame.
                 return
         }
         
-        // Did player press a directional arrow key?
+        // #1: Did player press a directional arrow key?
+        
         // ❕ NOTE: Don't use `switch` or `else` because we want to process multiple keypresses, to cancel out opposing directions.
         // ❕ NOTE: Positive rotation = counter-clockwise :)
         
-        let codesPressed = keyboardEventComponent.codesPressed
-        let magnitudeForCurrentFrame = acceleratedMagnitude * CGFloat(seconds)
-        let currentAngularVelocity   = physicsBody.angularVelocity
-        var torqueForCurrentFrame: CGFloat = 0
+        let codesPressed            = keyboardEventComponent.codesPressed
+        let torqueForCurrentFrame   = timestep.applying(torquePerUpdate.current, deltaTime: CGFloat(seconds))
+        var torqueToApply: CGFloat  = 0
         
-        if codesPressed.contains(self.arrowRight) { torqueForCurrentFrame -= magnitudeForCurrentFrame } // ➡️
-        if codesPressed.contains(self.arrowLeft)  { torqueForCurrentFrame += magnitudeForCurrentFrame } // ⬅️
+        if  codesPressed.contains(self.arrowRight) { torqueToApply -= torqueForCurrentFrame } // ➡️
+        if  codesPressed.contains(self.arrowLeft)  { torqueToApply += torqueForCurrentFrame } // ⬅️
         
-        if  abs(currentAngularVelocity) < maximumAngularVelocity {
-            physicsBody.applyTorque(torqueForCurrentFrame)
+        // #2: Exit if multiple directional inputs cancel each other out, this prevents accumulation of acceleration when there is no movement.
+        
+        guard torqueToApply != 0 else {
+            torquePerUpdate.reset()
+            #if LOGINPUTEVENTS
+            debugLog("torquePerUpdate: \(torquePerUpdate), torqueForCurrentFrame: \(torqueForCurrentFrame), torqueToApply: \(torqueToApply), angularVelocity: \(physicsBody.angularVelocity)")
+            #endif
+            return
         }
         
-        // Limit the body's maximum angular velocity.
+        // #3: Apply the final torque to the physics body.
         
-        if  abs(currentAngularVelocity) > maximumAngularVelocity {
-            // CHECK: Find a better way?
-            physicsBody.angularVelocity = maximumAngularVelocity * CGFloat(sign(Float(physicsBody.angularVelocity)))
-        }
+        physicsBody.applyTorque(torqueToApply)
         
         #if LOGINPUTEVENTS
-        debugLog("acceleratedMagnitude: \(acceleratedMagnitude), magnitudeForCurrentFrame: \(magnitudeForCurrentFrame), torqueForCurrentFrame: \(torqueForCurrentFrame), angularVelocity: \(physicsBody.angularVelocity)")
+        debugLog("torquePerUpdate: \(torquePerUpdate), torqueForCurrentFrame: \(torqueForCurrentFrame), torqueToApply: \(torqueToApply), angularVelocity: \(physicsBody.angularVelocity)")
         #endif
         
-        // Apply acceleration for the next frame.
+        // #4: Apply acceleration for the next frame.
         
-        if  acceleratedMagnitude < maximumMagnitudePerSecond {
-            acceleratedMagnitude += (accelerationPerSecond * CGFloat(seconds))
-            if  acceleratedMagnitude > maximumMagnitudePerSecond {
-                acceleratedMagnitude = maximumMagnitudePerSecond
-            }
+        if  torquePerUpdate.isWithinBounds { // CHECK: PERFORMANCE
+            torquePerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            torquePerUpdate.clamp()
         }
     }
 }
