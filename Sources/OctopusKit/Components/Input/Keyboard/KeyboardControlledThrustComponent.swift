@@ -59,7 +59,7 @@ public final class KeyboardControlledThrustComponent: OctopusComponent, OctopusU
     
     /// - Parameters:
     ///   - magnitudePerUpdate: The minimum magnitude to apply to the physics body every second. Affected by `timestep`.
-    ///   - acceleration: The amount to increase the magnitude by per second, while there is keyboard input. The magnitude is reset to the `baseMagnitudePerSecond` when there is no keyboard input. Affected by `timestep`.
+    ///   - acceleration: The amount to increase the magnitude by per second, while there is keyboard input. The magnitude is reset to the `magnitudePerUpdate` when there is no keyboard input. Affected by `timestep`.
     ///   - maximum: The maximum magnitude to allow after acceleration has been applied.
     ///   - scalingFactor: Multiplies the force by the specified factor. Default: `1`. To reverse the thrust, specify a negative value like `-1`. To disable thrust, specify `0`.
     ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
