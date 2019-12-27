@@ -155,6 +155,7 @@ public final class MouseEventComponent: OctopusComponent, OctopusUpdatableCompon
         mouseExited     = nil
     }
     
+    @inlinable
     public override func willRemoveFromEntity() {
         super.willRemoveFromEntity()
         clearAllEvents()

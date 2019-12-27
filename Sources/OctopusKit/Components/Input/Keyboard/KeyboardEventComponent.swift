@@ -228,6 +228,10 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
     public override func willRemoveFromEntity() {
         super.willRemoveFromEntity()
         clearAllEvents()
+        codesDownForCurrentFrame     .removeAll(keepingCapacity: false)
+        codesUpForCurrentFrame       .removeAll(keepingCapacity: false)
+        charactersDownForCurrentFrame.removeAll(keepingCapacity: false)
+        charactersUpForCurrentFrame  .removeAll(keepingCapacity: false)
     }
 }
 

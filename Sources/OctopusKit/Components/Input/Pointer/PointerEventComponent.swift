@@ -290,5 +290,11 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         pointerMoved = nil
         pointerEnded = nil
     }
+    
+    @inlinable
+    public override func willRemoveFromEntity() {
+        super.willRemoveFromEntity()
+        clearAllEvents()
+    }
 }
 

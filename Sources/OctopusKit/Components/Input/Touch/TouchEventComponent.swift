@@ -229,6 +229,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         touches.removeAll(keepingCapacity: true) // CHECK: Should the `touches` array be emptied in `clearAllEvents()`?
     }
     
+    @inlinable
     public override func willRemoveFromEntity() {
         super.willRemoveFromEntity()
         clearAllEvents()

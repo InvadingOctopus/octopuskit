@@ -25,7 +25,7 @@ public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComp
                     scene: OctopusScene? = nil)
         {
             self.contact = contact
-            self.scene = scene
+            self.scene   = scene
         }
         
         public static func == (left: ContactEvent, right: ContactEvent) -> Bool {
@@ -40,7 +40,7 @@ public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComp
     }
     
     public var contactBeginnings = [ContactEvent]()
-    public var contactEndings = [ContactEvent]()
+    public var contactEndings    = [ContactEvent]()
     
     public fileprivate(set) var clearOnNextUpdate: Bool = false
     
@@ -67,13 +67,20 @@ public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComp
         
         if clearOnNextUpdate {
             contactBeginnings.removeAll(keepingCapacity: true)
-            contactEndings.removeAll(keepingCapacity: true)
+            contactEndings   .removeAll(keepingCapacity: true)
             clearOnNextUpdate = false
         }
         
         if contactBeginnings.count > 0 || contactEndings.count > 0 {
             clearOnNextUpdate = true
         }
+    }
+    
+    @inlinable
+    public override func willRemoveFromEntity() {
+        super.willRemoveFromEntity()
+        contactBeginnings.removeAll(keepingCapacity: false)
+        contactEndings   .removeAll(keepingCapacity: false)
     }
     
 }
