@@ -14,9 +14,7 @@ permalink: documentation/todo.html
 
 *More-or-less in order of priority/necessity:*
 
-- Full tvOS support (currently in a preliminary state as of 2019-11-14.)
 - Components for gamepad/joystick and Siri Remote input.
-- Options for per-frame and per-second for every time-based component.
 - Asset/resource loading system.
 - Saving and loading game/scene/entity/component graphs via `Codable`.
 - Networking components.
@@ -30,7 +28,7 @@ permalink: documentation/todo.html
 - [Swift Logging API](https://github.com/apple/swift-log)
 - More Tests. Too lazy.
 - Decide upon a coding style and conventions.
-- Write tutorials for common tasks.
+- More tutorials for common tasks.
 - Clarify `super` chaining where applicable – when an overridden method in a subclass *needs* to call the superclass method for the functionality to work correctly – and enforce it when it becomes possible through language support in a future version of Swift, similar to `NS_REQUIRES_SUPER` in Objective-C.
 - Eliminate the possibility of a `SKNode.physicsBody` being added to a scene more than once.
 - Internationalization/Localization
