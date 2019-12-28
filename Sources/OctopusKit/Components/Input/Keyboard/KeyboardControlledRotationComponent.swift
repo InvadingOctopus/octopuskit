@@ -97,8 +97,8 @@ public final class KeyboardControlledRotationComponent: OctopusComponent, Octopu
         let codesPressed = keyboardEventComponent.codesPressed
         var directionForCurrentFrame: Int = 0
         
-        if  codesPressed.contains(self.arrowRight) { directionForCurrentFrame += 1 } // ➡️
-        if  codesPressed.contains(self.arrowLeft)  { directionForCurrentFrame -= 1 } // ➡️
+        if  codesPressed.contains(self.arrowRight) { directionForCurrentFrame -= 1 } // ➡️
+        if  codesPressed.contains(self.arrowLeft)  { directionForCurrentFrame += 1 } // ⬅️
         
         // #2: Reset the acceleration if the player changed the direction between updates.
         
@@ -118,6 +118,8 @@ public final class KeyboardControlledRotationComponent: OctopusComponent, Octopu
         
         let radiansForCurrentFrame = timestep.applying(radiansPerUpdate.current, deltaTime: CGFloat(seconds))
         var rotationAmountForCurrentFrame: CGFloat = 0
+        
+        // DESIGN: Multiplication instead of a couple `if`s may look smarter, but it would require CGFloat instead of Int :)
         
         if  codesPressed.contains(self.arrowRight) { // ➡️
             rotationAmountForCurrentFrame -= radiansForCurrentFrame
