@@ -14,7 +14,6 @@ import GameplayKit
 /// Set the `LOGINPUTEVENTS` compilation flag to log values.
 ///
 /// **Dependencies:** `DirectionEventComponent`, `PhysicsComponent`
-@available(macOS 10.15, *)
 public final class DirectionControlledForceComponent: OctopusComponent, OctopusUpdatableComponent {
     
     // TODO: Tests
