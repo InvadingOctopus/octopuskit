@@ -8,43 +8,27 @@
 
 import CoreGraphics
 
-public extension FloatingPoint {
-    
-    /// Shorthand for `Self(Int.random(in: range))`
-    @inlinable
-    static func randomInteger(in range: Range<Int>) -> Self {
-        Self(Int.random(in: range))
-    }
-    
-    /// Shorthand for `Self(Int.random(in: range))`
-    @inlinable
-    static func randomInteger(in range: ClosedRange<Int>) -> Self {
-        Self(Int.random(in: range))
-    }
-    
-    /// Shorthand for `CGFloat(Int.random(in: range, using: &generator))`
-    @inlinable
-    static func randomInteger <T> (in range: Range<Int>, using generator: inout T) -> Self
-        where T: RandomNumberGenerator
-    {
-        Self(Int.random(in: range, using: &generator))
-    }
-    
-    /// Shorthand for `Self(Int.random(in: range, using: &generator))`
-    @inlinable
-    static func randomInteger <T> (in range: ClosedRange<Int>, using generator: inout T) -> Self
-        where T: RandomNumberGenerator
-    {
-        Self(Int.random(in: range, using: &generator))
-    }
-}
-
 public extension CGFloat {
         
+    // MARK: Common Angles
+    // NOTE: Cannot add these as an extension to FloatingPoint because "Static stored properties not supported in protocol extensions" :(
+    
+    static let east         =  Self.zero
+    static let northEast    =  Self.pi / 4
+    static let north        =  Self.pi / 2
+    static let northWest    =  Self.pi - (Self.pi / 4)
+    static let west         =  Self.pi
+    static let southWest    =  Self.pi + (Self.pi / 4)
+    static let south        =  Self.pi + (Self.pi / 2)
+    static let southEast    = (Self.pi * 2) - (Self.pi / 2)
+    
+    // MARK: - Trigonometry
+    
     /// Treats this value as an angle in radians and returns the radians between it and the specified angle.
     @inlinable
-    func deltaBetweenAngle(_ targetAngle: CGFloat) -> Self {
+    func deltaBetweenAngle(_ targetAngle: CGFloat) -> CGFloat {
         // CREDIT: https://stackoverflow.com/a/2007279/1948215 by https://stackoverflow.com/users/210964/peter-b
+        // NOTE: Cannot add this as an extension to FloatingPoint because atan2 only works on specific types :(
         atan2(sin(targetAngle - self),
               cos(targetAngle - self))
     }
@@ -53,7 +37,7 @@ public extension CGFloat {
     ///
     /// `0` is right/east and positive values indicate a counter-clockwise rotation.
     @inlinable
-    mutating func rotate(towards targetRadians: CGFloat, by rotationAmount: CGFloat) {
+    mutating func rotate(towards targetRadians: Self, by rotationAmount: Self) {
         self = self.rotated(towards: targetRadians, by: rotationAmount)
     }
     
@@ -61,7 +45,7 @@ public extension CGFloat {
     ///
     /// `0` is right/east and positive values indicate a counter-clockwise rotation.
     @inlinable
-    func rotated(towards targetRadians: CGFloat, by rotationAmount: CGFloat) -> Self {
+    func rotated(towards targetRadians: Self, by rotationAmount: Self) -> Self {
         
         // 💡 See alternative techniques for calculating the rotation at the bottom of this file.
         // TODO: CHECK: PERFORMANCE: Compare with other techniques. This may use two `atan2` calls when used from `PointerControlledRotationComponent`.
@@ -100,14 +84,16 @@ public extension CGFloat {
 
 #if AlternativeImplementation
 
-public extension FloatingPoint {
+public extension CGFloat {
     
     // ℹ️ Alternative techniques for calculating a rotation.
     // ❕ May be outdated in relation to the APIs used by the active implementation.
     
     /// A variation of the rotation calculation algorithm, using `atan2`.
     @inlinable
-    fileprivate func rotatedUsingAtan2(towards targetRadians: CGFloat, by rotationAmount: CGFloat) -> Self {
+    fileprivate func rotatedUsingAtan2(towards targetRadians: Self, by rotationAmount: Self) -> Self {
+        
+        // NOTE: Cannot add this as an extension to FloatingPoint because atan2 only works on specific types :(
         
         // TODO: CHECK: PERFORMANCE: Compare with other techniques. This may use two `atan2` calls when used from `PointerControlledRotationComponent`.
         
@@ -142,7 +128,7 @@ public extension FloatingPoint {
     
     /// A variation of the rotation calculation algorithm, using a modulo operation.
     @inlinable
-    fileprivate func rotatedUsingModulo(towards targetRadians: CGFloat, by rotationAmount: CGFloat) -> Self {
+    fileprivate func rotatedUsingModulo(towards targetRadians: Self, by rotationAmount: Self) -> Self {
         
         // ❗️ This technique causes a node to "shake" when the target point to rotate towards is stationary and very close.
         
