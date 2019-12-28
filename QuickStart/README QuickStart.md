@@ -6,7 +6,7 @@
 	
 	> ❗️ **Do NOT** create a "Game" project, because that template does not use SwiftUI.
 
-	> Running OctopusKit games on-device requires iOS/iPadOS 13 and macOS Catalina or later.
+	> Running OctopusKit games on-device requires iOS/iPadOS/tvOS 13 and macOS Catalina or later.
 	
 2. 📦 Add OctopusKit as a **Swift Package Manager** Dependency.
     
@@ -16,7 +16,7 @@
     
     > Download the "develop" branch for the latest version.
     
-3. 📥 **Copy and include** the QuickStart/Universal/ folder (which supports both iOS and macOS) in your project. 
+3. 📥 **Copy and include** the QuickStart/Universal/ folder (which supports iOS, macOS and tvOS) in your project. 
 
     > In the Xcode Project Navigator, menu-click on the OctopusKit/QuickStart/ folder and select "Show in Finder" then drag the Universal subfolder into your project folder in the Xcode navigator. 
 
