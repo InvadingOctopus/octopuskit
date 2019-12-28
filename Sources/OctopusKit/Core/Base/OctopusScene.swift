@@ -251,6 +251,13 @@ open class OctopusScene:    SKScene,
         }
         
         currentFrameNumber = 1 // Set the frame counter to 1 here because it is incremented in `didFinishUpdate()`, so that logs correctly say the first frame number during the first `update(_:)` method. ⚠️ NOTE: There is still a call to `OctopusViewController-Universal.viewWillLayoutSubviews()` after this, before the first `update(_:)`. CHECK: Fix?
+        
+        // Steal the focus on macOS so the player doesn't have to click on the view before using the keyboard.
+        // CHECK: Conflicts with SwiftUI etc.
+        
+        #if os(macOS)
+        to.window?.makeFirstResponder(self)
+        #endif
     }
     
     /// Creates an entity to represent the scene itself (the root node.)
