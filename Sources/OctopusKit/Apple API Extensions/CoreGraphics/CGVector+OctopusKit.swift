@@ -227,3 +227,34 @@ public extension CGVector {
         vector = vector / scalar
     }
 }
+
+// MARK: - Directions
+
+public extension CGVector {
+
+    static let center       = CGVector.zero                // ⏺
+    static let north        = CGVector(dx:  0.0, dy:  1.0) // ⬆️
+    static let northEast    = CGVector(dx:  1.0, dy:  1.0) // ↗️
+    static let east         = CGVector(dx:  1.0, dy:  0.0) // ➡️
+    static let southEast    = CGVector(dx:  1.0, dy: -1.0) // ↘️
+    static let south        = CGVector(dx:  0.0, dy: -1.0) // ⬇️
+    static let southWest    = CGVector(dx: -1.0, dy: -1.0) // ↙️
+    static let west         = CGVector(dx: -1.0, dy:  0.0) // ⬅️
+    static let northWest    = CGVector(dx: -1.0, dy:  1.0) // ↖️
+    
+    // Aliases
+    
+    static let up           = north
+    static let right        = east
+    static let down         = south
+    static let left         = west
+}
+
+extension CGVector: Hashable { // MARK: Hashable
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(dx)
+        hasher.combine(dy)
+    }
+    
+}
