@@ -10,13 +10,13 @@
 
 import SpriteKit
 
-extension SKNode {
+public extension SKNode {
     
     /// - Type Methods
     
     /// Attempts to unarchive the specified "sks" file from the main application bundle and returns it.
     @inlinable
-    open class func nodeWithName<T>(name: String) -> T? {
+    final class func nodeWithName<T>(name: String) -> T? {
         // CREDIT: Apple Adventure Sample
         
         // TODO: Verify the functionality of this Swift 4.2/iOS 12 update.
@@ -29,23 +29,60 @@ extension SKNode {
     /// Creates a new node with the specified `position` and `zPosition`.
     ///
     /// Useful for quickly creating nodes on a specific "layer."
-    public convenience init(zPosition: CGFloat)
-    {
+    convenience init(zPosition: CGFloat) {
         self.init()
         self.zPosition = zPosition
     }
     
     /// Creates a new node and adds the specified children to it.
-    public convenience init(children: [SKNode]) {
+    convenience init(children: [SKNode]) {
         self.init()
         self.addChildren(children)
     }
     
-    /// MARK: - Common Tasks
+    // MARK: - Modifiers
+    
+    /// Returns this node after setting its position.
+    @inlinable
+    final func position(_ newPosition: CGPoint) -> Self {
+        self.position = newPosition
+        return self
+    }
+    
+    /// Returns this node after setting its position.
+    @inlinable
+    final func position(x: CGFloat, y: CGFloat) -> Self {
+        self.position = CGPoint(x: x, y: y)
+        return self
+    }
+    
+    /// Returns this node after setting its rotation.
+    @inlinable
+    final func zRotation(_ radians: CGFloat) -> Self {
+        self.zRotation = radians
+        return self
+    }
+    
+    /// Returns this node after setting its scale.
+    @inlinable
+    final func scale(_ scale: CGFloat) -> Self {
+        self.setScale(scale)
+        return self
+    }
+    
+    /// Returns this node after setting its scale.
+    @inlinable
+    final func scale(x: CGFloat, y: CGFloat) -> Self {
+        self.xScale = xScale
+        self.yScale = yScale
+        return self
+    }
+    
+    // MARK: - Common Tasks
     
     /// Convenient shorthand for multiple `addChild(_:)` calls.
     @inlinable
-    open func addChildren(_ children: [SKNode]) {
+    final func addChildren(_ children: [SKNode]) {
         for child in children {
             self.addChild(child)
         }
@@ -53,46 +90,28 @@ extension SKNode {
     
     /// Convenient shorthand for multiple `addChild(_:)` calls.
     @inlinable
-    open func addChildren(_ children: SKNode...) {
+    final func addChildren(_ children: SKNode...) {
         self.addChildren(children)
     }
     
     /// Adds a node at the specified position, to the end of the receiver's list of child nodes.
     @inlinable
-    open func addChild(_ node: SKNode, at position: CGPoint) {
+    final func addChild(_ node: SKNode, at position: CGPoint) {
         self.addChild(node)
         node.position = position
     }
     
     /// Returns this node's position in the coordinate system of another node in the node tree.
     @inlinable
-    open func position(in node: SKNode) -> CGPoint {
+    final func position(in node: SKNode) -> CGPoint {
         return convert(position, to: node)
     }
-    
-    /// Returns this node with the specified position.
-    ///
-    /// Convenient for specifying the position of a new node by chaining the initializer with this method.
-    @inlinable
-    open func position(_ newPosition: CGPoint) -> Self {
-        self.position = newPosition
-        return self
-    }
-    
-    /// Returns this node with the specified position.
-    ///
-    /// Convenient for specifying the position of a new node by chaining the initializer with this method.
-    @inlinable
-    open func position(x: CGFloat, y: CGFloat) -> Self {
-        self.position = CGPoint(x: x, y: y)
-        return self
-    }
-    
+        
     /// Converts a point from the coordinate system of this node's parent to the coordinate system of this node.
     ///
     /// Returns unconverted point if parent is `nil`.
     @inlinable
-    open func convertPointFromParent(_ point: CGPoint) -> CGPoint {
+    final func convertPointFromParent(_ point: CGPoint) -> CGPoint {
         if  let parent = self.parent {
             return convert(point, from: parent)
         } else {
@@ -104,7 +123,7 @@ extension SKNode {
     ///
     /// Returns unconverted point if parent is `nil`.
     @inlinable
-    open func convertPointToParent(point: CGPoint) -> CGPoint {
+    final func convertPointToParent(point: CGPoint) -> CGPoint {
         if  let parent = self.parent {
             return convert(point, to: parent)
         } else {
@@ -114,7 +133,7 @@ extension SKNode {
     
     /// Returns the radians between this node's `zRotation` and the target angle in radians.
     @inlinable
-    open func deltaBetweenRotation(and targetAngle: CGFloat) -> CGFloat {
+    final func deltaBetweenRotation(and targetAngle: CGFloat) -> CGFloat {
         self.zRotation.deltaBetweenAngle(targetAngle)
     }
     
@@ -122,9 +141,9 @@ extension SKNode {
     ///
     /// This does not copy any attributes over from the placeholder node.
     @inlinable
-    open func replaceNode(_ placeholder: SKNode) {
+    final func replaceNode(_ placeholder: SKNode) {
         
-        if let placeholderParent = placeholder.parent {
+        if  let placeholderParent = placeholder.parent {
             placeholder.removeAllActions() // CHECK: Is this necessary even with `removeFromParent()`?
             placeholder.removeFromParent()
             
@@ -139,7 +158,7 @@ extension SKNode {
     ///
     /// This does not copy any attributes over from the placeholder node.
     @inlinable
-    open func replaceNode(named name: String, in placeholderParent: SKNode) {
+    final func replaceNode(named name: String, in placeholderParent: SKNode) {
         if  let placeholder = placeholderParent.childNode(withName: name) {
             self.replaceNode(placeholder)
         }
@@ -152,8 +171,8 @@ extension SKNode {
     /// - Important: This method simply performs an addition or subtraction on the `x` or `y` value; to properly ensure that the node is within the `safeAreaInsets`, use the `insetWithinSafeArea(edge:)` method.
     ///
     /// - Returns: The `safeAreaInsets` value at the corresponding `edge`
-    @inlinable
-    @discardableResult open func insetPositionBySafeArea(
+    @inlinable @discardableResult
+    final func insetPositionBySafeArea(
         at edge: OctopusDirection,
         forView view: SKView? = nil)
         -> CGFloat
