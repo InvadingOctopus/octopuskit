@@ -192,23 +192,27 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
             return
         }
         
-        // #2: Clear stale events whose flags have been set.
+        // #2: Clear stale events whose flags have been set, and their associated sets of codes/characters.
         
-        // ℹ️ We cannot use `if let` unwrapping as we need to modify the actual properties themselves, not their values.
+        // NOTE: We cannot use `if let` unwrapping as we need to modify the actual properties themselves, not their values.
         
-        if keyDown?.shouldClear         ?? false { keyDown      = nil }
-        if keyUp?.shouldClear           ?? false { keyUp        = nil }
-        if flagsChanged?.shouldClear    ?? false { flagsChanged = nil }
-        
-        // #3: Clear key lists.
         // CHECK: PERFORMANCE: Should we be `keepingCapacity`?
         
-        codesDownForCurrentFrame     .removeAll(keepingCapacity: true)
-        codesUpForCurrentFrame       .removeAll(keepingCapacity: true)
-        charactersDownForCurrentFrame.removeAll(keepingCapacity: true)
-        charactersUpForCurrentFrame  .removeAll(keepingCapacity: true)
+        if  keyDown?.shouldClear ?? false {
+            keyDown = nil
+            codesDownForCurrentFrame.removeAll(keepingCapacity: true)
+            charactersDownForCurrentFrame.removeAll(keepingCapacity: true)
+        }
         
-        // #4: Flag non-`nil` events to be cleared on the next frame, so that other components do not see any stale input data.
+        if  keyUp?.shouldClear ?? false {
+            keyUp = nil
+            codesUpForCurrentFrame.removeAll(keepingCapacity: true)
+            charactersUpForCurrentFrame.removeAll(keepingCapacity: true)
+        }
+        
+        if  flagsChanged?.shouldClear ?? false { flagsChanged = nil }
+        
+        // #3: Flag non-`nil` events to be cleared on the next frame, so that other components do not see any stale input data.
     
         keyDown?.shouldClear        = true
         keyUp?.shouldClear          = true
@@ -216,22 +220,23 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
     }
     
     /// Discards all events.
-    public func clearAllEvents() {
+    public func clearAllEvents(keepingCapacity: Bool = true) {
         
         // ℹ️ Since we have to set the properties themselves to `nil`, we cannot use an array etc. as that would only modify the array's members, not our properties. 2018-05-20
         
         keyDown         = nil
         keyUp           = nil
         flagsChanged    = nil
+        
+        codesDownForCurrentFrame        .removeAll(keepingCapacity: keepingCapacity)
+        charactersDownForCurrentFrame   .removeAll(keepingCapacity: keepingCapacity)
+        codesUpForCurrentFrame          .removeAll(keepingCapacity: keepingCapacity)
+        charactersUpForCurrentFrame     .removeAll(keepingCapacity: keepingCapacity)
     }
     
     public override func willRemoveFromEntity() {
         super.willRemoveFromEntity()
-        clearAllEvents()
-        codesDownForCurrentFrame     .removeAll(keepingCapacity: false)
-        codesUpForCurrentFrame       .removeAll(keepingCapacity: false)
-        charactersDownForCurrentFrame.removeAll(keepingCapacity: false)
-        charactersUpForCurrentFrame  .removeAll(keepingCapacity: false)
+        clearAllEvents(keepingCapacity: false)
     }
 }
 
