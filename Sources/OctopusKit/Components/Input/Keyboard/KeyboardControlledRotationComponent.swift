@@ -116,10 +116,10 @@ public final class KeyboardControlledRotationComponent: OctopusComponent, Octopu
         
         // #4: Apply the rotation.
         
+        // DESIGN: Multiplication instead of a couple `if`s may look smarter, but it would require CGFloat instead of Int :)
+        
         let radiansForCurrentFrame = timestep.applying(radiansPerUpdate.current, deltaTime: CGFloat(seconds))
         var rotationAmountForCurrentFrame: CGFloat = 0
-        
-        // DESIGN: Multiplication instead of a couple `if`s may look smarter, but it would require CGFloat instead of Int :)
         
         if  codesPressed.contains(self.arrowRight) { // ➡️
             rotationAmountForCurrentFrame -= radiansForCurrentFrame
