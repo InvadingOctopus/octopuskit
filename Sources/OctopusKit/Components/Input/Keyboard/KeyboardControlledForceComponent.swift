@@ -123,7 +123,7 @@ public final class KeyboardControlledForceComponent: OctopusComponent, OctopusUp
         // Apply the final vector to the body.
         
         #if LOGINPUTEVENTS
-        debugLog("magnitude: \(magnitude), magnitudeForCurrentUpdate: \(magnitudeForCurrentUpdate), horizontalFactor: \(horizontalFactor), verticalFactor: \(horizontalFactor), force: \(vector)")
+        debugLog("magnitude: \(magnitude), magnitudeForCurrentUpdate: \(magnitudeForCurrentUpdate), factors: (\(horizontalFactor), \(verticalFactor)), force: \(vector)")
         #endif
         
         physicsBody.applyForce(vector)
