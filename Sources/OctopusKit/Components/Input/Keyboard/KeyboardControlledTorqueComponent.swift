@@ -42,12 +42,11 @@ public final class KeyboardControlledTorqueComponent: OctopusComponent, OctopusU
     /// - Parameters:
     ///   - torquePerUpdate: The amount of torque to apply every update, with optional acceleration. Affected by `timestep`.
     ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
-    public init(torquePerUpdate:        AcceleratedValue<CGFloat>,
-                maximumAngularVelocity: CGFloat  = 2.0,
-                timestep:               TimeStep = .perSecond)
+    public init(torquePerUpdate:    AcceleratedValue<CGFloat>,
+                timestep:           TimeStep = .perSecond)
     {
-        self.torquePerUpdate     = torquePerUpdate
-        self.timestep               = timestep
+        self.torquePerUpdate    = torquePerUpdate
+        self.timestep           = timestep
         super.init()
     }
     
@@ -56,9 +55,9 @@ public final class KeyboardControlledTorqueComponent: OctopusComponent, OctopusU
     ///   - acceleration: The amount to increase the torque by per second, while there is keyboard input. The torque is reset to the `torquePerUpdate` when there is no keyboard input. Affected by `timestep`.
     ///   - maximum: The maximum torque to allow after acceleration has been applied.
     ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
-    public convenience init(torquePerUpdate:    CGFloat  = 1.0, // ÷ 60 per frame
+    public convenience init(torquePerUpdate:    CGFloat  = 0.01, // ÷ 60 per frame
                             acceleration:       CGFloat  = 0,
-                            maximum:            CGFloat  = 1.0, // ÷ 60 per frame
+                            maximum:            CGFloat  = 0.01, // ÷ 60 per frame
                             timestep:           TimeStep = .perSecond)
     {
         self.init(torquePerUpdate: AcceleratedValue<CGFloat>(base:    torquePerUpdate,
