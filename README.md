@@ -7,7 +7,7 @@ OctopusKit wraps and extends Apple's frameworks:
 • **SpriteKit** gives you full access to textures, physics and GPU shaders.  
 • **SwiftUI**'s declarative syntax lets you quickly design fluid, scalable HUDs.  
 • **Metal** under the hood ensures the best native performance.  
-• OS-agnostic components let you compile natively for iOS and macOS and handle mouse + touch input with the same code, without needing Catalyst etc.
+• OS-independent components let you handle mouse + touch input with the same code, and compile natively for iOS + macOS without needing Catalyst etc.
 
 ![QuickStart Demo](https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo.gif?raw=true)
 
