@@ -95,6 +95,7 @@ public final class DirectionControlledForceComponent: OctopusComponent, OctopusU
         
         // ❕ NOTE: Don't use `switch` or `else` because we want to process multiple keypresses, to generate diagonal forces and also cancel out opposing directions.
         
+        let directionsActive = directionEventComponent.directionsActive
         let magnitudeForCurrentUpdate = timestep.applying(magnitude.current, deltaTime: CGFloat(seconds))
         var vector = CGVector.zero
 
