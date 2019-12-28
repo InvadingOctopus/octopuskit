@@ -6,14 +6,17 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: Support for degrees?
-// CHECK: Internationalization for string representations?
-
 import SpriteKit
 
 public typealias OKDirection = OctopusDirection
 
+/// Represents all possible directions.
 public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
+
+    // TODO: Support for arbitrary angles?
+    // CHECK: Internationalization for string representations?
+
+    case center
     
     case north
     case northEast
@@ -53,6 +56,7 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
     /// Returns the opposite direction.
     public var opposite: OctopusDirection {
         switch self {
+        case .center:           return .center
         case .north:            return .south
         case .northEast:        return .southWest
         case .east:             return .west
@@ -88,30 +92,30 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
     public var angle: CGFloat? {
         // CHECK: Does this need better formulas?
         switch self {
-        case .east:             return 0
-        case .northEast:        return .pi / 4
-        case .north:            return .pi / 2
-        case .northWest:        return .pi - (.pi / 4)
-        case .west:             return .pi
-        case .southWest:        return .pi + (.pi / 4)
-        case .south:            return .pi + (.pi / 2)
-        case .southEast:        return (.pi * 2) - (.pi / 2)
-        default:                return nil
+        case .east:         return 0
+        case .northEast:    return .pi / 4
+        case .north:        return .pi / 2
+        case .northWest:    return .pi - (.pi / 4)
+        case .west:         return .pi
+        case .southWest:    return .pi + (.pi / 4)
+        case .south:        return .pi + (.pi / 2)
+        case .southEast:    return (.pi * 2) - (.pi / 2)
+        default:            return nil
         }
     }
     
-    /// Retuns a unit vector for the direction, anchored at (0,0).
+    /// Returns a unit vector for the direction, anchored at (0,0).
     public var vector: CGVector {
         switch self {
-        case .north:            return CGVector(dx:  0.0, dy:  1.0)
-        case .northEast:        return CGVector(dx:  1.0, dy:  1.0)
-        case .east:             return CGVector(dx:  1.0, dy:  0.0)
-        case .southEast:        return CGVector(dx:  1.0, dy: -1.0)
-        case .south:            return CGVector(dx:  0.0, dy: -1.0)
-        case .southWest:        return CGVector(dx: -1.0, dy: -1.0)
-        case .west:             return CGVector(dx: -1.0, dy:  0.0)
-        case .northWest:        return CGVector(dx: -1.0, dy:  1.0)
-        default:                return .zero
+        case .north:        return CGVector(dx:  0.0, dy:  1.0)
+        case .northEast:    return CGVector(dx:  1.0, dy:  1.0)
+        case .east:         return CGVector(dx:  1.0, dy:  0.0)
+        case .southEast:    return CGVector(dx:  1.0, dy: -1.0)
+        case .south:        return CGVector(dx:  0.0, dy: -1.0)
+        case .southWest:    return CGVector(dx: -1.0, dy: -1.0)
+        case .west:         return CGVector(dx: -1.0, dy:  0.0)
+        case .northWest:    return CGVector(dx: -1.0, dy:  1.0)
+        default:            return .zero
         }
     }
 
@@ -130,7 +134,7 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
     }
     
     public var description: String {
-        return rawValue
+        rawValue
     }
 
     /// Creates a new `FacingDirection` for a given `zRotation` in radians.
@@ -152,18 +156,4 @@ public enum OctopusDirection: String, CustomStringConvertible, CaseIterable {
         // Select the appropriate `OctopusDirection` from the `compassDirection` member at the index equal to `rawFacingValue`.
         self = OctopusDirection.compassDirections[Int(rawFacingValue)]
     }
-}
-
-// MARK: - Orientations
-
-public enum OctopusOrientation {
-    case horizontal, vertical
-}
-
-public enum OctopusHorizontalOrientation {
-    case left, right
-}
-
-public enum OctopusVerticalOrientation {
-    case up, down
 }
