@@ -10,13 +10,13 @@ import OctopusKit
 
 final class PlayableState: OctopusGameState {
     
+    open var validNextStates: [OctopusGameState.Type] {
+        [PausedState.self]
+    }
+    
     init() {
         super.init(associatedSceneClass:  ___FILEBASENAMEASIDENTIFIER___.self,
                    associatedSwiftUIView: <#UIForThisState#>())
-    }
-    
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass == PausedState.self
     }
 }
 
@@ -26,13 +26,13 @@ final class PlayableState: OctopusGameState {
 
 final class PausedState: OctopusGameState {
     
+    open var validNextStates: [OctopusGameState.Type] {
+        [PlayableState.self]
+    }
+    
     init() {
         super.init(associatedSceneClass:  ___FILEBASENAMEASIDENTIFIER___.self,
                    associatedSwiftUIView: <#UIForThisState#>())
-    }
-    
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass == PlayableState.self
     }
 }
 

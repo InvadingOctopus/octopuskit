@@ -9,16 +9,16 @@ import OctopusKit
 
 final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
     
+    open var validNextStates: [OctopusGameState.Type] {
+        // Customize: Specify the valid states that this state can transition to.
+        // NOTE: Do not perform any logic to conditionally control state transitions here. See `OctopusGameState` documentation.
+        []  // Default: allow all states.
+    }
+    
     init() {
         // NOTE: Game state classes are initialized when the game coordinator is initialized: on game launch.
         super.init(associatedSceneClass:  ___FILEBASENAMEASIDENTIFIER___Scene.self,
                    associatedSwiftUIView: ___FILEBASENAMEASIDENTIFIER___UI())
-    }
-    
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        // Customize: Specify the valid states that this state can transition to.
-        // NOTE: Do not use this method to conditionally control state transitions. Perform such conditional logic in the scene or UI, before calling the game coordinator state machine’s enter(_:) method.
-        return stateClass is OctopusGameState.Type // Default: allow all states.
     }
     
 }
