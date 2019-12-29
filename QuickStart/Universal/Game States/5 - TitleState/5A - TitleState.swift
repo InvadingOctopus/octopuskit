@@ -33,11 +33,11 @@ final class TitleState: OKGameState {
         return stateMachine?.enter(PlayState.self) ?? false
     }
 
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+    override var validNextStates: [OctopusGameState.Type] {
         
-        // 🔶 STEP 5A.3: The OKGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
+        // 🔶 STEP 5A.3: This property lists all the valid states which this state is allowed to transition to.
         
-        return stateClass == PlayState.self
+        [PlayState.self]
     }
     
 }

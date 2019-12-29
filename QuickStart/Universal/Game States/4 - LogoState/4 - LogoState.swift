@@ -33,11 +33,13 @@ final class LogoState: OKGameState {
         return stateMachine?.enter(TitleState.self) ?? false
     }
     
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+    override var validNextStates: [OctopusGameState.Type] {
         
-        // 🔶 STEP 4.3: The OKGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
+        // 🔶 STEP 4.3: This property lists all the valid states which this state is allowed to transition to.
+        //
+        // ❕ NOTE: Conditional logic to restrict state transitions should NOT be performed here. This property describes the static relationships between state classes that determine the set of edges in the state graph of OKGameCoordinator's superclass GKStateMachine.
         
-        return stateClass == TitleState.self
+        [TitleState.self]
     }
     
 }
