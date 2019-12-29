@@ -34,10 +34,10 @@ permalink: documentation/architecture.html
         
 ## Folder Organization
 
-- `Apple API Extensions`: Adds engine-specific functionality and general convenience features to the classes provided by Apple.
+- `Apple API Extensions`: Adds engine-specific functionality and general conveniences to the types provided by Apple frameworks.
 
 
-- `Components`: A library of components for graphics, gameplay, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing dynamic dispatch][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
+- `Components`: A library of components for graphics, physics, UI and other aspects of a game. Although most are marked `final` by default (to improve performance by [reducing dynamic dispatch][reducing-dynamic-dispatch]), you may remove that keyword to extend them as needed.
 
 - `Core/Base`: The base classes for game states, scenes, entities, components and 
 systems. A typical game will create multiple instances of these objects.
@@ -48,13 +48,13 @@ systems. A typical game will create multiple instances of these objects.
         
 - `Entities`: Provides classes to quickly construct entities for common tasks, such as sprite-based buttons, from groups of standard components.
 
-- `Miscellaneous`: General types and data structures used by various components, such as two-dimensional arrays and compass directions.
+- `Miscellaneous`: Rarely used or experimental objects.
 
 - `Scene Templates`: Prebuilt scenes, such as the OctopusKit logo.
 
-- `Support & Utility`: Auxiliary classes that are required for common OctopusKit functionality, such as logging, but may not always be needed. Advanced projects may exclude these or use custom implementations.
+- `Support & Utility`: Auxiliary classes and data structures that are required for common OctopusKit functionality, such as logging, but may not always be needed. Advanced projects may exclude these or use custom implementations.
 
-- `SwiftUI`: User interface elements.
+- `SwiftUI`: Support for integrating SpriteKit gameplay in a SwiftUI project.
 
 ## Control Flow & Object Hierarchy
 
@@ -67,31 +67,29 @@ systems. A typical game will create multiple instances of these objects.
 |🚦 `YourGameState: OKGameState` ²|
 |↕|
 |🎛 `YourUI: SwiftUI.View` ³|
-|🏞 `YourScene: OKScene` ⁴|
+|🏞 `YourScene: OKScene` ³|
 |↓|
-|👾 `OKEntity` ⁵|
+|👾 `OKEntity` ⁴|
 |↓|
-|🚥 `YourEntityState: OKEntityState` ⁶|
+|🚥 `YourEntityState: OKEntityState` ⁵|
 |↕|
-|🧩 `YourComponent: OKComponent` ⁷|
+|🧩 `YourComponent: OKComponent` ⁶|
 |↑|
-|⛓ `OKComponentSystem` ⁸|
+|⛓ `OKComponentSystem` ⁷|
 
 > ¹ `OKGameCoordinator` must be initialized before any other OctopusKit objects.
 
 > ² Every game must have at least one `OKGameState`.
 
-> ³ `SwiftUI` presents a UI overlay on top of the `OKScene` contents. 
- 
-> ⁴ `OKScene` may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
+> ³ `SwiftUI` presents a UI overlay on top of the `OKScene` gameplay. UI controls or the scene may tell the game coordinator to enter different states and transition to other scenes. A scene itself is also represented by an entity which may have components of its own. A scene may be comprised entirely of components only, and need not necessarily have sub-entities.  
 
-> ⁵ `OKEntity` is optional; a simple scene may directly add sprites to itself.
+> ⁴ `OKEntity` is optional; a simple scene may directly add sprites and other child nodes to itself.
 
-> ⁶ `OKEntityState` is optional. An entity need not necessarily have states.  
+> ⁵ `OKEntityState` is optional. An entity need not necessarily have states.  
 
-> ⁷ `OKComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
+> ⁶ `OKComponent` may tell its entity to enter a different state, and it can also signal the scene to remove/spawn entities.  
 
-> ⁸ `OKComponentSystem` is used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame update cycle.
+> ⁷ `OKComponentSystem` is used by scenes to group each type of component in an ordered array which determines the sequence of component execution for every frame update cycle.
 
 The objects that actually present your game on screen:
 
@@ -131,7 +129,7 @@ The objects that actually present your game on screen:
 
 - `OKGameCoordinator` need not always be subclassed; projects that do not require a custom coordinator may simply use `OKGameCoordinator(states:initialStateClass:)`.
 
-- The game coordinator must be provided to the `OctopusKit(gameCoordinator:)` initializer and your SwiftUI view hierarchy's top-level `.environmentObject`, to make it available for the entire application.
+- The coordinator must be provided to the `OctopusKit(gameCoordinator:)` initializer and set your SwiftUI view hierarchy's top-level `.environmentObject`, to make it accessible to all game objects.
 
 - `OKGameState` need not be subclassed if your game will have only one state and one scene; you may simply pass `OKGameState(associatedSceneClass: YourScene.self)` to the game coordinator initializer.
 
@@ -304,7 +302,7 @@ A component may be conceptually classified under one or more of the following ca
 
 - If an entity can be in one of several conceptual states at a given time, it more makes sense to represent those states with a `GKStateMachine` (as encapsulated by a `StateMachineComponent`) instead of putting lots of conditional checks in multiple components.
 
-	> e.g. A spaceship entity with gun components that generate heat and temporarily stop firing when they are overheated. Without states, you might need to repeatedly check for the overheated state in *GunComponent* and *GunControlComponent* and *ShipVisualEffectsComponent* etc. With states, you may have an *OverheatedState* that removes the *GunControlComponent* and adds a *OverheatedVisualEffectComponent*. The overheated state monitors the *HeatComponent* to see when the ship cools down, and transitions the entity back to its *NormalState* which restores the relevant components necessary for normal player control.
+	> e.g. A spaceship entity may have gun components that generate heat and temporarily stop firing when they are overheated. Without states, you might need to repeatedly check for the overheated state in *GunComponent* and *GunControlComponent* and *ShipVisualEffectsComponent* etc. With states, you may have an *OverheatedState* that removes the *GunControlComponent* and adds a *OverheatedVisualEffectComponent*. The overheated state monitors the *HeatComponent* to see when the ship cools down, and transitions the entity back to its *NormalState* which restores the relevant components necessary for normal player control.
 
 ### State classes should:
 
