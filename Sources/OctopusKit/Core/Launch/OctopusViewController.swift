@@ -224,7 +224,7 @@ open class OctopusViewController: OSViewController {
         OctopusKit.logForFramework.add()
         super.viewWillAppear(animated)
         
-        // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
+        // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OctopusScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
     }
     
     open override func viewWillLayoutSubviews() {
@@ -232,7 +232,7 @@ open class OctopusViewController: OSViewController {
         super.viewWillLayoutSubviews()
 
         // OBSOLETE?
-        // NOTE: As the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
+        // NOTE: As the OctopusScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         // NOTE: Better yet, `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! :)
         // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OctopusViewController.viewWillLayoutSubviews()`
@@ -260,7 +260,7 @@ open class OctopusViewController: OSViewController {
         OctopusKit.logForFramework.add()
         super.viewWillAppear()
         
-        // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
+        // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OctopusScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
     }
     
     open override func viewWillLayout() {
@@ -268,7 +268,7 @@ open class OctopusViewController: OSViewController {
         super.viewWillLayout()
         
         // OBSOLETE?
-        // NOTE: As the OctopusScene's `prepareContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
+        // NOTE: As the OctopusScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         // NOTE: Better yet, `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! :)
         // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OctopusViewController.viewWillLayoutSubviews()`

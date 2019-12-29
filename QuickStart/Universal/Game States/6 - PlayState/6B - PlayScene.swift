@@ -52,7 +52,7 @@ final class PlayScene: OKScene {
     }
     
     // MARK: 🔶 STEP 6B.3
-    override func prepareContents() {
+    override func createContents() {
         
         // This method is called by the OKScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
         //
@@ -60,7 +60,7 @@ final class PlayScene: OKScene {
         //
         // Calling super for this method is not necessary; it only adds a log entry.
         
-        super.prepareContents()
+        super.createContents()
                 
         // Create the entities to present in this scene.
         

@@ -63,8 +63,8 @@ open class OctopusScene:    SKScene,
     
     // MARK: State & Flags
     
-    /// Set to `true` after `prepareContents()` is called.
-    public fileprivate(set) var didPrepareContents = false
+    /// Set to `true` after `createContents()` is called.
+    public fileprivate(set) var didCreateContents = false
     
     /// Set to `true` when the game is automatically paused by the system, such as when switching to another app or receiving a call.
     ///
@@ -231,23 +231,23 @@ open class OctopusScene:    SKScene,
     /// - Important: This method has to be called manually (e.g. from the `SKView`'s view controller) before presenting the scene. It is not invoked by the system and is *not* guaranteed to be called.
     open func willMove(to view: SKView) {}
     
-    /// Calls `prepareContents()` which may be used by a subclass to create the scene's contents, then adds all components from each entity in the `entities` set to the relevant systems in the `componentSystems` array. If overridden then `super` must be called for proper initialization of the scene.
+    /// Calls `createContents()` which may be used by a subclass to create the scene's contents, then adds all components from each entity in the `entities` set to the relevant systems in the `componentSystems` array. If overridden then `super` must be called for proper initialization of the scene.
     open override func didMove(to: SKView) {
         // CHECK: Should this be moved to `sceneDidLoad()`?
         OctopusKit.logForFramework.add("name = \"\(name ?? "")\", size = \(size), view.frame.size = \(to.frame.size), scaleMode = \(scaleMode.rawValue)")
         
         secondsElapsedSinceMovedToView = 0
         
-        if !didPrepareContents {
+        if !didCreateContents {
             
             // Convenient customization point for subclasses, so they can have a standard method for setting up the initial list of component systems.
             componentSystems.createSystems(forClasses: createComponentSystems())
             
-            prepareContents()
+            createContents()
             
             // addAllComponentsFromAllEntities(to: self.componentSystems) // CHECK: Necessary? Should we just rely on OctopusEntityDelegate?
             
-            didPrepareContents = true // Take care of this flag here so that subclass does not have to do so in `prepareContents()`.
+            didCreateContents = true // Take care of this flag here so that subclass does not have to do so in `createContents()`.
         }
         
         currentFrameNumber = 1 // Set the frame counter to 1 here because it is incremented in `didFinishUpdate()`, so that logs correctly say the first frame number during the first `update(_:)` method. ⚠️ NOTE: There is still a call to `OctopusViewController-Universal.viewWillLayoutSubviews()` after this, before the first `update(_:)`. CHECK: Fix?
@@ -283,7 +283,7 @@ open class OctopusScene:    SKScene,
         assert(self.entity === sceneEntity, "Could not set scene's entity")
     }
     
-    /// An abstract method that is called after the scene is presented in a view, before `prepareContents()` is called. Subclasses must override this to return an array of component classes, from which the scene's component systems will be created.
+    /// An abstract method that is called after the scene is presented in a view, before `createContents()` is called. Subclasses must override this to return an array of component classes, from which the scene's component systems will be created.
     ///
     /// - IMPORTANT: Components will be updated every frame in the exact order that is specified here, so a component must be listed after its dependencies.
     ///
@@ -295,13 +295,13 @@ open class OctopusScene:    SKScene,
     
     /// An abstract method that is called after the scene is presented in a view. To be overridden by a subclass to prepare the scene's content, and set up entities and components.
     ///
-    /// Called from `didMove(to:)`. Call `super.prepareContents()` to include a log entry.
+    /// Called from `didMove(to:)`. Call `super.createContents()` to include a log entry.
     ///
     /// - NOTE: If the scene requires the global `OctopusKit.shared.gameCoordinator.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
     ///
     /// - Note: A scene may choose to perform the tasks of this method in `gameCoordinatorDidEnterState(_:from:)` instead.
     @inlinable
-    open func prepareContents() {
+    open func createContents() {
         OctopusKit.logForFramework.add()
     }
     
@@ -366,7 +366,7 @@ open class OctopusScene:    SKScene,
     ///
     /// An `OctopusScene` subclass (i.e. the scenes specific to your game) may control pause/unpause behavior and perform other per-frame logic by overriding the `shouldUpdateGameCoordinator(deltaTime:)` and `shouldUpdateSystems(deltaTime:)` methods.
     ///
-    /// The preferred pattern in OctopusKit is to simply add entities and components to the scene in a method like `prepareContents()` or `gameCoordinatorDidEnterState(_:from:)`, and let this method automatically update all component systems, which allows all the per-frame logic for the game to be handled by the `update(_:)` method of each individual component and state class.
+    /// The preferred pattern in OctopusKit is to simply add entities and components to the scene in a method like `createContents()` or `gameCoordinatorDidEnterState(_:from:)`, and let this method automatically update all component systems, which allows all the per-frame logic for the game to be handled by the `update(_:)` method of each individual component and state class.
     ///
     /// For an overview of the SpriteKit frame cycle, see: https://developer.apple.com/documentation/spritekit/skscene/responding_to_frame-cycle_events
     ///

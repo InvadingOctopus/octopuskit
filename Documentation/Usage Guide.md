@@ -124,7 +124,7 @@ This offers a section of templates for OctopusKit when you create a ⌘N New Fil
 
 ## Player Input
 
-In your **scene**'s `override func prepareContents()`
+In your **scene**'s `override func createContents()`
 
 ```swift
 self.entity?.addComponents([

@@ -39,8 +39,8 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         ]
     }
     
-    override func prepareContents() {
-        super.prepareContents()
+    override func createContents() {
+        super.createContents()
         // Customize: This is where you construct entities to add to your scene.
         
         self.entity?.addComponents([sharedMouseOrTouchEventComponent,

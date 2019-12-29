@@ -19,8 +19,8 @@ public final class OctopusLogoScene: OctopusScene {
         super.willMove(to: view)
     }
     
-    public override func prepareContents() {
-        super.prepareContents()
+    public override func createContents() {
+        super.createContents()
         self.backgroundColor = .black
         self.isUserInteractionEnabled = false
         beginAct1()
