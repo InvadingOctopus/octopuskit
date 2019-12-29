@@ -26,10 +26,16 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     
     // ℹ️ Even though there is a `OctopusGameStateDelegate` protocol, `OctopusGameState` only exposes a `delegate` for formality but it does not use it. The reason is that in certain situations, an `OctopusGameState` may have more than one "delegate" that it needs to send notifications to, e.g. both an outgoing scene and an incoming scene in the case of visual scene transition effects with a long duration. The `delegate` property may be opened as a future customization point.
     
-    // NOTE: Apple documentation for `isValidNextState(_:)`:
-    // Your implementation of this method should describe the static relationships between state classes that determine the set of edges in a state machine’s state graph.
-    // ⚠️ Do not use this method to conditionally control state transitions—instead, perform such conditional logic before calling a state machine’s `enter(_:)` method.
-    // By restricting the set of valid state transitions, you can use a state machine to enforce invariant conditions in your code. For example, if one state class can be entered only after a state machine has passed through a series of other states, code in that state class can safely assume that any actions performed by those other states have already occurred.
+    // MARK: - Properties
+    
+    /// Specifies the possible states that this state may transition to. If this array is empty, then all states are allowed (the default.)
+    ///
+    /// Checked by `isValidNextState(_:)`.
+    ///
+    /// - Important: This property should describe the **static** relationships between state classes that determine the set of edges in a state machine’s state graph; Do **not** perform conditional logic in this property to conditionally control state transitions. Check conditions before attempting to transition to a different state.
+    open var validNextStates: [OctopusGameState.Type] {
+        []
+    }
     
     /// The scene that will be presented when the `OctopusGameCoordinator` (or your custom subclass) enters this state.
     ///
@@ -62,7 +68,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
         }
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Initialization
     
     /// Creates a game state and associates it with the specified scene class.
     public init(associatedSceneClass: OctopusScene.Type? = nil)
@@ -74,9 +80,8 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     }
     
     /// Creates a game state and associates it with the specified scene class and UI overlay.
-    public init <ViewType: View>
-        (associatedSceneClass:  OctopusScene.Type? = nil,
-         associatedSwiftUIView: ViewType)
+    public init <ViewType: View> (associatedSceneClass:  OctopusScene.Type? = nil,
+                                  associatedSwiftUIView: ViewType)
     {
         self.associatedSceneClass  = associatedSceneClass
         self.associatedSwiftUIView = AnyView(associatedSwiftUIView)
@@ -86,14 +91,15 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     /// Creates a game state and associates it with the specified scene class and UI overlay.
     ///
     /// You may construct a SwiftUI view as a trailing closure to this initializer.
-    public init <ViewType: View>
-        (associatedSceneClass: OctopusScene.Type? = nil,
-         @ViewBuilder associatedSwiftUIView: () -> ViewType)
+    public init <ViewType: View> (associatedSceneClass: OctopusScene.Type? = nil,
+                                  @ViewBuilder associatedSwiftUIView: () -> ViewType)
     {
         self.associatedSceneClass  = associatedSceneClass
         self.associatedSwiftUIView = AnyView(associatedSwiftUIView())
         super.init()
     }
+    
+    // MARK: - State Transitions
     
     /// - Important: When overriding in a subclass, take care of when you call `super.didEnter(from:)` as that affects when the current `OctopusScene` is notified via `gameCoordinatorDidEnterState(_:from:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
     open override func didEnter(from previousState: GKState?) {
@@ -101,8 +107,8 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
         OctopusKit.logForStates.add("\(previousState) → \(self)")
         super.didEnter(from: previousState)
         
-        // ℹ️ DESIGN: Should the scene presentation be an optional step to be decided by the subclass? — No: A state should always display its associated scene, but the logic for deciding whether to enter an state should be made in `isValidNextState(_:)`.
-        // To programmatically modify the `associatedSceneClass` at runtime, override and replace `didEnter(from:)` or `willExit(to:)`
+        // ℹ️ DESIGN: Should the scene presentation be an optional step to be decided by the subclass? — No: A state should always display its associated scene, but the logic for deciding whether to enter an state can be performed elsewhere (except in `isValidNextState(_:)` as per the Apple documentation note.)
+        // 💡 To programmatically modify the `associatedSceneClass` at runtime, you may override and replace `didEnter(from:)` or `willExit(to:)`
         
         guard let gameCoordinator = self.gameCoordinator else {
             OctopusKit.logForErrors.add("\(self) has no gameCoordinator")
@@ -157,6 +163,17 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
         self.delegate = incomingScene ?? currentScene // Stay with `currentScene` if there is no new scene to be presented.
         
         self.delegate?.gameCoordinatorDidEnterState(self, from: previousState)
+    }
+
+    /// Returns `true` if the `validNextStates` property contains `stateClass` or is an empty array (which means all states are allowed.)
+    ///
+    /// - Important: Do not override this method to conditionally control state transitions. Instead, perform such conditional logic before transitioning to a different state.
+    open override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+        // NOTE: Apple documentation for `isValidNextState(_:)`:
+        // Your implementation of this method should describe the static relationships between state classes that determine the set of edges in a state machine’s state graph.
+        // ⚠️ Do not use this method to conditionally control state transitions—instead, perform such conditional logic before calling a state machine’s `enter(_:)` method.
+        // By restricting the set of valid state transitions, you can use a state machine to enforce invariant conditions in your code. For example, if one state class can be entered only after a state machine has passed through a series of other states, code in that state class can safely assume that any actions performed by those other states have already occurred.
+        validNextStates.isEmpty || validNextStates.contains { stateClass == $0 }
     }
     
     /// - Important: When overriding in a subclass, take care of when you call `super.willExit(to:)` as that affects when the current `OctopusScene` is notified via `currentScene.gameCoordinatorWillExitState(_,to:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
