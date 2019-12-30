@@ -34,7 +34,7 @@ final class GameOverState: OKGameState {
         return stateMachine?.enter(TitleState.self) ?? false
     }
     
-    override var validNextStates: [OctopusGameState.Type] {
+    override var validNextStates: [OKGameState.Type] {
         
         // 🔶 STEP 8.3: This property lists all the valid states which this state is allowed to transition to.
         //
