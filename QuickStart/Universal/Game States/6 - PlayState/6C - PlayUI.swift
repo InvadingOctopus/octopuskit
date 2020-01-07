@@ -157,8 +157,8 @@ struct GlobalDataComponentLabel: View {
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 10)
-        .foregroundColor(color)
-        .shadow(radius: 10))
+            .foregroundColor(color)
+            .shadow(radius: 10))
     }
 }
 

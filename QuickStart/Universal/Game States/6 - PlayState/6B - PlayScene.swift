@@ -21,12 +21,10 @@ final class PlayScene: OKScene {
     // MARK: - Life Cycle
     
     // MARK: 🔶 STEP 6B.1
-    override func sceneDidLoad() {
+    override func setName() -> String? {
         
         // Set the name of this scene at the earliest override-able point, for logging purposes.
-        
-        self.name = "QuickStart Play Scene"
-        super.sceneDidLoad()
+        "QuickStart Play Scene"
     }
     
     // MARK: 🔶 STEP 6B.2
@@ -82,30 +80,9 @@ final class PlayScene: OKScene {
         }
     }
     
-    // MARK: - Frame Update
-    
-    // MARK: 🔶 STEP 6B.4
-    override func shouldUpdateSystems(deltaTime: TimeInterval) -> Bool {
-        
-        // This method is not necessary but provided here for explanation:
-        //
-        // OctopusKit handles all the boilerplate per-frame logic, like timer calculations, frame counts, entity management and pause/unpause behavior.
-        //
-        // The `OKScene.update(_:)` method, which is executed at the beginning of every frame by SpriteKit, calls this `shouldUpdateSystems(deltaTime:)` before updating the components of all entities.
-        //
-        // This saves you from writing a lot of identical code for every scene, while still offering a customization point for your scenes that have custom pause/unpause behavior or need to perform other per-frame logic.
-        //
-        // By default this method just checks all the paused flags, and returns true if none are true. That's what we're going to do here too. :)
-        //
-        // 💡 For an overview of the SpriteKit frame cycle, see Apple's documentation:
-        // https://developer.apple.com/documentation/spritekit/skscene/responding_to_frame-cycle_events
-        
-        return (!isPaused && !isPausedBySystem && !isPausedByPlayer && !isPausedBySubscene)
-    }
-    
     // MARK: - State & Scene Transitions
     
-    // MARK: 🔶 STEP 6B.5
+    // MARK: 🔶 STEP 6B.4
     override func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?) {
         
         // This method is called by the current game state to notify the current scene when a new state has been entered.
@@ -165,7 +142,7 @@ final class PlayScene: OKScene {
         
     }
     
-    // MARK: 🔶 STEP 6B.6
+    // MARK: 🔶 STEP 6B.5
     override func gameCoordinatorWillExitState(_ exitingState: GKState, to nextState: GKState) {
         
         // This method is called by the current game state to notify the current scene when the state will transition to a new state.
@@ -197,7 +174,7 @@ final class PlayScene: OKScene {
         
     }
     
-    // MARK: 🔶 STEP 6B.7
+    // MARK: 🔶 STEP 6B.6
     override func transition(for nextSceneClass: OKScene.Type) -> SKTransition? {
         
         // This method is called by the OKScenePresenter to ask the current scene for a transition animation between the outgoing scene and the next scene.
@@ -281,5 +258,5 @@ final class PlayScene: OKScene {
     
 }
 
-// NEXT: See PausedState (STEP 7)
+// NEXT: See PlayUI (STEP 6C) and PausedState (STEP 7)
 
