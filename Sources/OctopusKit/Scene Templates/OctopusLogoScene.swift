@@ -17,7 +17,6 @@ public final class OctopusLogoScene: OctopusScene {
     override func setName() -> String? { "OctopusKit Logo Scene" }
     
     public override func createContents() {
-        super.createContents()
         self.backgroundColor = .black
         self.isUserInteractionEnabled = false
         beginAct1()
