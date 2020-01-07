@@ -23,7 +23,7 @@ import CoreMotion
 ///
 /// **Usage**
 ///
-/// 1. Your application's launch cycle must initialize an instance of `OKGameCoordinator` or its subclass, specifying a list of all possible states your game can be in, represented by `OKGameState`. Each state must have an `OctopusGameScene` associated with, as well as an optional `SwiftUI` overlay view. See the documentation for `OKGameCoordinator`.
+/// 1. Your application's launch cycle must initialize an instance of `OKGameCoordinator` or its subclass, specifying a list of all possible states your game can be in, represented by `OKGameState`. Each state must have an `OKGameScene` associated with, as well as an optional `SwiftUI` overlay view. See the documentation for `OKGameCoordinator`.
 ///
 /// 2. Call `OctopusKit(gameCoordinator:)` to initialize the `OctopusKit.shared` singleton instance, which all other objects will refer to when they need to access the game coordinator and other top-level objects.
 ///
@@ -150,13 +150,13 @@ public final class OctopusKit {
                                    gameCoordinator: OKGameCoordinator) throws
     {
         guard OctopusKit.shared == nil else {
-            throw OctopusError.invalidConfiguration("OctopusKit: OctopusKit(appName:gameCoordinator:) called again after OctopusKit.shared singleton has already been initialized.")
+            throw OKError.invalidConfiguration("OctopusKit: OctopusKit(appName:gameCoordinator:) called again after OctopusKit.shared singleton has already been initialized.")
         }
         
         guard   let appName = appNameOverride ??
                 (Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)
         else {
-            throw OctopusError.invalidConfiguration("Cannot read CFBundleName from Info.plist as a String, and appNameOverride not provided.")
+            throw OKError.invalidConfiguration("Cannot read CFBundleName from Info.plist as a String, and appNameOverride not provided.")
         }
             
         self.appName = appName
@@ -169,11 +169,11 @@ public final class OctopusKit {
     /// Ensures that the OctopusKit has been correctly initialized.
     @discardableResult public static func verifyConfiguration() throws -> Bool {
         guard let singleton = OctopusKit.shared else {
-            throw OctopusError.invalidConfiguration("OctopusKit.shared singleton not initialized. Call OctopusKit(gameCoordinator:) or OKViewController(gameCoordinator:) during application launch.")
+            throw OKError.invalidConfiguration("OctopusKit.shared singleton not initialized. Call OctopusKit(gameCoordinator:) or OKViewController(gameCoordinator:) during application launch.")
         }
         guard !singleton.appName.isEmpty else {
             // CHECK: More rigorous verification? Compare with `CFBundleName` from `Info.plist`?
-            throw OctopusError.invalidConfiguration("OctopusKit.shared.appName is empty.")
+            throw OKError.invalidConfiguration("OctopusKit.shared.appName is empty.")
         }
         return true
     }

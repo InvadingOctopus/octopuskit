@@ -70,7 +70,7 @@ open class OKViewController: OSViewController {
             if  let existingGameCoordinator = OctopusKit.shared?.gameCoordinator,
                 gameCoordinator !== existingGameCoordinator
             {
-                throw OctopusError.invalidConfiguration("OctopusKit already running with \(existingGameCoordinator) — OKViewController initialized with \(gameCoordinator)")
+                throw OKError.invalidConfiguration("OctopusKit already running with \(existingGameCoordinator) — OKViewController initialized with \(gameCoordinator)")
             }
             
             // Initialize OctopusKit if we're the very first view controller.
@@ -89,7 +89,7 @@ open class OKViewController: OSViewController {
             guard   OctopusKit.initialized,
                     let octopusKitSingleton = OctopusKit.shared
             else {
-                throw OctopusError.invalidConfiguration("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called during application launch or OKViewController must be initialized with a OKGameCoordinator")
+                throw OKError.invalidConfiguration("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called during application launch or OKViewController must be initialized with a OKGameCoordinator")
             }
         
             self.gameCoordinator = octopusKitSingleton.gameCoordinator
@@ -152,7 +152,7 @@ open class OKViewController: OSViewController {
         spriteKitView.ignoresSiblingOrder = true // SpriteKit applies additional optimizations to improve rendering performance.
         
         //        spriteKitView.isMultipleTouchEnabled = ?
-        //        audioEngine = OctopusAudioEngine()
+        //        audioEngine = OKAudioEngine()
         
         // If we are a new view controller being added to an ongoing game, such as when showing a new SwiftUI container view, present the ongoing scene.
         

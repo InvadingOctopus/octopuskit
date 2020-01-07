@@ -1,5 +1,5 @@
 //
-//  OctopusLayoutGrid.swift
+//  OKLayoutGrid.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2014-11-24
@@ -37,7 +37,7 @@ public final class OKLayoutGridCell: SKNode {
     
     /// Returns the cell's position converted to the coordinate system of the grid's parent (the cell's parent's parent.)
     public var positionInGridParent: CGPoint? {
-        if let grid = self.parent as? OctopusLayoutGrid {
+        if let grid = self.parent as? OKLayoutGridGrid {
             if grid.parent != nil {
                 return grid.convert(self.position, to: grid.parent!)
             }
@@ -55,7 +55,7 @@ public final class OKLayoutGridCell: SKNode {
     }
 }
 
-public final class OctopusLayoutGrid: SKNode {
+public final class OKLayoutGridGrid: SKNode {
     
     public static var cellSpacingDefault = CGSize(width: 8.0, height: 8.0)
     
@@ -97,7 +97,7 @@ public final class OctopusLayoutGrid: SKNode {
         columns: Int,
         rows: Int,
         cellSize: CGSize,
-        cellSpacing: CGSize = OctopusLayoutGrid.cellSpacingDefault,
+        cellSpacing: CGSize = OKLayoutGridGrid.cellSpacingDefault,
         reverseRowOrder: Bool = false,
         backgroundSpritesWithColor backgroundColor: SKColor? = nil)
     {
@@ -157,7 +157,7 @@ public final class OctopusLayoutGrid: SKNode {
         columns: Int,
         rows: Int,
         cellDiagonalSize: CGFloat,
-        cellDiagonalSpacing: CGFloat = OctopusLayoutGrid.cellSpacingDefault.width)
+        cellDiagonalSpacing: CGFloat = OKLayoutGridGrid.cellSpacingDefault.width)
     {
         self.init(
             columns: columns,

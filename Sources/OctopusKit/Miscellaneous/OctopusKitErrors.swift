@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum OctopusError: Error {
+public enum OKError: Error {
     
     /// This error is raised when the core objects for OctopusKit have not been initialized correctly during the application launch cycle.
     ///

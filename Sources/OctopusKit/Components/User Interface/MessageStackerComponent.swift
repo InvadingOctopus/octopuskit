@@ -12,7 +12,7 @@
 import SpriteKit
 import GameplayKit
 
-public protocol OctopusMessageStackerDelegate: class {
+public protocol MessageStackerDelegate: class {
     func messageStacker(_ stacker: MessageStackerComponent, willBeginDisplayingFirstMessage: String)
     func messageStacker(_ stacker: MessageStackerComponent, didFinishDisplayingLastMessage: String)
 }
@@ -22,7 +22,7 @@ public protocol OctopusMessageStackerDelegate: class {
 /// **Dependencies:** `SpriteKitComponent`
 public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode> {
     
-    public weak var delegate: OctopusMessageStackerDelegate?
+    public weak var delegate: MessageStackerDelegate?
     
     // MARK: Graphics
     
@@ -36,7 +36,7 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
     
     public fileprivate(set) var messageLabels: [SKLabelNode] = []
     
-    public let stackDirection: OctopusVerticalOrientation
+    public let stackDirection: OKVerticalOrientation
     
     /// The delay before a message begins to fade out: the duration of how long a message is displayed.
     
@@ -57,7 +57,7 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
     
     // MARK: - Life Cycle
     
-    public init(stackDirection: OctopusVerticalOrientation = .up,
+    public init(stackDirection: OKVerticalOrientation = .up,
                 shouldFlashNewMessages: Bool = true,
                 parentOverride: SKNode? = nil,
                 positionOffset: CGPoint? = nil,
@@ -85,7 +85,7 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
         
         self.parent = parent
         
-        newLabelPosition.y = (stackDirection == OctopusVerticalOrientation.up) ? -1 : parent.frame.size.height // NOTE: `addMessage()` should set the new label's top or bottom to those values, respectively, depending on the stack direction.
+        newLabelPosition.y = (stackDirection == OKVerticalOrientation.up) ? -1 : parent.frame.size.height // NOTE: `addMessage()` should set the new label's top or bottom to those values, respectively, depending on the stack direction.
 
         
         baseLayer = SKNode()
@@ -127,7 +127,7 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
         let newLabel = SKLabelNode(text: "\(message)", font: self.font)
         
         newLabel.horizontalAlignmentMode = fontHorizontalAlignment
-        newLabel.verticalAlignmentMode = (stackDirection == OctopusVerticalOrientation.up) ? .top : .bottom
+        newLabel.verticalAlignmentMode = (stackDirection == OKVerticalOrientation.up) ? .top : .bottom
         newLabel.blendMode = overridingBlendMode ?? blendMode
         
         if fontColor != nil {

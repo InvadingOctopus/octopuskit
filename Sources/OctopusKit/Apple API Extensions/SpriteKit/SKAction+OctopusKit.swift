@@ -19,7 +19,7 @@ extension SKAction {
     /// Useful for searching for and stopping repeating actions, and to override actions that modify the same properties of a node.
     ///
     /// - Note: These keys must be manually specified when calling `run(_:withKey:)` on a node.
-    public struct OctopusAnimationKeys {
+    public struct OKAnimationKeys {
         public static let alpha = "OctopusKit.Animation.Alpha"
         public static let blink = "OctopusKit.Animation.Blink"
         public static let color = "OctopusKit.Animation.Color"

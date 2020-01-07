@@ -19,7 +19,7 @@ public typealias OctopusGameCoordinator = OKGameCoordinator
 ///
 /// **Usage**
 ///
-/// 1. Your application's launch cycle must initialize an instance of `OKGameCoordinator` or its subclass, specifying a list of all possible states your game can be in, represented by `OKGameState`. Each state must have an `OctopusGameScene` associated with, as well as an optional `SwiftUI` overlay view. See the documentation for `OKGameCoordinator`.
+/// 1. Your application's launch cycle must initialize an instance of `OKGameCoordinator` or its subclass, specifying a list of all possible states your game can be in, represented by `OKGameState`. Each state must have an `OKGameScene` associated with, as well as an optional `SwiftUI` overlay view. See the documentation for `OKGameCoordinator`.
 ///
 ///     ```
 ///     let myGameCoordinator = OKGameCoordinator(

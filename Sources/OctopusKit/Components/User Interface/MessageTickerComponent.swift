@@ -12,7 +12,7 @@
 import SpriteKit
 import GameplayKit
 
-public protocol OctopusMessageTickerDelegate: class {
+public protocol MessageTickerDelegate: class {
     func messageTicker(_ ticker: MessageTickerComponent, willBeginScrollingFirstMessage: String)
     func messageTicker(_ ticker: MessageTickerComponent, didFinishScrollingLastMessage: String)
 }
@@ -24,7 +24,7 @@ public protocol OctopusMessageTickerDelegate: class {
 /// **Dependencies:** `SpriteKitComponent`
 public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>, OKUpdatableComponent {
     
-    public weak var delegate: OctopusMessageTickerDelegate?
+    public weak var delegate: MessageTickerDelegate?
     
     // MARK: Graphics
     

@@ -33,7 +33,7 @@ extension SKNode {
             sequence = blink
         }
         
-        self.run(sequence, withKey: SKAction.OctopusAnimationKeys.blink)
+        self.run(sequence, withKey: SKAction.OKAnimationKeys.blink)
     }
     
 }

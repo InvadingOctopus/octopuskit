@@ -1,5 +1,5 @@
 //
-//  OctopusShadow.swift
+//  OKShadow.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2014-11-28

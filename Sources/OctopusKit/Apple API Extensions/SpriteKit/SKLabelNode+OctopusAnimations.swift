@@ -34,7 +34,7 @@ extension SKLabelNode {
         // Repeat for `count` x 2 so that a complete pair of color/decolor actions is run in the block per each `count`.
         
         self.run(SKAction.repeat(flashSequence, count: count * 2),
-                 withKey: SKAction.OctopusAnimationKeys.color)
+                 withKey: SKAction.OKAnimationKeys.color)
     }
     
     /// Creates a "ghost" of this label behind it, adds it to the label's parent, scales it to the specified size while fading it to an alpha of `0.0` then removes it from the parent.

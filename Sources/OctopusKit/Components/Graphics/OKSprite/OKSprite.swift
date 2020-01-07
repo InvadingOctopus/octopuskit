@@ -6,7 +6,7 @@
 //  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// CHECK: Rename to `OctopusTouchEventComponentSprite`? :P
+// CHECK: Rename to `OKTouchEventComponentSprite`? :P
 
 import SpriteKit
 import GameplayKit
