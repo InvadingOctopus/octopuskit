@@ -50,15 +50,7 @@ final class TitleScene: OKScene {
     // MARK: 🔶 STEP 5B.3
     override func createContents() {
         
-        // This method is called by the OKScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) prepare their contents.
-        //
-        // The most common tasks for every scene are to prepare the order of the component systems which the scene will update every frame, and to add entities to the scene.
-        //
-        // Calling super for this method is not necessary; it only adds a log entry.
-        
-        super.createContents()
-
-        // Create the entities to present in this scene.
+        // This method is called by the OKScene superclass, after the scene has been presented in a view, to let each subclass (the scenes specific to your game) create its contents and add entities to the scene.
         
         // Set the permanent visual properties of the scene itself.
         
