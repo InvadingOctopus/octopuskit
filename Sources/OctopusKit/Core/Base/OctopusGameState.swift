@@ -49,6 +49,7 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     /// The SwiftUI layer to display over the game's SpriteKit view.
     @Published public var associatedSwiftUIView: AnyView
     
+    @inlinable
     open var gameCoordinator: OctopusGameCoordinator? {
         if  let gameCoordinator = self.stateMachine as? OctopusGameCoordinator {
             return gameCoordinator
@@ -196,28 +197,14 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     
     // MARK: - OctopusSceneDelegate
     
-    // ℹ️ NOTE: This section should not be in an extension because "Declarations from extensions cannot be overridden yet."
-    
-    /// Abstract; To be implemented by subclass. Default behavior is to redirect to `octopusSceneDidChooseNextGameState(_:)`.
-    open func octopusSceneDidFinish(_ scene: OctopusScene) {
-        // CHECK: Should this be the default behavior? It may be helpful in showing a series of credits or intros/cutscenes etc.
-        self.octopusSceneDidChooseNextGameState(scene)
-    }
-    
-    /// Abstract; To be implemented by subclass.
-    @discardableResult open func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
-        return false
-    }
-    
-    /// Abstract; To be implemented by subclass.
-    @discardableResult open func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
-        return false
-    }
-    
+    // NOTE: This section should not be in an extension because "Declarations from extensions cannot be overridden yet."
+        
     /// Signals the `OctopusGameCoordinator` or its subclass to enter the requested state.
     ///
     /// May be overridden in subclass to provide transition validation.
-    @discardableResult open func octopusScene(_ scene: OctopusScene, didRequestGameStateClass stateClass: OctopusGameState.Type) -> Bool {
+    @discardableResult open func octopusScene(_ scene: OctopusScene,
+                                              didRequestGameState stateClass: OctopusGameState.Type) -> Bool
+    {
         return stateMachine?.enter(stateClass) ?? false
     }
     
@@ -248,14 +235,4 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
         self.gameCoordinator?.createAndPresentScene(ofClass: nextSceneClass, withTransition: transition)
         // outgoingScene.isPaused = false // CHECK: Necessary?
     }
-    
-    /// Signals the `OctopusGameCoordinator` or its subclass to enter the requested state.
-    ///
-    /// May be overridden in subclass to provide transition validation.
-    @discardableResult open func octopusScene(_ scene: OctopusScene,
-                                         didRequestGameState stateClass: OctopusGameState.Type) -> Bool
-    {
-        return stateMachine?.enter(stateClass) ?? false
-    }
-    
 }
