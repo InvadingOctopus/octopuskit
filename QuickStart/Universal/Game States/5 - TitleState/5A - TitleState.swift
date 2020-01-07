@@ -26,7 +26,7 @@ final class TitleState: OKGameState {
                    associatedSwiftUIView: TitleUI())
     }
 
-    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
+    @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
         
         // 🔶 STEP 5A.2: This method will be called by the TitleScene when the "Cycle Game States" button is tapped.
         
