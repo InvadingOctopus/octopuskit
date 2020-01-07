@@ -14,11 +14,6 @@ public typealias OKLogoScene = OctopusLogoScene
 /// A template for presenting the OctopusKit logo.
 public final class OctopusLogoScene: OctopusScene {
     
-    public override func willMove(to view: SKView) {
-        self.name = "OctopusKit Logo Scene"
-        super.willMove(to: view)
-    }
-    
     public override func createContents() {
         super.createContents()
         self.backgroundColor = .black
