@@ -38,7 +38,7 @@ final class PlayState: OKGameState {
         super.didEnter(from: previousState)
     }
     
-    @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
+    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
         
         // 🔶 STEP 6A.3: This method will be called by the PlayScene when the "Cycle Game States" button is tapped.
         

@@ -197,6 +197,24 @@ open class OctopusGameState: GKState, OctopusSceneDelegate, ObservableObject {
     
     // MARK: - OctopusSceneDelegate
     
+    // NOTE: The default implementations from `OctopusSceneDelegate.swift` are duplicated here, as otherwise the implementations in subclasses of `OctopusGameState` don't seem to get called.
+    
+    /// Abstract; To be implemented by subclass. Default behavior is to redirect to `octopusSceneDidChooseNextGameState(_:)`.
+    open func octopusSceneDidFinish(_ scene: OctopusScene) {
+        // CHECK: Should this be the default behavior? It may be helpful in showing a series of credits or intros/cutscenes etc.
+        self.octopusSceneDidChooseNextGameState(scene)
+    }
+    
+    /// Abstract; To be implemented by subclass.
+    @discardableResult open func octopusSceneDidChooseNextGameState(_ scene: OctopusScene) -> Bool {
+        return false
+    }
+    
+    /// Abstract; To be implemented by subclass.
+    @discardableResult open func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
+        return false
+    }
+    
     // NOTE: This section should not be in an extension because "Declarations from extensions cannot be overridden yet."
         
     /// Signals the `OctopusGameCoordinator` or its subclass to enter the requested state.

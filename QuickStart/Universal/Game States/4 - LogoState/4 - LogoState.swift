@@ -26,7 +26,7 @@ final class LogoState: OKGameState {
         super.init(associatedSceneClass: OKLogoScene.self)
     }
     
-    @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
+    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
         
         // 🔶 STEP 4.2: This method will be called by the OKLogoScene after it finishes animating.
         
