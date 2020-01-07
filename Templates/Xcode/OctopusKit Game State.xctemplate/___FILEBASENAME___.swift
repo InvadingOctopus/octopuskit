@@ -6,7 +6,7 @@ import OctopusKit
 
 final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
     
-    open var validNextStates: [OctopusGameState.Type] {
+    override var validNextStates: [OctopusGameState.Type] {
         // Customize: Specify the valid states that this state can transition to.
         // NOTE: Do not perform any logic to conditionally control state transitions here. See `OctopusGameState` documentation.
         []  // Default: allow all states.
