@@ -27,39 +27,15 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
 
 final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
     
+    override func setName() -> String? { "___FILEBASENAMEASIDENTIFIER___Scene" }
+    
     override func createComponentSystems() -> [GKComponent.Type] {
-        [
-            // Customize. Each component must be listed after the components it depends on; check the `requiredComponents` property.
-            
-            // 1: Time and state.
-            
-            TimeComponent.self,
-            StateMachineComponent.self,
-            
-            // 2: Player input.
-            
-            OSMouseOrTouchEventComponent.self,
-            PointerEventComponent.self,
-            NodePointerStateComponent.self,
-            NodePointerClosureComponent.self,
-            
-            // 3: Movement and physics.
-            
-            PointerControlledPositioningComponent.self,
-            OctopusAgent2D.self,
-            PhysicsComponent.self, // The physics component should come in after other components have modified node properties, so it can clamp the velocity etc. if such limits have been specified.
-            
-            // 4: Custom code and anything else that depends on the final placement of nodes per frame.
-            
-            PhysicsEventComponent.self,
-            RepeatingClosureComponent.self,
-            DelayedClosureComponent.self,
-            CameraComponent.self
-        ]
+        // Customize. Each component must be listed after the components it depends on (as per its `requiredComponents` property.)
+        // See OctopusScene.createComponentSystems() for the default set of commonly-used systems.
+        super.createComponentSystems()
     }
     
     override func createContents() {
-        super.createContents()
         // Customize: This is where you construct entities to add to your scene.
         
         self.entity?.addComponents([sharedMouseOrTouchEventComponent,
