@@ -14,6 +14,16 @@ public typealias OKSceneDelegate = OctopusSceneDelegate
 /// A protocol for types that control game state transitions and scene presentation based on input from the current scene, such as `OctopusGameState`.
 public protocol OctopusSceneDelegate {
     
+    // DESIGN: Hooks for the frame update cycle are not included, because checking and calling the delegate every frame may reduce performance. To customize the update cycle, subclass OctopusScene.
+    
+    // MARK: Initialization
+    
+    /// Creates the component systems for the scene.
+    func createComponentSystems(for scene: OctopusScene) -> [GKComponent.Type] // ❕ Not currently used by OctopusScene
+    
+    /// Creates the gameplay entities and configures scene properties.
+    func createContents(for scene: OctopusScene) // ❕ Not currently used by OctopusScene
+    
     // MARK: Transitions
     
     /// Notifies the current `OctopusGameState` of the `OctopusGameCoordinator` state machine. The state's logic should decide how to interpret the "completion" of a scene and which state to transition to, if any.
@@ -49,7 +59,20 @@ public protocol OctopusSceneDelegate {
 // MARK: - Default Implementation
 
 public extension OctopusSceneDelegate {
-
+    
+    // MARK: Initialization
+    
+    func createComponentSystems(for scene: OctopusScene) -> [GKComponent.Type] {
+        // ❕ Not currently used by OctopusScene
+        OctopusKit.logForWarnings.add("createComponentSystems(for:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState)")
+        return []
+    }
+    
+    func createContents(for scene: OctopusScene) {
+        // ❕ Not currently used by OctopusScene
+        OctopusKit.logForWarnings.add("createContents(for:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState)")
+    }
+    
     // MARK: Transitions
     
     // Abstract; To be implemented by subclass. The default behavior is to redirect to `octopusSceneDidChooseNextGameState(_)`.
