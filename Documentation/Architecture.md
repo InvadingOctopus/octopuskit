@@ -97,7 +97,7 @@ The objects that actually present your game on screen:
 | :-: |
 |📲 `AppDelegate` + `SceneDelegate` |
 |↓|
-|📦 `OctopusKitContainerView`|
+|📦 `OKContainerView`|
 |↓|
 |🎛 `OKUIOverlay`|
 |📦 `OKViewControllerRepresentable`|

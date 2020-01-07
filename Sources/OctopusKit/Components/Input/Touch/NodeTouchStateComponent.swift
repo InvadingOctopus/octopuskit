@@ -33,7 +33,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
-public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class NodeTouchStateComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,
@@ -173,13 +173,13 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
             stateChangedThisFrame = false // NOTE: This may trigger the property observers multiple times if the state changes later on during this method.
         }
         
-        // CHECK: This component should be usable on an `OctopusScene.entity` as well as any other subentity. Should we find a better way to do this than making `parent` and `scene` equal to the `node`?
+        // CHECK: This component should be usable on an `OKScene.entity` as well as any other subentity. Should we find a better way to do this than making `parent` and `scene` equal to the `node`?
         
         guard
             self.state != .disabled,
             let node    = entityNode,
             let parent  = (node is SKScene ? node : node.parent), // If the component's node is a scene, `parent` would be set to the node itself.
-            let scene   = (node.scene as? OctopusScene) ?? (node as? OctopusScene), // We need the scene to be an `OctopusScene`.
+            let scene   = (node.scene as? OKScene) ?? (node as? OKScene), // We need the scene to be an `OKScene`.
             !scene.didDismissSubsceneThisFrame, // CHECK: Include `didPresentSubsceneThisFrame`?
             let touchEventComponent = coComponent(TouchEventComponent.self)
             else {
@@ -366,7 +366,7 @@ public final class NodeTouchStateComponent: OctopusComponent, OctopusUpdatableCo
 
 @available(*, unavailable, renamed: "NodeTouchStateComponent")
 @available(macOS, unavailable, message: "Use NodePointerStateComponent")
-public final class NodeTouchComponent: OctopusComponent, OctopusUpdatableComponent {}
+public final class NodeTouchComponent: OKComponent, OKUpdatableComponent {}
 
 #endif
 

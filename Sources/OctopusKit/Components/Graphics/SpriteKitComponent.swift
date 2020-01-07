@@ -72,7 +72,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         
         // CHECK: Will copying names like this aid in logging etc. or will it hinder searches for nodes/entities?
         
-        if  let octopusEntity = entity as? OctopusEntity {
+        if  let octopusEntity = entity as? OKEntity {
             if  self.node.name == nil
                 && octopusEntity.name != nil
             {
@@ -108,7 +108,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         guard let entity = self.entity else { return }
         
         for component in entity.components {
-            if  let octopusComponent = component as? OctopusComponent {
+            if  let octopusComponent = component as? OKComponent {
                 octopusComponent.didAddToEntity(withNode: super.node)
             }
         }
@@ -142,7 +142,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
     deinit {
         // Since GameplayKit will remove an existing component from an entity if another component of the same class is added, the `willRemoveFromEntity()` method of the `SpriteKitComponent` or `GKSKNodeComponent` will never be called, because the older component will go straight to `deinit`.
         // Therefore, as that behavior will cause a `SpriteKitComponent` to be removed from an entity WITHOUT removing the represented SpriteKit node from the scene, we should also remove the node here to make sure it is not visible when this component is replaced.
-        // For `OctopusComponent` subclasses, use the `shouldRemoveFromEntityOnDeinit` flag.
+        // For `OKComponent` subclasses, use the `shouldRemoveFromEntityOnDeinit` flag.
         
         if super.node.parent != nil {
             OctopusKit.logForDeinits.add("\(self) \(super.node) ~ Removing from \(super.node.parent!)")

@@ -11,7 +11,7 @@ import GameplayKit
 /// Removes the entity's `SpriteKitComponent` node, and optionally the entity as well, from its parent after it has been outside the viewable area of its scene for the specified duration.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-public final class OffscreenRemovalComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class OffscreenRemovalComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self]
@@ -83,7 +83,7 @@ public final class OffscreenRemovalComponent: OctopusComponent, OctopusUpdatable
                 
                 if  shouldRemoveEntityOnNodeRemoval,
                     let entity = self.entity,
-                    let entityDelegate = (self.entity as? OctopusEntity)?.delegate
+                    let entityDelegate = (self.entity as? OKEntity)?.delegate
                 {
                     entityDelegate.entityDidRequestRemoval(entity)
                 }

@@ -11,8 +11,10 @@ import GameplayKit
 /// A `CGVector` that represents a directional input from a keyboard, gamepad, joystick or similar controllers.
 public typealias OKInputDirection = CGVector
 
+public typealias OctopusInputDirection = OKInputDirection
+
 /// Provides an abstraction layer for directional input from a keyboard, gamepad, joystick, or similar controllers.
-public final class DirectionEventComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class DirectionEventComponent: OKComponent, OKUpdatableComponent {
     
     // MARK: - Subtypes
 

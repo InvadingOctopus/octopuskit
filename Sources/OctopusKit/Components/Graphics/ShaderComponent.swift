@@ -12,7 +12,7 @@ import SpriteKit
 import GameplayKit
 
 /// Applies a custom shader to a shader-capable node.
-public final class ShaderComponent: OctopusComponent {
+public final class ShaderComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self]

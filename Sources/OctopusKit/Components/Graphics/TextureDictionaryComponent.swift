@@ -17,7 +17,7 @@ import GameplayKit
 /// Use this component to store multiple groups of animation frames from a single sprite atlas, where each group of images may have names like "PlayerWalking0", "PlayerWalking1", "PlayerJumping0", and so on.
 ///
 /// - Important: When accessing textures by name, note that the atlas name may be appended to the beginning of textures names, e.g. any folder paths specified when creating this component.
-public final class TextureDictionaryComponent: OctopusComponent {
+public final class TextureDictionaryComponent: OKComponent {
     
     public let atlasName: String
     public let atlas: SKTextureAtlas

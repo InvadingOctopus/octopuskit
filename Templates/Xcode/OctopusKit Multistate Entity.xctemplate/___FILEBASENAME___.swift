@@ -4,7 +4,7 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntity {
+final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
     
     init(parentNode: SKNode) {
         
@@ -56,7 +56,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntity {
 
 // This class may be moved out to a separate file and customized.
 
-final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OctopusEntityState {
+final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OKEntityState {
     
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
@@ -82,7 +82,7 @@ final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OctopusEntityState {
 
 // This class may be moved out to a separate file and customized.
 
-final class ___FILEBASENAMEASIDENTIFIER___ActiveState: OctopusEntityState {
+final class ___FILEBASENAMEASIDENTIFIER___ActiveState: OKEntityState {
     
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)

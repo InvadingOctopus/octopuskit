@@ -13,7 +13,7 @@ import GameplayKit
 /// For example, a UI overlay on a base sprite or even sound effects. When this component is removed from an entity, it also removes the attached node(s) from the parent. To add multiple nodes, use the `SKNode(children:)` construction, as adding multiple components of the same type to an entity is not supported by GameplayKit.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OctopusComponent {
+open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
     
     // 💡 To use, simply subclass with the appropriate generic type, and implement (override) `createAttachment(for:)`.
     

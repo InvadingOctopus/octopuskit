@@ -10,10 +10,10 @@
 
 import GameplayKit
 
-/// Sets a `GKGoal` on the entity's `OctopusAgent2D` component to reach a specified speed.
+/// Sets a `GKGoal` on the entity's `OKAgent2D` component to reach a specified speed.
 ///
-/// **Dependencies:** `OctopusAgent2D`
-public final class SpeedGoalComponent: OctopusAgentGoalComponent {
+/// **Dependencies:** `OKAgent2D`
+public final class SpeedGoalComponent: OKAgentGoalComponent {
     
     /// The speed which the agent will attempt to reach. Specify `0` to "brake" towards a stop.
     ///

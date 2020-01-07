@@ -12,7 +12,7 @@ import GameplayKit
 /// Adds an action to the entity's `SpriteKitComponent` node with an automatically generated `key`, and removes any action associated with that key when this component is removed from that entity.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-public class SpriteKitActionComponent: OctopusComponent {
+public class SpriteKitActionComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self]

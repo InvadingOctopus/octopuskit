@@ -14,7 +14,7 @@ import GameplayKit
 /// Useful for launching projectiles (such as bullets or missiles) from a character.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-public final class EntityEmitterComponent: OctopusComponent {
+public final class EntityEmitterComponent: OKComponent {
 
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self]
@@ -28,7 +28,7 @@ public final class EntityEmitterComponent: OctopusComponent {
 //    var angleOffsetFromSpawnerNode: CGFloat = 0
     
     @discardableResult public func emitEntity(
-        _ entityToSpawn: OctopusEntity,
+        _ entityToSpawn: OKEntity,
         initialImpulse: CGFloat? = nil,
         recoilImpulse: CGFloat? = nil,
         distanceFromSpawnerNode distance: CGFloat = 0,
@@ -45,7 +45,7 @@ public final class EntityEmitterComponent: OctopusComponent {
             return false
         }
         
-        guard let spawnerDelegate = (entity as? OctopusEntity)?.delegate else {
+        guard let spawnerDelegate = (entity as? OKEntity)?.delegate else {
             OctopusKit.logForWarnings.add("\(entity) is missing a delegate.")
             return false
         }

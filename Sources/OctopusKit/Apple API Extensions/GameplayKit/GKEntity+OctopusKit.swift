@@ -154,7 +154,7 @@ public extension GKEntity {
         // THANKS: https://forums.swift.org/u/TellowKrinkle
         // https://forums.swift.org/t/type-information-loss-when-comparing-generic-variables-with-an-array-of-metatypes/30650/2
         
-        // ℹ️ DESIGN: There may be cases when an entity may have a component of a specific type as well as a `RelayComponent` with a target of the same type; e.g. a NodePointerStateComponent and a RelayComponent<NodePointerStateComponent>. See `OctopusEntity.addComponent(_:)` for the comments about this decision.
+        // ℹ️ DESIGN: There may be cases when an entity may have a component of a specific type as well as a `RelayComponent` with a target of the same type; e.g. a NodePointerStateComponent and a RelayComponent<NodePointerStateComponent>. See `OKEntity.addComponent(_:)` for the comments about this decision.
         // This method should always return the direct component (non-relay) first.
         
         // Look for a direct match as well as any RelayComponent with a target matching ComponentType

@@ -8,10 +8,10 @@
 
 import GameplayKit
 
-/// Sets a `GKGoal` on the entity's `OctopusAgent2D` component to avoid the specified obstacles.
+/// Sets a `GKGoal` on the entity's `OKAgent2D` component to avoid the specified obstacles.
 ///
-/// **Dependencies:** `OctopusAgent2D`
-public final class ObstacleAvoidanceGoalComponent: OctopusAgentGoalComponent {
+/// **Dependencies:** `OKAgent2D`
+public final class ObstacleAvoidanceGoalComponent: OKAgentGoalComponent {
     
     /// The list of obstacles for the agent of this component's entity to avoid.
     ///

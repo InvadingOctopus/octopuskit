@@ -57,22 +57,22 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 3. Presenting OctopusKit content in your view hierarchy requires different steps depending on whether you use SwiftUI or AppKit/UIKit:
 
-    * **SwiftUI (iOS/iPadOS, macOS, tvOS):** Add a `OctopusKitContainerView` and pass the game coordinator as an `environmentObject` to it:
+    * **SwiftUI (iOS/iPadOS, macOS, tvOS):** Add a `OKContainerView` and pass the game coordinator as an `environmentObject` to it:
     
         ```
         import OctopusKit
     
         struct ContentView: View {
             var body: some View {
-                OctopusKitContainerView()
+                OKContainerView()
                     .environmentObject(gameCoordinator)
             }
         }
         ```
         
-        > The `OctopusKitContainerView` combines a SpriteKit `SKView` with a SwiftUI overlay.
+        > The `OKContainerView` combines a SpriteKit `SKView` with a SwiftUI overlay.
         
-        > ❗️ If you created a subclass of `OKGameCoordinator`, then you must provide a generic type parameter: `OctopusKitContainerView<MyGameCoordinator>()`
+        > ❗️ If you created a subclass of `OKGameCoordinator`, then you must provide a generic type parameter: `OKContainerView<MyGameCoordinator>()`
     
         > 💡 It's best to pass the game coordinator `environmentObject` to the top level content view created in the `SceneDelegate.swift` file, which will make it available to your entire view hierarchy.
     

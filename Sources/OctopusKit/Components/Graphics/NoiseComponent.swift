@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 /// Encapsulates a `GKNoise` object.
-public final class NoiseComponent: OctopusComponent {
+public final class NoiseComponent: OKComponent {
     
     public var noise: GKNoise
     

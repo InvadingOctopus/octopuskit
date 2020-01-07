@@ -17,11 +17,11 @@ import GameplayKit
 /// - NOTE: The order in which the labels are displayed is not deterministic. This is because the collection type used to store the label:value pairs is a `Dictionary`, which is unordered.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-public final class ValueDisplayComponent: SpriteKitAttachmentComponent<SKLabelNode>, OctopusUpdatableComponent {
+public final class ValueDisplayComponent: SpriteKitAttachmentComponent<SKLabelNode>, OKUpdatableComponent {
     
     // MARK: - Properties
     
-    public static let defaultFont = OctopusFont(name: "Menlo-Regular",
+    public static let defaultFont = OKFont(name: "Menlo-Regular",
                                          size: 12,
                                          color: .white)
     
@@ -46,7 +46,7 @@ public final class ValueDisplayComponent: SpriteKitAttachmentComponent<SKLabelNo
     
     // MARK: - Life Cycle
     
-    public init(font: OctopusFont = ValueDisplayComponent.defaultFont,
+    public init(font: OKFont = ValueDisplayComponent.defaultFont,
                 maximumLines: Int = 10,
                 lineBreakMode: NSLineBreakMode = .byTruncatingTail,
                 parentOverride: SKNode? = nil,

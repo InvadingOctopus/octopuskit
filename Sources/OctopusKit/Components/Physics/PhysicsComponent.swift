@@ -13,7 +13,7 @@ import GameplayKit
 /// Replaces the `physicsBody` of its entity's `SpriteKitComponent`'s node with the `physicsBody` supplied to this component. If this component's `physicsBody` is `nil`, then this component adopts the `physicsBody` of the `SpriteKitComponent`'s node.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-public final class PhysicsComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self]

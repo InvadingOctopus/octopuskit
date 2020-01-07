@@ -9,7 +9,7 @@
 import GameplayKit
 
 /// Encapsulates a `GKStateMachine` and updates its current `GKState` on every frame.
-public final class StateMachineComponent<StateMachineClass: GKStateMachine>: OctopusComponent, OctopusUpdatableComponent {
+public final class StateMachineComponent<StateMachineClass: GKStateMachine>: OKComponent, OKUpdatableComponent {
 
     public let stateMachine: StateMachineClass
     

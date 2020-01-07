@@ -17,7 +17,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `KeyboardEventComponent`, `SpriteKitComponent`
 @available(macOS 10.15, *)
-public final class KeyboardControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class KeyboardControlledRotationComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     

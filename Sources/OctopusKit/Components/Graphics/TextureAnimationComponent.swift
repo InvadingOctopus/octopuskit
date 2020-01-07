@@ -14,7 +14,7 @@ import GameplayKit
 /// Animates the entity's `SpriteKitComponent` node with the specified frames, provided as an array of textures or by a `TextureDictionaryComponent`.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TextureDictionaryComponent`
-public final class TextureAnimationComponent: OctopusComponent {
+public final class TextureAnimationComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,

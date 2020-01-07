@@ -16,7 +16,7 @@ import GameplayKit
 /// - IMPORTANT: PROTOTYPE - NOT FULLY IMPLEMENTED!
 public struct Entity: View {
     
-    private var entity: OctopusEntity? {
+    private var entity: OKEntity? {
         OctopusKit.shared?.gameCoordinator.currentScene?.entities(withName: "\(entityID)")?.first
     }
     
@@ -56,16 +56,16 @@ public struct Entity: View {
     }
 }
 
-public extension OctopusEntityContainer {
+public extension OKEntityContainer {
 
-    @discardableResult func createEntity(withUUID id: UUID) -> OctopusEntity {
+    @discardableResult func createEntity(withUUID id: UUID) -> OKEntity {
         
         if  let existingEntity = self.entities(withName: "\(id)")?.first {
             return existingEntity
         
         } else {
             
-            let newEntity = OctopusEntity(name: "\(id)")
+            let newEntity = OKEntity(name: "\(id)")
             self.addEntity(newEntity)
             return newEntity
         }

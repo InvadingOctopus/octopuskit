@@ -15,7 +15,7 @@ import GameplayKit
 /// Controls the entity's `ThrustComponent` based on the motion data from a `MotionManagerComponent`.
 ///
 /// **Dependencies:** `MotionManagerComponent`, `ThrustComponent`
-public final class MotionControlledThrustComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class MotionControlledThrustComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [MotionManagerComponent.self,

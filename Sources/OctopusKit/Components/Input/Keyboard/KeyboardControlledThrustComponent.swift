@@ -17,7 +17,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `KeyboardEventComponent`, `PhysicsComponent`, `SpriteKitComponent`
 @available(macOS 10.15, *)
-public final class KeyboardControlledThrustComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class KeyboardControlledThrustComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     

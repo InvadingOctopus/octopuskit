@@ -11,7 +11,7 @@
 import GameplayKit
 
 /// Provides timekeeping for an entity and tracks the number of seconds elapsed.
-public final class TimeComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class TimeComponent: OKComponent, OKUpdatableComponent {
     
     /// When `true`, prevents the timekeeping properties from being updated every frame.
     public var isPaused = false

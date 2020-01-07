@@ -23,7 +23,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `PhysicsComponent`, `SpriteKitComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledForceComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class TouchControlledForceComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,

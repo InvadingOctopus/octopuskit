@@ -6,11 +6,11 @@ import OctopusKit
 
 // MARK: - PlayableState
 
-// A placeholder provided as an example of a possible state for the game. Include this state when initializing the `OctopusGameCoordinator` state machine. This class may be moved out to a separate file and extended.
+// A placeholder provided as an example of a possible state for the game. Include this state when initializing the `OKGameCoordinator` state machine. This class may be moved out to a separate file and extended.
 
-final class PlayableState: OctopusGameState {
+final class PlayableState: OKGameState {
     
-    open var validNextStates: [OctopusGameState.Type] {
+    open var validNextStates: [OKGameState.Type] {
         [PausedState.self]
     }
     
@@ -22,11 +22,11 @@ final class PlayableState: OctopusGameState {
 
 // MARK: - PausedState
 
-// A placeholder provided as an example of a possible state for the game. Include this state when initializing the `OctopusGameCoordinator` state machine. This class may be moved out to a separate file and extended.
+// A placeholder provided as an example of a possible state for the game. Include this state when initializing the `OKGameCoordinator` state machine. This class may be moved out to a separate file and extended.
 
-final class PausedState: OctopusGameState {
+final class PausedState: OKGameState {
     
-    open var validNextStates: [OctopusGameState.Type] {
+    open var validNextStates: [OKGameState.Type] {
         [PlayableState.self]
     }
     
@@ -36,13 +36,13 @@ final class PausedState: OctopusGameState {
     }
 }
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
+final class ___FILEBASENAMEASIDENTIFIER___: OKScene {
         
     // MARK: - Life Cycle
     
     override func createComponentSystems() -> [GKComponent.Type] {
         // Customize. Each component must be listed after the components it depends on (as per its `requiredComponents` property.)
-        // See OctopusScene.createComponentSystems() for the default set of commonly-used systems.
+        // See OKScene.createComponentSystems() for the default set of commonly-used systems.
         super.createComponentSystems()
     }
     
@@ -52,7 +52,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         self.entity?.addComponents([sharedMouseOrTouchEventComponent,
                                     sharedPointerEventComponent])
         
-        addEntity(OctopusEntity(name: "", components: [
+        addEntity(OKEntity(name: "", components: [
             // Customize
         ]))
         
@@ -121,12 +121,12 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
     }
     
     override func didPauseByPlayer() {
-        // This transition should be subject to the validation logic in the relevant `OctopusGameState` classes.
+        // This transition should be subject to the validation logic in the relevant `OKGameState` classes.
         self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)
     }
     
     override func didUnpauseByPlayer() {
-        // This transition should be subject to the validation logic in the relevant `OctopusGameState` classes.
+        // This transition should be subject to the validation logic in the relevant `OKGameState` classes.
         self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PlayableState.self)
     }
     

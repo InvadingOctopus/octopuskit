@@ -10,19 +10,19 @@
 
 import GameplayKit
 
-/// Sets a `GKGoal` on the entity's `OctopusAgent2D` component to head towards a specified position.
+/// Sets a `GKGoal` on the entity's `OKAgent2D` component to head towards a specified position.
 ///
 /// If you want the agent to only face the target, set the agent's speed properties to `0`.
 ///
 /// Uses an internal `GKAgent2D` to serve as the target of a `GKGoal(toSeekAgent:)` and modifies the target agent's position to match `targetPosition`.
 ///
-/// **Dependencies:** `OctopusAgent2D`
-public final class PositionSeekingGoalComponent: OctopusAgentGoalComponent {
+/// **Dependencies:** `OKAgent2D`
+public final class PositionSeekingGoalComponent: OKAgentGoalComponent {
 
     /// An internal agent to serve as the target of a `GKGoal(toSeekAgent:)`, whose position will be modified to match `targetPosition`.
     private let targetAgent: GKAgent2D
     
-    /// The target position for the `OctopusAgent2D` associated with this component's entity to face and head towards.
+    /// The target position for the `OKAgent2D` associated with this component's entity to face and head towards.
     ///
     /// If you want the agent to only face the target, set the agent's speed properties to `0`.
     public var targetPosition: CGPoint? {

@@ -15,9 +15,9 @@ public extension OctopusKit {
 
     // MARK: - Graphics
     
-    static var textureAtlases: OctopusCache<String, SKTextureAtlas> = {
+    static var textureAtlases: OKCache<String, SKTextureAtlas> = {
         
-        let cache = OctopusCache<String, SKTextureAtlas> { key in
+        let cache = OKCache<String, SKTextureAtlas> { key in
             
             OctopusKit.logForResources.add("SKTextureAtlas named = \"\(key)\"")
             // TODO: Error handling in case of invalid key
@@ -27,9 +27,9 @@ public extension OctopusKit {
         return cache
     }()
     
-    static var textures: OctopusCache<String, SKTexture> = {
+    static var textures: OKCache<String, SKTexture> = {
         
-        let cache = OctopusCache<String, SKTexture> { key in
+        let cache = OKCache<String, SKTexture> { key in
             
             OctopusKit.logForResources.add("SKTexture imageNamed = \"\(key)\"")
             // TODO: Error handling in case of invalid key
@@ -39,9 +39,9 @@ public extension OctopusKit {
         return cache
     }()
     
-    static var shaders: OctopusCache<String, SKShader> = {
+    static var shaders: OKCache<String, SKShader> = {
         
-        let cache = OctopusCache<String, SKShader> { key in
+        let cache = OKCache<String, SKShader> { key in
             
             OctopusKit.logForResources.add("SKShader fileNamed = \"\(key)\"")
             // TODO: Error handling in case of invalid key
@@ -54,8 +54,8 @@ public extension OctopusKit {
     // MARK: - Audio
     
     /*
-     public static var audioFiles: OctopusCache<String, AVAudioFile> = {
-     let manager = OctopusCache<String, AVAudioFile>() {
+     public static var audioFiles: OKCache<String, AVAudioFile> = {
+     let manager = OKCache<String, AVAudioFile>() {
      
      let fileExtension = $0.pathExtension != "" ? $0.pathExtension : "m4a"
      if let path = NSBundle.mainBundle().pathForResource($0.stringByDeletingPathExtension, ofType: fileExtension) {
@@ -68,8 +68,8 @@ public extension OctopusKit {
      return manager
      }()
      
-     public static var audioBuffers: OctopusCache<String, AVAudioPCMBuffer> = {
-     let manager = OctopusCache<String, AVAudioPCMBuffer>() {
+     public static var audioBuffers: OKCache<String, AVAudioPCMBuffer> = {
+     let manager = OKCache<String, AVAudioPCMBuffer>() {
      
      let fileExtension = $0.pathExtension != "" ? $0.pathExtension : "caf"
      if let path = NSBundle.mainBundle().pathForResource($0.stringByDeletingPathExtension, ofType: fileExtension) {

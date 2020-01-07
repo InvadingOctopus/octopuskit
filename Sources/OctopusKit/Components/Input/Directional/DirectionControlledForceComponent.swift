@@ -14,7 +14,7 @@ import GameplayKit
 /// Set the `LOGINPUTEVENTS` compilation flag to log values.
 ///
 /// **Dependencies:** `DirectionEventComponent`, `PhysicsComponent`
-public final class DirectionControlledForceComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class DirectionControlledForceComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     

@@ -16,29 +16,29 @@ final class OctopusKitLaunchTests: XCTestCase {
         
         XCTAssertThrowsError(try OctopusKit.verifyConfiguration())
         
-        // 2: `OctopusViewController` should not initialize without an `OctopusGameCoordinator`.
+        // 2: `OKViewController` should not initialize without an `OKGameCoordinator`.
             
-        XCTAssertThrowsError(try OctopusViewController())
+        XCTAssertThrowsError(try OKViewController())
         
         // 3: OctopusKit should be initialized more than once.
         
-        let gameCoordinator = OctopusGameCoordinator(states: [OctopusGameState()])
+        let gameCoordinator = OKGameCoordinator(states: [OKGameState()])
         
         XCTAssertNoThrow(try OctopusKit(gameCoordinator: gameCoordinator))
         
         XCTAssertThrowsError(try OctopusKit(gameCoordinator: gameCoordinator))
             
-        // 4: `OctopusViewController` should allow multiple instances.
+        // 4: `OKViewController` should allow multiple instances.
         
-        var viewController1, viewController2: OctopusViewController?
+        var viewController1, viewController2: OKViewController?
         
-        XCTAssertNoThrow(viewController1 = try OctopusViewController())
-        XCTAssertNoThrow(viewController2 = try OctopusViewController())
+        XCTAssertNoThrow(viewController1 = try OKViewController())
+        XCTAssertNoThrow(viewController2 = try OKViewController())
         
         XCTAssertEqual(viewController1!.gameCoordinator, viewController2!.gameCoordinator)
         
-        // TODO: Test `OctopusViewControllerRepresentable`
-        // let viewControllerRepresentable = OctopusViewControllerRepresentable()
+        // TODO: Test `OKViewControllerRepresentable`
+        // let viewControllerRepresentable = OKViewControllerRepresentable()
         // XCTAssertThrowsError(viewControllerRepresentable.makeCoordinator())
 
     }

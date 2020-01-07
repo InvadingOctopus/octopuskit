@@ -15,7 +15,7 @@ import GameplayKit
 /// The `GKComponent.coComponent(ofType:)` and `GKEntity.componentOrRelay(ofType:)` methods will check the entity for a `RelayComponent` which points to a component of the specified type, if the entity itself does not have a component of the specified type.
 ///
 /// - Important: `GKEntity.component(ofType:)` does *not* automatically substitute a `RelayComponent` for the specified component class, due to GameplayKit/Swift limitations. Use `GKEntity.componentOrRelay(ofType:)` or `GKComponent.coComponent(ofType:)` to automatically look for `RelayComponent`s.
-public final class RelayComponent <MasterComponentType> : OctopusComponent
+public final class RelayComponent <MasterComponentType> : OKComponent
     where MasterComponentType: GKComponent
 {
     
@@ -71,7 +71,7 @@ public final class RelayComponent <MasterComponentType> : OctopusComponent
     /// This property is only used if the `directlyReferencedComponent` is `nil.
     public var sceneComponentType: MasterComponentType.Type?
     
-    /// This helps `GKEntity.componentOrRelay(ofType:)` see the correct concrete type at runtime, e.g. when comparing with `OctopusComponent.requiredComponents`.
+    /// This helps `GKEntity.componentOrRelay(ofType:)` see the correct concrete type at runtime, e.g. when comparing with `OKComponent.requiredComponents`.
     @inlinable
     public override var componentType: GKComponent.Type {
         

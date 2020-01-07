@@ -12,7 +12,7 @@ import GameplayKit
 /// Sets the position of the entity's `SpriteKitComponent` node to the location of the pointer received by the entity's `PointerEventComponent`.
 ///
 /// **Dependencies:** `SpriteKitComponent`, `PointerEventComponent`
-public final class PointerControlledPositioningComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class PointerControlledPositioningComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Add options for buttons and hover.
     

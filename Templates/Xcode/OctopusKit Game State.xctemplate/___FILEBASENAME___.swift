@@ -4,11 +4,11 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
+final class ___FILEBASENAMEASIDENTIFIER___: OKGameState {
     
-    override var validNextStates: [OctopusGameState.Type] {
+    override var validNextStates: [OKGameState.Type] {
         // Customize: Specify the valid states that this state can transition to.
-        // NOTE: Do not perform any logic to conditionally control state transitions here. See `OctopusGameState` documentation.
+        // NOTE: Do not perform any logic to conditionally control state transitions here. See `OKGameState` documentation.
         []  // Default: allow all states.
     }
     

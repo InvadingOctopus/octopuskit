@@ -25,7 +25,7 @@ import GameplayKit
 ///         .tapped             : { $1.run(.repeat(.blink(), count: 3)) }
 ///     ])
 ///
-open class NodePointerClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+open class NodePointerClosureComponent: OKComponent, OKUpdatableComponent {
 
     // ℹ️ This class is not marked as `final` so that subclasses can be created, each providing a different set of event handlers for the same entity.
     
@@ -35,7 +35,7 @@ open class NodePointerClosureComponent: OctopusComponent, OctopusUpdatableCompon
     ///
     ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
     ///
-    ///     **Example:** `(component.entity as? OctopusEntity)?.name`
+    ///     **Example:** `(component.entity as? OKEntity)?.name`
     ///
     /// - Parameter node: The `SpriteKitComponent` node of the entity associated with this component.
     public typealias NodePointerClosureType = (

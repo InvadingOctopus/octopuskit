@@ -13,7 +13,7 @@ import GameplayKit
 import CoreMotion
 
 /// Retains a reference to a `CMMotionManager` to be used by other components.
-public final class MotionManagerComponent: OctopusComponent {
+public final class MotionManagerComponent: OKComponent {
 
     public var motionManager: CMMotionManager? // CHECK: Should this be weak?
     

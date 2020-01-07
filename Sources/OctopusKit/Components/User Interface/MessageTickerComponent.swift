@@ -22,7 +22,7 @@ public protocol OctopusMessageTickerDelegate: class {
 /// - NOTE: Requires the parent node to be a `SKSpriteNode` and have an `anchorPoint` of `(x: 0, y: 0)`
 ///
 /// **Dependencies:** `SpriteKitComponent`
-public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>, OctopusUpdatableComponent {
+public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>, OKUpdatableComponent {
     
     public weak var delegate: OctopusMessageTickerDelegate?
     
@@ -58,7 +58,7 @@ public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>,
     
     // Properties for the next message
     
-    public var font = OctopusFont(name: "Menlo", color: .white) // TODO: Remove hardcode
+    public var font = OKFont(name: "Menlo", color: .white) // TODO: Remove hardcode
     public var messageBlendMode: SKBlendMode = .alpha
     public var messageSpacing: CGFloat = 16.0
     public var messageSeparator = ""

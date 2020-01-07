@@ -20,7 +20,7 @@ import GameplayKit
 /// **Example**
 ///
 ///     RepeatingClosureComponent() { $0.entityNode?.zRotation -= 0.01 }
-public final class RepeatingClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class RepeatingClosureComponent: OKComponent, OKUpdatableComponent {
     
     /// The block of code to be executed every frame by a `RepeatingClosureComponent`.
     ///

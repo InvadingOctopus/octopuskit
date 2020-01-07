@@ -16,7 +16,7 @@ import GameplayKit
 /// See also: `PositionSeekingGoalComponent` and `PointerControlledSeekingComponent`
 ///
 /// **Dependencies:** `SpriteKitComponent`, `PointerEventComponent`
-public final class PointerControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class PointerControlledRotationComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     

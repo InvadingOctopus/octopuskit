@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 /// Encapsulates a set of behaviors for units in combat.
-public final class CombatBehaviorComponent: OctopusComponent {
+public final class CombatBehaviorComponent: OKComponent {
     
     // ⚠️ PROTOTYPE: Not fully implemented.
     

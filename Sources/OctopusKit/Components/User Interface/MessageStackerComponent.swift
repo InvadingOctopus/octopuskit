@@ -42,7 +42,7 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
     
     // Properties for next message
     
-    public var font = OctopusFont(name: "Menlo", size: 12.0, color: .white)
+    public var font = OKFont(name: "Menlo", size: 12.0, color: .white)
     public var fontHorizontalAlignment: SKLabelHorizontalAlignmentMode = .left
     public var blendMode: SKBlendMode = .alpha
     public var verticalSpacing: CGFloat = 2.0

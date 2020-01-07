@@ -31,7 +31,7 @@ import GameplayKit
 /// Allows the player to drag the entity's `SpriteKitComponent` node based on input from the entity's `NodePointerStateComponent`.
 ///
 /// **Dependencies:** `NodePointerStateComponent, SpriteKitComponent`
-public final class PointerControlledDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class PointerControlledDraggingComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,

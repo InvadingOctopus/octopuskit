@@ -25,7 +25,7 @@ import GameplayKit
 /// Drags the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchStateComponent` and `PanGestureRecognizerComponent`.
 ///
 /// **Dependencies:** `NodeTouchStateComponent, PanGestureRecognizerComponent, SpriteKitComponent`
-public final class PanControlledDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class PanControlledDraggingComponent: OKComponent, OKUpdatableComponent {
     
     public static let inertialMovementKey = "OctopusKit.PanControlledDraggingComponent.Move"
     

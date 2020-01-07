@@ -14,7 +14,7 @@ public protocol Nameable {
     var name: String? { get }
 }
 
-extension OctopusEntity: Nameable {}
+extension OKEntity: Nameable {}
 extension SKNode: Nameable {}
 
 extension Array where Array.Element: Nameable {

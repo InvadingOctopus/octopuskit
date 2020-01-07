@@ -4,7 +4,7 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusComponent {
+final class ___FILEBASENAMEASIDENTIFIER___: OKComponent {
     
     override var requiredComponents: [GKComponent.Type]? {
         []

@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 /// Encapsulates a `GKRandom` object.
-public final class RandomizationSourceComponent: OctopusComponent {
+public final class RandomizationSourceComponent: OKComponent {
     
     public var randomizationSource: GKRandom
     

@@ -10,7 +10,7 @@
 
 import GameplayKit
 
-public final class TurnCounterComponent: OctopusTurnBasedComponent {
+public final class TurnCounterComponent: OKTurnBasedComponent {
     
     public fileprivate(set) var currentTurn: Int = 0
     public fileprivate(set) var turnsElapsed: Int = 0

@@ -10,12 +10,12 @@
 
 import GameplayKit
 
-/// An abstraction layer for accessing SpriteKit scene features via a component. This component should only be added to an `SKScene.entity` or `OctopusScene.entity` and is used to identify the entity as a scene to other components.
-public class SpriteKitSceneComponent: OctopusComponent {
+/// An abstraction layer for accessing SpriteKit scene features via a component. This component should only be added to an `SKScene.entity` or `OKScene.entity` and is used to identify the entity as a scene to other components.
+public class SpriteKitSceneComponent: OKComponent {
     
-    public let scene: OctopusScene
+    public let scene: OKScene
     
-    public init(scene: OctopusScene) {
+    public init(scene: OKScene) {
         self.scene = scene
         super.init()
     }
@@ -26,7 +26,7 @@ public class SpriteKitSceneComponent: OctopusComponent {
         // Remove ourselves if our node is not a scene
         // ⚠️ NOTE: This does not prevent this component from being added to entities WITHOUT an `SpriteKitComponent`/`GKSKNodeComponent`
         
-        guard node is SKScene || node is OctopusScene // CHECK: Is checking for subclass redundant?
+        guard node is SKScene || node is OKScene // CHECK: Is checking for subclass redundant?
             else {
                 OctopusKit.logForErrors.add("\(node) is not a scene — Detaching from entity")
                 self.removeFromEntity()

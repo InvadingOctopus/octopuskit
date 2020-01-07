@@ -28,7 +28,7 @@ import GameplayKit
 ///     ])
 ///
 @available(iOS 13.0, *)
-open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponent {
+open class NodeTouchClosureComponent: OKComponent, OKUpdatableComponent {
 
     // ℹ️ This class is not marked as `final` so that subclasses can be created, each providing a different set of event handlers for the same entity.
     
@@ -38,7 +38,7 @@ open class NodeTouchClosureComponent: OctopusComponent, OctopusUpdatableComponen
     ///
     ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
     ///
-    ///     **Example:** `(component.entity as? OctopusEntity)?.name`
+    ///     **Example:** `(component.entity as? OKEntity)?.name`
     ///
     /// - Parameter node: The `SpriteKitComponent` node of the entity associated with this component.
     public typealias NodeTouchClosureType = (

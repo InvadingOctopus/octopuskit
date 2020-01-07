@@ -83,7 +83,7 @@ extension GKComponent {
     /// A `RelayComponent` overrides this property to return the type of its `target`. This lets `GKEntity.componentOrRelay(ofType:)` return a `RelayComponent.target` that matches the requested component class.
     @objc
     open var componentType: GKComponent.Type {
-        // This is a workaround for the bug where `OctopusComponent.requiredComponents` could not be correctly matched with `GKEntity.component(ofType:)` at runtime when the entity has a `RelayComponent` for the dependency.
+        // This is a workaround for the bug where `OKComponent.requiredComponents` could not be correctly matched with `GKEntity.component(ofType:)` at runtime when the entity has a `RelayComponent` for the dependency.
         // See comments for `GKEntity.componentOrRelay(ofType:)`
         // THANKS: https://forums.swift.org/u/TellowKrinkle
         // https://forums.swift.org/t/type-information-loss-when-comparing-generic-variables-with-an-array-of-metatypes/30650

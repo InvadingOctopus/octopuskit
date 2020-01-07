@@ -4,9 +4,9 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntityState {
+final class ___FILEBASENAMEASIDENTIFIER___: OKEntityState {
     
-    override init(entity: OctopusEntity) {
+    override init(entity: OKEntity) {
         super.init(entity: entity)
         
         self.componentsToAddOnEntry = [] // Customize
@@ -21,7 +21,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntityState {
         
         switch previousState {
             
-        case is OctopusEntityState: // Customize
+        case is OKEntityState: // Customize
             break
             
         default: break
@@ -33,7 +33,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntityState {
         
         switch nextState {
             
-        case is OctopusEntityState: // Customize
+        case is OKEntityState: // Customize
             break
             
         default: break
@@ -41,7 +41,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntityState {
     }
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass is OctopusEntityState.Type // Customize
+        return stateClass is OKEntityState.Type // Customize
     }
 }
 

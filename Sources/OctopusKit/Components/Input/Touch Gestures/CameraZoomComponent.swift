@@ -18,7 +18,7 @@ import GameplayKit
 /// Scales the `CameraComponent` node based on input from a `PinchGestureRecognizerComponent`
 ///
 /// **Dependencies:** `CameraComponent`, `PinchGestureRecognizerComponent`
-public final class CameraZoomComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class CameraZoomComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [CameraComponent.self,

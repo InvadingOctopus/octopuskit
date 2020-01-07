@@ -16,7 +16,7 @@ public extension SKTexture {
     convenience init(size: CGSize,
                      startColor: SKColor,
                      endColor: SKColor,
-                     direction: OctopusDirection = .up)
+                     direction: OKDirection = .up)
     {
         // CREDIT: https://theswiftdev.com/2017/10/24/spritekit-best-practices/
         

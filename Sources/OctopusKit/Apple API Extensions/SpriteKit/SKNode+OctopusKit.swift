@@ -173,7 +173,7 @@ public extension SKNode {
     /// - Returns: The `safeAreaInsets` value at the corresponding `edge`
     @inlinable @discardableResult
     final func insetPositionBySafeArea(
-        at edge: OctopusDirection,
+        at edge: OKDirection,
         forView view: SKView? = nil)
         -> CGFloat
     {
@@ -205,7 +205,7 @@ public extension SKNode {
                 self.position.x -= view.safeAreaInsets.right * xSizeToViewRatio
                 return view.safeAreaInsets.right
             default:
-                OctopusKit.logForErrors.add("Invalid OctopusDirection: \(edge)")
+                OctopusKit.logForErrors.add("Invalid OKDirection: \(edge)")
                 return 0
             }
             

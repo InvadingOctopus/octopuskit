@@ -16,7 +16,7 @@ import GameplayKit
 /// Only stores the location of a single pointer; does not differentiate between number of pointers (fingers), type of mouse buttons (left/right), or modifier keys (Shift/Control/etc.)
 ///
 /// **Dependencies:** `TouchEventComponent` on iOS, `MouseEventComponent` on macOS.
-public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class PointerEventComponent: OKComponent, OKUpdatableComponent {
     
     // MARK: - Subtypes
     
@@ -195,7 +195,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         super.didAddToEntity()
         // Issue a warning for a common mistake: Adding an input event component to a child entity instead of the scene's entity.
         if  !(self.entity?.node is SKScene) {
-            OctopusKit.logForWarnings.add("\(self) added to a child entity instead of the OctopusScene.entity: \(entity) — Events may not be received!")
+            OctopusKit.logForWarnings.add("\(self) added to a child entity instead of the OKScene.entity: \(entity) — Events may not be received!")
             OctopusKit.logForTips.add("Use RelayComponent(for:) to add a relay to the scene's sharedPointerEventComponent, or override the scene's input handling methods.")
         }
     }

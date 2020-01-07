@@ -52,7 +52,7 @@ public final class BubbleComponent: SpriteKitAttachmentComponent<SKNode> {
     /// Creates a text bubble.
     public convenience init(
         text: String,
-        font: OctopusFont? = nil,
+        font: OKFont? = nil,
         yOffset: CGFloat = 0,
         spawnAtBottom: Bool = false,
         duration: TimeInterval = 0.5,
@@ -62,7 +62,7 @@ public final class BubbleComponent: SpriteKitAttachmentComponent<SKNode> {
         completion: (() -> Void)? = nil)
     {
         let label = SKLabelNode(text: text,
-                                font: font ?? OctopusFont.spriteBubbleFontDefault,
+                                font: font ?? OKFont.spriteBubbleFontDefault,
                                 horizontalAlignment: .center,
                                 verticalAlignment: spawnAtBottom ? .top : .bottom)
         

@@ -8,7 +8,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(StringTests.allTests),
         
         testCase(OctopusKitLaunchTests.allTests),
-        testCase(OctopusLogTests.allTests),
+        testCase(OKLogTests.allTests),
         testCase(ECSTests.allTests),
         
         testCase(ContiguousArray2DTests.allTests)

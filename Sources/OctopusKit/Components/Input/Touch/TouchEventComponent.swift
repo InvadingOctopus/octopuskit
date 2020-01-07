@@ -20,7 +20,7 @@ import SpriteKit
 ///
 /// - NOTE: Touch events are delivered by the system to a scene or a node with the `isUserInteractionEnabled` property set to `true`. The scene or node must forward the event data from its `touchesBegan(_,with:)` and related methods, to this component for it to function.
 @available(iOS 13.0, *)
-public final class TouchEventComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class TouchEventComponent: OKComponent, OKUpdatableComponent {
     
     // MARK: - Subtypes
     
@@ -185,7 +185,7 @@ public final class TouchEventComponent: OctopusComponent, OctopusUpdatableCompon
         super.didAddToEntity()
         // Issue a warning for a common mistake: Adding an input event component to a child entity instead of the scene's entity.
         if  !(self.entity?.node is SKScene) {
-            OctopusKit.logForWarnings.add("\(self) added to a child entity instead of the OctopusScene.entity: \(entity) — Events may not be received!")
+            OctopusKit.logForWarnings.add("\(self) added to a child entity instead of the OKScene.entity: \(entity) — Events may not be received!")
             OctopusKit.logForTips.add("Use RelayComponent(for:) to add a relay to the scene's sharedTouchEventComponent, or override the scene's input handling methods.")
         }
     }

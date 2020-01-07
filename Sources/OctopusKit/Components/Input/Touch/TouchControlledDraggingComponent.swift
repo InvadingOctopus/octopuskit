@@ -34,7 +34,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeTouchStateComponent, SpriteKitComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledDraggingComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class TouchControlledDraggingComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,

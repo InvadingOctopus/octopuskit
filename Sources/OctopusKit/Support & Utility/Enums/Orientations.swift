@@ -8,14 +8,17 @@
 
 import Foundation
 
-public enum OctopusOrientation {
+public typealias OctopusOrientation = OKOrientation
+public enum OKOrientation {
     case horizontal, vertical
 }
 
-public enum OctopusHorizontalOrientation {
+public typealias OctopusHorizontalOrientation = OKHorizontalOrientation
+public enum OKHorizontalOrientation {
     case left, right
 }
 
-public enum OctopusVerticalOrientation {
+public typealias OctopusVerticalOrientation = OKVerticalOrientation
+public enum OKVerticalOrientation {
     case up, down
 }

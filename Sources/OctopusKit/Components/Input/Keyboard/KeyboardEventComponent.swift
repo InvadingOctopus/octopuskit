@@ -20,7 +20,7 @@ import SpriteKit
 ///
 /// - NOTE: The scene or node must forward the event data from its `keyDown(with:)` and related methods, to this component for it to function.
 @available(macOS 10.15, *)
-public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class KeyboardEventComponent: OKComponent, OKUpdatableComponent {
     
     // MARK: - Subtypes
     
@@ -181,7 +181,7 @@ public final class KeyboardEventComponent: OctopusComponent, OctopusUpdatableCom
         super.didAddToEntity()
         // Issue a warning for a common mistake: Adding an input event component to a child entity instead of the scene's entity.
         if  !(self.entity?.node is SKScene) {
-            OctopusKit.logForWarnings.add("\(self) added to a child entity instead of the OctopusScene.entity: \(entity) — Events may not be received!")
+            OctopusKit.logForWarnings.add("\(self) added to a child entity instead of the OKScene.entity: \(entity) — Events may not be received!")
             OctopusKit.logForTips.add("Use RelayComponent(for:) to add a relay to the scene's sharedKeyboardEventComponent, or override the scene's input handling methods.")
         }
     }

@@ -4,7 +4,7 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusEntity {
+final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
     
     init() {
         

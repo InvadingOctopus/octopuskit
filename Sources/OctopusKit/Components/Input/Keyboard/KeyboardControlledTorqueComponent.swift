@@ -17,7 +17,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `KeyboardEventComponent`, `PhysicsComponent`
 @available(macOS 10.15, *)
-public final class KeyboardControlledTorqueComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class KeyboardControlledTorqueComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     // TODO: Improve the feel

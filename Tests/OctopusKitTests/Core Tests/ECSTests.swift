@@ -15,7 +15,7 @@ final class ECSTests: XCTestCase {
     // MARK: - Types
     
     /// An entity that gives itself a default name including a random number.
-    class TestEntity: OctopusEntity {
+    class TestEntity: OKEntity {
         override init(name: String? = nil, components: [GKComponent] = []) {
             let name = name ?? "TestEntity\(Int.random(in: 100...999))"
             super.init(name: name, components: components)
@@ -23,11 +23,11 @@ final class ECSTests: XCTestCase {
         required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
     }
     
-    class TestComponentA: OctopusComponent {}
-    class TestComponentB: OctopusComponent {}
+    class TestComponentA: OKComponent {}
+    class TestComponentB: OKComponent {}
     
     /// A component that requires `TestComponentA` and `TestComponentB`
-    class ComponentWithDependencies: OctopusComponent {
+    class ComponentWithDependencies: OKComponent {
         override var requiredComponents: [GKComponent.Type]? {
             [TestComponentA.self, TestComponentB.self]
         }
@@ -199,7 +199,7 @@ final class ECSTests: XCTestCase {
         XCTAssertEqual  (component1.coComponent(ofType: type(of: component2).self), component2)
         XCTAssertEqual  (component2.coComponent(ofType: type(of: component1).self), component1)
         
-        // #2: OctopusComponent.coComponent(ofType:) should not report `self`
+        // #2: OKComponent.coComponent(ofType:) should not report `self`
         XCTAssertNil    (component1.coComponent(ofType: TestComponentA.self))
         XCTAssertNil    (component2.coComponent(ofType: TestComponentB.self))
         
@@ -217,7 +217,7 @@ final class ECSTests: XCTestCase {
         
         var entity:     TestEntity
 
-        // #1: OctopusComponent.checkEntityForRequiredComponents() should return `true` if there are no `requiredComponents` even if the component has no entity.
+        // #1: OKComponent.checkEntityForRequiredComponents() should return `true` if there are no `requiredComponents` even if the component has no entity.
         
         let standaloneComponent = TestComponentA()
         XCTAssertTrue(standaloneComponent.checkEntityForRequiredComponents())
@@ -316,7 +316,7 @@ final class ECSTests: XCTestCase {
         XCTAssertNotEqual(entity2.component(ofType: RelayComponent<TestComponentA>.self),
                           entity2.component(ofType: RelayComponent<TestComponentB>.self))
         
-        // #9: OctopusComponent.checkEntityForRequiredComponents() should be able to find dependencies via RelayComponent
+        // #9: OKComponent.checkEntityForRequiredComponents() should be able to find dependencies via RelayComponent
         
         componentA          = TestComponentA()
         entity1             = TestEntity(components: [componentA])
@@ -333,7 +333,7 @@ final class ECSTests: XCTestCase {
         XCTAssertTrue       (componentWithDependencies.checkEntityForRequiredComponents()) // If this fails, search comments for "BUG: 201804029A"
         
         // #10: When an entity has both a direct component and a RelayComponent whose `target` is the same type, GKEntity.componentOrRelay(ofType:) should return the direct component first.
-        // See comments for OctopusEntity.addComponent(_:)
+        // See comments for OKEntity.addComponent(_:)
         
         componentA          = TestComponentA()
         relayComponentA     = RelayComponent(for: componentA)

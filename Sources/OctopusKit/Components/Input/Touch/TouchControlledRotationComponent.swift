@@ -19,7 +19,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledRotationComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class TouchControlledRotationComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     

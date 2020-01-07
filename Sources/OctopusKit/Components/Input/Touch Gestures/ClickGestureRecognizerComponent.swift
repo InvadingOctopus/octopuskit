@@ -17,7 +17,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `SpriteKitSceneComponent`
 @available(macOS 10.15, *)
-public final class ClickGestureRecognizerComponent: OctopusGestureRecognizerComponent<NSClickGestureRecognizer> {
+public final class ClickGestureRecognizerComponent: OKGestureRecognizerComponent<NSClickGestureRecognizer> {
     
     // https://developer.apple.com/documentation/appkit/nsclickgesturerecognizer
     

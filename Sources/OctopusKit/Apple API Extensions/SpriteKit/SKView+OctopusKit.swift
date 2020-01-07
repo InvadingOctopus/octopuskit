@@ -27,7 +27,7 @@ extension SKView {
 extension SKView {
 
     // This extension forwards focus and press-related events from the view to the scene, to ensure SpriteKit interaction is correctly handled within a SwiftUI view hierarchy.
-    // SKView was found to be the appropriate object for these instead of OctopusViewController
+    // SKView was found to be the appropriate object for these instead of OKViewController
     
     // CHECK: Should this be applied for all operating systems to handle game controller input as well?
     

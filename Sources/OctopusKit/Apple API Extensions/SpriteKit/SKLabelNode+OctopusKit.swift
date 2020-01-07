@@ -10,8 +10,8 @@ import SpriteKit
 
 extension SKLabelNode {
     
-    /// Creates an `SKLabelNode` and sets its properties to match the `OctopusFont`.
-    public convenience init(font: OctopusFont) {
+    /// Creates an `SKLabelNode` and sets its properties to match the `OKFont`.
+    public convenience init(font: OKFont) {
         // In case initializing the font is an expensive process, try to init with the font if name is provided.
         if  font.name != nil {
             self.init(fontNamed: font.name)
@@ -28,9 +28,9 @@ extension SKLabelNode {
         }
     }
     
-    /// Creates an `SKLabelNode` with the specified text and sets its font properties to match the `OctopusFont`.
+    /// Creates an `SKLabelNode` with the specified text and sets its font properties to match the `OKFont`.
     @inlinable
-    public convenience init(text: String, font: OctopusFont) {
+    public convenience init(text: String, font: OKFont) {
         self.init(text: text)
         self.font = font
     }
@@ -45,11 +45,11 @@ extension SKLabelNode {
         self.init(text: String(character))
     }
     
-    /// Creates an `SKLabelNode` with the specified character and sets its font properties to match the `OctopusFont`.
+    /// Creates an `SKLabelNode` with the specified character and sets its font properties to match the `OKFont`.
     ///
     /// This may be convenient in cases like creating labels from random characters, e.g. `SKLabelNode(character: "🟥🟧🟨🟩🟦🟪".randomElement()!, font: font)`
     @inlinable
-    public convenience init(character: Character, font: OctopusFont) {
+    public convenience init(character: Character, font: OKFont) {
         self.init(text: String(character), font: font)
     }
     
@@ -71,7 +71,7 @@ extension SKLabelNode {
     /// Calls `init(font:)`.
     public convenience init(
         text: String,
-        font: OctopusFont,
+        font: OKFont,
         horizontalAlignment: SKLabelHorizontalAlignmentMode,
         verticalAlignment:   SKLabelVerticalAlignmentMode)
     {
@@ -81,10 +81,10 @@ extension SKLabelNode {
         self.text = text
     }
     
-    /// Encapsulates the label's font-related properties in an `OctopusFont`.
+    /// Encapsulates the label's font-related properties in an `OKFont`.
     @inlinable
-    public var font: OctopusFont {
-        get { OctopusFont(name: self.fontName, size: self.fontSize, color: self.fontColor) }
+    public var font: OKFont {
+        get { OKFont(name: self.fontName, size: self.fontSize, color: self.fontColor) }
         set {
             if  newValue.name  != nil {
                 self.fontName   = newValue.name!

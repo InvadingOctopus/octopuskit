@@ -19,7 +19,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `SpriteKitSceneComponent`
 @available(iOS 13.0, *)
-public final class TapGestureRecognizerComponent: OctopusGestureRecognizerComponent<UITapGestureRecognizer> {
+public final class TapGestureRecognizerComponent: OKGestureRecognizerComponent<UITapGestureRecognizer> {
     
     // ⚠️ NOTE: https://developer.apple.com/documentation/uikit/uitapgesturerecognizer
     

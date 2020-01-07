@@ -22,7 +22,7 @@ import GameplayKit
 /// - Note: Adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
 ///
 /// **Dependencies:** `SpriteKitSceneComponent`
-public final class PinchGestureRecognizerComponent: OctopusGestureRecognizerComponent<UIPinchGestureRecognizer> {
+public final class PinchGestureRecognizerComponent: OKGestureRecognizerComponent<UIPinchGestureRecognizer> {
     
     // ⚠️ NOTE: https://developer.apple.com/documentation/uikit/uipinchgesturerecognizer/1622235-scale
     

@@ -13,16 +13,16 @@ import GameplayKit
 
 /// Stores events about contacts between physics bodies in a scene. The events may be observed by other components, and are cleared every frame.
 ///
-/// - Note: Unless events are manually forwarded to another entity, this component should be added to an `OctopusScene.entity` and the `OctopusScene.physicsWorld.contactDelegate` must be set to the scene. This is automatically done when a `PhysicsWorldComponent` is added to the scene entity.
-public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComponent {
+/// - Note: Unless events are manually forwarded to another entity, this component should be added to an `OKScene.entity` and the `OKScene.physicsWorld.contactDelegate` must be set to the scene. This is automatically done when a `PhysicsWorldComponent` is added to the scene entity.
+public final class PhysicsEventComponent: OKComponent, OKUpdatableComponent {
     
     public final class ContactEvent: Equatable {
         
         public let contact: SKPhysicsContact
-        public let scene: OctopusScene? // CHECK: Should this be optional?
+        public let scene: OKScene? // CHECK: Should this be optional?
         
         public init(contact: SKPhysicsContact,
-                    scene: OctopusScene? = nil)
+                    scene: OKScene? = nil)
         {
             self.contact = contact
             self.scene   = scene
@@ -54,7 +54,7 @@ public final class PhysicsEventComponent: OctopusComponent, OctopusUpdatableComp
         
         guard scene.physicsWorld.contactDelegate === scene else { // NOTE: The `===` operator.
             OctopusKit.logForWarnings.add("The scene's physicsWorld.contactDelegate is not set to the scene — \(self) may not automatically receive physics events!")
-            OctopusKit.logForTips.add("Add a PhysicsWorldComponent to the OctopusScene.entity")
+            OctopusKit.logForTips.add("Add a PhysicsWorldComponent to the OKScene.entity")
             return
         }
     }

@@ -7,11 +7,11 @@ import OctopusKit
 
 // MARK: - Game State
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
+final class ___FILEBASENAMEASIDENTIFIER___: OKGameState {
     
-    override var validNextStates: [OctopusGameState.Type] {
+    override var validNextStates: [OKGameState.Type] {
         // Customize: Specify the valid states that this state can transition to.
-        // NOTE: Do not perform any logic to conditionally control state transitions here. See `OctopusGameState` documentation.
+        // NOTE: Do not perform any logic to conditionally control state transitions here. See `OKGameState` documentation.
         []  // Default: allow all states.
     }
     
@@ -25,13 +25,13 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusGameState {
 
 // MARK: - Scene
 
-final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
+final class ___FILEBASENAMEASIDENTIFIER___Scene: OKScene {
     
     override func setName() -> String? { "___FILEBASENAMEASIDENTIFIER___Scene" }
     
     override func createComponentSystems() -> [GKComponent.Type] {
         // Customize. Each component must be listed after the components it depends on (as per its `requiredComponents` property.)
-        // See OctopusScene.createComponentSystems() for the default set of commonly-used systems.
+        // See OKScene.createComponentSystems() for the default set of commonly-used systems.
         super.createComponentSystems()
     }
     
@@ -41,7 +41,7 @@ final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
         self.entity?.addComponents([sharedMouseOrTouchEventComponent,
                                     sharedPointerEventComponent])
         
-        addEntity(OctopusEntity(name: "", components: [
+        addEntity(OKEntity(name: "", components: [
             // Customize
         ]))
     }
@@ -52,7 +52,7 @@ final class ___FILEBASENAMEASIDENTIFIER___Scene: OctopusScene {
 
 struct ___FILEBASENAMEASIDENTIFIER___UI: View {
 
-    @EnvironmentObject var gameCoordinator: OctopusGameCoordinator
+    @EnvironmentObject var gameCoordinator: OKGameCoordinator
     
     var body: some View {
         <#Text("___FILEBASENAMEASIDENTIFIER___").font(.largeTitle).foregroundColor(.gray)#>

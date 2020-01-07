@@ -4,13 +4,13 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
+final class ___FILEBASENAMEASIDENTIFIER___: OKScene {
         
     // MARK: - Life Cycle
     
     override func createComponentSystems() -> [GKComponent.Type] {
         // Customize. Each component must be listed after the components it depends on (as per its `requiredComponents` property.)
-        // See OctopusScene.createComponentSystems() for the default set of commonly-used systems.
+        // See OKScene.createComponentSystems() for the default set of commonly-used systems.
         super.createComponentSystems()
     }
     
@@ -20,7 +20,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OctopusScene {
         self.entity?.addComponents([sharedMouseOrTouchEventComponent,
                                     sharedPointerEventComponent])
         
-        addEntity(OctopusEntity(name: "", components: [
+        addEntity(OKEntity(name: "", components: [
             // Customize
         ]))
     }

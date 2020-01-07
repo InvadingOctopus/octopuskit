@@ -1,5 +1,5 @@
 //
-//  Array+OctopusComponentSystem.swift
+//  Array+OKComponentSystem.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/15.
@@ -11,16 +11,16 @@
 import Foundation
 import GameplayKit
 
-public extension Array where Element == OctopusComponentSystem {
+public extension Array where Element == OKComponentSystem {
     
-    /// Creates a `OctopusComponentSystem` for the specified `GKComponent` class and adds it to this array.
+    /// Creates a `OKComponentSystem` for the specified `GKComponent` class and adds it to this array.
     ///
     /// The new system is added to the end of the list, so it will be updated after all currently-added systems.
     @inlinable
     mutating func createSystem(forClass componentClass: GKComponent.Type) {
         // TODO: Warn against or discard duplicates.
         
-        let newSystem = OctopusComponentSystem(componentClass: componentClass)
+        let newSystem = OKComponentSystem(componentClass: componentClass)
         self.append(newSystem)
         
         #if LOGECSVERBOSE
@@ -28,7 +28,7 @@ public extension Array where Element == OctopusComponentSystem {
         #endif
     }
     
-    /// Creates `OctopusComponentSystem`s for the specified `GKComponent` classes and adds them to this array.
+    /// Creates `OKComponentSystem`s for the specified `GKComponent` classes and adds them to this array.
     ///
     /// The new systems are added to the end of the list in the order provided.
     @inlinable

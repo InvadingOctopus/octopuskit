@@ -22,7 +22,7 @@ public final class BadgeComponent: SpriteKitAttachmentComponent<SKNode> {
     public let badge: SKNode
     
     /// The edge or corner to display the badge in. Only compass directions are valid for this component.
-    public var placement: OctopusDirection {
+    public var placement: OKDirection {
         didSet {
             if  placement != oldValue { // Avoid redundancy.
                 positionBadge()
@@ -38,7 +38,7 @@ public final class BadgeComponent: SpriteKitAttachmentComponent<SKNode> {
     
     public init(
         badge: SKNode,
-        placement: OctopusDirection = .northEast,
+        placement: OKDirection = .northEast,
         zPosition: CGFloat = 1)
     {
         self.badge = badge
@@ -57,7 +57,7 @@ public final class BadgeComponent: SpriteKitAttachmentComponent<SKNode> {
     /// Sets the badge's position at the specified edge or corner of the specified node. If no arguments are provided, then the component's `placement` property and the entity's `SpriteKitComponent` node are used.
     ///
     /// Only compass directions are valid for this method.
-    public func positionBadge(placementOverride: OctopusDirection? = nil,
+    public func positionBadge(placementOverride: OKDirection? = nil,
                               parentOverride: SKNode? = nil)
     {
         guard let parent = parentOverride ?? self.entityNode else { return }
@@ -97,10 +97,10 @@ public final class BadgeComponent: SpriteKitAttachmentComponent<SKNode> {
         -> SKLabelNode
     {
         // TODO: Improve parameter names and descriptions.
-        // CHECK: Move to `OctopusUtility` or some other type?
+        // CHECK: Move to `OKUtility` or some other type?
         
         let label = SKLabelNode(text: text,
-                                font: OctopusFont.spriteBubbleFontDefault,
+                                font: OKFont.spriteBubbleFontDefault,
                                 horizontalAlignment: .center,
                                 verticalAlignment: .center)
         

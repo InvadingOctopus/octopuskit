@@ -17,22 +17,22 @@ import CoreMotion
 
 /// Holds references to top-level objects such as the `gameCoordinator` and its `currentScene`, as well as various logs, which all other OctopusKit objects may need to access at any time.
 ///
-/// One of the core objects for an OctopusKit game, along with `OctopusGameCoordinator` and `OctopusViewController`.
+/// One of the core objects for an OctopusKit game, along with `OKGameCoordinator` and `OKViewController`.
 ///
-/// The `OctopusKit` class represents the global environment for an OctopusKit application via its `shared` singleton instance, while the functionality *specific to your game* is managed by `OctopusGameCoordinator` or your subclass of that.
+/// The `OctopusKit` class represents the global environment for an OctopusKit application via its `shared` singleton instance, while the functionality *specific to your game* is managed by `OKGameCoordinator` or your subclass of that.
 ///
 /// **Usage**
 ///
-/// 1. Your application's launch cycle must initialize an instance of `OctopusGameCoordinator` or its subclass, specifying a list of all possible states your game can be in, represented by `OctopusGameState`. Each state must have an `OctopusGameScene` associated with, as well as an optional `SwiftUI` overlay view. See the documentation for `OctopusGameCoordinator`.
+/// 1. Your application's launch cycle must initialize an instance of `OKGameCoordinator` or its subclass, specifying a list of all possible states your game can be in, represented by `OKGameState`. Each state must have an `OctopusGameScene` associated with, as well as an optional `SwiftUI` overlay view. See the documentation for `OKGameCoordinator`.
 ///
 /// 2. Call `OctopusKit(gameCoordinator:)` to initialize the `OctopusKit.shared` singleton instance, which all other objects will refer to when they need to access the game coordinator and other top-level objects.
 ///
-/// 3. Use an `OctopusViewController` in your UI hierarchy to present the game coordinator's scenes.
+/// 3. Use an `OKViewController` in your UI hierarchy to present the game coordinator's scenes.
 ///
-/// - NOTE: The recommended way to setup and present an OctopusKit game is to use the `OctopusKitContainerView` for **SwiftUI**.
+/// - NOTE: The recommended way to setup and present an OctopusKit game is to use the `OKContainerView` for **SwiftUI**.
 public final class OctopusKit {
     
-    // ℹ️ Tried to make this a generic type for convenience in using different `OctopusGameCoordinator` subclasses, but it's not possible because "Static stored properties not supported in generic types" as of 2018-04-14.
+    // ℹ️ Tried to make this a generic type for convenience in using different `OKGameCoordinator` subclasses, but it's not possible because "Static stored properties not supported in generic types" as of 2018-04-14.
     
     // CHECK: PERFORMANCE: Make `shared` non-nil for better performance? Could just default it to a dummy `OctopusKit` instance.
     
@@ -73,7 +73,7 @@ public final class OctopusKit {
     /// The root coordinator object that manages the various states of the game, as well as any global objects that must be shared across states and scenes.
     ///
     /// - Important: The game's first scene must be specified via the game coordinator's initial state.
-    public let gameCoordinator: OctopusGameCoordinator
+    public let gameCoordinator: OKGameCoordinator
     
     @inlinable
     public var gameCoordinatorView: SKView? {
@@ -89,7 +89,7 @@ public final class OctopusKit {
     }
     
     @inlinable
-    public var currentScene: OctopusScene? {
+    public var currentScene: OKScene? {
         gameCoordinator.currentScene
     }
     
@@ -147,7 +147,7 @@ public final class OctopusKit {
     /// - Parameter appNameOverride: The name of the app bundle. Used to retrieve the Core Data store and for logs. If omitted or `nil` the `CFBundleName` property from the `Info.plist` file will be used.
     /// - Returns: Discardable; there is no need store the return value of this initializer.
     @discardableResult public init(appNameOverride: String? = nil,
-                                   gameCoordinator: OctopusGameCoordinator) throws
+                                   gameCoordinator: OKGameCoordinator) throws
     {
         guard OctopusKit.shared == nil else {
             throw OctopusError.invalidConfiguration("OctopusKit: OctopusKit(appName:gameCoordinator:) called again after OctopusKit.shared singleton has already been initialized.")
@@ -169,7 +169,7 @@ public final class OctopusKit {
     /// Ensures that the OctopusKit has been correctly initialized.
     @discardableResult public static func verifyConfiguration() throws -> Bool {
         guard let singleton = OctopusKit.shared else {
-            throw OctopusError.invalidConfiguration("OctopusKit.shared singleton not initialized. Call OctopusKit(gameCoordinator:) or OctopusViewController(gameCoordinator:) during application launch.")
+            throw OctopusError.invalidConfiguration("OctopusKit.shared singleton not initialized. Call OctopusKit(gameCoordinator:) or OKViewController(gameCoordinator:) during application launch.")
         }
         guard !singleton.appName.isEmpty else {
             // CHECK: More rigorous verification? Compare with `CFBundleName` from `Info.plist`?

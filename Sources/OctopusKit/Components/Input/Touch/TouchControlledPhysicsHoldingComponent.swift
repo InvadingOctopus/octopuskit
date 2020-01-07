@@ -20,7 +20,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeTouchStateComponent`, `PhysicsComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class TouchControlledPhysicsHoldingComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PhysicsComponent.self,

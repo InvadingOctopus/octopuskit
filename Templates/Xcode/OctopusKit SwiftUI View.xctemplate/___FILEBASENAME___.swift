@@ -5,7 +5,7 @@ import OctopusKit
 
 struct ___FILEBASENAMEASIDENTIFIER___: View {
 
-    @EnvironmentObject var gameCoordinator: OctopusGameCoordinator
+    @EnvironmentObject var gameCoordinator: OKGameCoordinator
     
     var body: some View {
         <#Text("___FILEBASENAMEASIDENTIFIER___").font(.largeTitle).foregroundColor(.gray)#>

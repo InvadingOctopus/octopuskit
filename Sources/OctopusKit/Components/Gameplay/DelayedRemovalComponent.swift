@@ -11,7 +11,7 @@ import GameplayKit
 /// Removes this component's entity from the scene after the specified time has passed.
 ///
 /// If the entity's `delegate` is `nil`, then only the entity's `SpriteKitComponent` node will be removed from its parent.
-public final class DelayedRemovalComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class DelayedRemovalComponent: OKComponent, OKUpdatableComponent {
     
     /// The duration in seconds to wait before removing the node.
     public var removalDelay: TimeInterval = 0
@@ -35,7 +35,7 @@ public final class DelayedRemovalComponent: OctopusComponent, OctopusUpdatableCo
         {
             entity.component(ofType: SpriteKitComponent.self)?.node.removeFromParent()
             
-            if let entityDelegate = (self.entity as? OctopusEntity)?.delegate {
+            if let entityDelegate = (self.entity as? OKEntity)?.delegate {
                 entityDelegate.entityDidRequestRemoval(entity)
             }
         }

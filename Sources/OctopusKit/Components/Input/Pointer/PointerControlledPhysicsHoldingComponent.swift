@@ -17,7 +17,7 @@ import GameplayKit
 /// - These properties are reapplied every frame.
 ///
 /// **Dependencies:** `NodePointerStateComponent`, `PhysicsComponent`
-public final class PointerControlledPhysicsHoldingComponent: OctopusComponent, OctopusUpdatableComponent {
+public final class PointerControlledPhysicsHoldingComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PhysicsComponent.self,

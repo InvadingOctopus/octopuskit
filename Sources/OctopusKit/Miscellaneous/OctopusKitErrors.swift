@@ -12,7 +12,7 @@ public enum OctopusError: Error {
     
     /// This error is raised when the core objects for OctopusKit have not been initialized correctly during the application launch cycle.
     ///
-    /// Used by `OctopusGameCoordinator` and `OctopusViewController`.
+    /// Used by `OKGameCoordinator` and `OKViewController`.
     case invalidConfiguration(String)
     
 }

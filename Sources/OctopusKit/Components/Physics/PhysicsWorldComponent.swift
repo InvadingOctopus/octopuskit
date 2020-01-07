@@ -8,10 +8,10 @@
 
 import GameplayKit
 
-/// Retains a reference to the `physicsWorld` of an `SKScene` to be used by other components. Must be assigned to an entity with an `SpriteKitSceneComponent`. If the `physicsWorld` has no `contactDelegate` then it's set to the scene, if the scene conforms to `SKPhysicsContactDelegate` (as `OctopusScene` always does.)
+/// Retains a reference to the `physicsWorld` of an `SKScene` to be used by other components. Must be assigned to an entity with an `SpriteKitSceneComponent`. If the `physicsWorld` has no `contactDelegate` then it's set to the scene, if the scene conforms to `SKPhysicsContactDelegate` (as `OKScene` always does.)
 ///
 /// **Dependencies:** `SpriteKitSceneComponent`
-public final class PhysicsWorldComponent: OctopusComponent {
+public final class PhysicsWorldComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitSceneComponent.self]

@@ -11,7 +11,7 @@ import GameplayKit
 #if os(iOS)
     
 /// Abstract. Use `ImpactVibrationComponent`.
-open class VibrationComponent<FeedbackGeneratorType: UIFeedbackGenerator>: OctopusComponent, OctopusUpdatableComponent {
+open class VibrationComponent<FeedbackGeneratorType: UIFeedbackGenerator>: OKComponent, OKUpdatableComponent {
     
     public var feedbackGenerator: FeedbackGeneratorType? // CHECK: Should this be weak?
     

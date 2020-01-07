@@ -12,7 +12,7 @@ import GameplayKit
 /// A component for storing a dictionary of arbitrary types and values. May be used for sharing data between other components.
 ///
 /// If you need to share a lot of data or properties between components, consider writing a custom data component specific to your game.
-public final class DictionaryComponent<KeyType: Hashable, ValueType>: OctopusComponent {
+public final class DictionaryComponent<KeyType: Hashable, ValueType>: OKComponent {
     
     public var dictionary: [KeyType: ValueType]
     
