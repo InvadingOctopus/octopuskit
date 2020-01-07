@@ -248,6 +248,7 @@ open class OctopusScene:    SKScene,
             // Convenient customization point for subclasses, so they can have a standard method for setting up the initial list of component systems.
             componentSystems.createSystems(forClasses: createComponentSystems())
             
+            OctopusKit.logForFramework.add("Calling createContents() for \(self)")
             createContents()
             
             // addAllComponentsFromAllEntities(to: self.componentSystems) // CHECK: Necessary? Should we just rely on OctopusEntityDelegate?
@@ -342,16 +343,14 @@ open class OctopusScene:    SKScene,
     
     /// Abstract; override in subclass. Creates the scene's contents and sets up entities and components. Called after the scene is presented in a view, after `createComponentSystems()`.
     ///
-    /// May be overridden in a subclass. The default implementation defers to the `octopusSceneDelegate`.
-    ///
-    ///  Called from `didMove(to:)`. Call `super.createContents()` to include a log entry.
+    ///  Called from `didMove(to:)`.
     ///
     /// - NOTE: If the scene requires the global `OctopusKit.shared.gameCoordinator.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
     ///
     /// - NOTE: A scene may also/instead choose to create its contents in the `gameCoordinatorDidEnterState(_:from:)` method.
     @inlinable
     open func createContents() {
-        OctopusKit.logForFramework.add()
+        OctopusKit.logForFramework.add("Not implemented for \(self) — Override in subclass.")
     }
     
     open override func didChangeSize(_ oldSize: CGSize) {
