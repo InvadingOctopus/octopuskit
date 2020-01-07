@@ -143,3 +143,18 @@ public final class RelayComponent <MasterComponentType> : OKComponent
     
 }
 
+// MARK: Convenience
+
+/// A protocol to add the `relay()` convenience for `GKComponent` and all subclasses.
+public protocol RelayComponentTarget: GKComponent {
+    // THANKS: https://forums.swift.org/u/ddddxxx
+}
+
+public extension RelayComponentTarget {
+    /// Creates and returns a `RelayComponent` for this component.
+    func relay() -> RelayComponent<Self> {
+        return RelayComponent(for: self)
+    }
+}
+
+extension GKComponent: RelayComponentTarget {}
