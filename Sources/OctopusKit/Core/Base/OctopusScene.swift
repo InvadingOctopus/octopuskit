@@ -205,12 +205,17 @@ open class OctopusScene:    SKScene,
         // Required so that it may be constructed by metatype values, e.g. `sceneClass.init(size:)`
         // CHECK: Still necessary?
         super.init(size: size)
+        self.name = setName()
     }
 
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         // CHECK: Should we `fatalError()` here? // fatalError("init(coder:) has not been implemented")
+        self.name = setName()
     }
+    
+    /// Abstract; override in subclass. Called by the initializers to set the scene's name at the earliest point for logging purposes.
+    open func setName() -> String? { nil }
     
     open override func sceneDidLoad() {
         OctopusKit.logForFramework.add("\(self)")
@@ -218,7 +223,7 @@ open class OctopusScene:    SKScene,
         
         // Create and add the entity that represents the scene itself.
         
-        if self.entity == nil {
+        if  self.entity == nil {
             createSceneEntity()
         }
         
@@ -268,7 +273,7 @@ open class OctopusScene:    SKScene,
         
         // Warn if the scene already has an entity representing it.
         
-        if let existingEntity = self.entity {
+        if  let existingEntity = self.entity {
             OctopusKit.logForErrors.add("\(self) already has an entity: \(existingEntity)")
             // CHECK: Remove the existing entity here, or exit the method here?
         }
@@ -283,23 +288,67 @@ open class OctopusScene:    SKScene,
         assert(self.entity === sceneEntity, "Could not set scene's entity")
     }
     
-    /// An abstract method that is called after the scene is presented in a view, before `createContents()` is called. Subclasses must override this to return an array of component classes, from which the scene's component systems will be created.
+    /// Returns an array that specifies the order of execution for components used by this scene. Called after the scene is presented in a view, before `createContents()` is called.
+    ///
+    /// Override in subclass. The default implementation returns an array of commonly-used systems.
     ///
     /// - IMPORTANT: Components will be updated every frame in the exact order that is specified here, so a component must be listed after its dependencies.
     ///
-    /// The `componentSystems` property can be modified again at any time.
+    /// The `componentSystems` property may be modified again at any time.
+    ///
+    /// - Returns: An array of component classes, from which the scene's component systems will be created.
     @inlinable
     open func createComponentSystems() -> [GKComponent.Type] {
-        []
+        [
+        // 1: Time and state
+        
+        TimeComponent.self,
+        StateMachineComponent.self,
+        
+        // 2: Player input
+        
+        OSMouseOrTouchEventComponent.self,
+        PointerEventComponent.self,
+        
+        KeyboardEventComponent.self,
+        DirectionEventComponent.self,
+        
+        NodePointerStateComponent.self,
+        NodePointerClosureComponent.self,
+        
+        // 3: Movement and physics
+        
+        DirectionControlledRotationComponent.self,
+        DirectionControlledTorqueComponent.self,
+        DirectionControlledThrustComponent.self,
+        DirectionControlledForceComponent.self,
+        
+        PointerControlledForceComponent.self,
+        PointerControlledPositioningComponent.self,
+        
+        OctopusAgent2D.self,
+        PhysicsComponent.self, // The physics component should come in after other components have modified node properties, so it can clamp the velocity etc. if such limits have been specified.
+        
+        // 4: Custom code and anything else that depends on the final placement of nodes per frame.
+        
+        PointerControlledPhysicsHoldingComponent.self,
+        PhysicsEventComponent.self,
+        
+        TimeDependentClosureComponent.self,
+        RepeatingClosureComponent.self,
+        DelayedClosureComponent.self,
+        CameraComponent.self]
     }
     
-    /// An abstract method that is called after the scene is presented in a view. To be overridden by a subclass to prepare the scene's content, and set up entities and components.
+    /// Abstract; override in subclass. Creates the scene's contents and sets up entities and components. Called after the scene is presented in a view, after `createComponentSystems()`.
     ///
-    /// Called from `didMove(to:)`. Call `super.createContents()` to include a log entry.
+    /// May be overridden in a subclass. The default implementation defers to the `octopusSceneDelegate`.
+    ///
+    ///  Called from `didMove(to:)`. Call `super.createContents()` to include a log entry.
     ///
     /// - NOTE: If the scene requires the global `OctopusKit.shared.gameCoordinator.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
     ///
-    /// - Note: A scene may choose to perform the tasks of this method in `gameCoordinatorDidEnterState(_:from:)` instead.
+    /// - NOTE: A scene may also/instead choose to create its contents in the `gameCoordinatorDidEnterState(_:from:)` method.
     @inlinable
     open func createContents() {
         OctopusKit.logForFramework.add()
@@ -354,13 +403,13 @@ open class OctopusScene:    SKScene,
         return nil
     }
     
-    // MARK: - Entities & Components
+    // MARK: Entities & Components
     
     // Most of the entity management code as well as `OctopusEntityDelegate` conformance is provided by the default implementation extensions of the `OctopusEntityContainer` protocol.
     
-    // MARK: - Frame Update
+    // MARK: - Update Cycle
     
-    /// This method is called by SpriteKit on every frame (before SKActions are evaluated) and updates components via component systems.
+    /// This method is called by SpriteKit on every frame (before `SKAction`s are evaluated) and updates components via component systems.
     ///
     /// This method also performs timer calculations and handles pausing/unpausing logic, entity removal and other preparations that are necessary for every frame.
     ///
@@ -430,7 +479,7 @@ open class OctopusScene:    SKScene,
             
             // If we were previously paused, disregard the time spent in the paused state.
             
-            if let pausedAtTime = self.pausedAtTime {
+            if  let pausedAtTime = self.pausedAtTime {
                 
                 // Subtract the `lastUpdateTime` from `pausedAtTime` instead of `currentTime`, so that the behavior of components and states appears to continue from the moment when the game was paused.
                 
@@ -493,7 +542,7 @@ open class OctopusScene:    SKScene,
     ///
     /// - RETURNS: The default implementation calls `shouldUpdateSystems` and forwards its result.
     open func shouldUpdateGameCoordinator(deltaTime: TimeInterval) -> Bool {
-        shouldUpdateSystems(deltaTime: deltaTime)
+        return shouldUpdateSystems(deltaTime: deltaTime)
     }
     
     /// This method is called at the end of `OctopusScene.update()` on every frame to determine whether to update all systems in the `componentSystems` array.
@@ -504,10 +553,7 @@ open class OctopusScene:    SKScene,
     ///
     /// - RETURNS: The default implementation returns `true` if **none** of the paused flags are set: `!isPaused && !isPausedBySystem && isPausedByPlayer && !isPausedBySubscene`
     open func shouldUpdateSystems(deltaTime: TimeInterval) -> Bool {
-        (!isPaused
-            && !isPausedBySystem
-            && !isPausedByPlayer
-            && !isPausedBySubscene)
+        return (!isPaused && !isPausedBySystem && !isPausedByPlayer && !isPausedBySubscene)
     }
     
     /// Increments the frame counter at the end of the current frame update.
@@ -528,7 +574,7 @@ open class OctopusScene:    SKScene,
     /// Relay physics contact events to the scene's `PhysicsEventComponent`.
     open func didBegin(_ contact: SKPhysicsContact) {
         
-        if let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsEventComponent.self) {
+        if  let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsEventComponent.self) {
             physicsEventComponent.contactBeginnings.append(PhysicsEventComponent.ContactEvent(contact: contact, scene: self))
         }
     }
@@ -536,7 +582,7 @@ open class OctopusScene:    SKScene,
     /// Relay physics contact events to the scene's `PhysicsEventComponent`.
     open func didEnd(_ contact: SKPhysicsContact) {
         
-        if let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsEventComponent.self) {
+        if  let physicsEventComponent = self.entity?.componentOrRelay(ofType: PhysicsEventComponent.self) {
             physicsEventComponent.contactEndings.append(PhysicsEventComponent.ContactEvent(contact: contact, scene: self))
         }
     }
@@ -549,7 +595,7 @@ open class OctopusScene:    SKScene,
     open func applicationWillEnterForeground() {
         OctopusKit.logForFramework.add()
         
-        if isPausedBySystem {
+        if  isPausedBySystem {
             // CHECK: Should `OctopusScene.applicationDidBecomeActive()` be called from here too, or should we let `OctopusAppDelegate.applicationDidBecomeActive(_:)` call it?
             applicationDidBecomeActive()
         }
@@ -565,7 +611,7 @@ open class OctopusScene:    SKScene,
         
         OctopusKit.logForFramework.add("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? " → false" : "")")
         
-        if isPausedBySystem {
+        if  isPausedBySystem {
             isPaused = false
             isPausedBySystem = false
             physicsWorld.speed = 1
@@ -594,7 +640,7 @@ open class OctopusScene:    SKScene,
     open func applicationDidEnterBackground() {
         OctopusKit.logForFramework.add()
         
-        if !isPausedBySystem {
+        if  !isPausedBySystem {
             applicationWillResignActive()
         }
         pausedAtTime = lastUpdateTime // CHECK: Should we rely on stored value instead of getting current time? Probably yes
@@ -627,7 +673,7 @@ open class OctopusScene:    SKScene,
         
         isPausedByPlayer = !isPausedByPlayer
         
-        if isPausedByPlayer {
+        if  isPausedByPlayer {
             pausedAtTime = lastUpdateTime // CHECK: Should we rely on stored value instead of getting current time?
             // self.physicsWorld.speed = 0.0 // Put in subclass implementation if needed.
             // TODO: audioEngine.duckMusicVolume()
@@ -663,7 +709,7 @@ open class OctopusScene:    SKScene,
         
         isPausedBySubscene = !isPausedBySubscene
         
-        if isPausedBySubscene {
+        if  isPausedBySubscene {
             pausedAtTime = lastUpdateTime // CHECK: Should we rely on stored value instead of getting current time?
             // self.physicsWorld.speed = 0.0 // Put in subclass implementation if needed.
         } else {
@@ -703,10 +749,9 @@ open class OctopusScene:    SKScene,
     // MARK: - Subscenes
     
     /// Presents a subscene and pauses the gameplay.
-    open func presentSubscene(
-        _ subscene: OctopusSubscene,
-        onNode parent: SKNode? = nil,
-        zPosition: CGFloat? = nil)
+    open func presentSubscene(_ subscene: OctopusSubscene,
+                              onNode parent: SKNode? = nil,
+                              zPosition: CGFloat? = nil)
     {
         // CHECK: Should there be a limit on the maximum number of subscenes?
         
@@ -725,7 +770,7 @@ open class OctopusScene:    SKScene,
         
         // Set the subscene's properties.
         
-        if let zPosition = zPosition {
+        if  let zPosition = zPosition {
             subscene.zPosition = zPosition
         }
         
@@ -767,16 +812,15 @@ open class OctopusScene:    SKScene,
     {
         OctopusKit.logForFramework.add("\(subscene) result = \(result)")
         
-        if let index = self.subscenes.firstIndex(of: subscene) {
+        if  let index = self.subscenes.firstIndex(of: subscene) {
             self.subscenes.remove(at: index) // ⚠️ CHECK: Will this cause a mutating-while-enumerating exception?
-        }
-        else {
+        } else {
             OctopusKit.logForWarnings.add("\(subscene) not in the subscene list of \(self)")
         }
         
         subscene.removeFromParent()
         
-        if self.subscenes.count < 1 && isPausedBySubscene {
+        if  self.subscenes.count < 1 && isPausedBySubscene {
             togglePauseBySubscene()
         }
         
