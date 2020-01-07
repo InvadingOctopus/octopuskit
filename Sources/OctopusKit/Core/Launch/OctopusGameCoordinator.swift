@@ -53,7 +53,7 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
     public let initialStateClass: OctopusGameState.Type
     
     public fileprivate(set) var didEnterInitialState: Bool = false
-
+    
     @Published public var currentGameState: OctopusGameState? = nil {
         didSet {
             OctopusKit.logForFramework.add("\(oldValue) → \(currentGameState)")
@@ -190,18 +190,42 @@ open class OctopusGameCoordinator: GKStateMachine, OctopusScenePresenter, Observ
         
         if  self.canEnterState(stateClass) {
             self.objectWillChange.send()
+        } else {
+            OctopusKit.logForWarnings.add("Cannot enter \(stateClass) from currentState: \(currentState)")
+            return false
         }
+        
+        // Set the `currentGameState` before calling `super.enter(_:)`, so that OctopusGameState.didEnter(from:) can see the correct state when it checks `currentGameState`
+        
+        if  let stateClass = stateClass as? OctopusGameState.Type {
+            self.currentGameState = self.state(forClass: stateClass)
+        } else {
+            OctopusKit.logForErrors.add("Cannot cast \(stateClass) as OctopusGameState")
+        }
+       
+        // Call the parent implementation which will set the actual state.
         
         let didEnterRequestedState = super.enter(stateClass)
         
+        // Confirm that the final result matches the expected values.
+        
         if  didEnterRequestedState {
             
-            if  let stateClass = stateClass as? OctopusGameState.Type {
-                self.currentGameState = self.state(forClass: stateClass)
-            } else {
-                OctopusKit.logForWarnings.add("Cannot cast \(stateClass) as OctopusGameState")
+            if  self.currentState != self.currentGameState {
+                OctopusKit.logForErrors.add("currentState: \(currentGameState) != currentGameState: \(currentGameState)")
             }
             
+        } else {
+            
+            OctopusKit.logForWarnings.add("Could not enter \(stateClass) — currentState: \(currentState)")
+            
+            // Reset the `currentGameState` to the actual state.
+            
+            if  let currentState = self.currentState as? OctopusGameState {
+                self.currentGameState = currentState
+            } else {
+                OctopusKit.logForErrors.add("Cannot cast \(stateClass) as OctopusGameState")
+            }
         }
         
         return didEnterRequestedState
