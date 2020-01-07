@@ -146,10 +146,12 @@ The objects that actually present your game on screen:
 
 - Once a scene is presented on screen, the system calls the `OKScene.update(_:)` method at the beginning of every frame, which goes through the list of the scene's **Component Systems** and updates all the **Components** in each system. 
 
-- The update method then calls the `shouldUpdateGameCoordinator(deltaTime:)` and `shouldUpdateSystems(deltaTime:)` methods to offer a customization point for complex game-specific scenes which perform their own per-frame logic.
-    
+- The update method then calls the `shouldUpdateGameCoordinator(deltaTime:)` and `shouldUpdateSystems(deltaTime:)` methods. The default implementation of these methods just checks all the paused flags, and returns true if none of those flags are set.
+
+- OctopusKit handles all the boilerplate per-frame logic, like timer calculations, frame counts, entity management and pause/unpause behavior. This saves you from writing a lot of identical code for every scene, while still offering a customization point for subclasses of `OKScene` that have custom pause/unpause behavior or need to perform other per-frame logic.
+ 
     > See Apple's documentation for an overview of the [SpriteKit frame cycle][frame-cycle].
-    
+
 🌠 `OKSubscene:`[`SKNode`](https://developer.apple.com/documentation/spritekit/sknode)
 
 - A **Subscene** is a node which may be added to a scene, but maintains its own hierarchy of entities and components. When a subscene is presented, the scene sets a special flag to pause the entities in the scene itself and any previous subscenes. This allows subscenes to be used for modal content which must be overlaid on top of the scene's content, while pausing the main action without pausing the engine, so that only the topmost subscene will be updated.
