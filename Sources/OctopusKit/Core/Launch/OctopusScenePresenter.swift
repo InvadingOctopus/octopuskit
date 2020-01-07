@@ -23,11 +23,14 @@ public protocol OctopusScenePresenter: class {
     
     func createScene(ofClass sceneClass: OctopusScene.Type) -> OctopusScene?
     
-    func presentScene(_ incomingScene: OctopusScene, withTransition transitionOverride: SKTransition?)
+    func presentScene(_ incomingScene: OctopusScene,
+                      withTransition transitionOverride: SKTransition?)
     
-    @discardableResult func createAndPresentScene(ofClass sceneClass: OctopusScene.Type, withTransition transition: SKTransition?) -> OctopusScene?
+    @discardableResult func createAndPresentScene(ofClass sceneClass: OctopusScene.Type,
+                                                  withTransition transition: SKTransition?) -> OctopusScene?
     
-    @discardableResult func loadAndPresentScene(fileNamed fileName: String, withTransition transition: SKTransition?) -> OctopusScene?
+    @discardableResult func loadAndPresentScene(fileNamed fileName: String,
+                                                withTransition transition: SKTransition?) -> OctopusScene?
 }
 
 // MARK: - Default Implementation
