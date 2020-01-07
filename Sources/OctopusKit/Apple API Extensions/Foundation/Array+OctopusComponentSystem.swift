@@ -23,7 +23,9 @@ public extension Array where Element == OctopusComponentSystem {
         let newSystem = OctopusComponentSystem(componentClass: componentClass)
         self.append(newSystem)
         
+        #if LOGECSVERBOSE
         OctopusKit.logForComponents.add("\(newSystem) componentClass = \(componentClass), count = \(self.count)")
+        #endif
     }
     
     /// Creates `OctopusComponentSystem`s for the specified `GKComponent` classes and adds them to this array.
@@ -59,6 +61,5 @@ public extension Array where Element == OctopusComponentSystem {
             componentSystem.removeComponent(foundIn: entity)
         }
     }
-    
 }
 
