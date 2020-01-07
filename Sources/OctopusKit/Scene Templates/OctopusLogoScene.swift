@@ -14,6 +14,8 @@ public typealias OKLogoScene = OctopusLogoScene
 /// A template for presenting the OctopusKit logo.
 public final class OctopusLogoScene: OctopusScene {
     
+    override func setName() -> String? { "OctopusKit Logo Scene" }
+    
     public override func createContents() {
         super.createContents()
         self.backgroundColor = .black
