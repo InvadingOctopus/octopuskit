@@ -234,8 +234,8 @@ open class OKViewController: OSViewController {
         // OBSOLETE?
         // NOTE: As the OKScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
-        // NOTE: Better yet, `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! :)
-        // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OKViewController.viewWillLayoutSubviews()`
+        // NOTE: Better yet, `enterInitialState()` from `OSAppDelegate.applicationDidBecomeActive(_:)`! :)
+        // CHECK: Compare launch performance between calling `enterInitialState()` from `OSAppDelegate.applicationDidBecomeActive(_:)` versus `OKViewController.viewWillLayoutSubviews()`
     }
     
     open override func didReceiveMemoryWarning() {
@@ -270,8 +270,8 @@ open class OKViewController: OSViewController {
         // OBSOLETE?
         // NOTE: As the OKScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices, we should call `enterInitialState()` from here and not later from `viewWillAppear(_:)`.
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
-        // NOTE: Better yet, `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)`! :)
-        // CHECK: Compare launch performance between calling `enterInitialState()` from `OctopusAppDelegate.applicationDidBecomeActive(_:)` versus `OKViewController.viewWillLayoutSubviews()`
+        // NOTE: Better yet, `enterInitialState()` from `OSAppDelegate.applicationDidBecomeActive(_:)`! :)
+        // CHECK: Compare launch performance between calling `enterInitialState()` from `OSAppDelegate.applicationDidBecomeActive(_:)` versus `OKViewController.viewWillLayoutSubviews()`
     }
     
     #endif

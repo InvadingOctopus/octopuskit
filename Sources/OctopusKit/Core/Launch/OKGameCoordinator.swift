@@ -49,7 +49,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
     
     /// Invoked by the `OKSpriteKitViewController` to start the game after the system/application presents the view.
     ///
-    /// This should be set during `OctopusAppDelegate.applicationWillLaunchOctopusKit()` after the app launches.
+    /// This should be set during the application launch process.
     public let initialStateClass: OKGameState.Type
     
     public fileprivate(set) var didEnterInitialState: Bool = false

@@ -101,9 +101,9 @@ public final class OctopusKit {
     public lazy var managedObjectContext: NSManagedObjectContext? = {
         return nil
         /*
-        guard let appDelegate = UIApplication.shared.delegate as? OctopusAppDelegate else {
+        guard let appDelegate = UIApplication.shared.delegate as? OSAppDelegate else {
             // CHECK: Warning or error?
-            fatalError("Cannot access UIApplication.shared.delegate as an OctopusAppDelegate.")
+            fatalError("Cannot access UIApplication.shared.delegate as an OSAppDelegate.")
         }
         
         return appDelegate.persistentContainer.viewContext
@@ -116,9 +116,9 @@ public final class OctopusKit {
     public lazy var managedObjectContext: NSManagedObjectContext? = {
         return nil
         /*
-        guard let appDelegate = NSApplication.shared.delegate as? OctopusAppDelegate else {
+        guard let appDelegate = NSApplication.shared.delegate as? OSAppDelegate else {
             // CHECK: Warning or error?
-            fatalError("Cannot access UIApplication.shared.delegate as an OctopusAppDelegate.")
+            fatalError("Cannot access UIApplication.shared.delegate as an OSAppDelegate.")
         }
         
         return appDelegate.persistentContainer.viewContext

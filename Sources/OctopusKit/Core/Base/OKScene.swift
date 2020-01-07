@@ -68,7 +68,7 @@ open class OKScene:    SKScene,
     
     /// Set to `true` when the game is automatically paused by the system, such as when switching to another app or receiving a call.
     ///
-    /// Modified during `OctopusAppDelegate.applicationDidBecomeActive(_:)` and `OctopusAppDelegate.applicationWillResignActive(_:)`
+    /// Modified during `OSAppDelegate.applicationDidBecomeActive(_:)` and `OSAppDelegate.applicationWillResignActive(_:)`
     public fileprivate(set) var isPausedBySystem = false
     
     /// Set to `true` when the game is presenting a modal user interface that is waiting for the player's input, while putting the game's action on hold.
@@ -588,25 +588,25 @@ open class OKScene:    SKScene,
     
     // MARK: - Pause/Unpause
     
-    /// Called by `OctopusAppDelegate.applicationWillEnterForeground(_:)`. Subclass to implement custom behavior such as going into a player-paused visual state.
+    /// Called by `OSAppDelegate.applicationWillEnterForeground(_:)`. Subclass to implement custom behavior such as going into a player-paused visual state.
     ///
     /// - Important: The overriding implementation must call `super.applicationWillEnterForeground()`.
     open func applicationWillEnterForeground() {
         OctopusKit.logForFramework.add()
         
         if  isPausedBySystem {
-            // CHECK: Should `OKScene.applicationDidBecomeActive()` be called from here too, or should we let `OctopusAppDelegate.applicationDidBecomeActive(_:)` call it?
+            // CHECK: Should `OKScene.applicationDidBecomeActive()` be called from here too, or should we let `OSAppDelegate.applicationDidBecomeActive(_:)` call it?
             applicationDidBecomeActive()
         }
 
         // TODO: audioEngine.startAndReturnError()
     }
     
-    /// Called by `OctopusAppDelegate.applicationDidBecomeActive()` after the player has switched back into the app or interruptions such as a phone call or Control Center have ended.
+    /// Called by `OSAppDelegate.applicationDidBecomeActive()` after the player has switched back into the app or interruptions such as a phone call or Control Center have ended.
     ///
     /// - Important: The overriding implementation must call `super.applicationDidBecomeActive()`.
     open func applicationDidBecomeActive() {
-        // NOTE: This method gets superfluously called twice after `OctopusAppDelegate.applicationWillEnterForeground(_:)` because of `OKScene.applicationWillEnterForeground()` and `OctopusAppDelegate.applicationDidBecomeActive(_:)`.
+        // NOTE: This method gets superfluously called twice after `OSAppDelegate.applicationWillEnterForeground(_:)` because of `OKScene.applicationWillEnterForeground()` and `OSAppDelegate.applicationDidBecomeActive(_:)`.
         
         OctopusKit.logForFramework.add("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? " → false" : "")")
         
@@ -621,7 +621,7 @@ open class OKScene:    SKScene,
         }
     }
     
-    /// Called by `OctopusAppDelegate.applicationWillResignActive(_:)` when the player switches out of the app, or on interruptions such as a phone call, Control Center, Notification Center, or other system alerts.
+    /// Called by `OSAppDelegate.applicationWillResignActive(_:)` when the player switches out of the app, or on interruptions such as a phone call, Control Center, Notification Center, or other system alerts.
     open func applicationWillResignActive() {
         OctopusKit.logForFramework.add("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? "" : " → true")")
         
@@ -635,7 +635,7 @@ open class OKScene:    SKScene,
         didPauseBySystem() // Allow the subclass to customize the pause/unpause behavior.
     }
     
-    /// Called by `OctopusAppDelegate.applicationDidEnterBackground(_:)`
+    /// Called by `OSAppDelegate.applicationDidEnterBackground(_:)`
     open func applicationDidEnterBackground() {
         OctopusKit.logForFramework.add()
         
