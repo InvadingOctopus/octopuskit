@@ -88,8 +88,6 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
     // MARK: - Life Cycle
     
     /// Initializes the top-level game coordinator which holds a list of all the possible states for your game, such as main menu, playing or paused.
-    ///
-    /// You may omit the `initialStateClass` argument to use the first item of the `states` array as the initial state.
     public init(states: [OKGameState],
                 initialStateClass: OKGameState.Type)
     {
@@ -103,20 +101,27 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
         registerForNotifications()
     }
     
-    /// Convenience initializer which sets the initial game state to the first item passed in the `states` array.
-    public convenience init(states: [OKGameState]) {
+    /// Initializes the top-level game coordinator which holds a list of all the possible states for your game, such as main menu, playing or paused.
+    ///
+    /// The initial game state is set to the first item in the `states` array.
+    public override init(states: [GKState]) {
         
         assert(!states.isEmpty, "OKGameCoordinator must be initialized with at least one game state!")
         
-        self.init(states: states,
-                  initialStateClass: type(of: states.first!))
+        // Only `OKGameState`s should be allowed.
+        guard let states = states as? [OKGameState] else {
+            fatalError("The states argument must be an array of OKGameState or its subclasses.")
+        }
+        
+        self.initialStateClass = type(of: states.first!)
+        
+        OctopusKit.logForFramework.add("states: \(states) — initial: initialStateClass")
+        
+        self.entity = OKEntity(name: OctopusKit.Constants.Strings.gameCoordinatorEntityName)
+        super.init(states: states)
+        registerForNotifications()
     }
-    
-    private override init(states: [GKState]) {
-        // The default initializer is hidden so that only `OKGameState` is accepted.
-        fatalError("OKGameCoordinator(states:) not implemented. Initialize with OKGameCoordinator(states:initialStateClass:)")
-    }
-    
+
     private init() {
         fatalError("OKGameCoordinator must be initialized with at least one game state!")
     }
