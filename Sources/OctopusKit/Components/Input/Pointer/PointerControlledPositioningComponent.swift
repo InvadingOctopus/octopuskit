@@ -14,6 +14,8 @@ import GameplayKit
 /// **Dependencies:** `SpriteKitComponent`, `PointerEventComponent`
 public final class PointerControlledPositioningComponent: OctopusComponent, OctopusUpdatableComponent {
     
+    // TODO: Add options for buttons and hover.
+    
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self,
          PointerEventComponent.self]
