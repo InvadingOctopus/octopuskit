@@ -12,7 +12,9 @@ import GameplayKit
 public typealias OKSceneDelegate = OctopusSceneDelegate
 
 /// A protocol for types that control game state transitions and scene presentation based on input from the current scene, such as `OctopusGameState`.
-public protocol OctopusSceneDelegate: class {
+public protocol OctopusSceneDelegate {
+    
+    // MARK: Transitions
     
     /// Notifies the current `OctopusGameState` of the `OctopusGameCoordinator` state machine. The state's logic should decide how to interpret the "completion" of a scene and which state to transition to, if any.
     func octopusSceneDidFinish(_ scene: OctopusScene)
@@ -47,6 +49,8 @@ public protocol OctopusSceneDelegate: class {
 // MARK: - Default Implementation
 
 public extension OctopusSceneDelegate {
+
+    // MARK: Transitions
     
     // Abstract; To be implemented by subclass. The default behavior is to redirect to `octopusSceneDidChooseNextGameState(_)`.
     func octopusSceneDidFinish(_ scene: OctopusScene) {
@@ -62,5 +66,35 @@ public extension OctopusSceneDelegate {
     /// Abstract; To be implemented by subclass.
     @discardableResult func octopusSceneDidChoosePreviousGameState(_ scene: OctopusScene) -> Bool {
         return false
+    }
+    
+    func octopusScene(_ scene: OctopusScene,
+                      didRequestGameState stateClass: OctopusGameState.Type) -> Bool
+    {
+        OctopusKit.logForWarnings.add("octopusScene(_:didRequestGameState:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.enter(...)")
+        
+        return OctopusKit.shared.gameCoordinator.enter(stateClass)
+    }
+    
+    func octopusScene(_ outgoingScene: OctopusScene,
+                      didRequestTransitionTo nextSceneFileName: String,
+                      withTransition transition: SKTransition?)
+    {
+        OctopusKit.logForWarnings.add("octopusScene(_:didRequestTransitionTo:withTransition:) not implemented for \(outgoingScene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.loadAndPresentScene(...)")
+        
+        OctopusKit.shared.gameCoordinator.loadAndPresentScene(fileNamed: nextSceneFileName,
+                                                              withTransition: transition)
+        // outgoingScene.isPaused = false // CHECK: Necessary?
+    }
+    
+    func octopusScene(_ outgoingScene: OctopusScene,
+                      didRequestTransitionTo nextSceneClass: OctopusScene.Type,
+                      withTransition transition: SKTransition?)
+    {
+        OctopusKit.logForWarnings.add("octopusScene(_:didRequestTransitionTo:withTransition:) (class version) not implemented for \(outgoingScene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.createAndPresentScene(...)")
+        
+        OctopusKit.shared.gameCoordinator.createAndPresentScene(ofClass: nextSceneClass,
+                                                                withTransition: transition)
+        // outgoingScene.isPaused = false // CHECK: Necessary?
     }
 }
