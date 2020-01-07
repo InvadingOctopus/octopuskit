@@ -191,6 +191,15 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
     @LogInputEventChanges(propertyName: "PointerEventComponent.secondLastEvent")
     public private(set) var secondLastEvent: PointerEvent? = nil
     
+    public override func didAddToEntity() {
+        super.didAddToEntity()
+        // Issue a warning for a common mistake: Adding an input event component to a child entity instead of the scene's entity.
+        if  !(self.entity?.node is SKScene) {
+            OctopusKit.logForWarnings.add("\(self) added to a child entity instead of the OctopusScene.entity: \(entity) — Events may not be received!")
+            OctopusKit.logForTips.add("Use RelayComponent(for:) to add a relay to the scene's sharedPointerEventComponent, or override the scene's input handling methods.")
+        }
+    }
+    
     // MARK: - Frame Cycle
     
     @inlinable
@@ -214,7 +223,7 @@ public final class PointerEventComponent: OctopusComponent, OctopusUpdatableComp
         
         #if canImport(AppKit)
         
-        if let mouseEventComponent = coComponent(MouseEventComponent.self) {
+        if  let mouseEventComponent = coComponent(MouseEventComponent.self) {
             
             if  let mouseDown = mouseEventComponent.mouseDown {
                 pointerBegan = PointerEvent(category:  .began,
