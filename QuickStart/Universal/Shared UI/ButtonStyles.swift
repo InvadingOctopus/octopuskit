@@ -11,7 +11,7 @@ import SwiftUI
 
 struct FatButtonStyle: ButtonStyle {
     
-    var color: Color
+    var color: Color = .accentColor
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
