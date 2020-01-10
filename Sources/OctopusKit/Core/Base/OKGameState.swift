@@ -120,6 +120,10 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
         
         guard let associatedSceneClass = self.associatedSceneClass else {
             OctopusKit.logForDebug.add("\(self) has no associatedSceneClass — A new scene will not be displayed for this state.")
+            
+            // Set the current scene as the delegate of this new state, so that the scene can properly receive gameCoordinatorWillExitState(_:to:) etc.
+            self.delegate = gameCoordinator.currentScene
+            
             return
         }
         
@@ -184,7 +188,7 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
         
         // Notify our delegate, to let it perform any outgoing animations etc., or in case the game uses a single scene for multiple states (e.g. displaying an overlay for the paused state, menus, etc. on the gameplay view.)
         
-        if gameCoordinator?.currentScene !== self.delegate {
+        if  gameCoordinator?.currentScene !== self.delegate {
             OctopusKit.logForWarnings.add("gameCoordinator?.currentScene: \(gameCoordinator?.currentScene) !== self.delegate: \(self.delegate)")
         }
         
