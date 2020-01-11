@@ -49,6 +49,7 @@ struct PlayUI: View {
                 
                 GameStateLabel().padding(.top, 50)
                     .opacity(0.9)
+                    .foregroundColor(.white)
                     .blendMode(.lighten)
                 
                 Text(instructions)
