@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/1.
-//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 //  Wherever the AppKit (macOS) "NS-" and UIKit (iOS, iPadOS, tvOS) "UI-" variants of an object can be interchanged, OctopusKit uses an OS-agnostic type alias to reduce the amount of duplicated code.

@@ -3,7 +3,7 @@
 //  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/02/10.
-//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 //  🔶 STEP 4: This is the initial game state for the OctopusKit QuickStart project.

@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/4.
-//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 // TODO: An option for only tracking a pointer if the node has the highest `zPosition`, and maybe only nodes with an entity that has a `NodePointerStateComponent` should count.

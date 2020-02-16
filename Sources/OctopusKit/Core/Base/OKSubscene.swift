@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/05/08.
-//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 // CHECK: Should subscenes have their own input subsystem? Wouldn't it be more efficient to give a subscene the `TouchEventComponent` of the parent scene, to update in the subscene's component systems?

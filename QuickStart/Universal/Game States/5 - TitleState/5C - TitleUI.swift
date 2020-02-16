@@ -3,7 +3,7 @@
 //  OctopusKitQuickStart
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/10/20.
-//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 //  🔶 STEP 5C: The user interface overlay for the title screen of the QuickStart project.

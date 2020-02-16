@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/04/14, 2019/11/3.
-//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 // DECIDE: Will constantly copying over events between this component and touch/mouse components be better than simply accessing the touch or mouse event at the point of use in player-controlled components?

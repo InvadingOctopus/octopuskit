@@ -3,7 +3,7 @@
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/12/06.
-//  Copyright © 2019 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 // TODO: A way to not rely on a `SpriteKitComponent` so that entities without a visual representation (i.e. only agents or "ghosts") may be able to use this component. However, that requires the `TouchEventComponent` to associate each tracked touch with the node that received it.
