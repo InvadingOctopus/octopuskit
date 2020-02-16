@@ -51,7 +51,8 @@ public struct ContiguousArray2D <Element> {
         didSet { endRowIndex = transformedRowCount - 1 }
     }
     
-    public fileprivate(set) var endColumnIndex, endRowIndex: IndexUnit
+    public fileprivate(set) var startColumnIndex, startRowIndex: IndexUnit
+    public fileprivate(set) var endColumnIndex,   endRowIndex:   IndexUnit
     
     // MARK: Initializers
     
