@@ -68,6 +68,8 @@ public struct ContiguousArray2D <Element> {
         self.rowCount               = rows
         self.transformedColumnCount = columnCount
         self.transformedRowCount    = rowCount
+        self.startColumnIndex       = 0
+        self.startRowIndex          = 0
         self.endColumnIndex         = columnCount - 1
         self.endRowIndex            = rowCount - 1
         
@@ -90,6 +92,8 @@ public struct ContiguousArray2D <Element> {
         self.columnCount            = columns
         self.transformedColumnCount = columnCount
         self.transformedRowCount    = rowCount
+        self.startColumnIndex       = 0
+        self.startRowIndex          = 0
         self.endColumnIndex         = columnCount - 1
         self.endRowIndex            = rowCount - 1
         
@@ -121,6 +125,8 @@ public struct ContiguousArray2D <Element> {
         
         self.transformedColumnCount = columnCount
         self.transformedRowCount    = rowCount
+        self.startColumnIndex       = 0
+        self.startRowIndex          = 0
         self.endColumnIndex         = columnCount - 1
         self.endRowIndex            = rowCount - 1
         
