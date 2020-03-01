@@ -1,9 +1,13 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Suggest an awesome idea
 
 ---
 
+- Category: 'API/Functionality/Component/Language/Style/other'
+- Target Platform: 'iOS/macOS/tvOS/Universal'
+- Any other info?
+ 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
