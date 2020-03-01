@@ -102,6 +102,7 @@ public final class DirectionEventComponent: OKComponent, OKUpdatableComponent {
         }
     }
     
+    #if canImport(AppKit)
     @inlinable
     public func copyKeyboardEvents() {
         // Not private(set) so update(deltaTime:) can be @inlinable
@@ -128,8 +129,13 @@ public final class DirectionEventComponent: OKComponent, OKUpdatableComponent {
             default:            break
             }
         }
-        
     }
+    #endif
+
+    #if !canImport(AppKit)
+    /// An empty, dummy function if not running on macOS.
+    @inlinable public func copyKeyboardEvents() {}
+    #endif
     
     /// Clears all events.
     @inlinable

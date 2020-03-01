@@ -23,11 +23,11 @@ public typealias OctopusScene = OKScene
 ///
 /// Includes an entity to represent the scene itself.
 open class OKScene:    SKScene,
-                            OKEntityContainerNode,
-                            OKGameStateDelegate,
-                            OKEntityDelegate,
-                            OKSubsceneDelegate,
-                            SKPhysicsContactDelegate
+    OKEntityContainerNode,
+    OKGameStateDelegate,
+    OKEntityDelegate,
+    OKSubsceneDelegate,
+    SKPhysicsContactDelegate
 {
     // ℹ️ Also see SKScene+OctopusKit extensions.
     
@@ -78,7 +78,7 @@ open class OKScene:    SKScene,
     ///
     /// Modified via `pauseByPlayer()` and `unPauseByPlayer()`
     public fileprivate(set) var isPausedByPlayer = false
-
+    
     /// An array of "subscenes" that display self-contained content in an overlay while pausing the main scene, such as pause-effects, modal UI, cutscenes or minigames.
     ///
     /// This is a stack; if there is more than one subscene, only the most-recently-added subscene is updated, and subscenes must be dismissed in a last-in, first-out order.
@@ -175,9 +175,9 @@ open class OKScene:    SKScene,
     ///
     /// This is a convenience for cases such as adding a single event stream to the scene entity, then sharing it between multiple child entities via `RelayComponent`s.
     public fileprivate(set) lazy var sharedPhysicsEventComponent = PhysicsEventComponent()
-
+    
     // MARK: Other
-
+    
     @inlinable
     public var gameCoordinator: OKGameCoordinator? {
         OctopusKit.shared?.gameCoordinator
@@ -207,7 +207,7 @@ open class OKScene:    SKScene,
         super.init(size: size)
         self.name = setName()
     }
-
+    
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         // CHECK: Should we `fatalError()` here? // fatalError("init(coder:) has not been implemented")
@@ -300,45 +300,58 @@ open class OKScene:    SKScene,
     /// - Returns: An array of component classes, from which the scene's component systems will be created.
     @inlinable
     open func createComponentSystems() -> [GKComponent.Type] {
-        [
         // 1: Time and state
         
-        TimeComponent.self,
-        StateMachineComponent.self,
+        let timeAndState = [
+            TimeComponent.self,
+            StateMachineComponent.self]
         
         // 2: Player input
         
-        OSMouseOrTouchEventComponent.self,
-        PointerEventComponent.self,
+        var playerInput = [
+            OSMouseOrTouchEventComponent.self,
+            PointerEventComponent.self]
         
-        KeyboardEventComponent.self,
-        DirectionEventComponent.self,
+        // Keyboard support on macOS-only
         
-        NodePointerStateComponent.self,
-        NodePointerClosureComponent.self,
+        #if canImport(AppKit)
+        playerInput.append(KeyboardEventComponent.self)
+        #endif
+        
+        playerInput += [
+            DirectionEventComponent.self,
+            NodePointerStateComponent.self,
+            NodePointerClosureComponent.self]
         
         // 3: Movement and physics
         
-        DirectionControlledRotationComponent.self,
-        DirectionControlledTorqueComponent.self,
-        DirectionControlledThrustComponent.self,
-        DirectionControlledForceComponent.self,
-        
-        PointerControlledForceComponent.self,
-        PointerControlledPositioningComponent.self,
-        
-        OKAgent2D.self,
-        PhysicsComponent.self, // The physics component should come in after other components have modified node properties, so it can clamp the velocity etc. if such limits have been specified.
+        let movementAndPhysics = [
+            DirectionControlledRotationComponent.self,
+            DirectionControlledTorqueComponent.self,
+            DirectionControlledThrustComponent.self,
+            DirectionControlledForceComponent.self,
+            
+            PointerControlledForceComponent.self,
+            PointerControlledPositioningComponent.self,
+            
+            OKAgent2D.self,
+            
+            // The physics component should come in after other components have modified node properties, so it can clamp the velocity etc. if such limits have been specified.
+            
+            PhysicsComponent.self]
         
         // 4: Custom code and anything else that depends on the final placement of nodes per frame.
         
-        PointerControlledPhysicsHoldingComponent.self,
-        PhysicsEventComponent.self,
+        let miscellaneous = [
+            PointerControlledPhysicsHoldingComponent.self,
+            PhysicsEventComponent.self,
+            
+            TimeDependentClosureComponent.self,
+            RepeatingClosureComponent.self,
+            DelayedClosureComponent.self,
+            CameraComponent.self]
         
-        TimeDependentClosureComponent.self,
-        RepeatingClosureComponent.self,
-        DelayedClosureComponent.self,
-        CameraComponent.self]
+        return timeAndState + playerInput + movementAndPhysics + miscellaneous
     }
     
     /// Abstract; override in subclass. Creates the scene's contents and sets up entities and components. Called after the scene is presented in a view, after `createComponentSystems()`.
@@ -487,7 +500,7 @@ open class OKScene:    SKScene,
                 // Forget the paused time and clear the instance property as we are no longer paused.
                 
                 self.pausedAtTime = nil
-            
+                
             } else {
                 // If we were not paused, calculate the delta value as normal.
                 self.updateTimeDelta = currentTime - lastUpdateTime
@@ -598,7 +611,7 @@ open class OKScene:    SKScene,
             // CHECK: Should `OKScene.applicationDidBecomeActive()` be called from here too, or should we let `OSAppDelegate.applicationDidBecomeActive(_:)` call it?
             applicationDidBecomeActive()
         }
-
+        
         // TODO: audioEngine.startAndReturnError()
     }
     
@@ -807,7 +820,7 @@ open class OKScene:    SKScene,
     ///
     /// - Important: The overriding implementation must call `super.subsceneDidFinish(subscene, withResult: result)` for `OKScene` to correctly remove the subscene and unpause the game.
     open func subsceneDidFinish(_ subscene: OKSubscene,
-                                  withResult result: OKSubsceneResultType?)
+                                withResult result: OKSubsceneResultType?)
     {
         OctopusKit.logForFramework.add("\(subscene) result = \(result)")
         
