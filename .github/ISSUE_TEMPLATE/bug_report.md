@@ -4,6 +4,8 @@ about: Report a compilation error, runtime crash or weird behavior
 
 ---
 
+**Category:** 'Compilation/Warning/Crash/Behavior'
+
 **Describe the bug**
 A clear and concise description of the bug.
 
