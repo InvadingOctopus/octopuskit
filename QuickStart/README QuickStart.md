@@ -16,9 +16,9 @@
     
     > Download the "develop" branch for the latest version.
     
-3. 📥 **Copy and include** the QuickStart/Universal/ folder (which supports iOS, macOS and tvOS) in your project. 
+3. 📥 **Copy and include** the `QuickStart/Universal/` folder (which supports iOS, macOS and tvOS) in your project. 
 
-    > In the Xcode Project Navigator, menu-click on the OctopusKit/QuickStart/ folder and select "Show in Finder" then drag the Universal subfolder into your project folder in the Xcode navigator. 
+    > In the Xcode Project Navigator, menu-click on the `OctopusKit/QuickStart/` folder and select "Show in Finder" then drag the Universal subfolder into your project folder in the Xcode navigator. 
 
 4. 🖼 Add the `OKQuickStartView` to the `ContentView.swift` file:
 
@@ -30,7 +30,7 @@
     	
 5. 🚀 Build and run the project to verify that the template works.
 
-6. 👓 Examine the OKQuickStartView.swift file and dig around in the QuickStart folder to see how everything works, then modify the template for your specific game. 
+6. 👓 Examine the `OKQuickStartView.swift` file and dig around in the QuickStart folder to see how everything works, then modify the template for your specific game. 
 
     > 📁 The main content of the template is in the `TitleState` and `PlayState` folders.
 
