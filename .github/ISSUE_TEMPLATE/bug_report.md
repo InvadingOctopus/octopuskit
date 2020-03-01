@@ -25,14 +25,14 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help illustrate the problem.
 
 **Build Environment (what you're developing on)**
- - OctopusKit Version: 'x.x.x or branch or fork'
- - macOS Version: '10.x.x (build)'
- - Xcode Version: 'x.x.x (build)'
- - Swift Version: 'x.x'
+    - OctopusKit Version: 'x.x.x or branch or fork'
+    - macOS Version: '10.x.x (build)'
+    - Xcode Version: 'x.x.x (build)'
+    - Swift Version: 'x.x'
  
 **Target Device (what you're compiling for)**
- - Device: 'e.g. iPhone12, Simulator?'
- - Target OS Version: 'e.g. iOS14.0'
+    - Device: 'e.g. iPhone12, Simulator?'
+    - Target OS Version: 'e.g. iOS14.0'
 
 **Additional context**
 Add any other context about the problem here.
