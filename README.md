@@ -32,16 +32,16 @@ OctopusKit wraps and extends Apple's frameworks:
 ```swift
 import SwiftUI
 import OctopusKit
-                                                
+                   
+let gameCoordinator = OKGameCoordinator(states: [
+    MainMenu(),
+    Lobby(), 
+    Gameplay() ])
+                                     
 struct ContentView: View {
 
     // The coordinator object manages your game's scenes and global state, 
     // and can be observed and controlled from SwiftUI.
-    
-    var gameCoordinator = OKGameCoordinator(states: [
-        MainMenu(),
-        Lobby(), 
-        Gameplay() ])
                                                 
     var body: some View {
         OKContainerView()
