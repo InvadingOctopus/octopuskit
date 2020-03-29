@@ -17,11 +17,11 @@ OctopusKit wraps and extends Apple's frameworks:
 4. [Getting Started](#getting-started)
 5. [Etcetera](#etcetera)
 
-> OctopusKit is a constant **work in progress** and my first ever open-source project. I'm still learning as I go, so it may change rapidly without maintaining backwards compatibility or updating the documentation.
+> OctopusKit is a constant **work in progress** and I'm still learning as I go, so it may change rapidly without maintaining backwards compatibility or updating the documentation.
 
-> This project is a result of trying to make my own games as a hobby. I fell in love with Swift but couldn't find any engines that supported it or had the kind of architecture that I wanted to work with, so I started making my own.
+> This project is a result of trying to make games in pure Swift. I fell in love with the language but couldn't find any engines that supported it or had the kind of architecture that I wanted to work with, so I started making my own.
 
-> Any advice on how to improve the API, coding style, git workflow, or open-source best-practices, would be appreciated! *– ShinryakuTako*
+> Any advice on how to improve the API or code style etc. would be appreciated! *– ShinryakuTako*
  
 ## Examples
 
@@ -32,18 +32,18 @@ OctopusKit wraps and extends Apple's frameworks:
 ```swift
 import SwiftUI
 import OctopusKit
-                   
+
+// The coordinator object manages your game's scenes and global state.
 let gameCoordinator = OKGameCoordinator(states: [
     MainMenu(),
-    Lobby(), 
+    Lobby(),
     Gameplay() ])
-                                     
-struct ContentView: View {
 
-    // The coordinator object manages your game's scenes and global state, 
-    // and can be observed and controlled from SwiftUI.
-                                                
+struct ContentView: View {
     var body: some View {
+
+        // The container view combines SpriteKit with SwiftUI,
+        // and presents the coordinator's current scene.
         OKContainerView()
             .environmentObject(gameCoordinator)
             .edgesIgnoringSafeArea(.all)
