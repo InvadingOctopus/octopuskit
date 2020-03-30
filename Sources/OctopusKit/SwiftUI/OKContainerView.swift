@@ -35,9 +35,12 @@ public struct OKContainerView <OKGameCoordinatorType, OKViewControllerType> : Vi
             
             OKViewControllerRepresentable<OKGameCoordinatorType, OKViewControllerType>()
 
-            OKUIOverlay<OKGameCoordinatorType>()
+            if  gameCoordinator.currentGameState != nil {
+                gameCoordinator.currentGameState!.associatedSwiftUIView
+            }
             
-            // CHECK: Should `OKUIOverlay` be an `.overlay` modifier for `OKViewControllerRepresentable`?
+            // Use `OKUIOverlay<OKGameCoordinatorType>()` if more complex UI overlay code is needed.
+            // CHECK: Should the UI be an `.overlay` modifier for `OKViewControllerRepresentable`?
         }
     }
 }

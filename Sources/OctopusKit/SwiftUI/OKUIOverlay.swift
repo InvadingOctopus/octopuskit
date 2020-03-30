@@ -18,13 +18,11 @@ public struct OKUIOverlay <OKGameCoordinatorType> : View
     
     @EnvironmentObject var gameCoordinator: OKGameCoordinatorType
     
-    private var gameStateAssociatedUIView: AnyView {
-        gameCoordinator.currentGameState?.associatedSwiftUIView ?? AnyView(EmptyView())
-    }
-    
-    public init() {}
-    
     public var body: some View {
-        gameStateAssociatedUIView
+        Group {
+            if  gameCoordinator.currentGameState != nil {
+                gameCoordinator.currentGameState!.associatedSwiftUIView
+            }
+        }
     }
 }
