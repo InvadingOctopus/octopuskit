@@ -2,7 +2,7 @@
 //  OKConfiguration.swift
 //  OctopusKit
 //
-//  Created by ShinryakuTako@invadingoctopus.io on 2017-06-05
+//  Created by ShinryakuTako@invadingoctopus.io on 2020-03-31
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
