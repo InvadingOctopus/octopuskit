@@ -52,10 +52,6 @@ extension OKViewController {
         // #3: Add some basic View options.
         
         if  let viewSubmenu = mainMenu.item(withTitle: "View")?.submenu {
-//            let fpsMenuItem = NSMenuItem()
-//            fpsMenuItem.title = "Toggle FPS"
-//            //fpsMenuItem.target = self // CHECK: Omit to resolve via the responder chain?
-//            fpsMenuItem.action = #selector(toggleShowFPS)
             
             viewSubmenu.addItem(NSMenuItem(title: "Toggle FPS",
                                            action: #selector(toggleFPS(_:)),
@@ -63,9 +59,6 @@ extension OKViewController {
             
             // Remove unnecessary View menu items.
             // Tab-related menus are disabled via `NSWindow.tabbingMode` in `OKViewController.viewWillAppear()`
-            
-            viewSubmenu.removeItem(withTitle: "Show Tab Bar")
-            viewSubmenu.removeItem(withTitle: "Show All Tabs")
         }
         
         // #4: Add a Debug menu.
