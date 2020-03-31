@@ -138,6 +138,9 @@ public final class OctopusKit {
     
     #endif
     
+    /// Options for customizing OctopusKit for the current project.
+    static var configuration = OKConfiguration()
+    
     // MARK: - Instance Methods
     
     /// Initializes the `OctopusKit.shared` singleton instance.

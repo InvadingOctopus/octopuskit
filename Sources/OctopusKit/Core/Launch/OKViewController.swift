@@ -261,6 +261,10 @@ open class OKViewController: OSViewController {
         super.viewWillAppear()
         
         // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OKScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
+        
+        if  OctopusKit.configuration.modifyDefaultMenuBar {
+            setDefaultMenus()
+        }
     }
     
     open override func viewWillLayout() {
@@ -272,6 +276,47 @@ open class OKViewController: OSViewController {
         // CREDIT: http://www.ymc.ch/en/ios-7-sprite-kit-setting-up-correct-scene-dimensions
         // NOTE: Better yet, `enterInitialState()` from `OSAppDelegate.applicationDidBecomeActive(_:)`! :)
         // CHECK: Compare launch performance between calling `enterInitialState()` from `OSAppDelegate.applicationDidBecomeActive(_:)` versus `OKViewController.viewWillLayoutSubviews()`
+    }
+    
+    /// Add menu items common to all games.
+    ///
+    /// This is done programmatically as a convenience to avoid manual Storyboard modification for new projects.
+    open func setDefaultMenus() {
+        
+        // TODO: Add pause/unpause
+        // TODO: Internationalization (handle menu names in different languages).
+        // CHECK: Remove tabs/sidebar options?
+        
+        guard let mainMenu = NSApplication.shared.mainMenu else { return }
+        
+        // Rename the File menu because we don't got no stinkin' files here :)
+        
+        if  let fileMenu = mainMenu.item(withTitle: "File") {
+            fileMenu.title = "Game"
+            fileMenu.submenu?.title = "Game"
+        }
+        
+        // Remove the Format menu as well.
+        
+        if  let formatMenu = mainMenu.item(withTitle: "Format") {
+            mainMenu.removeItem(formatMenu)
+        }
+        
+        // Add some basic view options.
+        
+        if  let viewMenu = mainMenu.item(withTitle: "View")?.submenu {
+            let fpsMenuItem = NSMenuItem()
+            fpsMenuItem.title = "Toggle FPS"
+            fpsMenuItem.target = self // CHECK: Omit to resolve via the responder chain?
+            fpsMenuItem.action = #selector(toggleFPS)
+            fpsMenuItem.isEnabled = true
+            
+            viewMenu.addItem(fpsMenuItem)
+        }
+    }
+    
+    @objc func toggleFPS() {
+        self.spriteKitView?.showsFPS.toggle()
     }
     
     #endif
