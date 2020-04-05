@@ -130,12 +130,6 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
 
         self.notifications = [
             
-            NotificationCenter.default.publisher(for: OSApplication.willFinishLaunchingNotification)
-                .sink { _ in
-                    OctopusKit.logForDebug.add("Application.willFinishLaunchingNotification")
-                    // NOTE: Will not be received in a SwiftUI application, as this function will be called after the application has launched.
-            },
-            
             NotificationCenter.default.publisher(for: OSApplication.didFinishLaunchingNotification)
                 .sink { _ in
                     OctopusKit.logForDebug.add("Application.didFinishLaunchingNotification")
@@ -163,6 +157,19 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
             }
             
         ]
+        
+        #if canImport(AppKit)
+        
+        self.notifications += [
+            
+            NotificationCenter.default.publisher(for: OSApplication.willFinishLaunchingNotification)
+                .sink { _ in
+                    OctopusKit.logForDebug.add("Application.willFinishLaunchingNotification")
+                    // NOTE: Will not be received in a SwiftUI application, as this function will be called after the application has launched.
+            }
+        ]
+        
+        #endif
         
         #if canImport(UIKit)
         
