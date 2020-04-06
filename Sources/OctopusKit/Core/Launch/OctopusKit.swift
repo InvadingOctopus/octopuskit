@@ -156,8 +156,9 @@ public final class OctopusKit {
             throw OKError.invalidConfiguration("OctopusKit: OctopusKit(appName:gameCoordinator:) called again after OctopusKit.shared singleton has already been initialized.")
         }
         
-        guard   let appName = appNameOverride ??
-                (Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String)
+        guard   let appName = appNameOverride
+                ?? (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) // There is no `kCFBundleDisplayNameKey` の＿の
+                ?? (Bundle.main.object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String)
         else {
             throw OKError.invalidConfiguration("Cannot read CFBundleName from Info.plist as a String, and appNameOverride not provided.")
         }
