@@ -270,8 +270,11 @@ open class OKViewController: OSViewController {
             
             // TODO: Perform this at an earlier point in the application launch cycle, before the default Xcode project's menu is visible to the user.
             // CHECK: Should this be in loadView()?
+
+            let window = self.view.window ?? NSApplication.shared.mainWindow
             
-            NSApplication.shared.mainWindow?.tabbingMode = .disallowed // Disable window tabs (and the associated menu items).
+            window?.title = OctopusKit.shared.appName
+            window?.tabbingMode = .disallowed // Disable window tabs (and the associated menu items).
             
             if  OctopusKit.configuration.modifyDefaultMenuBar {
                 OKViewController.setDefaultMenus() // in OKViewController+Menus
