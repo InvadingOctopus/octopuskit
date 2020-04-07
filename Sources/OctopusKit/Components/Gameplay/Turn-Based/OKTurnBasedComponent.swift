@@ -11,7 +11,7 @@ import GameplayKit
 /// An abstract base class for components in a turn-based game.
 ///
 /// Turn-based components still have a per-frame `update(deltaTime:)` cycle and may perform per-frame updates like all other components, but they also have special methods that must be manually called to perform tasks for each discrete game-defined turn.
-open class OKTurnBasedComponent: OKComponent {
+open class OKTurnBasedComponent: OKComponent, TurnBased {
 
     // DESIGN: CHECKED: Should this be a protocol with default implementations? No, as it would not be consistent with the `override` for regular `update(deltaTime:)` etc. :)
 
@@ -21,6 +21,7 @@ open class OKTurnBasedComponent: OKComponent {
     open func beginTurn(delta turns: Int = 1) {}
     
     /// *Abstract; override in subclass.*
+    /// 
     /// - Parameter turns: The number of turns passed since the previous update. Default: `1`
     open func updateTurn(delta turns: Int = 1) {}
     
