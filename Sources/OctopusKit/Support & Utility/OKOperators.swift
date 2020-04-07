@@ -1,9 +1,9 @@
 //
-//  OctopusOperators.swift
+//  OKOperators.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/12/19.
-//  Copyright © 2020 Invading Octopus. All rights reserved.
+//  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 import Foundation
