@@ -214,3 +214,40 @@ public extension GKEntity {
         }
     }
 }
+
+public extension GKEntity {
+    
+    // MARK: - Operators
+    
+    /// Adds a component to the entity.
+    @inlinable
+    static func += (entity: GKEntity, component: GKComponent?) {
+        entity.addComponent(component)
+    }
+ 
+    /// Adds an array of components to the entity.
+    @inlinable
+    static func += (entity: GKEntity, components: [GKComponent]) {
+        entity.addComponents(components)
+    }
+    
+    /// Adds an array of components to the entity.
+    @inlinable
+    static func += (entity: GKEntity, components: [GKComponent?]) {
+        entity.addComponents(components)
+    }
+    
+    /// Removes the component of the specified type from the entity.
+    @inlinable
+    static func -= <ComponentType> (entity: GKEntity, componentClass: ComponentType.Type)
+        where ComponentType: GKComponent
+    {
+        entity.removeComponent(ofType: componentClass)
+    }
+    
+    /// Removes components of the specified types from the entity.
+    @inlinable
+    static func -= (entity: GKEntity, componentClasses: [GKComponent.Type]) {
+        entity.removeComponents(ofTypes: componentClasses)
+    }
+}
