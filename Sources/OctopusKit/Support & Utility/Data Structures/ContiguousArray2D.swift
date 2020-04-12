@@ -11,6 +11,8 @@ import Foundation
 /// A 2D array that supports viewports and rotation.
 public struct ContiguousArray2D <Element> {
     
+    // DECIDE: Should it be row-major indexing i.e. [row, column]? It seems to be the general convention, but [column, row] is more consistent with how we access (x,y) in graphics.
+    
     // TODO: Interop with arrays of arrays, and literals
     // TODO: Viewports
     // TODO: Rotation
@@ -136,7 +138,7 @@ public struct ContiguousArray2D <Element> {
             self.storage.append(repeatingInitialValueForLeftoverCells)
         }
     }
-
+    
     // MARK: - Single Element Access
     
     /// Returns an index into the underlying 1D storage for the beginning of the specified row.
@@ -150,7 +152,7 @@ public struct ContiguousArray2D <Element> {
         return row * columnCount
     }
     
-    /// Returns the element at `[column, index]`
+    /// Returns the element at `[column, row]`
     ///
     /// Affected by rotations and transformations.
     @inlinable
@@ -296,19 +298,20 @@ public struct ContiguousArray2D <Element> {
     // MARK: - Miscellaneous
     
     /// Returns the column and row coordinates (in a tuple) for the specific index in the underlying 1D storage array.
-      ///
-      /// Respects transformations.
-      @inlinable
-      public func coordinatesForStorageIndex(_ index: IndexUnit) -> (column: IndexUnit, row: IndexUnit) {
+    ///
+    /// Respects transformations.
+    @inlinable
+    public func coordinatesForStorageIndex(_ index: IndexUnit) -> (column: IndexUnit, row: IndexUnit) {
         
-          precondition(index >= 0 && index < storage.endIndex,
-                       "index \(index) is out of range (0 to \(storage.endIndex - 1))")
-          
-          let division = index.quotientAndRemainder(dividingBy: transformedColumnCount) // quotient = row, remainder = column
+        precondition(index >= 0 && index < storage.endIndex,
+                     "index \(index) is out of range (0 to \(storage.endIndex - 1))")
+        
+        let division = index.quotientAndRemainder(dividingBy: transformedColumnCount) // quotient = row, remainder = column
+        
+        return (column: division.remainder,
+                row:    division.quotient)
+    }
 
-          return (column: division.remainder,
-                  row:    division.quotient)
-      }
 }
 
 // MARK: - Protocol Conformance
@@ -318,12 +321,37 @@ public struct ContiguousArray2D <Element> {
 extension ContiguousArray2D: Equatable where Element: Equatable {
     
     public static func == (left: ContiguousArray2D, right: ContiguousArray2D) -> Bool {
-        return (left.storage    == right.storage // CHECK: Use `==` or `===`?
-            &&  left.columnCount    == right.columnCount
-            &&  left.rowCount       == right.rowCount
-            &&  left.rotation   == right.rotation
+        return (left.storage             == right.storage // CHECK: Use `==` or `===`?
+            &&  left.columnCount         == right.columnCount
+            &&  left.rowCount            == right.rowCount
+            &&  left.rotation            == right.rotation
             &&  left.flippedHorizontally == right.flippedHorizontally
             &&  left.flippedVertically   == right.flippedVertically)
     }
 }
 
+// MARK: CustomStringConvertible
+
+extension ContiguousArray2D: CustomStringConvertible {
+    
+    /// Returns a textual representation of the grid of elements, i.e. for printing in the debug console.
+    ///
+    /// Inserts a single space between columns. Element descriptions may be provided via their implementation of `CustomStringConvertible` or `CustomDebugStringConvertible`.
+    public var description: String {
+        // TODO: Include other properties
+        // TODO: PERFORMANCE
+        var gridRepresentation = ""
+        for row in 0 ..< rowCount {
+            
+            for column in 0 ..< columnCount {
+                let element = self[column, row]
+                gridRepresentation += (column < columnCount) ? "\(element) " : "\(element)"
+            }
+            
+            if  row < rowCount - 1 {
+                gridRepresentation += "\n"
+            }
+        }
+        return gridRepresentation
+    }
+}
