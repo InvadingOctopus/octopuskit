@@ -33,7 +33,7 @@ public struct ContiguousArray2D <Element> {
     
     // MARK: Properties
     
-    // DESIGN: Properties are not private or read-only so we can use @inlinable and let other components modify them if needed.
+    // DESIGN: Most properties are not private or read-only so we can use @inlinable and let other components modify them if needed.
     
     public let columnCount, rowCount:   IndexUnit
     public var storage:                 ContiguousArray<Element>

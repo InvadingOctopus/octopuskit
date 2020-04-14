@@ -2,6 +2,7 @@
 //  OSSpecificViewModifiers.swift
 //  OctopusUI
 //  https://github.com/InvadingOctopus/octopusui
+//  This code has been duplicated from the OctopusUI package to eliminate the dependency and keep OctopusKit self-contained; however, this file may not be the latest version of its counterpart in OctopusUI.
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/19.
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
