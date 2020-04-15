@@ -134,7 +134,7 @@ struct GlobalDataComponentLabel: View {
     
     @ObservedObject var component: GlobalDataComponent
     
-    var color = Color.randomExcludingBlackWhite
+    var color: Color = [.gray, .red, .green, .blue, .orange, .yellow, .pink, .purple].randomElement()!
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {

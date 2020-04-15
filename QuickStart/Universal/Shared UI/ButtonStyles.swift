@@ -7,6 +7,9 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+// ❕ This code has been copied from the OctopusUI package to simplify the OctopusKit QuickStart tutorial and to keep OctopusKit self-contained (without dependencies on other packages). It may be an older version than its counterpart in OctopusUI.
+// ❗️ Exclude this file from your project if you import OctopusUI, otherwise using one of these extensions may cause an ambiguity conflict and prevent compilation.
+
 import SwiftUI
 
 struct FatButtonStyle: ButtonStyle {
@@ -15,7 +18,6 @@ struct FatButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            
             .foregroundColor(.white)
             .padding()
             .background(RoundedRectangle(cornerRadius: 10)
@@ -26,23 +28,18 @@ struct FatButtonStyle: ButtonStyle {
                         radius: configuration.isPressed ? 5 : 10,
                         x: 0,
                         y: configuration.isPressed ? -2 : -10))
-            .padding()
     }
 }
 
 /// Preview in live mode to test interactivity and animations.
-struct ButtonStyle_Previews: PreviewProvider {
+struct FatButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 20) {
-            ForEach(0..<3) { _ in
-                Button(action: {}) {
-                    Text("Fat Button Style")
-                }
-                .buttonStyle(FatButtonStyle(color: .randomExcludingBlackWhite))
-            }
+        Button(action: {}) {
+            Text("Fat Button Style")
         }
+        .buttonStyle(FatButtonStyle())
         .padding()
-        .background(Color.random)
+        .background(Color.white)
         .previewLayout(.sizeThatFits)
     }
 }
