@@ -7,6 +7,7 @@
 //
 
 // TODO: Tests
+// TODO: A way to combine array optionals?
 
 import Foundation
 import GameplayKit
