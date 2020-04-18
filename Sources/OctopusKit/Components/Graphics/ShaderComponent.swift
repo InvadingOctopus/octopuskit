@@ -40,6 +40,12 @@ public final class ShaderComponent: OKComponent {
         }
     }
     
+    // MARK: Default Attribute Names
+    
+    public var sizeAttributeName = "a_size"
+    
+    // MARK: Methods
+    
     public init(shader: SKShader? = nil) {
         self.shader = shader
         super.init()
@@ -85,7 +91,7 @@ public final class ShaderComponent: OKComponent {
             self.shader = node.shader
         }
             
-        // Otherwise, if we have a shader and the node doesn't, try to assign our shader to the node.
+        // Otherwise, if this component has a shader and the node doesn't, try to assign our shader to the node.
             
         else if let shader = self.shader,
                 node.shader == nil
@@ -120,35 +126,36 @@ public final class ShaderComponent: OKComponent {
     /// Add some missing attributes that are commonly used.
     func addCommonAttributes() {
         
+        // TODO: CHECK: Update attributes like size on every frame, in case the node's size changes etc.?
+        
         // APPLE DOCUMENTATION: Using attributes rather than uniforms allows a single SKShader to be shared between nodes, each one defining their own value for a shader variable. The following code demonstrates attributes by passing the size of a sprite to a shader as an attribute.
         // https://developer.apple.com/documentation/spritekit/skshader/creating_a_custom_fragment_shader
         
         guard
-            let shader = self.shader,
-            let node = entityNode as? SKNodeWithShader,
+            let shader   = self.shader,
+            let node     = entityNode  as? SKNodeWithShader,
             let nodeSize = (entityNode as? SKNodeWithDimensions)?.size
             else { return }
         
-        shader.attributes = [
-            SKAttribute(name: "iResolution", type: .vectorFloat2)
-        ]
-         
-        let nodeSizeAttribute = vector_float2(Float(nodeSize.width),
-                                              Float(nodeSize.height))
+        // Add attributes that are not already present.
         
-        // SWIFT LIMITATION: Casting to concrete types here is not necessary,
-        // but we do it to avoid the deprecation warning:
-        // "setValue(_:forAttribute:) was deprecated in iOS 10.0"
+        shader.addAttributesIfNotPresent([sizeAttributeName: .vectorFloat2])
+        
+        // Apply the values.
+        
+        let nodeSizeVector = vector_float2(Float(nodeSize.width),
+                                           Float(nodeSize.height))
+        
+        // SWIFT LIMITATION: Casting to concrete types here is not necessary, but we do it to avoid this deprecation warning: "setValue(_:forAttribute:) was deprecated in iOS 10.0" for SKNode.
         
         if  let node = node as? SKEffectNode { // Includes SKScene
-            node.setValue(SKAttributeValue(vectorFloat2: nodeSizeAttribute),
-            forAttribute: "a_sprite_size")
-        
+            node.setValue(SKAttributeValue(vectorFloat2: nodeSizeVector),
+                          forAttribute: sizeAttributeName)
+            
         }   else if let node = node as? SKSpriteNode {
             
-            node.setValue(SKAttributeValue(vectorFloat2: nodeSizeAttribute),
-            forAttribute: "a_sprite_size")
+            node.setValue(SKAttributeValue(vectorFloat2: nodeSizeVector),
+                          forAttribute: sizeAttributeName)
         }
-        
     }
 }
