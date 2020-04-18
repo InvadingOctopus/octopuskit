@@ -20,14 +20,16 @@ struct FatButtonStyle: ButtonStyle {
         configuration.label
             .foregroundColor(.white)
             .padding()
-            .background(RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(color)
-                .opacity(0.85)
-                .brightness(configuration.isPressed ? 0.2 : 0)
-                .shadow(color: .black,
-                        radius: configuration.isPressed ? 5 : 10,
-                        x: 0,
-                        y: configuration.isPressed ? -2 : -10))
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(color)
+                    .opacity(0.85)
+                    .shadow(color: .black,
+                            radius: configuration.isPressed ? 5 : 10,
+                            x: 0,
+                            y: configuration.isPressed  ? -2  : -10)
+                    .brightness(configuration.isPressed ? 0.2 : 0)
+                    .animation(.easeOut(duration: 0.2)))
     }
 }
 
