@@ -12,9 +12,10 @@ import SpriteKit
 ///
 /// Useful for passing around `SKNode`-based classes to functions that need to work with shaders.
 public protocol SKNodeWithShader: SKNode { // where Self: SKNode { // ⚠️ Crashes.
-    // TODO: Change name to an adjective?
-    var shader: SKShader? { get set }
-    var attributeValues: [String : SKAttributeValue] { get set }
+    // TODO: CHECK: Change protocol name to an adjective?
+    
+    var  shader: SKShader? { get set }
+    var  attributeValues: [String : SKAttributeValue] { get set }
     
     func setValue(_: SKAttributeValue, forAttribute: String)
     func value(forAttributeNamed: String) -> SKAttributeValue?
