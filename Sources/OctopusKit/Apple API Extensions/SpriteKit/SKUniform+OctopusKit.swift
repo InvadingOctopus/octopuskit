@@ -46,6 +46,8 @@ public extension SKUniform {
 
         guard let colorInRGB = color.usingColorSpace(.deviceRGB) else {
             OctopusKit.logForErrors.add("Cannot convert \(color) to deviceRGB space.")
+            self.init(name: name, vectorFloat4: vector_float4.zero)
+            return
         }
         
         let colorComponents = vector_float4([Float(colorInRGB.redComponent),
