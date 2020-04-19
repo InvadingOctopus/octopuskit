@@ -10,7 +10,7 @@ import Foundation
 
 /// A protocol for reliably storing and passing around strings or other primitive types as identifiers, that would otherwise be vulnerable to typos and other mistakes.
 ///
-/// Similar to `Notification.Name` in Foundation.
+/// Similar to `Notification.Name` etc. in Foundation.
 ///
 /// To use, create a `struct` that only provides a `rawValue` property and its type, because Swift will synthesize the default initializer and `Hashable` conformance, and the default implementation for `TypeSafeIdentifiers` provides the convenience initializer and `CustomStringConvertible` `description`.
 ///
@@ -31,12 +31,14 @@ import Foundation
 ///     enemy.texture  = MyCustomType(name: TextureName.enemy)
 public protocol TypeSafeIdentifiers: Hashable, RawRepresentable, CustomStringConvertible {
     
-    associatedtype RawValueType
+    // CHECK: Should the name be plural? :)
     
-    var rawValue: RawValueType { get } // A conforming type only needs to provide this property.
+    associatedtype   RawValueType
+    
+    var rawValue:    RawValueType { get } // A conforming type only needs to provide this property.
     
     init(_ rawValue: RawValueType) // This is provided by the default implementation extension.
-    init(rawValue: RawValueType) // This is synthesized by Swift (for structs).
+    init(rawValue:   RawValueType) // This is synthesized by Swift (for structs).
 }
 
 public extension TypeSafeIdentifiers {
