@@ -14,7 +14,7 @@ public final class NoiseComponent: OKComponent {
     
     public var noise: GKNoise
     
-    init(noise: GKNoise) {
+    public init(noise: GKNoise) {
         self.noise = noise
         super.init()
     }
