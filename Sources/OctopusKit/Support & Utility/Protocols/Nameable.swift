@@ -14,16 +14,14 @@ public protocol Nameable {
     var name: String? { get }
 }
 
-extension OKEntity: Nameable {}
-extension SKNode: Nameable {}
+extension OKEntity:    Nameable {}
+extension SKNode:      Nameable {}
+extension SKTileGroup: Nameable {}
 
-extension Array where Array.Element: Nameable {
+public extension Collection where Element: Nameable {
     
-    /// Returns the first element with matching `name`.
-    public subscript(name: String) -> Element? {
-        return self.first {
-            return $0.name == name
-        }
+    /// Returns all elements matching `name`, otherwise an empty array if none are found.
+    subscript(name: String) -> [Element] {
+        return self.filter { $0.name == name }
     }
-    
 }
