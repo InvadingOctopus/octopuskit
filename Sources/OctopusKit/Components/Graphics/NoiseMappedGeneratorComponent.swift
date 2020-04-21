@@ -30,11 +30,13 @@ public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<S
     /// - Parameter parent: The parent node that the returned node will be placed in.
     /// - Parameter position: The position that the returned node will be placed in.
     /// - Parameter noiseValue: The value in the noise map for the position.
+    ///
+    /// - Returns: An `SKNode` to be displayed at the specified `position`.
     public typealias GeneratorClosureType = (
-        _ component: NoiseMappedGeneratorComponent,
-        _ parent: SKNode,
-        _ position: CGPoint,
-        _ noiseValue: Float)
+        _ component:    NoiseMappedGeneratorComponent,
+        _ parent:       SKNode,
+        _ position:     CGPoint,
+        _ noiseValue:   Float)
         -> SKNode?
     
     public override var requiredComponents: [GKComponent.Type]? {
@@ -113,7 +115,7 @@ public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<S
                     noiseMap.value(at: noiseMapPosition)
                 )
                 
-                if let newNode = newNode {
+                if  let newNode = newNode {
                     newNode.position = nodePosition // In case the generator did not set it?
                     newContents.addChild(newNode)
                 }
@@ -125,4 +127,3 @@ public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<S
     }
     
 }
-
