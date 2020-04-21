@@ -153,10 +153,18 @@ open class TileMapComponent: OKComponent {
         }
     }
     
+    
+    /// Generates the map tile-by-tile, using the supplied closure.
+    /// - Parameters:
+    ///   - index: The index of the tile map layer to build.
+    ///   - usingNoiseMap: If `true`, the entity's `NoiseMapComponent` will be used to provide noise values for the builder closure.
+    ///   - reversingRowOrder: By default, `SKTileMap` and `GKNoiseMap` rows are indexed from bottom to top. If this flag is `true`, then the rows are built from top to bottom, matching the common convention of bitmaps and other 2D arrays.
+    ///   - builder: This closure will be called for each map tile, painting the tile with the `SKTileGroup` returned by the closure. See documentation for the `MapBuilderClosureType` type alias for a description of each closure parameter.
     @inlinable
-    public func build(layer index:   Int,
-                      usingNoiseMap: Bool = false,
-                      with builder:  MapBuilderClosureType)
+    public func build(layer index:       Int,
+                      usingNoiseMap:     Bool = false,
+                      reversingRowOrder: Bool = false,
+                      with builder:      MapBuilderClosureType)
     {
         // CHECK: Should this be named `generate` instead of `build`?
         
@@ -174,7 +182,7 @@ open class TileMapComponent: OKComponent {
                     layer.numberOfColumns <= noiseMap.sampleCount.x,
                     layer.numberOfRows    <= noiseMap.sampleCount.y
                 else {
-                    OctopusKit.logForWarnings("Mismatching dimensions: Tile Map: \(layer.size) — Noise Map: \(noiseMap.sampleCount)")
+                    OctopusKit.logForWarnings("Mismatching dimensions: Tile Map: (\(layer.numberOfColumns), \(layer.numberOfRows) — Noise Map: \(noiseMap.sampleCount)")
                     return
                 }
             } else {
@@ -189,8 +197,22 @@ open class TileMapComponent: OKComponent {
         var noiseValue: Float?
         var tileGroup:  SKTileGroup?
         
-        for row in 0...layer.numberOfRows {
-            for column in 0...layer.numberOfColumns {
+        // ❕ NOTE: `SKTileMapNode` and `GKNoiseMap` index elements starting from the bottom-left at `(0,0)` with rows increasing upwards, but 2D arrays and bitmaps may have the convention of indexing from the top-left with rows increasing downwards. Hence this option of reversing the row order. :)
+        
+        let firstRow, lastRow, rowIncrement: Int
+        
+        if  !reversingRowOrder {
+            firstRow     = 0
+            lastRow      = layer.numberOfRows - 1
+            rowIncrement = 1
+        } else {
+            firstRow     = layer.numberOfRows - 1
+            lastRow      = 0
+            rowIncrement = -1
+        }
+        
+        for row in stride(from: firstRow, through: lastRow, by: rowIncrement) {
+            for column in 0 ..< layer.numberOfColumns {
                 
                 position    = vector_int2(x: Int32(row), y: Int32(column))
                 noiseValue  = noiseMap?.value(at: position)
