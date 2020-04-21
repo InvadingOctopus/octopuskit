@@ -106,7 +106,7 @@ public class NoiseMapComponent: OKComponent {
     
     /// Creates a new noise map, using the properties of this component and the noise field from a `NoiseComponent`, replacing the existing map if any.
     @discardableResult
-    func generateNoiseMap() -> GKNoiseMap? {
+    public func generateNoiseMap() -> GKNoiseMap? {
         guard let noiseComponent = coComponent(NoiseComponent.self) else { return self.noiseMap }
         
         self.noiseMap = GKNoiseMap(noiseComponent.noise,
