@@ -23,6 +23,7 @@ public typealias OctopusLogEntry = OKLogEntry
 /// Prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
 ///
 /// Available in debug configurations (when the `DEBUG` flag is set). A blank function in non-debug configurations.
+@inlinable
 public func debugLog(
     _ entry: String? = nil,
     callerFile: String = #file,
@@ -38,6 +39,7 @@ public func debugLog(
 }
 
 /// Alias for `NSLog(_:_:)` in debug configurations (when the `DEBUG` flag is set). A blank function in non-debug configurations.
+@inlinable
 public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {
     NSLog(format, args)
 }
@@ -45,11 +47,13 @@ public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {
 #else
 
 /// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set). Alias for `NSLog(_:_:)` in debug configurations.
+@inlinable
 public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {}
 
 /// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set).
 ///
 /// In debug configurations, prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
+@inlinable
 public func debugLog(_ entry: String? = nil, callerFile: String = #file, callerFunction: String = #function, separator: String = " ") {}
     
 #endif
@@ -76,6 +80,7 @@ public struct OKLogEntry: CustomStringConvertible {
         self.addedFromFunction      = addedFromFunction
     }
     
+    @inlinable
     public var description: String {
         let text = self.text ?? "" // CHECK: Trim whitespace?
         
@@ -124,6 +129,7 @@ public struct OKLog {
     }()
     
     /// Returns a string with the current time formatted by the global `OKLog.timeFormatter`.
+    @inlinable
     public static func currentTime() -> String {
         // TODO: A better way to get nanoseconds like `NSLog`
         
@@ -164,6 +170,7 @@ public struct OKLog {
     }
     
     /// Returns a string with the current time formatted by the global `OKLog.timeFormatter` and the number of the frame being rendered by the current scene, if any.
+    @inlinable
     public static func currentTimeAndFrame() -> String {
         currentTime() + currentFrame()
     }
@@ -199,6 +206,7 @@ public struct OKLog {
     }
     
     /// - Returns: The `description` for the `OKLogEntry` at `index`.
+    @inlinable
     public subscript(index: Int) -> String {
         // ℹ️ An out-of-bounds index should not crash the game just for logging. :)
         guard index >= 0 && index < entries.count else {
@@ -210,6 +218,7 @@ public struct OKLog {
     }
 
     /// - Returns: The `description` of the last entry added to the log, if any.
+    @inlinable
     public var lastEntryText: String? {
         entries.last?.text
     }
@@ -318,5 +327,19 @@ public struct OKLog {
         if  haltApplicationOnNewEntry {
             fatalError(consoleText)
         }
+    }
+    
+    /// A convenience for adding entries by simply writing `logName(...)` instead of calling the `.add(...)` method.
+    @inlinable
+    public mutating func callAsFunction(
+        _ text:         String? = nil,
+        callerFile:     String  = #file,
+        callerFunction: String  = #function,
+        useNSLog:       Bool?   = nil)
+    {
+        self.add(text,
+                 callerFile: callerFile,
+                 callerFunction: callerFunction,
+                 useNSLog: useNSLog)
     }
 }
