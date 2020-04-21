@@ -31,7 +31,7 @@ public struct OKContainerView <OKGameCoordinatorType, OKViewControllerType> : Vi
     
     public var body: some View {
         
-        ZStack {
+        ZStack { // CHECK: Group or ZStack?
             
             OKViewControllerRepresentable<OKGameCoordinatorType, OKViewControllerType>()
 
