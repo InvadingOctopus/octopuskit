@@ -15,6 +15,34 @@ public class TileMapComponent: OKComponent {
     
     // Hierarchy: Tile Map -> Tile Set -> Tile Groups -> Tile Definition
     
+    // MARK: Subtypes
+    
+    /// A closure called by `TileMapComponent` to generate a tile for the given row and column.
+    ///
+    /// - Parameter component: A reference to `self`; the instance of `TileMapComponent` that this closure is called by.
+    ///
+    ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
+    ///
+    ///     **Example:** `component.coComponent(ofType: NoiseMapComponent.self)?.noiseMap`
+    ///
+    /// - Parameter tileMap: The `SKTileMapNode` that the returned `SKTileGroup` will be placed in.
+    /// - Parameter tileSet: The `SKTileSet` used by the `SKTileMapNode` being built.
+    /// - Parameter column: The column number of the map tile in which the returned `SKTileGroup` will be placed in.
+    /// - Parameter row: The row number of the map tile in which the returned `SKTileGroup` will be placed in.
+    /// - Parameter noiseValue: The noise value at the corresponding position in a `NoiseMapComponent`, if available, otherwise `nil`.
+    ///
+    /// - Returns: An `SKTileGroup` to be applied to the map tile at the specified `column` and `row` in the `tileMap`. If this is `nil` then the tile is cleared.
+    public typealias MapBuilderClosureType = (
+        _ component:    TileMapComponent,
+        _ tileMap:      SKTileMapNode,
+        _ tileSet:      SKTileSet,
+        _ column:       Int,
+        _ row:          Int,
+        _ noiseValue:   Float?)
+        -> SKTileGroup?
+    
+    // MARK: - Properties
+    
     public let tileSet:         SKTileSet
     public let tileSize:        CGSize
     public let columns, rows:   Int
@@ -33,28 +61,6 @@ public class TileMapComponent: OKComponent {
     
     /// The difference in the `zPosition` of each tile map layer, starting from `0` for the first layer.
     public var zPositionSpacing: CGFloat = 10
-    
-    /// A closure called by a `TileMapComponent` to generate a tile for the given row and column.
-    ///
-    /// - Parameter component: A reference to `self`; the instance of `TileMapComponent` that this closure is called by.
-    ///
-    ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
-    ///
-    ///     **Example:** `component.coComponent(ofType: NoiseMapComponent.self)?.noiseMap`
-    ///
-    /// - Parameter tileMap: The `SKTileMapNode` that the returned `SKTileGroup` will be placed in.
-    /// - Parameter tileSet: The `SKTileSet` used by the `SKTileMapNode` being built.
-    /// - Parameter column: The column number of the map tile in which the returned `SKTileGroup` will be placed in.
-    /// - Parameter row: The row number of the map tile in which the returned `SKTileGroup` will be placed in.
-    ///
-    /// - Returns: An `SKTileGroup` to be applied to the map tile at the specified `column` and `row` in the `tileMap`. If this is `nil` then the tile is cleared.
-    public typealias MapBuilderClosureType = (
-        _ component:    TileMapComponent,
-        _ tileMap:      SKTileMapNode,
-        _ tileSet:      SKTileSet,
-        _ column:       Int,
-        _ row:          Int)
-        -> SKTileGroup?
     
     public init?(tileSet:    SKTileSet,
                  tileSize:   CGSize? = nil,
@@ -132,6 +138,7 @@ public class TileMapComponent: OKComponent {
         return true
     }
     
+    /// Fills the specified layer with the specified tile group.
     @inlinable
     public func fill(layer index: Int, with tileGroup: SKTileGroup) {
         guard validateLayerIndex(index) else { return }
@@ -147,23 +154,58 @@ public class TileMapComponent: OKComponent {
     }
     
     @inlinable
-    public func build(layer index: Int, with builder: MapBuilderClosureType) {
+    public func build(layer index:   Int,
+                      usingNoiseMap: Bool = false,
+                      with builder:  MapBuilderClosureType)
+    {
+        // CHECK: Should this be named `generate` instead of `build`?
+        
         guard validateLayerIndex(index) else { return }
-
-        let layer = layers[index]
-
+        
+        let layer    = layers[index]
+        let noiseMap = coComponent(NoiseMapComponent.self)?.noiseMap
+        
+        // NOTE: A NoiseMapComponent only initializes its `noiseMap` property when it's added to an entity with a NoiseComponent.
+        // If we're using a noise map, verify that we have a NoiseMapComponent with a valid noise map.
+        
+        if  usingNoiseMap {
+            if  let noiseMap = noiseMap {
+                guard
+                    layer.numberOfColumns <= noiseMap.sampleCount.x,
+                    layer.numberOfRows    <= noiseMap.sampleCount.y
+                else {
+                    OctopusKit.logForWarnings("Mismatching dimensions: Tile Map: \(layer.size) — Noise Map: \(noiseMap.sampleCount)")
+                    return
+                }
+            } else {
+                OctopusKit.logForWarnings("\(entity) has no NoiseMapComponent")
+                return
+            }
+        }
+        
+        // Iterate over each row and column.
+        
+        var position  = vector_int2.zero
+        var noiseValue: Float?
+        var tileGroup:  SKTileGroup?
+        
         for row in 0...layer.numberOfRows {
             for column in 0...layer.numberOfColumns {
-                let tileGroup: SKTileGroup? = builder(self,
-                                                      layer,
-                                                      tileSet,
-                                                      column,
-                                                      row)
+                
+                position    = vector_int2(x: Int32(row), y: Int32(column))
+                noiseValue  = noiseMap?.value(at: position)
+                
+                tileGroup   = builder(self,     // TileMapComponent
+                                      layer,    // SKTileMapNode
+                                      tileSet,
+                                      column,
+                                      row,
+                                      noiseValue)
+                
                 layer.setTileGroup(tileGroup, forColumn: column, row: row)
             }
         }
     }
-    
 }
 
 /// A list of names of tile groups in a tile set. Write an `extension` to populate this `struct` with a custom list of tile group names as `static` constants. See the documentation for `TypeSafeIdentifiers`.
