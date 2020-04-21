@@ -19,7 +19,7 @@ public extension GKSKNodeComponent {
         // Warn if the node is already a part of another entity.
         
         if let existingNodeEntity = node.entity {
-            OctopusKit.logForWarnings.add("\(node) is already associated with \(existingNodeEntity)")
+            OctopusKit.logForWarnings("\(node) is already associated with \(existingNodeEntity)")
         }
         
         self.init(node: node)
@@ -37,7 +37,7 @@ public extension GKSKNodeComponent {
             
             if let existingParent = node.parent {
                 
-                OctopusKit.logForWarnings.add("\(node.name ?? String(describing: node)) already has a parent: \(existingParent) — Moving to \(newParent.name ?? String(optional: newParent))")
+                OctopusKit.logForWarnings("\(node.name ?? String(describing: node)) already has a parent: \(existingParent) — Moving to \(newParent.name ?? String(optional: newParent))")
                 
                 node.removeFromParent()
             }

@@ -104,7 +104,7 @@ open class OKViewController: OSViewController {
         if  let octopusKitSingleton = OctopusKit.shared {
             self.gameCoordinator = octopusKitSingleton.gameCoordinator
         } else {
-            OctopusKit.logForWarnings.add("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch. Ignore this warning if this OKViewController was loaded via AppKit/UIKit Storyboards.")
+            OctopusKit.logForWarnings("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch. Ignore this warning if this OKViewController was loaded via AppKit/UIKit Storyboards.")
         }
         
         super.init(coder: aDecoder)
@@ -114,9 +114,9 @@ open class OKViewController: OSViewController {
     open override func viewDidLoad() {
         
         #if canImport(UIKit)
-        OctopusKit.logForFramework.add("view.frame = \(self.view?.frame)")
+        OctopusKit.logForFramework("view.frame = \(self.view?.frame)")
         #elseif canImport(AppKit)
-        OctopusKit.logForFramework.add("view.frame = \(self.view.frame)")
+        OctopusKit.logForFramework("view.frame = \(self.view.frame)")
         #endif
         
         super.viewDidLoad()
@@ -130,7 +130,7 @@ open class OKViewController: OSViewController {
             
         } else {
             
-            OctopusKit.logForFramework.add("Root view is nil or not an SpriteKit SKView — Creating child SKView")
+            OctopusKit.logForFramework("Root view is nil or not an SpriteKit SKView — Creating child SKView")
             
             #if canImport(UIKit)
             guard let rootView = self.view else { fatalError("OKViewController has no root view!") }
@@ -221,14 +221,14 @@ open class OKViewController: OSViewController {
     #if os(iOS) || os(tvOS) // MARK: - iOS & tvOS
     
     open override func viewWillAppear(_ animated: Bool) {
-        OctopusKit.logForFramework.add()
+        OctopusKit.logForFramework()
         super.viewWillAppear(animated)
         
         // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OKScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
     }
     
     open override func viewWillLayoutSubviews() {
-        OctopusKit.logForFramework.add()
+        OctopusKit.logForFramework()
         super.viewWillLayoutSubviews()
 
         // OBSOLETE?
@@ -240,7 +240,7 @@ open class OKViewController: OSViewController {
     
     open override func didReceiveMemoryWarning() {
         // Release any cached data, images, etc that aren't in use.
-        OctopusKit.logForResources.add() // CHECK: Should the log be written to before freeing up some memory?
+        OctopusKit.logForResources() // CHECK: Should the log be written to before freeing up some memory?
         super.didReceiveMemoryWarning()
         OctopusKit.clearAllCaches()
     }
@@ -259,7 +259,7 @@ open class OKViewController: OSViewController {
     }
     
     open override func viewWillAppear() {
-        OctopusKit.logForFramework.add()
+        OctopusKit.logForFramework()
         super.viewWillAppear()
         
         // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OKScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
@@ -288,7 +288,7 @@ open class OKViewController: OSViewController {
     }
     
     open override func viewWillLayout() {
-        OctopusKit.logForFramework.add()
+        OctopusKit.logForFramework()
         super.viewWillLayout()
         
         // OBSOLETE?

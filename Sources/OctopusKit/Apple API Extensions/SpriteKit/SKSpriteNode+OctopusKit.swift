@@ -48,7 +48,7 @@ extension SKSpriteNode {
             self.size.width > 0
          && self.size.height > 0
             else {
-                OctopusKit.logForWarnings.add("\(self.name ?? String(describing: self)) has a width or height of 0")
+                OctopusKit.logForWarnings("\(self.name ?? String(describing: self)) has a width or height of 0")
                 return nil
         }
         
@@ -65,7 +65,7 @@ extension SKSpriteNode {
         }
         
         if  let currentPhysicsBody = self.physicsBody {
-            OctopusKit.logForWarnings.add("\(self) already has \(currentPhysicsBody)")
+            OctopusKit.logForWarnings("\(self) already has \(currentPhysicsBody)")
         }
         
         self.physicsBody = newPhysicsBody
@@ -81,7 +81,7 @@ extension SKSpriteNode {
         // ⚠️ This functionality cannot be added as an `SKPhysicsBody` extension, because of the usage of an inaccessible `PKPhysicsBody` superclass, as of 2017-10.
         
         guard let texture = self.texture else {
-            OctopusKit.logForErrors.add("\(self.name ?? String(describing: self)) does not have a texture")
+            OctopusKit.logForErrors("\(self.name ?? String(describing: self)) does not have a texture")
             return nil
         }
         
@@ -105,7 +105,7 @@ extension SKSpriteNode {
         }
         
         if let currentPhysicsBody = self.physicsBody {
-            OctopusKit.logForWarnings.add("\(self) already has \(currentPhysicsBody)")
+            OctopusKit.logForWarnings("\(self) already has \(currentPhysicsBody)")
         }
         
         self.physicsBody = newPhysicsBody

@@ -54,7 +54,7 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
         if  let gameCoordinator = self.stateMachine as? OKGameCoordinator {
             return gameCoordinator
         } else {
-            OctopusKit.logForErrors.add("Cannot cast stateMachine as OKGameCoordinator")
+            OctopusKit.logForErrors("Cannot cast stateMachine as OKGameCoordinator")
             return nil
         }
     }
@@ -65,7 +65,7 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
     public fileprivate(set) weak var delegate: OKGameStateDelegate? {
         didSet {
             // Can't use @LogChanges because "Property with a wrapper cannot also be weak"
-            OctopusKit.logForFramework.add("\(oldValue) → \(delegate)")
+            OctopusKit.logForFramework("\(oldValue) → \(delegate)")
         }
     }
     
@@ -105,21 +105,21 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
     /// - Important: When overriding in a subclass, take care of when you call `super.didEnter(from:)` as that affects when the current `OKScene` is notified via `gameCoordinatorDidEnterState(_:from:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
     open override func didEnter(from previousState: GKState?) {
         
-        OctopusKit.logForStates.add("\(previousState) → \(self)")
+        OctopusKit.logForStates("\(previousState) → \(self)")
         super.didEnter(from: previousState)
         
         // ℹ️ DESIGN: Should the scene presentation be an optional step to be decided by the subclass? — No: A state should always display its associated scene, but the logic for deciding whether to enter an state can be performed elsewhere (except in `isValidNextState(_:)` as per the Apple documentation note.)
         // 💡 To programmatically modify the `associatedSceneClass` at runtime, you may override and replace `didEnter(from:)` or `willExit(to:)`
         
         guard let gameCoordinator = self.gameCoordinator else {
-            OctopusKit.logForErrors.add("\(self) has no gameCoordinator")
+            OctopusKit.logForErrors("\(self) has no gameCoordinator")
             return
         }
     
         // If this state does not have any scene associated with it, as might be the case for "abstract" states, log so and exit.
         
         guard let associatedSceneClass = self.associatedSceneClass else {
-            OctopusKit.logForDebug.add("\(self) has no associatedSceneClass — A new scene will not be displayed for this state.")
+            OctopusKit.logForDebug("\(self) has no associatedSceneClass — A new scene will not be displayed for this state.")
             
             // Set the current scene as the delegate of this new state, so that the scene can properly receive gameCoordinatorWillExitState(_:to:) etc.
             self.delegate = gameCoordinator.currentScene
@@ -142,7 +142,7 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
         // Make sure we have a scene by now before notifying it of the new state.
         
         guard let currentScene = gameCoordinator.currentScene else {
-            OctopusKit.logForErrors.add("gameCoordinator does not have a currentScene")
+            OctopusKit.logForErrors("gameCoordinator does not have a currentScene")
             return
         }
         
@@ -153,7 +153,7 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
         if  type(of: currentScene) != associatedSceneClass,
             (incomingScene != nil && type(of: incomingScene!) != associatedSceneClass)
         {
-            OctopusKit.logForErrors.add("Neither \(currentScene) nor \(String(describing: incomingScene)) is \(String(describing: associatedSceneClass))")
+            OctopusKit.logForErrors("Neither \(currentScene) nor \(String(describing: incomingScene)) is \(String(describing: associatedSceneClass))")
             // CHECK: Should this be a fatal error?
         }
         
@@ -183,20 +183,20 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
     
     /// - Important: When overriding in a subclass, take care of when you call `super.willExit(to:)` as that affects when the current `OKScene` is notified via `currentScene.gameCoordinatorWillExitState(_,to:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
     open override func willExit(to nextState: GKState) {
-        OctopusKit.logForStates.add("\(self) → \(nextState)")
+        OctopusKit.logForStates("\(self) → \(nextState)")
         super.willExit(to: nextState)
         
         // Notify our delegate, to let it perform any outgoing animations etc., or in case the game uses a single scene for multiple states (e.g. displaying an overlay for the paused state, menus, etc. on the gameplay view.)
         
         if  gameCoordinator?.currentScene !== self.delegate {
-            OctopusKit.logForWarnings.add("gameCoordinator?.currentScene: \(gameCoordinator?.currentScene) !== self.delegate: \(self.delegate)")
+            OctopusKit.logForWarnings("gameCoordinator?.currentScene: \(gameCoordinator?.currentScene) !== self.delegate: \(self.delegate)")
         }
         
         self.delegate?.gameCoordinatorWillExitState(self, to: nextState)
     }
     
     deinit {
-        OctopusKit.logForDeinits.add("\(self)")
+        OctopusKit.logForDeinits("\(self)")
     }
     
     // MARK: - OKSceneDelegate
@@ -239,7 +239,7 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
                              didRequestTransitionTo nextSceneFileName: String,
                              withTransition transition: SKTransition?)
     {
-        OctopusKit.logForFramework.add("nextSceneFileName: \(nextSceneFileName)")
+        OctopusKit.logForFramework("nextSceneFileName: \(nextSceneFileName)")
         self.gameCoordinator?.loadAndPresentScene(fileNamed: nextSceneFileName, withTransition: transition)
         // outgoingScene.isPaused = false // CHECK: Necessary?
     }
@@ -253,7 +253,7 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
                              didRequestTransitionTo nextSceneClass: OKScene.Type,
                              withTransition transition: SKTransition?)
     {
-        OctopusKit.logForFramework.add("nextSceneClass: \(nextSceneClass)")
+        OctopusKit.logForFramework("nextSceneClass: \(nextSceneClass)")
         self.gameCoordinator?.createAndPresentScene(ofClass: nextSceneClass, withTransition: transition)
         // outgoingScene.isPaused = false // CHECK: Necessary?
     }

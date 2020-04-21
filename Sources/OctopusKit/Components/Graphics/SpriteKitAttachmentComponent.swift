@@ -62,7 +62,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
     
     /// `super` must be called by overriding subclass for proper functionality. Adds `attachment` as a child of the `node` specified by the `SpriteKitComponent`.
     open override func didAddToEntity(withNode node: SKNode) {
-        OctopusKit.logForComponents.add("\(node) ← \(attachment)")
+        OctopusKit.logForComponents("\(node) ← \(attachment)")
         
         // Warn if the overridden parent is not a child of this component's entity's node.
         
@@ -73,7 +73,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
             !node.children.contains(parentOverride)
                 && parentOverride != node // Skip warning if the `parentOverride` IS the node. This will be the case in situations like `parentOverride = scene.camera ?? scene` where a child node is added to a scene's camera if there is one, otherwise to the scene itself.
         {
-            OctopusKit.logForWarnings.add("The specified parentOverride \(parentOverride) is not a child of \(entity)'s node: \(node)")
+            OctopusKit.logForWarnings("The specified parentOverride \(parentOverride) is not a child of \(entity)'s node: \(node)")
         }
         
         // Allow the subclass to conveniently create an attachment by simply overriding `createAttachment(for:)`.
@@ -101,7 +101,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
         // Make sure we have a parent to begin with.
         
         guard let currentParent = self.attachment?.parent else {
-            OctopusKit.logForErrors.add("\(String(describing: self.attachment)) has no current parent")
+            OctopusKit.logForErrors("\(String(describing: self.attachment)) has no current parent")
             return
         }
         
@@ -113,7 +113,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
         // Regenerate new contents for our current parent.
         
         guard let newAttachment = createAttachment(for: currentParent) else {
-            OctopusKit.logForErrors.add("Could not create attachment for \(currentParent)")
+            OctopusKit.logForErrors("Could not create attachment for \(currentParent)")
             return
         }
         
@@ -124,7 +124,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
     open func addAttachment(to targetParent: SKNode) {
         
         guard let attachment = self.attachment else {
-            OctopusKit.logForWarnings.add("\(self) missing attachment")
+            OctopusKit.logForWarnings("\(self) missing attachment")
             return
         }
         
@@ -132,7 +132,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
         
         guard attachment.parent != targetParent else {
             // CHECK: Apply `positionOffset` even if `attachment` is already in `targetParent`?
-            OctopusKit.logForDebug.add("\(attachment) already a child of \(targetParent)")
+            OctopusKit.logForDebug("\(attachment) already a child of \(targetParent)")
             return
         }
         
@@ -142,7 +142,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
             let existingParent = attachment.parent,
             existingParent !== targetParent
         {
-            OctopusKit.logForWarnings.add("\(attachment) already has a different parent: \(existingParent) — Moving to \(String(describing: entity))'s SpriteKitComponent node: \(targetParent)")
+            OctopusKit.logForWarnings("\(attachment) already has a different parent: \(existingParent) — Moving to \(String(describing: entity))'s SpriteKitComponent node: \(targetParent)")
             
             attachment.removeFromParent() // ℹ️ DESIGN: Snatch the attachment from its existing parent, as that would be the expected behavior of adding this component.
         }
@@ -168,13 +168,13 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
             attachment.parent != nil
             else { return }
         
-        OctopusKit.logForComponents.add("\(node) ~ \(attachment)")
+        OctopusKit.logForComponents("\(node) ~ \(attachment)")
         
         // If a separate parent was not specified, assume the entity's `SpriteKitComponent` node to be the rightful parent.
         let parent = self.parentOverride ?? node
         
         if attachment.parent !== parent {
-            OctopusKit.logForWarnings.add("\(attachment) was not a child of \(parent) — Removing from \(attachment.parent)")
+            OctopusKit.logForWarnings("\(attachment) was not a child of \(parent) — Removing from \(attachment.parent)")
         }
         
         // Since the removal of a component carries the expectation that the component's behavior will no longer be present, remove the attachment from any parent, even if the parent wasn't the expected node.

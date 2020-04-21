@@ -182,7 +182,7 @@ public extension SKNode {
         // TODO: Account for camera scaling
         
         guard let view = view ?? self.scene?.view else {
-            OctopusKit.logForWarnings.add("\(self) missing `scene.view` and no `view` argument provided.")
+            OctopusKit.logForWarnings("\(self) missing `scene.view` and no `view` argument provided.")
             return 0
         }
         
@@ -205,13 +205,13 @@ public extension SKNode {
                 self.position.x -= view.safeAreaInsets.right * xSizeToViewRatio
                 return view.safeAreaInsets.right
             default:
-                OctopusKit.logForErrors.add("Invalid OKDirection: \(edge)")
+                OctopusKit.logForErrors("Invalid OKDirection: \(edge)")
                 return 0
             }
             
         #else
         
-            OctopusKit.logForDebug.add("Only applicable on iOS.")
+            OctopusKit.logForDebug("Only applicable on iOS.")
             return 0
             
         #endif

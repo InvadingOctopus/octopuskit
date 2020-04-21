@@ -17,11 +17,11 @@ public final class OKComponentSystem: GKComponentSystem<GKComponent> {
     public override func addComponent(_ component: GKComponent) {
         
         guard !(components.contains(component)) else {
-            OctopusKit.logForDebug.add("\(component) already in system – Skipping")
+            OctopusKit.logForDebug("\(component) already in system – Skipping")
             return
         }
         
-        OctopusKit.logForComponents.add("\(self) ← \(component)")
+        OctopusKit.logForComponents("\(self) ← \(component)")
 
         super.addComponent(component)
     }

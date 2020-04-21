@@ -167,7 +167,7 @@ public final class OKLayoutGridGrid: SKNode {
     }
     
     deinit {
-        OctopusKit.logForDeinits.add("size = \(size)")
+        OctopusKit.logForDeinits("size = \(size)")
     }
     
     // MARK: - Cell Management

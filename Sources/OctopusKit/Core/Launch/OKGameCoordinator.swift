@@ -56,14 +56,14 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
     
     @Published public var currentGameState: OKGameState? = nil {
         didSet {
-            OctopusKit.logForFramework.add("\(oldValue) → \(currentGameState)")
+            OctopusKit.logForFramework("\(oldValue) → \(currentGameState)")
         }
     }
         
     public weak var viewController: OKViewController? {
         didSet {
             // Can't use @LogChanges because "Property with a wrapper cannot also be weak"
-            OctopusKit.logForFramework.add("\(oldValue) → \(viewController)")
+            OctopusKit.logForFramework("\(oldValue) → \(viewController)")
         }
     }
     
@@ -74,7 +74,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
 
     @Published public var currentScene: OKScene? {
            didSet {
-               OctopusKit.logForFramework.add("\(oldValue) → \(currentScene)")
+               OctopusKit.logForFramework("\(oldValue) → \(currentScene)")
            }
        }
     
@@ -91,7 +91,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
     public init(states: [OKGameState],
                 initialStateClass: OKGameState.Type)
     {
-        OctopusKit.logForFramework.add("states: \(states) — initial: \(initialStateClass)")
+        OctopusKit.logForFramework("states: \(states) — initial: \(initialStateClass)")
         
         assert(!states.isEmpty, "OKGameCoordinator must be initialized with at least one game state!")
         
@@ -115,7 +115,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
         
         self.initialStateClass = type(of: states.first!)
         
-        OctopusKit.logForFramework.add("states: \(states) — initial: initialStateClass")
+        OctopusKit.logForFramework("states: \(states) — initial: initialStateClass")
         
         self.entity = OKEntity(name: OctopusKit.Constants.Strings.gameCoordinatorEntityName)
         super.init(states: states)
@@ -132,13 +132,13 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
             
             NotificationCenter.default.publisher(for: OSApplication.didFinishLaunchingNotification)
                 .sink { _ in
-                    OctopusKit.logForDebug.add("Application.didFinishLaunchingNotification")
+                    OctopusKit.logForDebug("Application.didFinishLaunchingNotification")
                     // NOTE: Will not be received in a SwiftUI application, as this function will be called after the application has launched.
             },
             
             NotificationCenter.default.publisher(for: OSApplication.didBecomeActiveNotification)
                 .sink { _ in
-                    OctopusKit.logForDebug.add("Application.didBecomeActiveNotification")
+                    OctopusKit.logForDebug("Application.didBecomeActiveNotification")
                     
                     // NOTE: If there is already an ongoing scene (maybe the application launch cycle was customized), call `scene.applicationDidBecomeActive()` before `enterInitialState()` so we don't issue a superfluous unpause event.
                                         
@@ -152,7 +152,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
             
             NotificationCenter.default.publisher(for: OSApplication.willResignActiveNotification)
                 .sink { _ in
-                    OctopusKit.logForDebug.add("Application.willResignActiveNotification")
+                    OctopusKit.logForDebug("Application.willResignActiveNotification")
                     self.currentScene?.applicationWillResignActive()
             }
             
@@ -164,7 +164,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
             
             NotificationCenter.default.publisher(for: OSApplication.willFinishLaunchingNotification)
                 .sink { _ in
-                    OctopusKit.logForDebug.add("Application.willFinishLaunchingNotification")
+                    OctopusKit.logForDebug("Application.willFinishLaunchingNotification")
                     // NOTE: Will not be received in a SwiftUI application, as this function will be called after the application has launched.
             }
         ]
@@ -177,13 +177,13 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
             
             NotificationCenter.default.publisher(for: OSApplication.willEnterForegroundNotification)
                 .sink { _ in
-                    OctopusKit.logForDebug.add("Application.willEnterForegroundNotification")
+                    OctopusKit.logForDebug("Application.willEnterForegroundNotification")
                     self.currentScene?.applicationWillEnterForeground()
             },
             
             NotificationCenter.default.publisher(for: OSApplication.didEnterBackgroundNotification)
                 .sink { _ in
-                    OctopusKit.logForDebug.add("Application.didEnterBackgroundNotification")
+                    OctopusKit.logForDebug("Application.didEnterBackgroundNotification")
                     self.currentScene?.applicationDidEnterBackground()
             }
         ]
@@ -212,7 +212,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
         if  self.canEnterState(stateClass) {
             self.objectWillChange.send()
         } else {
-            OctopusKit.logForWarnings.add("Cannot enter \(stateClass) from currentState: \(currentState)")
+            OctopusKit.logForWarnings("Cannot enter \(stateClass) from currentState: \(currentState)")
             return false
         }
         
@@ -221,7 +221,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
         if  let stateClass = stateClass as? OKGameState.Type {
             self.currentGameState = self.state(forClass: stateClass)
         } else {
-            OctopusKit.logForErrors.add("Cannot cast \(stateClass) as OKGameState")
+            OctopusKit.logForErrors("Cannot cast \(stateClass) as OKGameState")
         }
        
         // Call the parent implementation which will set the actual state.
@@ -233,19 +233,19 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
         if  didEnterRequestedState {
             
             if  self.currentState != self.currentGameState {
-                OctopusKit.logForErrors.add("currentState: \(currentGameState) != currentGameState: \(currentGameState)")
+                OctopusKit.logForErrors("currentState: \(currentGameState) != currentGameState: \(currentGameState)")
             }
             
         } else {
             
-            OctopusKit.logForWarnings.add("Could not enter \(stateClass) — currentState: \(currentState)")
+            OctopusKit.logForWarnings("Could not enter \(stateClass) — currentState: \(currentState)")
             
             // Reset the `currentGameState` to the actual state.
             
             if  let currentState = self.currentState as? OKGameState {
                 self.currentGameState = currentState
             } else {
-                OctopusKit.logForErrors.add("Cannot cast \(stateClass) as OKGameState")
+                OctopusKit.logForErrors("Cannot cast \(stateClass) as OKGameState")
             }
         }
         
@@ -254,7 +254,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
     
     /// Attempts to enter the state specified by `initialStateClass`.
     @discardableResult internal func enterInitialState() -> Bool {
-        OctopusKit.logForFramework.add()
+        OctopusKit.logForFramework()
         
         guard OctopusKit.initialized else {
             fatalError("OctopusKit not initialized")
@@ -263,12 +263,12 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
         // Even though GKStateMachine should handle the correct transitions between states, this coordinator should only initiate the initial state only once, just to be extra safe, and also as a flag for other classes to refer to if needed.
         
         guard !didEnterInitialState else {
-            OctopusKit.logForFramework.add("didEnterInitialState already set. currentState: \(currentState)")
+            OctopusKit.logForFramework("didEnterInitialState already set. currentState: \(currentState)")
             return false
         }
         
         if  viewController == nil {
-            OctopusKit.logForDebug.add("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OKGameCoordinator was initialized early in the application life cycle.")
+            OctopusKit.logForDebug("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OKGameCoordinator was initialized early in the application life cycle.")
         }
         
         if  self.canEnterState(initialStateClass) {
@@ -281,7 +281,7 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
         return didEnterInitialState
     }
     
-    deinit { OctopusKit.logForDeinits.add("\(self)") }
+    deinit { OctopusKit.logForDeinits("\(self)") }
 
     // MARK: - Abstract Methods
     

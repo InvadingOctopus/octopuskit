@@ -125,9 +125,9 @@ public final class RelayComponent <MasterComponentType> : OKComponent
         if  let existingComponent = coComponent(MasterComponentType.self, ignoreRelayComponents: true)
         {
             if  existingComponent === target {
-                OctopusKit.logForWarnings.add("\(entity) already has \(existingComponent)")
+                OctopusKit.logForWarnings("\(entity) already has \(existingComponent)")
             }   else {
-                OctopusKit.logForWarnings.add("\(entity) already has a \(type(of: existingComponent)) component: \(existingComponent)")
+                OctopusKit.logForWarnings("\(entity) already has a \(type(of: existingComponent)) component: \(existingComponent)")
             }
         }
     }

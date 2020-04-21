@@ -47,14 +47,14 @@ public final class OKCache <AssetKeyType: Hashable, AssetType> {
     }
     
     public func getAsset(forKey key: AssetKeyType) -> AssetType? { // mutating
-        // OctopusKit.logForResources.add("\(key)")
+        // OctopusKit.logForResources("\(key)")
         
         if let asset = assets[key] {
-            // OctopusKit.logForResources.add("Asset in cache")
+            // OctopusKit.logForResources("Asset in cache")
             return asset
             
         } else if let asset = assetLoader(key) {
-            // OctopusKit.logForResources.add("Asset loaded and cached")
+            // OctopusKit.logForResources("Asset loaded and cached")
             assets[key] = asset
             return asset
             
@@ -70,9 +70,9 @@ public final class OKCache <AssetKeyType: Hashable, AssetType> {
     /// MARK: - Debugging
     
     public func printAssets() {
-        OctopusKit.logForResources.add("assets.count = \(assets.count)")
+        OctopusKit.logForResources("assets.count = \(assets.count)")
         for key in assets.keys {
-            OctopusKit.logForResources.add("key = \(key), asset = \(assets[key])")
+            OctopusKit.logForResources("key = \(key), asset = \(assets[key])")
         }
     }
     

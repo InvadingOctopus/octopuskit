@@ -41,27 +41,27 @@ public final class EntityEmitterComponent: OKComponent {
         // TODO: Option for parent override.
         
         guard let entity = self.entity else {
-            OctopusKit.logForWarnings.add("\(self) is not part of an entity.")
+            OctopusKit.logForWarnings("\(self) is not part of an entity.")
             return false
         }
         
         guard let spawnerDelegate = (entity as? OKEntity)?.delegate else {
-            OctopusKit.logForWarnings.add("\(entity) is missing a delegate.")
+            OctopusKit.logForWarnings("\(entity) is missing a delegate.")
             return false
         }
         
         guard let spawnerNode = self.entityNode else {
-            OctopusKit.logForWarnings.add("\(entity) is missing a SpriteKit node.")
+            OctopusKit.logForWarnings("\(entity) is missing a SpriteKit node.")
             return false
         }
         
         guard let spawnerNodeParent = spawnerNode.parent else {
-            OctopusKit.logForWarnings.add("\(spawnerNode) is missing a parent.")
+            OctopusKit.logForWarnings("\(spawnerNode) is missing a parent.")
             return false
         }
         
         guard let nodeToSpawn = entityToSpawn.node else {
-            OctopusKit.logForWarnings.add("\(entityToSpawn) is missing a SpriteKit node.")
+            OctopusKit.logForWarnings("\(entityToSpawn) is missing a SpriteKit node.")
             return false
         }
         
@@ -91,7 +91,7 @@ public final class EntityEmitterComponent: OKComponent {
         if let initialImpulse = initialImpulse {
             
             guard let physicsBody = entityToSpawn.componentOrRelay(ofType: PhysicsComponent.self)?.physicsBody else {
-                OctopusKit.logForWarnings.add("\(entityToSpawn) is missing a PhysicsComponent with a physicsBody — Cannot apply impulse.")
+                OctopusKit.logForWarnings("\(entityToSpawn) is missing a PhysicsComponent with a physicsBody — Cannot apply impulse.")
                 return didSpawnEntity
             }
             
@@ -111,7 +111,7 @@ public final class EntityEmitterComponent: OKComponent {
         {
             
             guard let spawnerPhysicsBody = coComponent(PhysicsComponent.self)?.physicsBody else {
-                OctopusKit.logForWarnings.add("\(entity) is missing a PhysicsComponent with a physicsBody — Cannot apply recoil.")
+                OctopusKit.logForWarnings("\(entity) is missing a PhysicsComponent with a physicsBody — Cannot apply recoil.")
                 return didSpawnEntity
             }
             

@@ -26,7 +26,7 @@ open class PhysicsContactComponent: OKComponent, OKUpdatableComponent {
         if  let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody,
             physicsBody.contactTestBitMask == 0
         {
-            OctopusKit.logForWarnings.add("\(physicsBody) of \(entity) has contactTestBitMask == 0 so contact events may not be generated!")
+            OctopusKit.logForWarnings("\(physicsBody) of \(entity) has contactTestBitMask == 0 so contact events may not be generated!")
         }
     }
     

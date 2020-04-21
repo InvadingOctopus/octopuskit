@@ -45,10 +45,10 @@ public typealias OctopusUserDefault = OKUserDefault
         
         get {
             if  let value = UserDefaults.standard.object(forKey: key) as? ValueType {
-                // OctopusKit.logForDebug.add("\"\(key)\" \(ValueType.self) = \(value)") // ❕ May spam the log when this is accessed every frame.
+                // OctopusKit.logForDebug("\"\(key)\" \(ValueType.self) = \(value)") // ❕ May spam the log when this is accessed every frame.
                 return value
             } else {
-                OctopusKit.logForDebug.add("\"\(key)\" \(ValueType.self) not found, defaultValue = \(defaultValue) ❗️")
+                OctopusKit.logForDebug("\"\(key)\" \(ValueType.self) not found, defaultValue = \(defaultValue) ❗️")
                 return defaultValue
             }
         }
@@ -73,10 +73,10 @@ public typealias OctopusUserDefault = OKUserDefault
     @inlinable
     public static func preference <ValueType> (forKey key: String) -> ValueType? {
         if  let value = UserDefaults.standard.object(forKey: key) as? ValueType {
-            OctopusKit.logForDebug.add("\"\(key)\" \(ValueType.self) = \(value)")
+            OctopusKit.logForDebug("\"\(key)\" \(ValueType.self) = \(value)")
             return value
         } else {
-            OctopusKit.logForDebug.add("\"\(key)\" \(ValueType.self) not found ❗️")
+            OctopusKit.logForDebug("\"\(key)\" \(ValueType.self) not found ❗️")
             return nil
         }
     }
@@ -88,7 +88,7 @@ public typealias OctopusUserDefault = OKUserDefault
         
         // NOTE: It seems best to call this from `NSApplicationDelegate.applicationWillFinishLaunching(_:)`, not `...DidFinishLaunching`, at least in an `NSDocument`-based app..
         
-        OctopusKit.logForFramework.add()
+        OctopusKit.logForFramework()
         
         guard
             let path = Bundle.main.path(forResource: plistName, ofType: "plist"),

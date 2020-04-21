@@ -25,12 +25,12 @@ public extension SKShader {
         /* CHECK: PERFORMANCE: Should we use `SKShader.init(fileNamed:)` or `SKShader.init(source: String, uniforms: [SKUniform])`?
     
          guard let path = Bundle.main.path(forResource: name, ofType: "fsh") else {
-            OctopusKit.logForErrors.add("\(name).fsh not found in bundle")
+            OctopusKit.logForErrors("\(name).fsh not found in bundle")
             fatalError()
          }
          
          guard let source = try? String(contentsOfFile: path) else {
-            OctopusKit.logForErrors.add("Cannot load \(name).fsh as String")
+            OctopusKit.logForErrors("Cannot load \(name).fsh as String")
             fatalError()
          }
          */

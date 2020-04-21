@@ -113,7 +113,7 @@ public extension GKEntity {
         if  let component = component {
             self.addComponent(component)
         } else {
-            OctopusKit.logForDebug.add("nil") // CHECK: Is logging this helpful?
+            OctopusKit.logForDebug("nil") // CHECK: Is logging this helpful?
         }
     }
     

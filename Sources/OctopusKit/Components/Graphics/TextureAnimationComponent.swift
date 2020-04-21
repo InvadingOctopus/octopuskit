@@ -147,12 +147,12 @@ public final class TextureAnimationComponent: OKComponent {
     public func loadFramesFromTextureDictionary(matchingPrefix prefix: String) -> [SKTexture]?  {
     
         guard let entity = self.entity else {
-            OctopusKit.logForWarnings.add("\(self) is not part of any entity.")
+            OctopusKit.logForWarnings("\(self) is not part of any entity.")
             return nil
         }
         
         guard let textureDictionaryComponent = coComponent(TextureDictionaryComponent.self) else {
-            OctopusKit.logForWarnings.add("\(entity) missing TextureDictionaryComponent.")
+            OctopusKit.logForWarnings("\(entity) missing TextureDictionaryComponent.")
             return nil
         }
         
@@ -161,7 +161,7 @@ public final class TextureAnimationComponent: OKComponent {
         // Warn if less than 1 frame in the dictionary but let the animation methods decide what to do about that.
         
         if frames.count < 1 {
-            OctopusKit.logForWarnings.add("\(textureDictionaryComponent) does not have any frames beginning with \"\(prefix)\"")
+            OctopusKit.logForWarnings("\(textureDictionaryComponent) does not have any frames beginning with \"\(prefix)\"")
         }
         
         return frames
@@ -223,22 +223,22 @@ public final class TextureAnimationComponent: OKComponent {
     {
         
         guard let entity = self.entity else {
-            OctopusKit.logForWarnings.add("\(self) is not part of any entity.")
+            OctopusKit.logForWarnings("\(self) is not part of any entity.")
             return false
         }
         
         guard let nodeComponent = coComponent(SpriteKitComponent.self) else {
-            OctopusKit.logForWarnings.add("\(entity) is missing a SpriteKitComponent.")
+            OctopusKit.logForWarnings("\(entity) is missing a SpriteKitComponent.")
             return false
         }
         
         guard let sprite = nodeComponent.node as? SKSpriteNode else {
-            OctopusKit.logForWarnings.add("\(entity) does not have a SKSpriteNode associated with its SpriteKitComponent.")
+            OctopusKit.logForWarnings("\(entity) does not have a SKSpriteNode associated with its SpriteKitComponent.")
             return false
         }
         
         if textures.count < 1 {
-            OctopusKit.logForWarnings.add("textures.count < 1")
+            OctopusKit.logForWarnings("textures.count < 1")
         }
         
         // Remove any previous animation.

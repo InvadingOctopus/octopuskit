@@ -22,7 +22,7 @@ public extension GKRandom {
         let maximumAttemptsWarningThreshold = 100
         
         if maximumAttempts > maximumAttemptsWarningThreshold {
-            OctopusKit.logForWarnings.add("`maximumAttempts` may be too high: \(maximumAttempts) (warning threshold: \(maximumAttemptsWarningThreshold)")
+            OctopusKit.logForWarnings("`maximumAttempts` may be too high: \(maximumAttempts) (warning threshold: \(maximumAttemptsWarningThreshold)")
         }
         
         var randomNumber: Int
@@ -58,7 +58,7 @@ public extension GKRandom {
             return randomNumber
         }
         else {
-            OctopusKit.logForWarnings.add("Could not generate any number that is not in `exclusions` (count: \(exclusions.count)) in \(attempts) attempts.")
+            OctopusKit.logForWarnings("Could not generate any number that is not in `exclusions` (count: \(exclusions.count)) in \(attempts) attempts.")
             return nil
         }
     }

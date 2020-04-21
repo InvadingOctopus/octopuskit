@@ -20,7 +20,7 @@ open class macOSExclusiveComponent: OKComponent {
     
     public override init() {
         // TO DECIDE: Error or warning?
-        OctopusKit.logForErrors.add("\(type(of: self)) is for macOS only!")
+        OctopusKit.logForErrors("\(type(of: self)) is for macOS only!")
         super.init()
     }
     

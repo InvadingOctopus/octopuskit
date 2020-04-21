@@ -25,7 +25,7 @@ public extension Array where Element == OKComponentSystem {
         self.append(newSystem)
         
         #if LOGECSVERBOSE
-        OctopusKit.logForComponents.add("\(newSystem) componentClass = \(componentClass), count = \(self.count)")
+        OctopusKit.logForComponents("\(newSystem) componentClass = \(componentClass), count = \(self.count)")
         #endif
     }
     

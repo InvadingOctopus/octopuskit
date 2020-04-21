@@ -32,7 +32,7 @@ public class SpriteKitActionComponent: OKComponent {
     public override func didAddToEntity(withNode node: SKNode) {
         
         if let action = node.action(forKey: key) {
-            OctopusKit.logForWarnings.add("\(node) already has \(action) with key \"\(key)\" — Replacing")
+            OctopusKit.logForWarnings("\(node) already has \(action) with key \"\(key)\" — Replacing")
             node.removeAction(forKey: key)
         }
         
@@ -42,7 +42,7 @@ public class SpriteKitActionComponent: OKComponent {
     public override func willRemoveFromEntity(withNode node: SKNode) {
         
         if node.action(forKey: key) == nil {
-            OctopusKit.logForWarnings.add("\(node) has no action with key \"\(key)\"")
+            OctopusKit.logForWarnings("\(node) has no action with key \"\(key)\"")
         }
         else {
             node.removeAction(forKey: key)

@@ -85,7 +85,7 @@ open class OKAgentGoalComponent: OKComponent {
     
     /// Abstract; to be implemented by subclass.
     open func createGoal() -> GKGoal? {
-        OctopusKit.logForWarnings.add("Not implemented by subclass")
+        OctopusKit.logForWarnings("Not implemented by subclass")
         return nil
     }
     
@@ -95,7 +95,7 @@ open class OKAgentGoalComponent: OKComponent {
     open func applyGoalToAgent() {
         
         guard let agent = self.agent else {
-            OctopusKit.logForWarnings.add("\(entity) missing OKAgent2D")
+            OctopusKit.logForWarnings("\(entity) missing OKAgent2D")
             return
         }
         
@@ -106,7 +106,7 @@ open class OKAgentGoalComponent: OKComponent {
         }
         
         guard let goal = self.goal else {
-            OctopusKit.logForWarnings.add("\(self) missing goal")
+            OctopusKit.logForWarnings("\(self) missing goal")
             return
         }
         

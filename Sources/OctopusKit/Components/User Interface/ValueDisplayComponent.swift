@@ -69,7 +69,7 @@ public final class ValueDisplayComponent: SpriteKitAttachmentComponent<SKLabelNo
         let parentSize = (parent as? SKNodeWithDimensions)?.size ?? parent.frame.size
         
         if parentSize.width < 1 || parentSize.height < 1 {
-            OctopusKit.logForWarnings.add("\(parent) is too small: \(parent.frame)")
+            OctopusKit.logForWarnings("\(parent) is too small: \(parent.frame)")
         }
         
         // Position the text at the top-left corner, filling the width of the parent, and set it to display multiple wrapped lines.

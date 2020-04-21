@@ -45,7 +45,7 @@ public extension SKTexture {
             startVector = CIVector(x: 0, y: size.height/2)
             endVector   = CIVector(x: size.width, y: size.height/2)
         default:
-            OctopusKit.logForWarnings.add("Unsupported gradient direction")
+            OctopusKit.logForWarnings("Unsupported gradient direction")
             startVector = CIVector(x: 0, y: 0)
             endVector = startVector
         }

@@ -68,14 +68,14 @@ open class TileMapComponent: OKComponent {
                  rows:       Int,
                  layers:     Int = 1)
     {
-        guard columns > 0 else { OctopusKit.logForErrors.add("columns < 1: \(columns)"); return nil }
-        guard rows    > 0 else { OctopusKit.logForErrors.add("rows < 1: \(rows)");       return nil }
-        guard layers  > 0 else { OctopusKit.logForErrors.add("layers < 1: \(layers)");   return nil }
+        guard columns > 0 else { OctopusKit.logForErrors("columns < 1: \(columns)"); return nil }
+        guard rows    > 0 else { OctopusKit.logForErrors("rows < 1: \(rows)");       return nil }
+        guard layers  > 0 else { OctopusKit.logForErrors("layers < 1: \(layers)");   return nil }
         
         if  let tileSize = tileSize {
             guard  tileSize.width  > 0
                 && tileSize.height > 0
-                else { OctopusKit.logForErrors.add("Invalid tileSize: \(tileSize)");     return nil }
+                else { OctopusKit.logForErrors("Invalid tileSize: \(tileSize)");     return nil }
             
             self.tileSize = tileSize
         } else {
@@ -128,11 +128,11 @@ open class TileMapComponent: OKComponent {
     @inlinable
     public func validateLayerIndex(_ index: Int) -> Bool {
         guard !layers.isEmpty else {
-            OctopusKit.logForErrors.add("No tile map layers in \(self)")
+            OctopusKit.logForErrors("No tile map layers in \(self)")
             return false
         }
         guard index.isWithin(0 ..< layers.endIndex) else {
-            OctopusKit.logForErrors.add("Layer index outside 0...\(layers.endIndex - 1): \(index)")
+            OctopusKit.logForErrors("Layer index outside 0...\(layers.endIndex - 1): \(index)")
             return false
         }
         return true

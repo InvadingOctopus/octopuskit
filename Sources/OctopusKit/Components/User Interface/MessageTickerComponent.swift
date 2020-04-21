@@ -108,7 +108,7 @@ public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>,
             parent.frame.width > 1
             && parent.frame.height > 1
             else {
-            OctopusKit.logForErrors.add("\(parent) accumulated width or height <= 1")
+            OctopusKit.logForErrors("\(parent) accumulated width or height <= 1")
             return nil
         }
         
@@ -158,7 +158,7 @@ public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>,
     #endif
     
     deinit {
-        OctopusKit.logForDeinits.add() // TODO: Mention last message
+        OctopusKit.logForDeinits() // TODO: Mention last message
     }
     
     // MARK: - Messages
@@ -272,7 +272,7 @@ public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>,
             delegate?.messageTicker(self, didFinishScrollingLastMessage: lastMessage!) // TODO: CHECK: forced unwrap
         }
         
-        // OctopusKit.logForDebug.add("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messagesBacklog.count))")
+        // OctopusKit.logForDebug("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messagesBacklog.count))")
     }
     
     private func finishScrollingState() {

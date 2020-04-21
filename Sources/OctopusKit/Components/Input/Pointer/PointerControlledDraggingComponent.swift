@@ -55,8 +55,8 @@ public final class PointerControlledDraggingComponent: OKComponent, OKUpdatableC
         // A scene itself is not really draggable, so...
         
         if  node is SKScene {
-            OctopusKit.logForWarnings.add("A PointerControlledDraggingComponent cannot be added to the scene entity — Removing.")
-            OctopusKit.logForTips.add("See CameraPanComponent")
+            OctopusKit.logForWarnings("A PointerControlledDraggingComponent cannot be added to the scene entity — Removing.")
+            OctopusKit.logForTips ("See CameraPanComponent")
             self.removeFromEntity()
         }
     }

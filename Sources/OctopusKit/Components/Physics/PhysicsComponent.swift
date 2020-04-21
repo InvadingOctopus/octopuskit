@@ -76,7 +76,7 @@ public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
         {
             // NOTE: CHECK: Is this a costly operation? Should `createBodyFromNodeFrame` be `true` or `false` by default?
             
-            OctopusKit.logForDebug.add("\(self) creating new physicsBody from the frame of \(String(describing: node))") // Not a warning because this would be the expected behavior of adding a `PhysicsComponent` with no arguments to a fresh entity/node.
+            OctopusKit.logForDebug("\(self) creating new physicsBody from the frame of \(String(describing: node))") // Not a warning because this would be the expected behavior of adding a `PhysicsComponent` with no arguments to a fresh entity/node.
             
             self.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
             
@@ -104,7 +104,7 @@ public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
             
             // Then adopt the node's body as this component's body.
             
-            OctopusKit.logForDebug.add("\(self) missing physicsBody — Adopting from \(node.name ?? String(describing: node))")
+            OctopusKit.logForDebug("\(self) missing physicsBody — Adopting from \(node.name ?? String(describing: node))")
             
             self.physicsBody = node.physicsBody
         }
@@ -120,7 +120,7 @@ public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
             
             } else if physicsBody.node! != node {
                 // ℹ️ DESIGN: Log an error and detach from the entity, as an `PhysicsComponent` with a body that belongs to another node, has no valid behavior.
-                OctopusKit.logForErrors.add("\(physicsBody) already associated with \(physicsBody.node!) — Detaching from entity")
+                OctopusKit.logForErrors("\(physicsBody) already associated with \(physicsBody.node!) — Detaching from entity")
                 self.removeFromEntity()
                 return
             }
@@ -130,7 +130,7 @@ public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
             
         else if self.physicsBody != nil && node.physicsBody != nil && self.physicsBody !== node.physicsBody {
             
-            OctopusKit.logForWarnings.add("Mismatching bodies: \(self) has \(self.physicsBody), \(node.name ?? String(describing: node)) has \(node.physicsBody) — Replacing node's body")
+            OctopusKit.logForWarnings("Mismatching bodies: \(self) has \(self.physicsBody), \(node.name ?? String(describing: node)) has \(node.physicsBody) — Replacing node's body")
             
             node.physicsBody = self.physicsBody
         }
@@ -141,7 +141,7 @@ public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
         if  let nodePhysicsBody = node.physicsBody,
             nodePhysicsBody !== self.physicsBody
         {
-            OctopusKit.logForWarnings.add("\(node.name ?? String(describing: node)) had a different physicsBody than this component – Removing")
+            OctopusKit.logForWarnings("\(node.name ?? String(describing: node)) had a different physicsBody than this component – Removing")
         }
         
         // Remove the physicsBody even if the node had a different one, to keep the expected behavior of removing physics from the node when a PhysicsComponent is removed.

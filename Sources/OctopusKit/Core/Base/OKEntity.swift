@@ -115,7 +115,7 @@ open class OKEntity: GKEntity {
         
         if  let existingComponent = self.component(ofType: type(of: component)) {
             
-            OctopusKit.logForWarnings.add("\(self) replacing \(existingComponent) → \(component)")
+            OctopusKit.logForWarnings("\(self) replacing \(existingComponent) → \(component)")
             
             // NOTE: BUG? GameplayKit's default implementation does NOT seem to set the about-to-be-replaced component's entity property to `nil`.
             // So we manually remove an existing duplicate component here, if any.
@@ -128,7 +128,7 @@ open class OKEntity: GKEntity {
     }
     
     deinit {
-        OctopusKit.logForDeinits.add("\(self)")
+        OctopusKit.logForDeinits("\(self)")
         
         // Give all components a chance to clean up after themselves.
         

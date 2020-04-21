@@ -79,7 +79,7 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
             parentSize.width > 1
                 && parentSize.height > 1
             else {
-                OctopusKit.logForErrors.add("\(parent) width or height <= 1")
+                OctopusKit.logForErrors("\(parent) width or height <= 1")
                 return nil
         }
         
@@ -96,7 +96,7 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
     }
     
     deinit {
-        OctopusKit.logForDeinits.add("messages.count = \(messageLabels.count)") // TODO: Mention last message
+        OctopusKit.logForDeinits("messages.count = \(messageLabels.count)") // TODO: Mention last message
     }
     
     // MARK: - Messages
@@ -223,7 +223,7 @@ public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode>
             delegate?.messageStacker(self, didFinishDisplayingLastMessage: lastMessage!) // TODO: Remove !
         }
         
-        // OctopusKit.logForDebug.add("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messageLabelsBacklog.count))")
+        // OctopusKit.logForDebug("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messageLabelsBacklog.count))")
     }
 
 }

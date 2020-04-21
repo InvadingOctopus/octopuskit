@@ -64,13 +64,13 @@ public extension OKSceneDelegate {
     
     func createComponentSystems(for scene: OKScene) -> [GKComponent.Type] {
         // ❕ Not currently used by OKScene
-        OctopusKit.logForWarnings.add("createComponentSystems(for:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState)")
+        OctopusKit.logForWarnings("createComponentSystems(for:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState)")
         return []
     }
     
     func createContents(for scene: OKScene) {
         // ❕ Not currently used by OKScene
-        OctopusKit.logForWarnings.add("createContents(for:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState)")
+        OctopusKit.logForWarnings("createContents(for:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState)")
     }
     
     // MARK: Transitions
@@ -94,7 +94,7 @@ public extension OKSceneDelegate {
     func octopusScene(_ scene: OKScene,
                       didRequestGameState stateClass: OKGameState.Type) -> Bool
     {
-        OctopusKit.logForWarnings.add("octopusScene(_:didRequestGameState:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.enter(...)")
+        OctopusKit.logForWarnings("octopusScene(_:didRequestGameState:) not implemented for \(scene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.enter(...)")
         
         return OctopusKit.shared.gameCoordinator.enter(stateClass)
     }
@@ -103,7 +103,7 @@ public extension OKSceneDelegate {
                       didRequestTransitionTo nextSceneFileName: String,
                       withTransition transition: SKTransition?)
     {
-        OctopusKit.logForWarnings.add("octopusScene(_:didRequestTransitionTo:withTransition:) not implemented for \(outgoingScene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.loadAndPresentScene(...)")
+        OctopusKit.logForWarnings("octopusScene(_:didRequestTransitionTo:withTransition:) not implemented for \(outgoingScene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.loadAndPresentScene(...)")
         
         OctopusKit.shared.gameCoordinator.loadAndPresentScene(fileNamed: nextSceneFileName,
                                                               withTransition: transition)
@@ -114,7 +114,7 @@ public extension OKSceneDelegate {
                       didRequestTransitionTo nextSceneClass: OKScene.Type,
                       withTransition transition: SKTransition?)
     {
-        OctopusKit.logForWarnings.add("octopusScene(_:didRequestTransitionTo:withTransition:) (class version) not implemented for \(outgoingScene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.createAndPresentScene(...)")
+        OctopusKit.logForWarnings("octopusScene(_:didRequestTransitionTo:withTransition:) (class version) not implemented for \(outgoingScene) — State: \(OctopusKit.shared.gameCoordinator.currentGameState) — Calling OctopusKit.shared.gameCoordinator.createAndPresentScene(...)")
         
         OctopusKit.shared.gameCoordinator.createAndPresentScene(ofClass: nextSceneClass,
                                                                 withTransition: transition)

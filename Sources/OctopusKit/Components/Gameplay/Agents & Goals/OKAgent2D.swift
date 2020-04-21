@@ -40,7 +40,7 @@ public final class OKAgent2D: GKAgent2D, OKUpdatableComponent {
                 self.delegate = spriteKitComponent
             }
             else {
-                OctopusKit.logForWarnings.add("\(entity) missing SpriteKitComponent — Cannot set delegate")
+                OctopusKit.logForWarnings("\(entity) missing SpriteKitComponent — Cannot set delegate")
             }
             
         }
@@ -53,7 +53,7 @@ public final class OKAgent2D: GKAgent2D, OKUpdatableComponent {
             self.rotation = Float(node.zRotation)
         }
         else {
-            OctopusKit.logForWarnings.add("\(entity) does not have a SpriteKitComponent with a valid node – Cannot set initial position/rotation")
+            OctopusKit.logForWarnings("\(entity) does not have a SpriteKitComponent with a valid node – Cannot set initial position/rotation")
         }
     }
     
@@ -77,6 +77,6 @@ public final class OKAgent2D: GKAgent2D, OKUpdatableComponent {
     }
     
     deinit {
-        OctopusKit.logForDeinits.add("\(self)")
+        OctopusKit.logForDeinits("\(self)")
     }
 }

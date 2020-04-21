@@ -66,11 +66,11 @@ public extension OKEntityContainer {
     func addEntity(_ entity: GKEntity) {
         
         guard entities.insert(entity).inserted else {
-            OctopusKit.logForWarnings.add("\(entity) is already in \(self) — Not re-adding")
+            OctopusKit.logForWarnings("\(entity) is already in \(self) — Not re-adding")
             return
         }
         
-        OctopusKit.logForComponents.add("\(entity.debugDescription), entities.count = \(entities.count)")
+        OctopusKit.logForComponents("\(entity.debugDescription), entities.count = \(entities.count)")
         
         // If it's an `OKEntity` (as opposed to a basic `GKEntity`) set this scene as its delegate.
         
@@ -108,7 +108,7 @@ public extension OKEntityContainer {
         
         let systemsCollection = systemsCollection ?? self.componentSystems
         
-        OctopusKit.logForFramework.add("systemsCollection = \(systemsCollection)")
+        OctopusKit.logForFramework("systemsCollection = \(systemsCollection)")
         
         for entity in entities {
             systemsCollection.addComponents(foundIn: entity)
@@ -156,11 +156,11 @@ public extension OKEntityContainer {
         
         guard entities.contains(entityToRemove) else {
             // CHECK: Warn on missing entry if the entity is going to leave anyway?
-            // OctopusKit.logForWarnings.add("\(entity) is not registered with \(self)")
+            // OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
             return false
         }
         
-        OctopusKit.logForComponents.add("\(entityToRemove.debugDescription)")
+        OctopusKit.logForComponents("\(entityToRemove.debugDescription)")
         
         // ℹ️ `entitiesToRemoveOnNextUpdate` is a `Set` which prevents duplicate values.
         
@@ -177,7 +177,7 @@ public extension OKEntityContainer {
         
         guard entities.contains(entityToRemove) else {
             // CHECK: Warn on missing entry if the entity is going to leave anyway?
-            // OctopusKit.logForWarnings.add("\(entity) is not registered with \(self)")
+            // OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
             return false
         }
         
@@ -206,7 +206,7 @@ public extension OKEntityContainer {
         // NOTE: Remove the entity after components have been removed, to avoid the "entity is not registered with scene" warnings and reduce the potential for other unexpected behavior.
         
         if  entities.remove(entityToRemove) != nil {
-            OctopusKit.logForComponents.add("Removed \(entityToRemove.debugDescription), entities.count = \(entities.count)")
+            OctopusKit.logForComponents("Removed \(entityToRemove.debugDescription), entities.count = \(entities.count)")
             return true
         } else {
             return false
@@ -256,7 +256,7 @@ public extension OKEntityContainerNode {
         // ℹ️ There is no multiple entity version of this method, as the `components` parameter would cause the SAME components to be added to each entity (because they're reference types), leaving them in effect on only the last entity to be created!
         
         guard let node = self.childNode(withName: name) else {
-            OctopusKit.logForWarnings.add("No node with name \"\(name)\" in \(self)")
+            OctopusKit.logForWarnings("No node with name \"\(name)\" in \(self)")
             return nil
         }
         
@@ -290,11 +290,11 @@ public extension OKEntityContainerNode {
             physicsBody.node != nil && physicsBody.node! != node
         {
             // ⚠️ NOTE: Apparently this will never occur as SpriteKit replaces `physicsBody.node` when the `physicsBody` is added to a new node.
-            OctopusKit.logForErrors.add("\(node) has a \(physicsBody) that belongs to another node! — \(physicsBody.node!)")
+            OctopusKit.logForErrors("\(node) has a \(physicsBody) that belongs to another node! — \(physicsBody.node!)")
             return
         }
         
-        OctopusKit.logForDebug.add("\(self) ← \(node)")
+        OctopusKit.logForDebug("\(self) ← \(node)")
         self.addChild(node)
     }
 }
@@ -307,7 +307,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     /// This assists in cases such as dynamically adding a `SpriteKitComponent` or `GKSKNodeComponent` without knowing which scene or parent to add the node to.
     public func entity(_ entity: GKEntity, didAddComponent component: GKComponent) {
         guard entities.contains(entity) else {
-            OctopusKit.logForWarnings.add("\(entity) is not registered with \(self)")
+            OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
             return
         }
         
@@ -329,7 +329,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     
     public func entity(_ entity: GKEntity, willRemoveComponent component: GKComponent) {
         guard entities.contains(entity) else {
-            OctopusKit.logForWarnings.add("\(entity) is not registered with \(self)")
+            OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
             return
         }
         
@@ -344,7 +344,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     /// - Returns: `true` if the entity was accepted and added to the scene. `false` if the entity was rejected or otherwise could not be added to the scene.
     @discardableResult public func entity(_ entity: GKEntity, didSpawn spawnedEntity: GKEntity) -> Bool {
         guard entities.contains(entity) else {
-            OctopusKit.logForWarnings.add("\(entity) is not registered with \(self)")
+            OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
             return false
         }
         
@@ -354,7 +354,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     }
     
     public func entityDidRequestRemoval(_ entity: GKEntity) {
-        // OctopusKit.logForComponents.add("\(entity)") // Already logging in `removeEntityOnNextUpdate(_:)`
+        // OctopusKit.logForComponents("\(entity)") // Already logging in `removeEntityOnNextUpdate(_:)`
         removeEntityOnNextUpdate(entity)
     }
 }

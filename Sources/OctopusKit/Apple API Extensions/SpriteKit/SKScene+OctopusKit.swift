@@ -48,7 +48,7 @@ extension SKScene {
         
         #else
         
-        OctopusKit.logForDebug.add("Only applicable on iOS!")
+        OctopusKit.logForDebug("Only applicable on iOS!")
         return self.frame
         
         #endif
