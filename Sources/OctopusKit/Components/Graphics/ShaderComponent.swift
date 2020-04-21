@@ -143,8 +143,8 @@ public final class ShaderComponent: OKComponent {
         
         // Apply the values.
         
-        let nodeSizeVector = vector_float2(Float(nodeSize.width),
-                                           Float(nodeSize.height))
+        let nodeSizeVector = vector_float2(x: Float(nodeSize.width),
+                                           y: Float(nodeSize.height))
         
         // SWIFT LIMITATION: Casting to concrete types here is not necessary, but we do it to avoid this deprecation warning: "setValue(_:forAttribute:) was deprecated in iOS 10.0" for SKNode.
         
