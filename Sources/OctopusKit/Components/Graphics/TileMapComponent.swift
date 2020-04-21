@@ -9,7 +9,7 @@
 import SpriteKit
 
 /// A container for one or more `SKTileMapNode` layers and their associated tile set, tile groups, and map layouts.
-public class TileMapComponent: OKComponent {
+open class TileMapComponent: OKComponent {
     
     // TODO: Option for using `NoiseComponent`
     

@@ -11,14 +11,14 @@ import GameplayKit
 /// Encapsulates a `GKNoiseMap` object which uses a `GKNoise` field from a `NoiseComponent`.
 ///
 /// **Dependencies:** `NoiseComponent`
-public class NoiseMapComponent: OKComponent {
+open class NoiseMapComponent: OKComponent {
 
-    public override var requiredComponents: [GKComponent.Type]? {
+    open override var requiredComponents: [GKComponent.Type]? {
         [NoiseComponent.self]
     }
     
     /// A noise map, created when this component is added to an entity with a `NoiseComponent`.
-    public private(set) var noiseMap: GKNoiseMap? {
+    open var noiseMap: GKNoiseMap? {
         didSet { // Update this component's properties to match the noise map's properties.
             // CHECK: Will this be the expected behavior?
             if  let noiseMap = noiseMap {
@@ -74,7 +74,7 @@ public class NoiseMapComponent: OKComponent {
            }
        }
     
-    public override func didAddToEntity() {
+    open override func didAddToEntity() {
         generateNoiseMap()
     }
     
@@ -100,13 +100,13 @@ public class NoiseMapComponent: OKComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func didAddToEntity(withNode node: SKNode) {
+    open override func didAddToEntity(withNode node: SKNode) {
         generateNoiseMap()
     }
     
     /// Creates a new noise map, using the properties of this component and the noise field from a `NoiseComponent`, replacing the existing map if any.
     @discardableResult
-    public func generateNoiseMap() -> GKNoiseMap? {
+    open func generateNoiseMap() -> GKNoiseMap? {
         guard let noiseComponent = coComponent(NoiseComponent.self) else { return self.noiseMap }
         
         self.noiseMap = GKNoiseMap(noiseComponent.noise,
