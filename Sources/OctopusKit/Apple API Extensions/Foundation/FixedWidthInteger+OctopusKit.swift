@@ -1,5 +1,5 @@
 //
-//  Int+OctopusKit.swift
+//  FixedWidthInteger+OctopusKit.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/03/06.
@@ -10,8 +10,14 @@
 
 import Foundation
 
-public extension Int {
+public extension FixedWidthInteger {
 
+    /// Returns `true` if this number is inside the specified range.
+    @inlinable
+    func isWithin(_ range: Range<Self>) -> Bool {
+        range.contains(self)
+    }
+    
     // MARK: - Random Numbers
     
     /// Returns a random integer from `0` to `upperBound-1` (**not** including `upperBound`) that does not match any of the numbers provided in the exclusion list.
@@ -22,17 +28,17 @@ public extension Int {
     ///
     /// Uses `arc4random_uniform(_:)`. For GameplayKit-based randomization, use the extensions of `GKRandom`.
     @inlinable
-    static func randomFromZero(to upperBound:       Int,
-                               skipping exclusions: Set<Int>,
-                               maximumAttempts:     UInt = 100) -> Int?
+    static func randomFromZero(to upperBound:       Self,
+                               skipping exclusions: Set<Self>,
+                               maximumAttempts:     UInt = 100) -> Self?
     {
         guard upperBound >= 0 else { return nil }
-        if upperBound == 0 { return 0 }
+        guard upperBound != 0 else { return 0 }
         
         let maximumAttemptsWarningThreshold = 100
         
         // First of all, try to check that the `exclusions` list does not prevent every number that could possibly be generated during this call.
-        // Since the `exclusions` list is a `Set`, which prevents repeated values, if the count of elements in the set is same as `max`, then it MAY mean that any possible number is inacceptable! However, the exclusion list may also have values below `0` or above `max`, but checking for every possible value in the entire range may be too inefficient, so we'll just compare the two arguments and log a warning.
+        // Since the `exclusions` list is a `Set`, which prevents repeated values, if the count of elements in the set is same as `max`, then it MAY mean that any possible number is unacceptable! However, the exclusion list may also have values below `0` or above `max`, but checking for every possible value in the entire range may be too inefficient, so we'll just compare the two arguments and log a warning.
         
         if  exclusions.count == upperBound {
             OctopusKit.logForWarnings.add("`exclusions` set has \(upperBound) values — Make sure it does not prevent every possible number within 0..<\(upperBound)")
@@ -47,8 +53,8 @@ public extension Int {
         if  exclusions.isEmpty {
             return self.random(in: 0 ..< upperBound)
         
-        }else {
-            var randomNumber: Int
+        } else {
+            var randomNumber: Self
             var attempts = 0
             
             // Keep generating random numbers until we find one that's not in the exclusions list, or we've made the maximum number of attempts, so that we don't get stuck in an infinite loop.
