@@ -31,7 +31,14 @@ extension SKCameraNode: SKNodeWithDimensions {
     }
 }
 
-extension SKScene:          SKNodeWithDimensions {}
+extension SKEffectNode:     SKNodeWithDimensions { // Includes SKScene
+    public var size: CGSize {
+        // CHECK: PERFORMANCE: Is this efficient? Necessary?
+        self.calculateAccumulatedFrame().size
+    }
+}
+
+// extension SKScene:          SKNodeWithDimensions {} // Included in SKEffectNode
 
 extension SKSpriteNode:     SKNodeWithDimensions {}
 
