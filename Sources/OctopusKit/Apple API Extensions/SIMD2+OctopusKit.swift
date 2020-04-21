@@ -21,6 +21,12 @@ public extension SIMD2 where Scalar == Float {
                   y: Float(point.y))
     }
     
+    /// Converts a `CGSize` to `SIMD2<Float>`.
+    init(_ size: CGSize) {
+        self.init(x: Float(size.width),
+                  y: Float(size.height))
+    }
+    
     /// Converts a `CGVector` to `SIMD2<Float>`.
     init(_ vector: CGVector) {
         self.init(x: Float(vector.dx),
