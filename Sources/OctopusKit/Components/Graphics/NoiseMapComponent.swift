@@ -82,14 +82,14 @@ public class NoiseMapComponent: OKComponent {
     /// Initializes a `NoiseMapComponent` with the parameters for creating a `GKNoiseMap` when this component is added to an entity with a `NoiseComponent`.
     /// - Parameters:
     ///   - size: The size of 2D “slice” to take from the unit coordinate space of the noise object.
-    ///   If you later generate a texture image from the noise map with the `SKTexture` class, this size is also the pixel dimensions of the texture to generate.
-    ///   - origin: The position of the 2D “slice” to take from the unit coordinate space of the noise object.
-    ///   - sampleCount: The width and height of integer grid for sampling noise values from the noise object.
-    ///   - seamless: `true` to adjust samples taken from the noise object so that generated texture images can be tiled without visible seams; `false` otherwise.
-    public init(size:           vector_double2,
-                origin:         vector_double2,
-                sampleCount:    vector_int2,
-                seamless:       Bool)
+    ///   If you later generate a texture image from the noise map with the `SKTexture` class, this size is also the pixel dimensions of the texture to generate. Default: `(1,0, 1.0)`
+    ///   - origin: The position of the 2D “slice” to take from the unit coordinate space of the noise object. Default: `(0, 0)`
+    ///   - sampleCount: The width and height of integer grid for sampling noise values from the noise object. Default: `(100.0, 100.0)`
+    ///   - seamless: `true` to adjust samples taken from the noise object so that generated texture images can be tiled without visible seams; `false` otherwise. Default: `false`
+    public init(size:           vector_double2  = vector2(1.0, 1.0),
+                origin:         vector_double2  = vector2(0.0, 0.0),
+                sampleCount:    vector_int2     = vector2(100, 100),
+                seamless:       Bool            = false)
     {
         self.size           = size
         self.origin         = origin
