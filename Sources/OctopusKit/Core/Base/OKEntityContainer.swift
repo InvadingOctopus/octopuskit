@@ -29,6 +29,8 @@ public protocol OKEntityContainer: class {
     
     func addAllComponentsFromAllEntities(to systemsCollection: [OKComponentSystem]?)
     
+    // CHECK: DESIGN: entities(withName:) returns an non-optional array to reduce unwrapping in cases like `entities(withName: "name")?.first?` or will it increase memory usage compared to returning `nil`?
+    
     func entities(withName name: String) -> [OKEntity]?
     func renameUnnamedEntitiesToNodeNames()
     
