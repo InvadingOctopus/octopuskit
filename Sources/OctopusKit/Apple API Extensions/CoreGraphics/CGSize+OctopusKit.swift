@@ -45,11 +45,25 @@ public extension CGSize {
                height: self.height * yScale)
     }
     
-    /// Scales this size by the specified factors.
-    @inlinable
-    mutating func scale(byX xScale: CGFloat, y yScale: CGFloat) {
+    /// Scales this size by the specified factors and returns this size.
+    @inlinable @discardableResult
+    mutating func scale(byX xScale: CGFloat, y yScale: CGFloat) -> Self {
         self = self.scaled(byX: xScale,
                            y:   yScale)
+        return self
+    }
+    
+    /// Returns a copy of this size with the height and width swapped, essentially rotating the size by 90˚.
+    @inlinable
+    func rotatedBy90Degrees() -> Self {
+        return Self(width: self.height, height: self.width)
+    }
+    
+    /// Swaps the height and width and returns this size, essentially rotated by 90˚.
+    @inlinable @discardableResult
+    mutating func rotate90Degrees() -> Self {
+        self = self.rotatedBy90Degrees()
+        return self
     }
     
     // MARK: - iOS Device Dimensions
