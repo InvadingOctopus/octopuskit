@@ -6,15 +6,14 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-import SpriteKit
 import GameplayKit
 
 /// Encapsulates a `GKRandom` object.
-public final class RandomizationSourceComponent: OKComponent {
+open class RandomizationSourceComponent: OKComponent {
     
-    public var randomizationSource: GKRandom
+    open var randomizationSource: GKRandom
     
-    init(randomizationSource: GKRandom) {
+    public init(randomizationSource: GKRandom) {
         self.randomizationSource = randomizationSource
         super.init()
     }
