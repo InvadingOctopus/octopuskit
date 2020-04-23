@@ -61,28 +61,33 @@ public extension GKRandom {
     }
 }
 
-// ❕ GKRandomSource and GKRandomDistribution etc. *should* be able to conform to the Swift Standard Library's RandomNumberGenerator protocol, but implementing it causes infinite recursion and a stack overflow, in Swift 5.2 as of 2020-04-22.
+// GKRandomSource and GKRandomDistribution etc. *should* have implicit conformance to the RandomNumberGenerator protocol, but apparently Apple forgot about GameplayKit when they added it to Swift :(
 
-/*
 extension GKRandomSource: RandomNumberGenerator {
-    
+  
     /// - Returns: An unsigned 64-bit random value.
-    public func next<T>() -> T
-        where T: FixedWidthInteger, T: UnsignedInteger
-    {
-        return T(abs(self.nextInt()))
+    public func next() -> UInt64 {
+        // CREDIT: Grigory Entin https://stackoverflow.com/users/1859783/grigory-entin
+        // https://stackoverflow.com/a/57370987/1948215
+        // GKRandom produces values in the `INT32_MIN...INT32_MAX` range; hence we need two numbers to produce 64-bit value.
+        let next1 = UInt64(bitPattern: Int64(self.nextInt()))
+        let next2 = UInt64(bitPattern: Int64(self.nextInt()))
+        return next1 ^ (next2 << 32)
     }
     
-    /// - Returns - A random value of T in the range 0..<upperBound. Every value in the range 0..<upperBound is equally likely to be returned.
-    public func next<T>(upperBound: T) -> T
+    /*
+     /// - Returns - A random value of T in the range 0..<upperBound. Every value in the range 0..<upperBound is equally likely to be returned.
+     public func next<T>(upperBound: T) -> T
         where T: FixedWidthInteger, T: UnsignedInteger
-    {
+     {
         return T(abs(self.nextInt(upperBound: Int(upperBound))))
-    }
+     }
+     */ // Causes infinite recursion and a stack overflow, in Swift 5.2 as of 2020-04-22.
+    
 }
 
-
+/*
 extension GKRandomDistribution: RandomNumberGenerator {
-    // TODO: Insert duplication of the `GKRandomSource: RandomNumberGenerator` implementation
+    // TODO
 }
 */
