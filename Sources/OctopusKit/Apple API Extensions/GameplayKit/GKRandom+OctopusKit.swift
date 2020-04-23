@@ -67,12 +67,16 @@ public extension GKRandom {
 extension GKRandomSource: RandomNumberGenerator {
     
     /// - Returns: An unsigned 64-bit random value.
-    public func next<T>() -> T where T : FixedWidthInteger, T : UnsignedInteger {
+    public func next<T>() -> T
+        where T: FixedWidthInteger, T: UnsignedInteger
+    {
         return T(abs(self.nextInt()))
     }
     
     /// - Returns - A random value of T in the range 0..<upperBound. Every value in the range 0..<upperBound is equally likely to be returned.
-    public func next<T>(upperBound: T) -> T where T : FixedWidthInteger, T : UnsignedInteger {
+    public func next<T>(upperBound: T) -> T
+        where T: FixedWidthInteger, T: UnsignedInteger
+    {
         return T(abs(self.nextInt(upperBound: Int(upperBound))))
     }
 }
