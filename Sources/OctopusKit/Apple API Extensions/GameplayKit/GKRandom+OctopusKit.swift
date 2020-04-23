@@ -15,13 +15,13 @@ public extension GKRandom {
     ///
     /// This method repeatedly generates a random number until it finds a number that is not in the exclusions list. If no acceptable number can be generated in `maximumAttempts` then `nil` will returned.
     @inlinable
-    func nextInt(upperBound: Int? = nil,
-                        skipping exclusions: Set<Int>,
-                        maximumAttempts: UInt = 100) -> Int?
+    func nextInt(upperBound:            Int? = nil,
+                 skipping exclusions:   Set<Int>,
+                 maximumAttempts:       UInt = 50) -> Int?
     {
         let maximumAttemptsWarningThreshold = 100
         
-        if maximumAttempts > maximumAttemptsWarningThreshold {
+        if  maximumAttempts > maximumAttemptsWarningThreshold {
             OctopusKit.logForWarnings("`maximumAttempts` may be too high: \(maximumAttempts) (warning threshold: \(maximumAttemptsWarningThreshold)")
         }
         
@@ -30,11 +30,10 @@ public extension GKRandom {
 
         // If there are no exclusions, just return the first random number generated.
         
-        if exclusions.isEmpty {
-            if let upperBound = upperBound {
+        if  exclusions.isEmpty {
+            if  let upperBound = upperBound {
                 return self.nextInt(upperBound: upperBound)
-            }
-            else {
+            } else {
                 return self.nextInt()
             }
         }
@@ -43,10 +42,9 @@ public extension GKRandom {
         
         repeat {
             
-            if let upperBound = upperBound {
+            if  let upperBound = upperBound {
                 randomNumber = self.nextInt(upperBound: upperBound)
-            }
-            else {
+            } else {
                 randomNumber = self.nextInt()
             }
             
@@ -56,11 +54,31 @@ public extension GKRandom {
         
         if !exclusions.contains(randomNumber) {
             return randomNumber
-        }
-        else {
+        } else {
             OctopusKit.logForWarnings("Could not generate any number that is not in `exclusions` (count: \(exclusions.count)) in \(attempts) attempts.")
             return nil
         }
     }
-    
 }
+
+// ❕ GKRandomSource and GKRandomDistribution etc. *should* be able to conform to the Swift Standard Library's RandomNumberGenerator protocol, but implementing it causes infinite recursion and a stack overflow, in Swift 5.2 as of 2020-04-22.
+
+/*
+extension GKRandomSource: RandomNumberGenerator {
+    
+    /// - Returns: An unsigned 64-bit random value.
+    public func next<T>() -> T where T : FixedWidthInteger, T : UnsignedInteger {
+        return T(abs(self.nextInt()))
+    }
+    
+    /// - Returns - A random value of T in the range 0..<upperBound. Every value in the range 0..<upperBound is equally likely to be returned.
+    public func next<T>(upperBound: T) -> T where T : FixedWidthInteger, T : UnsignedInteger {
+        return T(abs(self.nextInt(upperBound: Int(upperBound))))
+    }
+}
+
+
+extension GKRandomDistribution: RandomNumberGenerator {
+    // TODO: Insert duplication of the `GKRandomSource: RandomNumberGenerator` implementation
+}
+*/
