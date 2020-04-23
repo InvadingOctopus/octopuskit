@@ -61,10 +61,12 @@ public extension GKRandom {
     }
 }
 
-// GKRandomSource and GKRandomDistribution etc. *should* have implicit conformance to the RandomNumberGenerator protocol, but apparently Apple forgot about GameplayKit when they added it to Swift :(
-
 extension GKRandomSource: RandomNumberGenerator {
   
+    // ⚠️ WARNING: GKRandomDistribution does not currently work when accessed as a RandomNumberGenerator
+
+    // GKRandomSource and GKRandomDistribution etc. *should* have implicit conformance to the RandomNumberGenerator protocol, but apparently Apple forgot about GameplayKit when they added it to Swift :(
+    
     /// - Returns: An unsigned 64-bit random value.
     public func next() -> UInt64 {
         // CREDIT: Grigory Entin https://stackoverflow.com/users/1859783/grigory-entin
@@ -83,7 +85,6 @@ extension GKRandomSource: RandomNumberGenerator {
         return T(abs(self.nextInt(upperBound: Int(upperBound))))
      }
      */ // Causes infinite recursion and a stack overflow, in Swift 5.2 as of 2020-04-22.
-    
 }
 
 /*

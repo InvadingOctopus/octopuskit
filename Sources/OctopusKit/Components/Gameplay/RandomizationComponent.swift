@@ -25,6 +25,8 @@ extension RandomizationComponent: RandomNumberGenerator {
     
     // TODO: Verify & Test
     
+    // ⚠️ WARNING: GKRandomDistribution does not currently work when accessed as a RandomNumberGenerator
+    
     /// Calls `source.next()`
     ///
     /// - Returns: An unsigned 64-bit random value.
