@@ -38,11 +38,14 @@ public final class DelayedClosureComponent: OKComponent, OKUpdatableComponent {
     ///
     /// The closure is executed only once. It may be repeated by calling `reset()`.
     ///
-     /// For a description of the closure's signature and parameters, see `DelayedCustomClosureComponent.ClosureType`.
+    /// For a description of the closure's signature and parameters, see `DelayedCustomClosureComponent.ClosureType`.
     public var closure: ClosureType
     
-    // The duration in seconds to wait before executing the closure.
+    /// The duration in seconds to wait before executing the closure.
     public var executionDelay: TimeInterval
+    
+    /// If `true` then `reset()` is called every time the closure is executed, effectively repeating it every `executionDelay` seconds.
+    public var repeatAfterExecution: Bool
     
     public fileprivate(set) var secondsElapsed: TimeInterval = 0
     public fileprivate(set) var didExecuteClosure = false
@@ -51,18 +54,19 @@ public final class DelayedClosureComponent: OKComponent, OKUpdatableComponent {
     /// - Parameter closure: The block of code to execute after the time specified by `executionDelay` has passed.
     ///
     ///     For a description of the closure's signature and parameters, see `DelayedClosureComponent.ClosureType`.
-    public init(executionDelay: TimeInterval,
-                closure: @escaping ClosureType)
+    public init(executionDelay:         TimeInterval,
+                repeatAfterExecution:   Bool = false,
+                closure:                @escaping ClosureType)
     {
-        self.executionDelay = executionDelay
-        self.closure = closure
+        self.executionDelay         = executionDelay
+        self.repeatAfterExecution   = repeatAfterExecution
+        self.closure                = closure
         super.init()
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     public override func update(deltaTime seconds: TimeInterval) {
-
         guard !didExecuteClosure else { return }
         
         secondsElapsed += seconds
@@ -70,7 +74,8 @@ public final class DelayedClosureComponent: OKComponent, OKUpdatableComponent {
         if  secondsElapsed >= executionDelay {
             closure(self)
             didExecuteClosure = true
-            // CHECK: Remove this component from entity after execution?
+            if repeatAfterExecution { reset () }
+            // CHECK: Should we remove this component from the entity after execution when not repeating?
         }
     }
     
