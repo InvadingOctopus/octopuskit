@@ -9,89 +9,176 @@
 import SpriteKit
 import GameplayKit
 
-/// Signals the entity of this component to spawn a new entity, in the direction of the the node associated with this component, and applies the specified initial velocity to the new entity's physics body if there is one.
+/// Signals the entity of this component to spawn a new entity, in the direction of the entity's `SpriteKitComponent` node, and applies the specified initial forces to the new entity's physics body if there is one.
 ///
-/// Useful for launching projectiles (such as bullets or missiles) from a character.
+/// This component may be used for launching projectiles (such as bullets or missiles) from a character or another onscreen object.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-public final class EntityEmitterComponent: OKComponent {
+open class EntityEmitterComponent: OKComponent {
 
-    public override var requiredComponents: [GKComponent.Type]? {
+    // CHECK: Should this be named "Emitter" to be consistent with "Particle Emitter", or should this be named "Spawner" because that may be more accurate?
+    
+    open override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self]
     }
     
-    // TODO: Add settings and change function parameters to overrides.
+    // TODO: Fix template copying.
     
-//    var initialImpulse: CGFloat? = nil
-//    var recoilImpulse: CGFloat? = nil
-//    var distanceFromSpawnerNode: CGFloat = 0
-//    var angleOffsetFromSpawnerNode: CGFloat = 0
+    /// The entity to create copies of for every emitted spawn.
+    open var spawnTemplate:             OKEntity?
     
-    @discardableResult public func emitEntity(
-        _ entityToSpawn: OKEntity,
-        initialImpulse: CGFloat? = nil,
-        recoilImpulse: CGFloat? = nil,
-        distanceFromSpawnerNode distance: CGFloat = 0,
-        angleOffsetFromSpawnerNode angleOffset: CGFloat = 0,
-        parentOverride: SKNode? = nil,
-        actionToRunOnLaunch: SKAction? = nil)
+    // TODO: CHECK: Mention whether it's the parent's center or anchorPoint.
+    /// The distance from the parent entity's node for a newly spawned entity's initial position.
+    open var offsetFromParent:          CGFloat
+    
+    /// The difference from the parent entity node's `zRotation` angle, in radians, for the new spawned entity's initial direction.
+    open var angleOffsetFromParent:     CGFloat
+    
+    /// The initial impulse to apply to a newly spawned entity's `PhysicsComponent` body.
+    open var initialImpulse:            CGFloat?
+    
+    /// The reverse impulse to apply to the **spawner (parent) entity's** `PhysicsComponent` body.
+    ///
+    /// This may be used to simulate recoil on characters firing weapons.
+    open var recoilImpulse:             CGFloat?
+    
+    /// The `SKAction` to run on every newly spawned entity.
+    open var actionOnSpawn:             SKAction?
+    
+    /// Logs debugging information if `true`.
+    public var logSpawns:               Bool
+    
+    /// Initializes an `EntityEmitterComponent` to add new entities to the entity's scene when `emit()` is called. The default settings provided to the initializer may be optionally overridden for every `emit()` call.
+    /// - Parameters:
+    ///   - spawnTemplate: The entity to create copies of for every emitted spawn. Default: `nil`
+    ///   - offsetFromParent: The distance from the parent entity's node for a newly spawned entity's initial position. Default: `0`
+    ///   - angleOffsetFromParent: The difference from the parent entity node's `zRotation` angle, in radians, for the new spawned entity's initial direction. Default: `0`
+    ///   - initialImpulse: The initial impulse to apply to a newly spawned entity's `PhysicsComponent` body. Default: `nil`
+    ///   - recoilImpulse: The reverse impulse to apply to the **spawner (parent) entity's** `PhysicsComponent` body. Default: `nil`
+    ///   - actionOnSpawn: The `SKAction` to run on every newly spawned entity. Default: `nil`
+    ///   - logSpawns: Logs debugging information if `true`.
+    public init(spawnTemplate:          OKEntity?   = nil,
+                offsetFromParent:       CGFloat     = 0,
+                angleOffsetFromParent:  CGFloat     = 0,
+                initialImpulse:         CGFloat?    = nil,
+                recoilImpulse:          CGFloat?    = nil,
+                actionOnSpawn:          SKAction?   = nil,
+                logSpawns:              Bool        = false)
+    {
+        self.spawnTemplate          = spawnTemplate
+        self.offsetFromParent       = offsetFromParent
+        self.angleOffsetFromParent  = angleOffsetFromParent
+        self.initialImpulse         = initialImpulse
+        self.recoilImpulse          = recoilImpulse
+        self.actionOnSpawn          = actionOnSpawn
+        self.logSpawns              = logSpawns
+        super.init()
+    }
+    
+    public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    /// Requests this component's entity's delegate (i.e. the scene) to spawn a new entity.
+    /// - Parameters:
+    ///   - entityToSpawnOverride: Overrides the `spawnTemplate` property.
+    ///   - parentOverride: Specifies a different parent node other than this component's entity's `SpriteKitComponent` node.
+    ///   - offsetFromParentOverride: Overrides the `offsetFromParent` property.
+    ///   - angleOffsetFromParentOverride: Overrides the `angleOffsetFromParent` property.
+    ///   - initialImpulseOverride: Overrides the `initialImpulse` property.
+    ///   - recoilImpulseOverride: Overrides the `recoilImpulse` property.
+    ///   - actionOnSpawnOverride: Overrides the `actionOnSpawn` property.
+    /// - Returns: `true` if the requested entity was successfully spawned by this component's entity's delegate (i.e. the scene).
+    @discardableResult @inlinable
+    open func emit(
+        _ entityToSpawnOverride:        OKEntity?   = nil,
+        parentOverride:                 SKNode?     = nil,
+        offsetFromParentOverride:       CGFloat?    = nil,
+        angleOffsetFromParentOverride:  CGFloat?    = nil,
+        initialImpulseOverride:         CGFloat?    = nil,
+        recoilImpulseOverride:          CGFloat?    = nil,
+        actionOnSpawnOverride:          SKAction?   = nil)
         -> Bool
     {
+        // MARK: Environment Verification
+        // PERFORMANCE: Less expensive checks first.
         
-        // TODO: Option for parent override.
-        
+        // This component must be part of an entity.
         guard let entity = self.entity else {
             OctopusKit.logForWarnings("\(self) is not part of an entity.")
             return false
         }
         
-        guard let spawnerDelegate = (entity as? OKEntity)?.delegate else {
-            OctopusKit.logForWarnings("\(entity) is missing a delegate.")
-            return false
-        }
-        
+        // The spawner entity needs to have a visual representation (even if it's invisible) to emit the new entity from.
         guard let spawnerNode = self.entityNode else {
-            OctopusKit.logForWarnings("\(entity) is missing a SpriteKit node.")
+            OctopusKit.logForWarnings("\(entity) has no SpriteKit node.")
             return false
         }
         
+        // The spawner node needs to have a parent node.
         guard let spawnerNodeParent = spawnerNode.parent else {
-            OctopusKit.logForWarnings("\(spawnerNode) is missing a parent.")
+            OctopusKit.logForWarnings("\(spawnerNode) has no parent.")
             return false
         }
         
+        // The spawner entity needs to have an `OKEntityDelegate` (i.e. the parent scene) that will spawn the new entity for it.
+        guard let spawnerDelegate = (entity as? OKEntity)?.delegate else {
+            OctopusKit.logForWarnings("\(entity) has no OKEntityDelegate")
+            return false
+        }
+        
+        // We must have something to spawn.
+        guard let entityToSpawn = entityToSpawnOverride ?? (spawnTemplate?.copy() as? OKEntity) else {
+            OctopusKit.logForWarnings("No entityToSpawnOverride and spawnTemplate \(spawnTemplate) did not return .copy()")
+            return false
+        }
+        
+        // The spawned entity needs to have a visual representation (even if it's invisible).
         guard let nodeToSpawn = entityToSpawn.node else {
-            OctopusKit.logForWarnings("\(entityToSpawn) is missing a SpriteKit node.")
+            OctopusKit.logForWarnings("\(entityToSpawn) has no SpriteKit node.")
             return false
         }
         
-        var didSpawnEntity = false
+        // MARK: Setup
         
-        let spawnAngle = spawnerNode.zRotation + angleOffset
-        let spawnPosition = spawnerNode.position.point(atAngle: spawnAngle,
-                                                       distance: distance)
+        // Replace default parameters with overrides, if any.
         
-        let parent = parentOverride ?? spawnerNodeParent
+        let offset          = offsetFromParentOverride      ?? self.offsetFromParent
+        let angleOffset     = angleOffsetFromParentOverride ?? self.angleOffsetFromParent
+        let initialImpulse  = initialImpulseOverride        ?? self.initialImpulse
+        let recoilImpulse   = recoilImpulseOverride         ?? self.recoilImpulse
+        let actionOnSpawn   = actionOnSpawnOverride         ?? self.actionOnSpawn
         
-        nodeToSpawn.position = parent.convert(spawnPosition, from: spawnerNodeParent)
-        nodeToSpawn.zRotation = spawnAngle
+        // Set the position and direction.
 
-        debugLog("spawner = \(spawnerNode), parent = \(parent), nodeToSpawn = \(nodeToSpawn)")
+        let parent              = parentOverride ?? spawnerNodeParent
+        let spawnAngle          = spawnerNode.zRotation + angleOffset
+        let spawnPosition       = spawnerNode.position.point(atAngle:  spawnAngle,
+                                                             distance: offset)
         
-        didSpawnEntity = spawnerDelegate.entity(entity, didSpawn: entityToSpawn)
+        // Convert the offset of the new spawn to the coordinate space of the spawner's parent node.
+        nodeToSpawn.position    = parent.convert(spawnPosition, from: spawnerNodeParent)
         
-        // Action
+        nodeToSpawn.zRotation   = spawnAngle
         
-        if let actionToRunOnLaunch = actionToRunOnLaunch {
-            nodeToSpawn.run(actionToRunOnLaunch)
+        // MARK: Spawn
+        
+        let didSpawnEntity      = spawnerDelegate.entity(entity, didSpawn: entityToSpawn)
+        
+        if  logSpawns {
+            debugLog("spawner: \(spawnerNode), parent: \(parent), nodeToSpawn: \(nodeToSpawn), didSpawnEntity: \(didSpawnEntity)")
         }
         
-        // Impulse
+        // MARK: Action
         
-        if let initialImpulse = initialImpulse {
+        if  let action = actionOnSpawn {
+            nodeToSpawn.run(action)
+        }
+        
+        // MARK: Impulse
+        
+        if  let initialImpulse = initialImpulse {
             
             guard let physicsBody = entityToSpawn.componentOrRelay(ofType: PhysicsComponent.self)?.physicsBody else {
-                OctopusKit.logForWarnings("\(entityToSpawn) is missing a PhysicsComponent with a physicsBody — Cannot apply impulse.")
+                OctopusKit.logForWarnings("\(entityToSpawn) has no PhysicsComponent with a physicsBody — Cannot apply impulse.")
                 return didSpawnEntity
             }
             
@@ -104,14 +191,14 @@ public final class EntityEmitterComponent: OKComponent {
             physicsBody.applyImpulse(impulse)
         }
         
-        // Recoil
+        // MARK: Recoil
         
         if  let recoilImpulse = recoilImpulse,
             didSpawnEntity
         {
             
             guard let spawnerPhysicsBody = coComponent(PhysicsComponent.self)?.physicsBody else {
-                OctopusKit.logForWarnings("\(entity) is missing a PhysicsComponent with a physicsBody — Cannot apply recoil.")
+                OctopusKit.logForWarnings("\(entity) has no PhysicsComponent with a physicsBody — Cannot apply recoil.")
                 return didSpawnEntity
             }
             
@@ -123,6 +210,9 @@ public final class EntityEmitterComponent: OKComponent {
             
             spawnerPhysicsBody.applyImpulse(recoil)
         }
+        
+        // MARK: Finish
+        // Whew! Return a confirmation if we successfully spawned an entity. :)
         
         return didSpawnEntity
     }
