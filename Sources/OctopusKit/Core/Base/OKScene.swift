@@ -333,6 +333,8 @@ open class OKScene: SKScene,
             
             PointerControlledForceComponent.self,
             PointerControlledPositioningComponent.self,
+            PointerControlledRotationComponent.self,
+            PointerControlledSeekingComponent.self,
             
             OKAgent2D.self,
             
