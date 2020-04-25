@@ -1,5 +1,5 @@
 //
-//  EntityEmitterComponent.swift
+//  EntitySpawnerComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/06/05.
@@ -14,7 +14,7 @@ import GameplayKit
 /// This component may be used for launching projectiles (such as bullets or missiles) from a character or another onscreen object.
 ///
 /// **Dependencies:** `SpriteKitComponent`
-open class EntityEmitterComponent: OKComponent {
+open class EntitySpawnerComponent: OKComponent {
 
     // CHECK: Should this be named "Emitter" to be consistent with "Particle Emitter", or should this be named "Spawner" because that may be more accurate?
     
@@ -24,7 +24,7 @@ open class EntityEmitterComponent: OKComponent {
     
     // TODO: Fix template copying.
     
-    /// The entity to create copies of for every emitted spawn.
+    /// The entity to create copies of for every new spawn.
     open var spawnTemplate:             OKEntity?
     
     // TODO: CHECK: Mention whether it's the parent's center or anchorPoint.
@@ -48,9 +48,9 @@ open class EntityEmitterComponent: OKComponent {
     /// Logs debugging information if `true`.
     public var logSpawns:               Bool
     
-    /// Initializes an `EntityEmitterComponent` to add new entities to the entity's scene when `emit()` is called. The default settings provided to the initializer may be optionally overridden for every `emit()` call.
+    /// Initializes an `EntitySpawnerComponent` to add new entities to the entity's scene when `spawn()` is called. The default settings provided to the initializer may be optionally overridden for every `spawn()` call.
     /// - Parameters:
-    ///   - spawnTemplate: The entity to create copies of for every emitted spawn. Default: `nil`
+    ///   - spawnTemplate: The entity to create copies of for every new spawn. Default: `nil`
     ///   - offsetFromParent: The distance from the parent entity's node for a newly spawned entity's initial position. Default: `0`
     ///   - angleOffsetFromParent: The difference from the parent entity node's `zRotation` angle, in radians, for the new spawned entity's initial direction. Default: `0`
     ///   - initialImpulse: The initial impulse to apply to a newly spawned entity's `PhysicsComponent` body. Default: `nil`
@@ -88,7 +88,7 @@ open class EntityEmitterComponent: OKComponent {
     ///   - actionOnSpawnOverride: Overrides the `actionOnSpawn` property.
     /// - Returns: `true` if the requested entity was successfully spawned by this component's entity's delegate (i.e. the scene).
     @discardableResult @inlinable
-    open func emit(
+    open func spawn(
         _ entityToSpawnOverride:        OKEntity?   = nil,
         parentOverride:                 SKNode?     = nil,
         offsetFromParentOverride:       CGFloat?    = nil,
@@ -107,7 +107,7 @@ open class EntityEmitterComponent: OKComponent {
             return false
         }
         
-        // The spawner entity needs to have a visual representation (even if it's invisible) to emit the new entity from.
+        // The spawner entity needs to have a visual representation (even if it's invisible) to spawn the new entity from.
         guard let spawnerNode = self.entityNode else {
             OctopusKit.logForWarnings("\(entity) has no SpriteKit node.")
             return false
