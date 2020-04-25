@@ -20,9 +20,9 @@ open class OKAgentGoalComponent: OKComponent {
         [OKAgent2D.self]
     }
     
-    /// Returns the entity's `OKAgent2D` component, if available.
+    /// Returns the entity's `OKAgent2D` component, if any.
     public var agent: OKAgent2D? {
-        return coComponent(OKAgent2D.self)
+        coComponent(OKAgent2D.self)
     }
     
     public fileprivate(set) var goal: GKGoal?
@@ -56,7 +56,7 @@ open class OKAgentGoalComponent: OKComponent {
     }
     
     public init(goalWeight: Float = 1.0,
-                isPaused: Bool = false)
+                isPaused:   Bool  = false)
     {
         self.goalWeight = goalWeight
         self.isPaused = isPaused
@@ -101,7 +101,7 @@ open class OKAgentGoalComponent: OKComponent {
         
         // Let the subclass initialize our goal.
         
-        if self.goal == nil {
+        if  self.goal == nil {
             self.goal = createGoal()
         }
         
@@ -112,7 +112,7 @@ open class OKAgentGoalComponent: OKComponent {
         
         // If there is no existing behavior on the controlled agent, create one!
         
-        if agent.behavior == nil {
+        if  agent.behavior == nil {
             agent.behavior = GKBehavior()
         }
         
@@ -127,7 +127,7 @@ open class OKAgentGoalComponent: OKComponent {
             let behavior = self.agent?.behavior,
             let goal = self.goal
             else { return }
-        
+
         behavior.remove(goal)
     }
     

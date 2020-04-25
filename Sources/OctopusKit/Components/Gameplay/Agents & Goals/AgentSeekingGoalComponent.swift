@@ -32,8 +32,8 @@ public final class AgentSeekingGoalComponent: OKAgentGoalComponent {
     /// - Parameter shouldFaceTargetWhenAddedToEntity: If `true`, the `zRotation` of the entity's `SpriteKitComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
     public init(targetAgent: OKAgent2D? = nil,
                 shouldFaceTargetWhenAddedToEntity: Bool = false,
-                goalWeight: Float = 5.0,
-                isPaused: Bool = false)
+                goalWeight:  Float = 5.0,
+                isPaused:    Bool  = false)
     {
         self.targetAgent = targetAgent
         self.shouldFaceTargetWhenAddedToEntity = shouldFaceTargetWhenAddedToEntity
