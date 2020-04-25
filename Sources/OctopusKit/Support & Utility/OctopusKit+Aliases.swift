@@ -10,7 +10,7 @@
 
 // NOTE: The engine API should always use the original types for specific clarity. These aliases are provided for the engine's clients.
 
-import Foundation
+import SpriteKit
 
 public typealias Point  = CGPoint
 public typealias Size   = CGSize
