@@ -38,8 +38,11 @@ final class ___FILEBASENAMEASIDENTIFIER___Scene: OKScene {
     override func createContents() {
         // Customize: This is where you construct entities to add to your scene.
         
+        // Access these shared components from child entities with `RelayComponent(for:)`
         self.entity?.addComponents([sharedMouseOrTouchEventComponent,
                                     sharedPointerEventComponent])
+        
+        self.anchorPoint = .half // This places nodes with a position of (0,0) at the center of the scene.
         
         addEntity(OKEntity(name: "", components: [
             // Customize
