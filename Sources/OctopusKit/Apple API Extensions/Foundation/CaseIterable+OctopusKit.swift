@@ -10,10 +10,12 @@ import Foundation
 
 public extension CaseIterable {
     
+    @inlinable
     static func randomElement() -> Self? {
         Self.allCases.randomElement()
     }
     
+    @inlinable
     static func randomElement<T>(using generator: inout T) -> Self? where T : RandomNumberGenerator {
         Self.allCases.randomElement(using: &generator)
     }
