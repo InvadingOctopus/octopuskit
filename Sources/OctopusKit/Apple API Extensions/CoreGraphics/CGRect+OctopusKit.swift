@@ -18,6 +18,17 @@ public extension CGRect {
         CGPoint(x: midX, y: midY)
     }
     
+    /// Returns the point at the corner opposite to `origin`, at `(x: size.width, y: size.height)` if the origin is `(0,0)`, regardless of negative dimensions or transformations.
+    @inlinable
+    var end: CGPoint {
+        // CHECK: Should this be named `tail`?
+        // ❕ NOTE: CGRect.size.height or width is different from CGRect.height or width:
+        // "Regardless of whether the height/width is stored in the CGRect data structure as a positive or negative number, this function returns the height/width as if the rectangle were standardized. That is, the result is never a negative number."
+        // https://developer.apple.com/documentation/coregraphics/cgrect/1455645-height
+        CGPoint(x: self.origin.x + self.size.width,
+                y: self.origin.y + self.size.height)
+    }
+    
     /// Returns a new rectangle with the same size as this rectangle, but with an origin of `(0,0)`.
     @inlinable
     var withZeroOrigin: CGRect {
@@ -30,7 +41,7 @@ public extension CGRect {
         // CHECK: Use `applying(_:)` and `CGAffineTransform(scaleX:y:)`, or is this more efficient?
         CGRect(x: self.origin.x,
                y: self.origin.y,
-               width:  self.width * xScale,
+               width:  self.width  * xScale,
                height: self.height * yScale)
     }
     
