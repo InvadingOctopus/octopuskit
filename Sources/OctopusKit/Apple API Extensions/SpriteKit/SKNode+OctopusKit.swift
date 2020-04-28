@@ -56,6 +56,13 @@ public extension SKNode {
         return self
     }
     
+    /// Returns this node after setting its z position.
+    @inlinable
+    final func zPosition(_ z: CGFloat) -> Self {
+        self.zPosition = z
+        return self
+    }
+    
     /// Returns this node after setting its rotation.
     @inlinable
     final func zRotation(_ radians: CGFloat) -> Self {
