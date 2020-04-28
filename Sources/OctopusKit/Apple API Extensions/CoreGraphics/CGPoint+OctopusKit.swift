@@ -124,6 +124,7 @@ public extension CGPoint {
     }
     
     // MARK: - Operators
+    // MARK: CGPoint & CGPoint
     
     @inlinable
     static func + (left: CGPoint, right: CGPoint) -> CGPoint {
@@ -173,4 +174,53 @@ public extension CGPoint {
         left.y /= right.y
     }
     
+    // MARK: CGPoint & CGFloat
+    
+    @inlinable
+    static func + (left: CGPoint, right: CGFloat) -> CGPoint {
+        CGPoint(x: left.x + right,
+                y: left.y + right)
+    }
+    
+    @inlinable
+    static func += (left: inout CGPoint, right: CGFloat) {
+        left.x += right
+        left.y += right
+    }
+    
+    @inlinable
+    static func - (left: CGPoint, right: CGFloat) -> CGPoint {
+        CGPoint(x: left.x - right,
+                y: left.y - right)
+    }
+    
+    @inlinable
+    static func -= (left: inout CGPoint, right: CGFloat) {
+        left.x -= right
+        left.y -= right
+    }
+    
+    @inlinable
+    static func * (left: CGPoint, right: CGFloat) -> CGPoint {
+        CGPoint(x: left.x * right,
+                y: left.y * right)
+    }
+    
+    @inlinable
+    static func *= (left: inout CGPoint, right: CGFloat) {
+        left.x *= right
+        left.y *= right
+    }
+    
+    @inlinable
+    static func / (left: CGPoint, right: CGFloat) -> CGPoint {
+        CGPoint(x: left.x / right,
+                y: left.y / right)
+    }
+    
+    @inlinable
+    static func /= (left: inout CGPoint, right: CGFloat) {
+        left.x /= right
+        left.y /= right
+    }
 }
