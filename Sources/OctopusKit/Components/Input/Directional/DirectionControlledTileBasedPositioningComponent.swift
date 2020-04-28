@@ -26,11 +26,17 @@ open class DirectionControlledTileBasedPositioningComponent: OKComponent, OKUpda
     /// The number of tiles to move in for each input event.
     open var stepMultiplier: CGFloat = 1
     
+    public fileprivate(set) var didMoveThisFrame: Bool = false
+    
     open override func update(deltaTime seconds: TimeInterval) {
         guard
             let tileBasedPositionComponent = coComponent(TileBasedPositionComponent.self),
-            let input = directionsSource
-            else { return }
+            let input = directionsSource,
+            !input.isEmpty
+        else {
+            didMoveThisFrame = false
+            return
+        }
 
         var newCoordinates = tileBasedPositionComponent.coordinates
 
@@ -43,7 +49,11 @@ open class DirectionControlledTileBasedPositioningComponent: OKComponent, OKUpda
 
         newCoordinates *= stepMultiplier
     
+        let previousCoordinates = tileBasedPositionComponent.coordinates
+        
         tileBasedPositionComponent.coordinates = newCoordinates
         tileBasedPositionComponent.clampCoordinates()
+        
+        didMoveThisFrame = (tileBasedPositionComponent.coordinates != previousCoordinates)
     }
 }
