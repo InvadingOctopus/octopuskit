@@ -64,6 +64,7 @@ public final class DirectionEventComponent: OKComponent, OKUpdatableComponent {
     /// A set of the directions that were included in all `directionBegan` events received so far but not in any `directionEnded` events yet.
     public var directionsActive: Set<OKInputDirection> = []
     
+    /// The final vector after adding all the active directions, i.e. cancelling out opposing inputs.
     @inlinable
     public var combinedDirection: OKInputDirection {
         directionsActive.reduce(.zero, +)
