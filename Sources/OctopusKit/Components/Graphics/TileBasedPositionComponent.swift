@@ -39,7 +39,10 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
                 coordinates:                CGPoint = .zero,
                 offsetFromTileCenter:       CGPoint = .zero)
     {
-        self.tileMapComponentOverride = tileMapComponentOverride
+        self.tileMapComponentOverride   = tileMapComponentOverride
+        self.tileMapLayer               = tileMapLayer
+        self.coordinates                = coordinates
+        self.offsetFromTileCenter       = offsetFromTileCenter
         super.init()
     }
     
@@ -59,7 +62,7 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
         guard
             let node = self.entityNode,
             let tileMapComponent = self.tileMapComponentOverride ?? coComponent(TileMapComponent.self)
-        else { return }
+            else { return }
         
         guard tileMapComponent.layers.isValidIndex(self.tileMapLayer) else {
             OctopusKit.logForWarnings("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)")
@@ -82,7 +85,34 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
             return
         }
         
-        let position    = tileMapNode.centerOfTile(atColumn: column, row: row)
-        node.position   = position + offsetFromTileCenter
+        let tiledPosition = tileMapNode.centerOfTile(atColumn: column, row: row) + offsetFromTileCenter
+        
+        if  let nodeParent = node.parent { // CHECK & VERIFY & TEST: Is this the expected behavior?
+            node.position = tileMapNode.convert(tiledPosition, to: nodeParent)
+        } else if let tileMapParent = tileMapNode.parent {
+            node.position = tileMapNode.convert(tiledPosition, to: tileMapParent)
+        } else {
+            node.position = tiledPosition
+        }
+    }
+    
+    /// Clamps the `coordinates` to within `0` and the number of columns and rows in the `TileMapComponent`'s `SKTileMapNode` `layer`.
+    @inlinable
+    public func clampCoordinates() {
+        guard let tileMapComponent = self.tileMapComponentOverride ?? coComponent(TileMapComponent.self) else { return }
+        
+        guard tileMapComponent.layers.isValidIndex(self.tileMapLayer) else {
+            OctopusKit.logForWarnings("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)")
+            return
+        }
+        
+        let tileMapNode = tileMapComponent.layers[tileMapLayer]
+        
+        // CHECK: PERFORMANCE: Impact from range allocations?
+        
+        let column      = Int(coordinates.x).clamped(to: 0..<tileMapNode.numberOfColumns)
+        let row         = Int(coordinates.y).clamped(to: 0..<tileMapNode.numberOfRows)
+        
+        coordinates     = CGPoint(x: column, y: row)
     }
 }
