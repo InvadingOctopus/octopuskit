@@ -41,6 +41,7 @@ public extension SKNode {
     }
     
     // MARK: - Modifiers
+    // As in SwiftUI.
     
     /// Returns this node after setting its position.
     @inlinable
@@ -82,6 +83,13 @@ public extension SKNode {
     final func scale(x: CGFloat, y: CGFloat) -> Self {
         self.xScale = xScale
         self.yScale = yScale
+        return self
+    }
+    
+    /// Returns this node after setting its transparency.
+    @inlinable
+    final func alpha(_ a: CGFloat) -> Self {
+        self.alpha = a
         return self
     }
     
