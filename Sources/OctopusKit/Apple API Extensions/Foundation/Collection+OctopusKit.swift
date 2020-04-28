@@ -12,10 +12,21 @@ public extension Collection {
     
     @inlinable
     func apply<T>(_ transform: (Self) -> T) -> T {
-        // CREDIT: Rudolf Adamkovič (salutis), https://forums.swift.org/t/add-function-application-to-swifts-standard-library/12361
+        // CREDIT: Rudolf Adamkovič (salutis)
+        // https://forums.swift.org/t/add-function-application-to-swifts-standard-library/12361
         return transform(self)
     }
+}
+
+public extension Collection where Index: Comparable {
     
+    /// Returns `true` if the collection is not empty and `index` is equal to or greater than `startIndex` and less than `endIndex`.
+    @inlinable
+    func isValidIndex(_ index: Self.Index) -> Bool {
+        return !self.isEmpty
+            && index >= self.startIndex
+            && index <  self.endIndex
+    }
 }
 
 // MARK: - Randomization
