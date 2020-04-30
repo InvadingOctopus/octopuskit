@@ -117,10 +117,7 @@ open class TileMapComponent: OKComponent {
     public func resetContainerNode() {
         containerNode.removeAllChildren()
         resetLayerZPositions()
-        
-        for layer in layers {
-            containerNode.addChild(layer)
-        }
+        containerNode.addChildren(layers)
     }
     
     // MARK: - Map Modification
@@ -167,6 +164,7 @@ open class TileMapComponent: OKComponent {
                       with builder:      MapBuilderClosureType)
     {
         // CHECK: Should this be named `generate` instead of `build`?
+        // CHECK: PERFORMANCE: Should there be a separate version where the `noiseValue` isn't optional?
         
         guard validateLayerIndex(index) else { return }
         
