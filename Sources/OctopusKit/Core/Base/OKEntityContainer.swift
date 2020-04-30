@@ -75,14 +75,14 @@ public extension OKEntityContainer {
         // If it's an `OKEntity` (as opposed to a basic `GKEntity`) set this scene as its delegate.
         
         if  let octopusEntity = entity as? OKEntity {
-            octopusEntity.delegate = self as? OKEntityDelegate // CHECK: Is this casting i
+            octopusEntity.delegate = self as? OKEntityDelegate // CHECK: PERFORMANCE: Impact from casting?
         }
         
         // If the entity has as `SpriteKitComponent` or `GKSKNodeComponent` whose node does not belong to any parent, add that node to this scene.
         
         // ℹ️ This lets `OKEntityDelegate` methods spawn new visual entities without explicitly specifying the scene, and also lets us conveniently add new entities by simply writing `self.addEntity(OKEntity(components: [SpriteKitComponent(node: someSprite)]))`
         
-        (self as? OKEntityContainerNode)?.addChildFromOrphanSpriteKitComponent(in: entity) // CHECK: PERFORMANCE: Any Impact from casting?
+        (self as? OKEntityContainerNode)?.addChildFromOrphanSpriteKitComponent(in: entity) // CHECK: PERFORMANCE: Impact from casting?
         
         // In case the entity added components to itself before its `OKEntityDelegate` was set (which ensures that new components are automatically registered with the scene's component systems), add the entity's components to this scene's systems now to make sure we don't miss any.
         
@@ -279,9 +279,18 @@ public extension OKEntityContainerNode {
     func addChildFromOrphanSpriteKitComponent(in entity: GKEntity) {
         guard
             let node = entity.node, // Either `SpriteKitComponent` or `GKSKNodeComponent` (in case the Scene Editor was used)
-            node != self, // Tricky pitfall to avoid there! "A Node can't parent itself" :P
-            node.parent == nil
+            node != self // Tricky pitfall to avoid there! "A Node can't parent itself" :P
             else { return }
+        
+        guard node.parent == nil else {
+            // Warn if this node's parent is not in the scene.
+            if  node.parent! != self,
+               !node.inParentHierarchy(self)
+            {
+                OctopusKit.logForWarnings("\(node) has parent \(node.parent) that is not in scene \(self)")
+            }
+            return
+        }
         
         // TODO: Validate 'physicsBody'
         // ⚠️ Before adding the node, handle cases like the node's 'physicsBody' already belong to some other child of this scene, etc. Apparently this does not seem very easy to achieve in SpriteKit and Swift as of 2018-03.
