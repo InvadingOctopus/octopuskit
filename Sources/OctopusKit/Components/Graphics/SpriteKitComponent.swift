@@ -21,7 +21,7 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         if  let name = super.node.name {
             return "\(super.description) \"\(name)\""
         } else {
-            return  "\(super.description) \(super.node)"
+            return "\(super.description) \(super.node)"
         }
     }
     
@@ -44,13 +44,13 @@ public final class SpriteKitComponent: GKSKNodeComponent {
     }
     
     public convenience init(createNewNodeIn parent: SKNode,
-                            position: CGPoint = CGPoint.zero,
+                            position:  CGPoint = .zero,
                             zPosition: CGFloat = 0,
                             shouldNotifyCoComponentsWhenAddedToEntity: Bool = true)
     {
-        self.init(createNewNodeIn: parent,
-                  position: position,
-                  zPosition: zPosition)
+        self.init(createNewNodeIn:  parent,
+                  position:         position,
+                  zPosition:        zPosition)
         self.shouldNotifyCoComponentsWhenAddedToEntity = shouldNotifyCoComponentsWhenAddedToEntity
     }
     
@@ -77,8 +77,8 @@ public final class SpriteKitComponent: GKSKNodeComponent {
                 && octopusEntity.name != nil
             {
                 self.node.name = octopusEntity.name
-            }
-            else if octopusEntity.name == nil
+            
+            } else if octopusEntity.name == nil
                 && self.node.name != nil
             {
                 octopusEntity.name = self.node.name
@@ -96,7 +96,6 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         // TODO: FIXME: Remove this when the bug is fixed.
         
         node.isPaused = false
-        
     }
     
     /// Notifies all other existing components of the entity that a `SpriteKitComponent` was added, so they can add their content, if any, to the node.

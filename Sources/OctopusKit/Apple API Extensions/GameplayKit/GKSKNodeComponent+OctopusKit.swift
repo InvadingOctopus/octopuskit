@@ -14,11 +14,11 @@ public extension GKSKNodeComponent {
     
     /// Creates a `GKSKNodeComponent` or `SpriteKitComponent` to represent the specified node, and optionally adds the node to a parent node if specified.
     convenience init(node: SKNode,
-                            addToNode newParent: SKNode?)
+                     addToNode newParent: SKNode?)
     {
         // Warn if the node is already a part of another entity.
         
-        if let existingNodeEntity = node.entity {
+        if  let existingNodeEntity = node.entity {
             OctopusKit.logForWarnings("\(node) is already associated with \(existingNodeEntity)")
         }
         
@@ -28,14 +28,13 @@ public extension GKSKNodeComponent {
         
         // If `newParent` is specified and our node isn't already its child, try adding our node to that parent.
         
-        if
-            let newParent = newParent,
+        if  let newParent = newParent,
             node.parent !== newParent
         {
             
             // If the node already has a different parent, remove it from there, because that would be the expected behavior of explicitly associating it with this component and specifying a new parent.
             
-            if let existingParent = node.parent {
+            if  let existingParent = node.parent {
                 
                 OctopusKit.logForWarnings("\(node.name ?? String(describing: node)) already has a parent: \(existingParent) — Moving to \(newParent.name ?? String(optional: newParent))")
                 
@@ -49,11 +48,11 @@ public extension GKSKNodeComponent {
     
     /// Creates a `GKSKNodeComponent` or `SpriteKitComponent` to represent a new `SKNode` and adds it to the specified parent node at the specified position and z axis.
     convenience init(createNewNodeIn parent: SKNode,
-                            position: CGPoint = CGPoint.zero,
-                            zPosition: CGFloat = 0)
+                     position:  CGPoint = .zero,
+                     zPosition: CGFloat = 0)
     {
         let newNode = SKNode()
-        newNode.position = position
+        newNode.position  = position
         newNode.zPosition = zPosition
         
         self.init(node: newNode, addToNode: parent)
