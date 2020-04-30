@@ -51,9 +51,32 @@ open class DirectionControlledTileBasedPositioningComponent: OKComponent, OKUpda
     
         let previousCoordinates = tileBasedPositionComponent.coordinates
         
-        tileBasedPositionComponent.coordinates = newCoordinates
-        tileBasedPositionComponent.clampCoordinates()
+        // Allow a customization point for game-specific subclasses to decide valid moves.
         
-        didMoveThisFrame = (tileBasedPositionComponent.coordinates != previousCoordinates)
+        if  shouldMove(from: previousCoordinates, to: &newCoordinates) {
+            
+            tileBasedPositionComponent.coordinates = newCoordinates
+            tileBasedPositionComponent.clampCoordinates()
+        
+            // Recheck the position to see if there was any actual change.
+            
+            didMoveThisFrame = (tileBasedPositionComponent.coordinates != previousCoordinates)
+            
+            if  didMoveThisFrame {
+                didMove(from: previousCoordinates, to: tileBasedPositionComponent.coordinates)
+            }
+        }
     }
+    
+    /// Override in a subclass to specify the conditions for valid moves, e.g. checking the map data for walls etc. `destination` may be modified to set different final coordinates based on game-specific logic.
+    open func shouldMove(from currentCoordinates: CGPoint,
+                         to destination: inout CGPoint) -> Bool
+    {
+        true
+    }
+    
+    /// Abstract; Override in a subclass to perform any tasks that must occur after movement, e.g. decreasing the player's remaining time or energy.
+    open func didMove(from previousCoordinates: CGPoint,
+                      to   currentCoordinates:  CGPoint) {}
+    
 }
