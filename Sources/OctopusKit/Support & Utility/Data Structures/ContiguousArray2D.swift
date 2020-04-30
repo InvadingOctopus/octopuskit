@@ -243,6 +243,7 @@ public struct ContiguousArray2D <Element> {
     }
     
     // MARK: - Advanced Operations
+
     
     /// Returns a smaller section of the 2D array, using the existing underlying storage.
     @inlinable
@@ -321,7 +322,7 @@ public struct ContiguousArray2D <Element> {
 extension ContiguousArray2D: Equatable where Element: Equatable {
     
     public static func == (left: ContiguousArray2D, right: ContiguousArray2D) -> Bool {
-        return (left.storage             == right.storage // CHECK: Use `==` or `===`?
+        return (left.storage             == right.storage
             &&  left.columnCount         == right.columnCount
             &&  left.rowCount            == right.rowCount
             &&  left.rotation            == right.rotation
@@ -337,6 +338,7 @@ extension ContiguousArray2D: CustomStringConvertible {
     /// Returns a textual representation of the grid of elements, i.e. for printing in the debug console.
     ///
     /// Inserts a single space between columns. Element descriptions may be provided via their implementation of `CustomStringConvertible` or `CustomDebugStringConvertible`.
+    @inlinable
     public var description: String {
         // TODO: Include other properties
         // TODO: PERFORMANCE
