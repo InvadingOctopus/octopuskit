@@ -268,8 +268,8 @@ open class OKScene: SKScene,
     
     /// Creates an entity to represent the scene itself (the root node.)
     ///
-    /// This entity may incorporate components to display top-level visual content, such as the user interface or head-up display (HUD), and manage scene-wide subsystems such as input.
-    fileprivate func createSceneEntity() {
+    /// This entity may incorporate components to display top-level visual content, such as the user interface or head-up display (HUD), and manage scene-wide subsystems such as input or game turns.
+    open func createSceneEntity() {
         // BUG: Setting an `SKScene`'s entity directly with `GKEntity()` causes the scene's entity to remain `nil`, as of 2017/10/13.
         
         // Warn if the scene already has an entity representing it.
