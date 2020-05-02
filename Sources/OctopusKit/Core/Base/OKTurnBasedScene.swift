@@ -14,6 +14,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
     
     // See GKComponentSystem+TurnBased.swift for notes on why the turn-based methods are not implemented as GKComponentSystem extensions.
     
+    @inlinable
     open override func createSceneEntity() {
         super.createSceneEntity()
         self.entity?.addComponent(TurnCounterComponent())
@@ -21,10 +22,12 @@ open class OKTurnBasedScene: OKScene, TurnBased {
     
     // MARK: Turn Update Cycle
     
+    @inlinable
     open func beginTurn(delta turns: Int = 1) {
         self.beginTurn(in: self.componentSystems, delta: turns)
     }
     
+    @inlinable
     public func beginTurn(in systemsCollection: [OKComponentSystem],
                           delta turns: Int)
     {
@@ -35,10 +38,12 @@ open class OKTurnBasedScene: OKScene, TurnBased {
         }
     }
     
+    @inlinable
     open func updateTurn(delta turns: Int = 1) {
         self.updateTurn(in: self.componentSystems, delta: turns)
     }
     
+    @inlinable
     public func updateTurn(in systemsCollection: [OKComponentSystem],
                            delta turns: Int)
     {
@@ -49,10 +54,12 @@ open class OKTurnBasedScene: OKScene, TurnBased {
         }
     }
     
+    @inlinable
     open func endTurn(delta turns: Int = 1) {
         self.endTurn(in: self.componentSystems, delta: turns)
     }
     
+    @inlinable
     public func endTurn(in systemsCollection: [OKComponentSystem],
                         delta turns: Int)
     {
