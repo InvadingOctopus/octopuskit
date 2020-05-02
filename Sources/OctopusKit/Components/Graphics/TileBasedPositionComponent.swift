@@ -13,21 +13,33 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
     
     // TODO: Warp-around option.
     
-    /// Specifies a `TileMapComponent` which may be in another entity, e.g. a map entity. If `nil` then this component's entity's `TileMapComponent` is used, if any.
+    /// Specifies a `TileMapComponent` or its subclass which may be in another entity, e.g. a map entity. If `nil` then this component's entity's `TileMapComponent` (but not a subclass) is used, if any.
     ///
     /// A `RelayComponent` in this component's entity may also be used to connect to a `TileMapComponent` in another entity by leaving this property `nil`.
     public var tileMapComponentOverride: TileMapComponent? = nil
     
     /// The index of the `TileMapComponent` layer to use, i.e. the `SKTileMapNode` to query for the tile coordinates.
-    public var tileMapLayer:            Int = 0
+    public var tileMapLayer: Int = 0
     
-    public var offsetFromTileCenter:    CGPoint = .zero
+    /// Applies an offset to the entity's node position from the center of a map tile.
+    public var offsetFromTileCenter: CGPoint = .zero
     
     /// The coordinates of a tile in the `TileMapComponent`'s `SKTileMapNode`. The entity's `SpriteKitComponent` node's position is set to this tile's center in every frame, adding the `offsetFromTileCenter`.
-    public var coordinates:             CGPoint = .zero
+    public var coordinates: CGPoint = .zero {
+        didSet {
+            if  coordinates != oldValue {
+                shouldAlignNodePositionOnUpdate = true
+            }
+        }
+    }
+    
+    /// If `true`, `alignNodePositionToTile()` is called when this component is updated, after which this flag is reset. Automatically set when `coordinates` are modified.
+    ///
+    /// If the entity's `SpriteKitComponent` node's position is modified by other components, then this flag must be set to `true` or `alignNodePositionToTile()` must be called manually to re-align the node with its map tile.
+    public var shouldAlignNodePositionOnUpdate: Bool = false
     
     /// - Parameters:
-    ///   - tileMapComponentOverride: Specify `nil` to use this component's entity's `TileMapComponent`, or specify a `TileMapComponent` in another entity, e.g. a map entity.
+    ///   - tileMapComponentOverride: Specify `nil` to use this component's entity's `TileMapComponent`, or specify a `TileMapComponent` (or its subclass) in another entity, e.g. a map entity.
     ///
     ///     A `RelayComponent` in this component's entity may also be used to connect to a `TileMapComponent` in another entity by leaving this property `nil`.
     ///
@@ -44,17 +56,22 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
         self.coordinates                = coordinates
         self.offsetFromTileCenter       = offsetFromTileCenter
         super.init()
+        self.shouldAlignNodePositionOnUpdate = true // To align with the initial coordinates.
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
+    @inlinable
     public override func didAddToEntity(withNode node: SKNode) {
         alignNodePositionToTile()
     }
     
+    @inlinable
     public override func update(deltaTime seconds: TimeInterval) {
-        // CHECK: PERFORMANCE: Should we update only when there is a change in either the node position or tile coordinates?
-        alignNodePositionToTile()
+        if  shouldAlignNodePositionOnUpdate { // PERFORMANCE: No unnecessary updates.
+            alignNodePositionToTile()
+            shouldAlignNodePositionOnUpdate = false
+        }
     }
     
     /// Sets the position of this entity's `SpriteKitComponent` node to the center of the tile in the `tileMapComponent`'s `SKTileMapNode`.
@@ -74,7 +91,7 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
         let column      = Int(self.coordinates.x)
         let row         = Int(self.coordinates.y)
         
-        guard // CHECK: Is SKTileMapNode 0-indexed?
+        guard // SKTileMapNode is 0-indexed
             column  >= 0,
             column  < tileMapNode.numberOfColumns,
             row     >= 0,
@@ -100,7 +117,10 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
     /// Clamps the `coordinates` to within `0` and the number of columns and rows in the `TileMapComponent`'s `SKTileMapNode` `layer`.
     @inlinable
     public func clampCoordinates() {
-        guard let tileMapComponent = self.tileMapComponentOverride ?? coComponent(TileMapComponent.self) else { return }
+        guard let tileMapComponent = self.tileMapComponentOverride ?? coComponent(TileMapComponent.self) else {
+            OctopusKit.logForWarnings("\(self) missing TileMapComponent — Cannot clamp, indexes may go out of bounds.")
+            return
+        }
         
         guard tileMapComponent.layers.isValidIndex(self.tileMapLayer) else {
             OctopusKit.logForWarnings("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)")
