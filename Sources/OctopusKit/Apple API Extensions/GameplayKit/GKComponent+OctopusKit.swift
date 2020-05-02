@@ -6,11 +6,13 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: Tests
-
 import GameplayKit
 
 extension GKComponent {
+
+    // TODO: Implement the ability to call methods on components via a component system, in Swift? Maybe through `@dynamicCallable`?
+    // "The component system will then forward any component-specific messages it receives to all registered instances of its component class." — https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem
+    // TODO: Tests
     
     /// Convenient shorthand for accessing the SpriteKit node that is associated the `SpriteKitComponent` of this component's entity.
     ///

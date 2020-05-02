@@ -219,15 +219,16 @@ public extension OKEntityContainer {
     /// Updates each of the component systems in the order they're listed in the specified array. If no `systemsCollection` is specified, then the scene's `componentSystems` property is used.
     ///
     /// A deterministic order of systems in the component systems array ensures that all components get updated after the other components they depend on.
-    func updateSystems(in systemsCollection: [OKComponentSystem]? = nil, deltaTime seconds: TimeInterval) {
-
+    func updateSystems(in systemsCollection: [OKComponentSystem]? = nil,
+                       deltaTime seconds:    TimeInterval)
+    {
         let systemsCollection = systemsCollection ?? self.componentSystems
 
         for componentSystem in systemsCollection {
             componentSystem.update(deltaTime: seconds)
         }
     }
-    
+
 }
 
 // MARK: Node-based Container
