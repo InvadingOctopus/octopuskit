@@ -49,16 +49,17 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     public override func didAddToEntity(withNode node: SKNode) {
-        alignPositionToTile()
+        alignNodePositionToTile()
     }
     
     public override func update(deltaTime seconds: TimeInterval) {
-        alignPositionToTile()
+        // CHECK: PERFORMANCE: Should we update only when there is a change in either the node position or tile coordinates?
+        alignNodePositionToTile()
     }
     
     /// Sets the position of this entity's `SpriteKitComponent` node to the center of the tile in the `tileMapComponent`'s `SKTileMapNode`.
     @inlinable
-    public func alignPositionToTile() {
+    public func alignNodePositionToTile() {
         guard
             let node = self.entityNode,
             let tileMapComponent = self.tileMapComponentOverride ?? coComponent(TileMapComponent.self)
