@@ -23,6 +23,9 @@ extension GKComponentSystem where ComponentType == GKComponent {
     //
     // That `where` clause above and omitting `@objc` compiles, but it hasn't been verified that the calls are correctly forwarded to subclasses of `GKComponent`. At this point we should just implement the turn-based methods in `OKTurnBasedScene`
     
+    // ❕ `OKComponentSystem` cannot have conditional conformance to `TurnBased` either, as it does not have a `ComponentType`.
+    // Creating an `OKTurnBasedComponentSystem: GKComponentSystem <OKTurnBasedComponent>` then adding support for that in the scene and so on seems long-winded too.
+ 
     // ❗️ `TurnBased` conformance cannot be implemented either:
     //
     // "Type 'GKComponentSystem<ComponentType>' cannot conditionally conform to protocol 'TurnBased' because the type uses the Objective-C generics model"
