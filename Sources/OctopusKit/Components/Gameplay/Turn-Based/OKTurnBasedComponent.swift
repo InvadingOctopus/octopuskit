@@ -8,9 +8,11 @@
 
 import GameplayKit
 
-/// An abstract base class for components in a turn-based game.
+/// An abstract base class for components in a turn-based game. May be used in conjunction with `OKTurnBasedScene` or updated manually.
 ///
 /// Turn-based components still have a per-frame `update(deltaTime:)` cycle and may perform per-frame updates like all other components, but they also have special methods that must be manually called to perform tasks for each discrete game-defined turn.
+///
+/// - IMPORTANT: Turn-based components must also be added to the component systems list of an `OKTurnBasedScene` to be updated in a deterministic order.
 open class OKTurnBasedComponent: OKComponent, TurnBased {
 
     // DESIGN: CHECKED: Should this be a protocol with default implementations? No, as it would not be consistent with the `override` for regular `update(deltaTime:)` etc. :)
