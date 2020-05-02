@@ -28,6 +28,8 @@ extension GKComponent {
     /// Returns the component of type `componentClass`, or a `RelayComponent` linked to a component of that type, if it's present in the entity that is associated with this component.
     ///
     /// Returns `nil` if the requested `componentClass` is this component's class, as that would not be a "co" component, and entities can have only one component of each class.
+    ///
+    /// - WARNING: This method will **not** find *subclasses* of `componentClass`.
     @inlinable
     public func coComponent <ComponentType> (
         ofType componentClass: ComponentType.Type,

@@ -138,6 +138,8 @@ public extension GKEntity {
     }
     
     /// Returns the component matching `componentClass` or a `RelayComponent` whose `target` is a component of that type, if present in the entity.
+    ///
+    /// - WARNING: This method will **not** find *subclasses* of `componentClass`.
     @inlinable
     func componentOrRelay <ComponentType> (ofType componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: GKComponent
