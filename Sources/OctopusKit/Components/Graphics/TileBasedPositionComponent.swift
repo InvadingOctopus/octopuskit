@@ -34,7 +34,7 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
     ///   - coordinates: The coordinates of the initial tile in the `TileMapComponent`'s `SKTileMapNode`. The entity's `SpriteKitComponent` node's position is set to this tile's center in every frame.
     ///   - tileMapLayer: The index of the `TileMapComponent` layer to use, i.e. the `SKTileMapNode` to query for the tile coordinates.
     ///   - offsetFromTileCenter: The additional offset to apply to the entity's `SpriteKitComponent` node.
-    public init(tileMapComponentOverride:   TileMapComponent?,
+    public init(tileMapComponentOverride:   TileMapComponent? = nil,
                 tileMapLayer:               Int = 0,
                 coordinates:                CGPoint = .zero,
                 offsetFromTileCenter:       CGPoint = .zero)
