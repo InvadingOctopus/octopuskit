@@ -15,7 +15,7 @@ import Foundation
 /// **Example**: `💩 { print("some info") }`
 ///
 @inlinable
-public func 💩(_ closure: () -> Void ) {
+public func 💩(_ closure: () -> Void) {
     #if DEBUG
     closure()
     #endif
