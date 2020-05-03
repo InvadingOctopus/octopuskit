@@ -15,7 +15,7 @@ open class TileMapComponent: OKComponent {
     
     // TODO: Option for using `NoiseComponent`
     
-    // Hierarchy: Tile Map -> Tile Set -> Tile Groups -> Tile Definition
+    // ℹ️ Hierarchy: Tile Map -> Tile Set -> Tile Groups -> Tile Definition
     
     // MARK: Subtypes
     
