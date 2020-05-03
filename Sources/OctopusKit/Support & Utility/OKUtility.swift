@@ -8,9 +8,10 @@
 
 import Foundation
 
-/// A selection of general helper methods that may be useful in various tasks.
+/// A library of general helper methods that may be useful in various tasks.
 public struct OKUtility {
   
+    // TODO:  Tests
     // CHECK: Should some of these be global functions?
     // CHECK: Rename `result...` to `return...`?
     
@@ -25,9 +26,10 @@ public struct OKUtility {
     ///     // Hero(name: "Drizzt", age: 100)
     ///
     /// - Note: If a tuple is used, its members must be of the same types and in the same order as the function's parameters.
-    public static func call<ArgumentType, ResultType>(
-        _ function: (ArgumentType) -> ResultType,
-        with argument: ArgumentType)
+    @inlinable
+    public static func call <ArgumentType, ResultType> (
+        _    function: (ArgumentType) -> ResultType,
+        with argument:  ArgumentType)
         -> ResultType
     {
         // CREDIT: https://www.swiftbysundell.com/posts/using-tuples-as-lightweight-types-in-swift
@@ -36,13 +38,15 @@ public struct OKUtility {
     }
     
     /// Repeats the supplied function for the specified number of times, and returns an array of the results.
-    public static func repeatFunction<ResultType>(function: () -> ResultType, times: Int) -> [ResultType]? {
-        
+    @inlinable
+    public static func repeatFunction <ResultType> (
+        function: () -> ResultType,
+        times:    Int)
+        -> [ResultType]?
+    {
         guard times > 0 else { return nil }
         
-        if times == 1 {
-            return [function()]
-        }
+        guard times > 1 else { return [function()] }
         
         // CHECK: Handle exceptions that may be raised in 'function'?
         
@@ -57,8 +61,9 @@ public struct OKUtility {
     
     /// Creates a closure combined with the supplied argument, which you can then call without passing any arguments, and without capturing `self`.
     ///
-    /// - Warning: The argument's value is captured when the closure is created. When the returned closure is called, it will use that captured value, and may not have the latest expected value even if the original variable is changed.
-    public func combineClosure<A, B>(
+    /// - WARNING: The argument's value is captured when the closure is created. When the returned closure is called, it will use that captured value, and may not have the latest expected value even if the original variable is changed.
+    @inlinable
+    public func combineClosure <A, B> (
         with argument: A,
         closure: @escaping (A) -> B)
         -> () -> B
