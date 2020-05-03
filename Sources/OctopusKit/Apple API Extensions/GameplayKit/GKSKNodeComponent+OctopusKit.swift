@@ -12,6 +12,8 @@ import GameplayKit
 
 public extension GKSKNodeComponent {
     
+    // ⚠️ NOTE: Some core OctopusKit functionality (such as accessing the onscreen node of an entity at runtime) specifically requires `GKSKNodeComponent` or `SpriteKitComponent` and may NOT work with their subclasses! See `SpriteKitComponent` documentation.
+    
     /// Creates a `GKSKNodeComponent` or `SpriteKitComponent` to represent the specified node, and optionally adds the node to a parent node if specified.
     convenience init(node: SKNode,
                      addToNode newParent: SKNode?)
@@ -48,10 +50,10 @@ public extension GKSKNodeComponent {
     
     /// Creates a `GKSKNodeComponent` or `SpriteKitComponent` to represent a new `SKNode` and adds it to the specified parent node at the specified position and z axis.
     convenience init(createNewNodeIn parent: SKNode,
-                     position:  CGPoint = .zero,
-                     zPosition: CGFloat = 0)
+                     position:               CGPoint = .zero,
+                     zPosition:              CGFloat = 0)
     {
-        let newNode = SKNode()
+        let newNode       = SKNode()
         newNode.position  = position
         newNode.zPosition = zPosition
         

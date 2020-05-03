@@ -44,10 +44,13 @@ public extension GKEntity {
         // ❕ NOTE: componentOrRelay(ofType:) used to cause infinite recursion with a `RelayComponent` that only had a `sceneComponentType`, because the RelayComponent tried to access its `entityNode` which leads back here. :)
         // FIXED: We now skip `componentOrRelay(ofType:)` and just use `component(ofType:)` and check `RelayComponent.directlyReferencedComponent` instead of `RelayComponent.target`
         
-        let nodeComponent = self.component(ofType: SpriteKitComponent.self)
-            ?? self.component (ofType: GKSKNodeComponent.self)
-            ?? self.component (ofType: RelayComponent<SpriteKitComponent>.self)?.directlyReferencedComponent
-            ?? self.component (ofType: RelayComponent<GKSKNodeComponent>.self)?.directlyReferencedComponent
+        // ⚠️ WARNING: SUBCLASSES of `SpriteKitComponent` will NOT be recognized here!
+        
+        let nodeComponent =
+               self.component(ofType: SpriteKitComponent.self)
+            ?? self.component(ofType: GKSKNodeComponent.self)
+            ?? self.component(ofType: RelayComponent<SpriteKitComponent>.self)?.directlyReferencedComponent
+            ?? self.component(ofType: RelayComponent<GKSKNodeComponent>.self)?.directlyReferencedComponent
         
         #if LOGECSVERBOSE
         debugLog("nodeComponent: \(nodeComponent), .node: \(nodeComponent?.node)")

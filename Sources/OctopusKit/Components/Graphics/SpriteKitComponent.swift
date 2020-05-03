@@ -13,9 +13,12 @@ import GameplayKit
 /// A component that manages a SpriteKit node and provides the primary visual representation for entities.
 ///
 /// - IMPORTANT: As a temporary fix for APPLEBUG 20180515a, the `isPaused` property of the node is set to `false` when this component is added to an entity.
+///
+/// - WARNING: Some core OctopusKit functionality (such as accessing the onscreen node of an entity at runtime) specifically requires `GKSKNodeComponent` or `SpriteKitComponent` and may **not** work with their subclasses! Components that represent visuals, such as a `TileMapComponent`, must include a node that must be added to an entity via `SpriteKitComponent(node:)`.
 public final class SpriteKitComponent: GKSKNodeComponent {
+  
+    // ⚠️ NOTE: DO NOT subclass `SpriteKitComponent`. See the warning in the documentation above.
     
-    @inlinable
     public override var description: String {
         // NOTE: To reduce log clutter, only include the node's name here; full node description should only be in `didAddToEntity()`.
         if  let name = super.node.name {
@@ -143,11 +146,10 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         // Therefore, as that behavior will cause a `SpriteKitComponent` to be removed from an entity WITHOUT removing the represented SpriteKit node from the scene, we should also remove the node here to make sure it is not visible when this component is replaced.
         // For `OKComponent` subclasses, use the `shouldRemoveFromEntityOnDeinit` flag.
         
-        if super.node.parent != nil {
+        if  super.node.parent != nil {
             OctopusKit.logForDeinits("\(self) \(super.node) ~ Removing from \(super.node.parent!)")
             super.node.removeFromParent()
-        }
-        else {
+        } else {
             OctopusKit.logForDeinits("\(self) \(super.node)")
         }
     }

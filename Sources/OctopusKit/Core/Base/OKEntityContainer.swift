@@ -89,7 +89,6 @@ public extension OKEntityContainer {
         self.componentSystems.addComponents(foundIn: entity)
         
         // CHECK: Should we issue a warning if the entity has any components that must be updated every frame to perform their function, but this scene does not have any component systems for them? Or would it hurt performance to do such checks every time an entity is added?
-        
     }
     
     /// Adds multiple entities to the `entities` set in the order they are listed in the specified array, disallowing duplicate entities, and registers their components with the relevant systems.
@@ -277,9 +276,12 @@ public extension OKEntityContainerNode {
     /// Adds an `entity`'s `SpriteKitComponent` or `GKSKNodeComponent` node to the scene if that node does not currently have a parent.
     ///
     /// This is useful in cases like spawning sub-entities from a master/parent entity without explicitly specifying the scene.
+    ///
+    /// - WARNING: Subclasses of `SpriteKitComponent` or `GKSKNodeComponent` will **not** be added, because component access at runtime looks for specific classes.
     func addChildFromOrphanSpriteKitComponent(in entity: GKEntity) {
+        
         guard
-            let node = entity.node, // Either `SpriteKitComponent` or `GKSKNodeComponent` (in case the Scene Editor was used)
+            let node = entity.node, // ⚠️ Either `SpriteKitComponent` or `GKSKNodeComponent` (in case the Scene Editor was used) but NOT their subclasses! See the warning in the method documentation above.
             node != self // Tricky pitfall to avoid there! "A Node can't parent itself" :P
             else { return }
         
