@@ -25,5 +25,6 @@ public protocol SKNodeWithShader: SKNode { // where Self: SKNode { // ⚠️ Cra
 
 extension SKEffectNode:  SKNodeWithShader {}
 extension SKSpriteNode:  SKNodeWithShader {}
+extension SKTileMapNode: SKNodeWithShader {}
 
 // extension SKScene:    SKNodeWithShader {} // Unnecessary because SKScene inherits from SKEffectNode
