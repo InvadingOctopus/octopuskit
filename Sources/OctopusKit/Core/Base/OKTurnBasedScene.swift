@@ -10,6 +10,8 @@ import SpriteKit
 import GameplayKit
 
 /// A scene in a turn-based game. Contains methods for updating turn-based components and adds a `TurnCounterComponent` to the scene's root entity.
+///
+/// - NOTE: Implementing turn cycles may be best handled by different `OKGameState`s, e.g. `BeginTurnState`, `UpdateTurnState` and `EndTurnState`, each of which call the relevant methods (`beginTurn(delta:)`, `updateTurn(delta:)`, `endTurn(delta:)`) on the scene, to ensure a correct turn cycle for all components.
 open class OKTurnBasedScene: OKScene, TurnBased {
     
     // See GKComponentSystem+TurnBased.swift for notes on why the turn-based methods are not implemented as GKComponentSystem extensions.
