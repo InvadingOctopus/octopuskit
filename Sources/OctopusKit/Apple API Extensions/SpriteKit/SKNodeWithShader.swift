@@ -8,11 +8,14 @@
 
 import SpriteKit
 
-/// A protocol for SpriteKit node types that have a `shader` property.
+/// A protocol for SpriteKit node types that have a `shader` and related properties.
 ///
-/// Useful for passing around `SKNode`-based classes to functions that need to work with shaders.
+/// This allows different `SKNode` subclasses to be handled together when processing shaders.
 public protocol SKNodeWithShader: SKNode { // where Self: SKNode { // ⚠️ Crashes.
+    
     // TODO: CHECK: Change protocol name to an adjective?
+    
+    // Applying Shaders to a Sprite: https://developer.apple.com/documentation/spritekit/skspritenode/applying_shaders_to_a_sprite
     
     var  shader: SKShader? { get set }
     var  attributeValues: [String : SKAttributeValue] { get set }

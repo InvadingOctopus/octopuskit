@@ -10,7 +10,7 @@ import SpriteKit
 
 /// A protocol for types that have `width` and `height` properties.
 ///
-/// Useful for passing around `SKNode`-based classes to functions that need to work with width or height.
+/// This allows different `SKNode` subclasses to be handled together when processing width or height.
 public protocol SKNodeWithDimensions { // where Self: SKNode { // ⚠️ Crashes.
     // TODO: Change name to an adjective?
     var size: CGSize { get }
