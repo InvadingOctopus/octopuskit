@@ -149,7 +149,7 @@ public struct OKLog {
         
         // ⚠️ Trying to access `OctopusKit.shared.currentScene` at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so we delay it by checking something like `gameCoordinator.didEnterInitialState`
         
-        if  OctopusKit.shared.gameCoordinator.didEnterInitialState ?? false {
+        if  OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false {
             currentFrameNumber = OctopusKit.shared.currentScene?.currentFrameNumber ?? 0
         } else {
             lastFrameLogged = 0

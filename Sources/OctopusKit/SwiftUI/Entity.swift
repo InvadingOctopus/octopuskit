@@ -24,7 +24,7 @@ public struct Entity: View {
     
     public init() {
         guard
-            let gameCoordinator = OctopusKit.shared.gameCoordinator,
+            let gameCoordinator = OctopusKit.shared?.gameCoordinator,
             let currentScene = gameCoordinator.currentScene
             else { return }
         

@@ -67,7 +67,7 @@ open class OKViewController: OSViewController {
         
         if  let gameCoordinator = gameCoordinator {
             
-            if  let existingGameCoordinator = OctopusKit.shared.gameCoordinator,
+            if  let existingGameCoordinator = OctopusKit.shared?.gameCoordinator,
                 gameCoordinator !== existingGameCoordinator
             {
                 throw OKError.invalidConfiguration("OctopusKit already running with \(existingGameCoordinator) — OKViewController initialized with \(gameCoordinator)")
@@ -76,7 +76,7 @@ open class OKViewController: OSViewController {
             // Initialize OctopusKit if we're the very first view controller.
             // Putting this here reduces the boilerplate required by SwiftUI applications.
             
-            if  OctopusKit.shared.gameCoordinator == nil {
+            if  OctopusKit.shared?.gameCoordinator == nil {
                 try OctopusKit(gameCoordinator: gameCoordinator)
             }
             
