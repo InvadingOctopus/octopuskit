@@ -43,6 +43,28 @@ public extension SKNode {
     // MARK: - Modifiers
     // As in SwiftUI.
     
+    /// Returns this node after setting its transparency.
+    @inlinable
+    final func alpha(_ a: CGFloat) -> Self {
+        self.alpha = a
+        return self
+    }
+    
+    /// Returns this node after setting its scale.
+    @inlinable
+    final func scale(_ scale: CGFloat) -> Self {
+        self.setScale(scale)
+        return self
+    }
+    
+    /// Returns this node after setting its scale.
+    @inlinable
+    final func scale(x: CGFloat, y: CGFloat) -> Self {
+        self.xScale = xScale
+        self.yScale = yScale
+        return self
+    }
+    
     /// Returns this node after setting its position.
     @inlinable
     final func position(_ newPosition: CGPoint) -> Self {
@@ -68,28 +90,6 @@ public extension SKNode {
     @inlinable
     final func zRotation(_ radians: CGFloat) -> Self {
         self.zRotation = radians
-        return self
-    }
-    
-    /// Returns this node after setting its scale.
-    @inlinable
-    final func scale(_ scale: CGFloat) -> Self {
-        self.setScale(scale)
-        return self
-    }
-    
-    /// Returns this node after setting its scale.
-    @inlinable
-    final func scale(x: CGFloat, y: CGFloat) -> Self {
-        self.xScale = xScale
-        self.yScale = yScale
-        return self
-    }
-    
-    /// Returns this node after setting its transparency.
-    @inlinable
-    final func alpha(_ a: CGFloat) -> Self {
-        self.alpha = a
         return self
     }
     
