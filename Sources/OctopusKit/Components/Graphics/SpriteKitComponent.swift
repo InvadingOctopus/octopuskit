@@ -10,6 +10,8 @@
 
 import GameplayKit
 
+public typealias NodeComponent = SpriteKitComponent
+
 /// A component that manages a SpriteKit node and provides the primary visual representation for entities.
 ///
 /// - IMPORTANT: As a temporary fix for APPLEBUG 20180515a, the `isPaused` property of the node is set to `false` when this component is added to an entity.
