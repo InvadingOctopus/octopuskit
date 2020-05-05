@@ -17,14 +17,14 @@ import GameplayKit
 public struct Entity: View {
     
     private var entity: OKEntity? {
-        OctopusKit.shared?.gameCoordinator.currentScene?.entities(withName: "\(entityID)")?.first
+        OctopusKit.shared.gameCoordinator.currentScene?.entities(withName: "\(entityID)")?.first
     }
     
     @State private var entityID = UUID()
     
     public init() {
         guard
-            let gameCoordinator = OctopusKit.shared?.gameCoordinator,
+            let gameCoordinator = OctopusKit.shared.gameCoordinator,
             let currentScene = gameCoordinator.currentScene
             else { return }
         

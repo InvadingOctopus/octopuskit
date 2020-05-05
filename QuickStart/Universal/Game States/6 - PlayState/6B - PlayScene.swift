@@ -69,7 +69,7 @@ final class PlayScene: OKScene {
                 
         // Add the global game coordinator entity to this scene so that global components will be included in the update cycle, and updated in the order specified by this scene's `componentSystems` array.
         
-        if  let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+        if  let gameCoordinatorEntity = OctopusKit.shared.gameCoordinator.entity {
             self.addEntity(gameCoordinatorEntity)
         }
     }
@@ -119,7 +119,7 @@ final class PlayScene: OKScene {
             
             // Remove the global entity from this scene so we do not update it until the game is unpaused.
             
-            if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+            if let gameCoordinatorEntity = OctopusKit.shared.gameCoordinator.entity {
                 self.removeEntity(gameCoordinatorEntity)
             }
             
@@ -155,7 +155,7 @@ final class PlayScene: OKScene {
             
             // Add the global entity back to this scene so we can resume updating it.
             
-            if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+            if let gameCoordinatorEntity = OctopusKit.shared.gameCoordinator.entity {
                 self.addEntity(gameCoordinatorEntity)
             }
             
@@ -205,7 +205,7 @@ final class PlayScene: OKScene {
         //
         // Here we enter the PausedState if the game was in the PlayState.
         
-        if  let currentState = OctopusKit.shared?.gameCoordinator.currentState,
+        if  let currentState = OctopusKit.shared.gameCoordinator.currentState,
             type(of: currentState) is PlayState.Type
         {
             self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)

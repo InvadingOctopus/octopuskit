@@ -93,7 +93,7 @@ public final class OKHighScoreChart {
     
     public class func loadLocalChart() -> OKHighScoreChart {
         
-        guard let managedObjectContext = OctopusKit.shared?.managedObjectContext else {
+        guard let managedObjectContext = OctopusKit.shared.managedObjectContext else {
             fatalError()
         }
         
@@ -177,7 +177,7 @@ public final class OKHighScoreChart {
         
         deleteLocalChart()
         
-        guard let managedObjectContext = OctopusKit.shared?.managedObjectContext else { return }
+        guard let managedObjectContext = OctopusKit.shared.managedObjectContext else { return }
         
         for entry in entries {
             
@@ -195,7 +195,7 @@ public final class OKHighScoreChart {
         }
         
         do {
-            try OctopusKit.shared?.managedObjectContext?.save()
+            try OctopusKit.shared.managedObjectContext?.save()
         } catch {
             fatalError("Failure to save context: \(error)")
         }
@@ -205,7 +205,7 @@ public final class OKHighScoreChart {
     public func deleteLocalChart() {
         // TODO: Duplicate-entry removal should be handled more gracefully than this! Instead, try to retreive entries by position and then overwriting them in the save fucntions.
         
-        guard let managedObjectContext = OctopusKit.shared?.managedObjectContext else { return }
+        guard let managedObjectContext = OctopusKit.shared.managedObjectContext else { return }
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"HighScore")
         

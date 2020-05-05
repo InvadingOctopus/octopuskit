@@ -107,7 +107,7 @@ final class TitleScene: OKScene {
         
         // Add the global game coordinator entity to this scene so that global components will be included in the update cycle, and updated in the order specified by this scene's `componentSystems` array.
         
-        if  let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
+        if  let gameCoordinatorEntity = OctopusKit.shared.gameCoordinator.entity {
             self.addEntity(gameCoordinatorEntity)
         }
     }

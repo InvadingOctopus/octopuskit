@@ -105,7 +105,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKScene {
     // MARK: - Pausing/Unpausing
     
     override func didPauseBySystem() {
-        if  let currentState = OctopusKit.shared?.gameCoordinator.currentState,
+        if  let currentState = OctopusKit.shared.gameCoordinator.currentState,
             type(of: currentState) is PlayableState.Type
         {
             self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)
@@ -115,7 +115,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKScene {
     override func didUnpauseBySystem() {
         // If we were in the paused game state, remain in that state so the player has to manually unpause when they are ready.
         
-        if  let currentState = OctopusKit.shared?.gameCoordinator.currentState,
+        if  let currentState = OctopusKit.shared.gameCoordinator.currentState,
             type(of: currentState) is PausedState.Type
         {
             // Since we are still in the paused state, keep the action paused, preventing `super.applicationDidBecomeActive()` from resuming it.

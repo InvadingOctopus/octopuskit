@@ -82,7 +82,7 @@ final class NodeSpawnerComponent: OKComponent, OKUpdatableComponent {
             
             //
             
-            if  let globalDataComponent = OctopusKit.shared?.gameCoordinator.entity.component(ofType: GlobalDataComponent.self) {
+            if  let globalDataComponent = OctopusKit.shared.gameCoordinator.entity.component(ofType: GlobalDataComponent.self) {
                 globalDataComponent.emojiCount += 1
             }
         }

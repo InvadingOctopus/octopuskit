@@ -180,7 +180,7 @@ open class OKScene: SKScene,
     
     @inlinable
     public var gameCoordinator: OKGameCoordinator? {
-        OctopusKit.shared?.gameCoordinator
+        OctopusKit.shared.gameCoordinator
     }
     
     /// The object which controls scene and game state transitions on behalf of the current scene. Generally the `OKViewController`.
@@ -537,7 +537,7 @@ open class OKScene: SKScene,
         // #5: Call the game coordinator's update method in case the game uses per-frame logic in a subclass of `OKGameCoordinator`.
         
         if  self.shouldUpdateGameCoordinator(deltaTime: updateTimeDelta) {
-            OctopusKit.shared?.gameCoordinator.update(deltaTime: updateTimeDelta)
+            OctopusKit.shared.gameCoordinator.update(deltaTime: updateTimeDelta)
         }
         
         // #6: Update components and systems in the subclass.
@@ -548,7 +548,7 @@ open class OKScene: SKScene,
         
     }
     
-    /// This method is called at the end of `OKScene.update()` to determine whether to call `OctopusKit.shared?.gameCoordinator.update()` on every frame.
+    /// This method is called at the end of `OKScene.update()` to determine whether to call `OctopusKit.shared.gameCoordinator.update()` on every frame.
     ///
     /// If the game uses a custom subclass of `OKGameCoordinator` that implements an `update(deltaTime:)` method then an `OKScene` subclass may override `shouldUpdateGameCoordinator(deltaTime:)` to customize the per-frame logic.
     ///

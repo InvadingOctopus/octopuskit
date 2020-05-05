@@ -157,7 +157,7 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
             // CHECK: Should this be a fatal error?
         }
         
-        // ⚠️ NOTE: If there was a visual transition effect between scenes, then `OctopusKit.shared?.currentScene` may NOT point to the new scene if the transition is still ongoing by this time. To ensure that we notify the NEW scene, we stored it in a variable when we called `gameCoordinator.createAndPresentScene`.
+        // ⚠️ NOTE: If there was a visual transition effect between scenes, then `OctopusKit.shared.currentScene` may NOT point to the new scene if the transition is still ongoing by this time. To ensure that we notify the NEW scene, we stored it in a variable when we called `gameCoordinator.createAndPresentScene`.
 
         // ℹ️ In case we skipped `createAndPresentScene` (in case of the current scene handling multiple states) then set the scene's delegate to this new game state. Not doing this caused a very hard-to-track bug. :)
         
