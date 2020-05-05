@@ -11,47 +11,7 @@ import SpriteKit
 
 public typealias OctopusViewControllerRepresentable = OKViewControllerRepresentable
 
-#if canImport(UIKit)
-
-/// Encapsulates an `OKViewController` to present SpriteKit/SceneKit/Metal content in a SwiftUI view hierarchy.
-public struct OKViewControllerRepresentable <OKGameCoordinatorType, OKViewControllerType> : UIViewControllerRepresentable
-    where OKGameCoordinatorType: OKGameCoordinator,
-          OKViewControllerType:  OKViewController
-{
-    
-    // typealias Context = UIViewControllerRepresentableContext<Self> // Defined in UIViewControllerRepresentable
-    
-    @EnvironmentObject var gameCoordinator: OKGameCoordinatorType
-    
-    public init() {}
-    
-    /// NOTE: This method is a requirement of the `UIViewControllerRepresentable` protocol; it creates a SwiftUI view controller coordinator, **NOT** OctopusKit's `OKGameCoordinator`.
-    public func makeCoordinator() -> ViewControllerCoordinator<OKViewControllerType> {
-        OKViewControllerRepresentable.ViewControllerCoordinator(gameCoordinator: self.gameCoordinator)
-    }
-    
-    public func makeUIViewController(context: Context) -> OKViewControllerType {
-        return context.coordinator.viewController
-    }
-    
-    public func updateUIViewController(_ uiViewController: OKViewControllerType,
-                                       context: Context)
-    {
-        // Enter the first game state if the game coordinator has not already done so.
-        if !gameCoordinator.didEnterInitialState {
-            gameCoordinator.enterInitialState()
-        }
-    }
-  
-    public static func dismantleUIViewController(_ uiViewController: OKViewControllerType,
-                                                 coordinator: ViewControllerCoordinator<OKViewControllerType>)
-    {
-        uiViewController.gameCoordinator?.currentScene?.didPauseBySystem()
-    }
-    
-}
-
-#elseif canImport(AppKit)
+#if canImport(AppKit)
 
 import AppKit
 
@@ -90,6 +50,46 @@ public struct OKViewControllerRepresentable <OKGameCoordinatorType, OKViewContro
                                                  coordinator: ViewControllerCoordinator<OKViewControllerType>)
     {
         nsViewController.gameCoordinator?.currentScene?.didPauseBySystem()
+    }
+    
+}
+
+#elseif canImport(UIKit)
+
+/// Encapsulates an `OKViewController` to present SpriteKit/SceneKit/Metal content in a SwiftUI view hierarchy.
+public struct OKViewControllerRepresentable <OKGameCoordinatorType, OKViewControllerType> : UIViewControllerRepresentable
+    where OKGameCoordinatorType: OKGameCoordinator,
+          OKViewControllerType:  OKViewController
+{
+    
+    // typealias Context = UIViewControllerRepresentableContext<Self> // Defined in UIViewControllerRepresentable
+    
+    @EnvironmentObject var gameCoordinator: OKGameCoordinatorType
+    
+    public init() {}
+    
+    /// NOTE: This method is a requirement of the `UIViewControllerRepresentable` protocol; it creates a SwiftUI view controller coordinator, **NOT** OctopusKit's `OKGameCoordinator`.
+    public func makeCoordinator() -> ViewControllerCoordinator<OKViewControllerType> {
+        OKViewControllerRepresentable.ViewControllerCoordinator(gameCoordinator: self.gameCoordinator)
+    }
+    
+    public func makeUIViewController(context: Context) -> OKViewControllerType {
+        return context.coordinator.viewController
+    }
+    
+    public func updateUIViewController(_ uiViewController: OKViewControllerType,
+                                       context: Context)
+    {
+        // Enter the first game state if the game coordinator has not already done so.
+        if !gameCoordinator.didEnterInitialState {
+            gameCoordinator.enterInitialState()
+        }
+    }
+  
+    public static func dismantleUIViewController(_ uiViewController: OKViewControllerType,
+                                                 coordinator: ViewControllerCoordinator<OKViewControllerType>)
+    {
+        uiViewController.gameCoordinator?.currentScene?.didPauseBySystem()
     }
     
 }
