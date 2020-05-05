@@ -69,9 +69,7 @@ final class PlayScene: OKScene {
                 
         // Add the global game coordinator entity to this scene so that global components will be included in the update cycle, and updated in the order specified by this scene's `componentSystems` array.
         
-        if  let gameCoordinatorEntity = OctopusKit.shared.gameCoordinator.entity {
-            self.addEntity(gameCoordinatorEntity)
-        }
+        self.addEntity(OctopusKit.shared.gameCoordinator.entity)
     }
     
     // MARK: - State & Scene Transitions
@@ -119,9 +117,7 @@ final class PlayScene: OKScene {
             
             // Remove the global entity from this scene so we do not update it until the game is unpaused.
             
-            if let gameCoordinatorEntity = OctopusKit.shared.gameCoordinator.entity {
-                self.removeEntity(gameCoordinatorEntity)
-            }
+            self.removeEntity(OctopusKit.shared.gameCoordinator.entity)
             
             // Set the scene's "paused by player" flag, because the PausedState is a state which is specific to this QuickStart project, not a feature of OctopusKit. When we manually enter this state, we must also notify OctopusKit that the player has chosen to pause the game.
             
@@ -155,9 +151,7 @@ final class PlayScene: OKScene {
             
             // Add the global entity back to this scene so we can resume updating it.
             
-            if let gameCoordinatorEntity = OctopusKit.shared.gameCoordinator.entity {
-                self.addEntity(gameCoordinatorEntity)
-            }
+            self.addEntity(OctopusKit.shared.gameCoordinator.entity)
             
             // Clear the scene's "paused by player" flag,
             
