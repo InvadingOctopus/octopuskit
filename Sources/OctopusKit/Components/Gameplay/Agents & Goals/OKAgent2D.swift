@@ -8,6 +8,7 @@
 
 import GameplayKit
 
+public typealias AgentComponent = OKAgent2D
 public typealias OctopusAgent2D = OKAgent2D
 
 /// Adds a 2D agent to an entity, which may then be controlled via goal components.
