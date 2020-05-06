@@ -11,8 +11,10 @@
 import SpriteKit
 import GameplayKit
 
-/// Applies a custom shader to a shader-capable node.
-public final class ShaderComponent: OKComponent {
+/// Applies a custom shader to the entity's `NodeComponent` node if it is shader-capable.
+///
+/// This class may be inherited from to create convenient components containing custom shaders along with their associated uniforms and attributes.
+open class ShaderComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SpriteKitComponent.self]
@@ -42,7 +44,7 @@ public final class ShaderComponent: OKComponent {
     
     // MARK: Default Attribute Names
     
-    public var sizeAttributeName = "a_size"
+    open var sizeAttributeName = "a_size"
     
     // MARK: Methods
     
@@ -124,7 +126,7 @@ public final class ShaderComponent: OKComponent {
     }
  
     /// Add some missing attributes that are commonly used.
-    func addCommonAttributes() {
+    open func addCommonAttributes() {
         
         // TODO: CHECK: Update attributes like size on every frame, in case the node's size changes etc.?
         
