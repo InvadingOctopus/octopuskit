@@ -57,7 +57,7 @@ extension SKLabelNode {
                                      horizontalAlignment: self.horizontalAlignmentMode,
                                      verticalAlignment: self.verticalAlignmentMode)
         
-        let scale = SKAction.scaleX(by: xScale, y: yScale, duration: duration).withTimingMode(.easeOut)
+        let scale = SKAction.scaleX(by: xScale, y: yScale, duration: duration).timingMode(.easeOut)
         let fade = SKAction.fadeOut(withDuration: duration)
         let scaleAndFade = SKAction.group([scale, fade])
         

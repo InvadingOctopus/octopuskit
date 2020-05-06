@@ -141,7 +141,7 @@ public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent
         
         if animate {
             let moveAction = SKAction.move(to: newNodePosition, duration: animationDuration)
-                .withTimingMode(animationTimingMode)
+                .timingMode(animationTimingMode)
             node.run(moveAction) // NOTE: Applying `withKey: animationActionKey` makes the animation feel unnatural.
         } else {
             node.position = newNodePosition

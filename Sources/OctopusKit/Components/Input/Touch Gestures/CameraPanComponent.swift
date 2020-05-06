@@ -192,7 +192,7 @@ public final class CameraPanComponent: OKComponent, OKUpdatableComponent {
                                                     y: velocity.y,
                                                     duration: TimeInterval(inertialScrollDuration))
                 
-                camera.run(inertialSlide.withTimingMode(.easeOut),
+                camera.run(inertialSlide.timingMode(.easeOut),
                            withKey: CameraPanComponent.inertialMovementKey)
             }
             

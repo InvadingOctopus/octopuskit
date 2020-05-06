@@ -103,7 +103,7 @@ final class PlayScene: OKScene {
                 
                 self.addChild(colorFill)
                 
-                let fadeOut = SKAction.fadeAlpha(to: 0, duration: 1.5).withTimingMode(.easeIn)
+                let fadeOut = SKAction.fadeAlpha(to: 0, duration: 1.5).timingMode(.easeIn)
                 
                 colorFill.run(.sequence([
                     fadeOut,
@@ -178,7 +178,7 @@ final class PlayScene: OKScene {
         colorFill.zPosition = 1000
         self.addChild(colorFill)
         
-        let fadeOut = SKAction.fadeAlpha(to: 1.0, duration: 1.0).withTimingMode(.easeIn)
+        let fadeOut = SKAction.fadeAlpha(to: 1.0, duration: 1.0).timingMode(.easeIn)
         colorFill.run(fadeOut)
         
         // Next, provide the OKScenePresenter with an animation to apply between the contents of this scene and the upcoming scene.

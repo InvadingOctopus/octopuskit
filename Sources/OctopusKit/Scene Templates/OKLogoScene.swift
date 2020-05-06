@@ -54,7 +54,7 @@ public final class OKLogoScene: OKScene {
         
         let animationDuration = 0.5
         let wait = 0.75
-        let shrink = SKAction.scale(to: 1.0, duration: animationDuration).withTimingMode(.easeIn)
+        let shrink = SKAction.scale(to: 1.0, duration: animationDuration).timingMode(.easeIn)
         let fadeIn = SKAction.fadeIn(withDuration: animationDuration)
         let shrinkAndFadeIn = SKAction.group([shrink, fadeIn])
         

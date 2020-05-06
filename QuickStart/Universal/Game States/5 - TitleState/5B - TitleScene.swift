@@ -129,7 +129,7 @@ final class TitleScene: OKScene {
         colorFill.zPosition = 1000
         self.addChild(colorFill)
         
-        let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 1.0).withTimingMode(.easeIn)
+        let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 1.0).timingMode(.easeIn)
         colorFill.run(fadeIn)
         
         // Next, provide the OKScenePresenter with an animation to apply between the contents of this scene and the upcoming scene.
