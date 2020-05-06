@@ -15,10 +15,14 @@ Requires Xcode 1x, iOS 1x and macOS 10.1x Name.
 - This!
 - That!
     
-#### ✨ Fixed and Polished: 
+#### ✨ Fixed & Polished: 
 
 - beep
 - boop
+
+#### 🧩 Components: 
+
+- Component
 
 #### 🍱 Miscellaneous: 
 
