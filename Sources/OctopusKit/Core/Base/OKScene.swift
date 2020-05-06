@@ -304,7 +304,8 @@ open class OKScene: SKScene,
         
         let timeAndState = [
             TimeComponent.self,
-            StateMachineComponent.self]
+            StateMachineComponent.self,
+            DelayedRemovalComponent.self]
         
         // 2: Player input
         
