@@ -31,8 +31,8 @@ public final class TouchControlledRotationComponent: OKComponent, OKUpdatableCom
     /// The amount to rotate the node by in a single update, with optional acceleration.
     public var radiansPerUpdate: AcceleratedValue<CGFloat>
     
-    /// Specifies a fixed or variable timestep for per-update changes.
-    public var timestep: TimeStep
+    /// Specifies a fixed or variable time step for per-update changes.
+    public var timeStep: TimeStep
     
     /// If `true`, `radiansPerUpdate` is reset to its base value when there is no rotation, for realistic inertia.
     ///
@@ -40,29 +40,29 @@ public final class TouchControlledRotationComponent: OKComponent, OKUpdatableCom
     public var resetAccelerationWhenNoMovement: Bool
     
     /// - Parameters:
-    ///   - radiansPerUpdate: The amount of rotation to apply every update, with optional acceleration. Affected by `timestep`.
-    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    ///   - radiansPerUpdate: The amount of rotation to apply every update, with optional acceleration. Affected by `timeStep`.
+    ///   - timeStep: Specifies a fixed or variable time step for per-update changes. Default: `.perSecond`
     ///   - resetAccelerationWhenNoMovement: When `true`, `radiansPerUpdate` is reset to its base value when there is no rotation. Default: `true`
     public init(radiansPerUpdate:                AcceleratedValue<CGFloat>,
-                timestep:                        TimeStep = .perSecond,
+                timeStep:                        TimeStep = .perSecond,
                 resetAccelerationWhenNoMovement: Bool = true)
     {
         self.radiansPerUpdate = radiansPerUpdate
-        self.timestep = timestep
+        self.timeStep = timeStep
         self.resetAccelerationWhenNoMovement = resetAccelerationWhenNoMovement
         super.init()
     }
     
     /// - Parameters:
-    ///   - radiansPerUpdate: The amount of rotation to apply every update. Affected by `timestep`.
-    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
-    ///   - acceleration: The amount to increase the rotation by on every update, while there is pointer input. The rotation is reset to `radiansPerUpdate` when there is no input. Affected by `timestep`.
+    ///   - radiansPerUpdate: The amount of rotation to apply every update. Affected by `timeStep`.
+    ///   - timeStep: Specifies a fixed or variable time step for per-update changes. Default: `.perSecond`
+    ///   - acceleration: The amount to increase the rotation by on every update, while there is pointer input. The rotation is reset to `radiansPerUpdate` when there is no input. Affected by `timeStep`.
     ///   - maximum: The maximum permitted rotation per update.
     ///   - resetAccelerationWhenNoMovement: When `true`, `radiansPerUpdate` is reset to its base value when there is no rotation. Default: `true`
     public convenience init(radiansPerUpdate:   CGFloat  = 1.0, // ÷ 60 = 0.01666666667 per frame
                             acceleration:       CGFloat  = 0,
                             maximum:            CGFloat  = 1.0,
-                            timestep:           TimeStep = .perSecond,
+                            timeStep:           TimeStep = .perSecond,
                             resetAccelerationWhenNoMovement: Bool = true)
     {
         self.init(radiansPerUpdate: AcceleratedValue<CGFloat>(base:    radiansPerUpdate,
@@ -70,7 +70,7 @@ public final class TouchControlledRotationComponent: OKComponent, OKUpdatableCom
                                                               maximum: maximum,
                                                               minimum: 0,
                                                               acceleration: acceleration),
-                  timestep: timestep,
+                  timeStep: timeStep,
                   resetAccelerationWhenNoMovement: resetAccelerationWhenNoMovement)
     }
     
@@ -98,7 +98,7 @@ public final class TouchControlledRotationComponent: OKComponent, OKUpdatableCom
         
         // #2: Calculate the maximum rotation for this update.
         
-        let rotationAmountForCurrentFrame = timestep.applying(radiansPerUpdate.current, deltaTime: CGFloat(seconds))
+        let rotationAmountForCurrentFrame = timeStep.applying(radiansPerUpdate.current, deltaTime: CGFloat(seconds))
         
         // #3: Just snap and exit if we're already aligned or the difference is very small.
                 
@@ -139,7 +139,7 @@ public final class TouchControlledRotationComponent: OKComponent, OKUpdatableCom
         // #4: Apply any acceleration, and clamp the speed to the pre-specified bounds.
         
         if  radiansPerUpdate.isWithinBounds { // CHECK: PERFORMANCE
-            radiansPerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            radiansPerUpdate.update(timeStep: timeStep, deltaTime: CGFloat(seconds))
             radiansPerUpdate.clamp()
         }
     }

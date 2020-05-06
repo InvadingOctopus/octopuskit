@@ -26,40 +26,40 @@ public final class DirectionControlledThrustComponent: OKComponent, OKUpdatableC
          SpriteKitComponent.self]
     }
         
-    /// The amount of thrust to apply in a single update, with optional acceleration. Affected by `timestep`. Reset when there is no player input.
+    /// The amount of thrust to apply in a single update, with optional acceleration. Affected by `timeStep`. Reset when there is no player input.
     public var magnitudePerUpdate:  AcceleratedValue<CGFloat>
     
     /// Multiplies the force by the specified value. Default: `1`. To reverse the thrust, specify a negative value like `-1`. To disable thrust, specify `0`.
     public var scalingFactor:       CGFloat = 1
     
-    /// Specifies a fixed or variable timestep for per-update changes.
-    public var timestep:            TimeStep
+    /// Specifies a fixed or variable time step for per-update changes.
+    public var timeStep:            TimeStep
     
     /// - Parameters:
-    ///   - magnitudePerUpdate: The amount of thrust to apply every update, with optional acceleration. Affected by `timestep`.
+    ///   - magnitudePerUpdate: The amount of thrust to apply every update, with optional acceleration. Affected by `timeStep`.
     ///   - scalingFactor: Multiplies the force by the specified factor. Default: `1`. To reverse the thrust, specify a negative value like `-1`. To disable thrust, specify `0`.
-    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    ///   - timeStep: Specifies a fixed or variable time step for per-update changes. Default: `.perSecond`
     public init(magnitudePerUpdate: AcceleratedValue<CGFloat>,
                 scalingFactor:      CGFloat  = 1.0,
-                timestep:           TimeStep = .perSecond)
+                timeStep:           TimeStep = .perSecond)
     {
         self.magnitudePerUpdate = magnitudePerUpdate
         self.scalingFactor      = scalingFactor
-        self.timestep           = timestep
+        self.timeStep           = timeStep
         super.init()
     }
     
     /// - Parameters:
-    ///   - magnitudePerUpdate: The minimum magnitude to apply to the physics body every second. Affected by `timestep`.
-    ///   - acceleration: The amount to increase the magnitude by per second, while there is player input. The magnitude is reset to the `magnitudePerUpdate` when there is no player input. Affected by `timestep`.
+    ///   - magnitudePerUpdate: The minimum magnitude to apply to the physics body every second. Affected by `timeStep`.
+    ///   - acceleration: The amount to increase the magnitude by per second, while there is player input. The magnitude is reset to the `magnitudePerUpdate` when there is no player input. Affected by `timeStep`.
     ///   - maximum: The maximum magnitude to allow after acceleration has been applied.
     ///   - scalingFactor: Multiplies the force by the specified factor. Default: `1`. To reverse the thrust, specify a negative value like `-1`. To disable thrust, specify `0`.
-    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    ///   - timeStep: Specifies a fixed or variable time step for per-update changes. Default: `.perSecond`
     public convenience init(magnitudePerUpdate: CGFloat  = 600, // ÷ 60 = 10 per frame
                             acceleration:       CGFloat  = 100,
                             maximum:            CGFloat  = 900, // ÷ 60 = 15 per frame
                             scalingFactor:      CGFloat  = 1,
-                            timestep:           TimeStep = .perSecond)
+                            timeStep:           TimeStep = .perSecond)
     {
         self.init(magnitudePerUpdate: AcceleratedValue<CGFloat>(base:    magnitudePerUpdate,
                                                                 current: magnitudePerUpdate,
@@ -67,7 +67,7 @@ public final class DirectionControlledThrustComponent: OKComponent, OKUpdatableC
                                                                 minimum: 0,
                                                                 acceleration: acceleration),
                   scalingFactor: scalingFactor,
-                  timestep: timestep)
+                  timeStep: timeStep)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -106,7 +106,7 @@ public final class DirectionControlledThrustComponent: OKComponent, OKUpdatableC
         
         // #3: Apply the force in relation to the node's current rotation.
         
-        var magnitudeForCurrentFrame = timestep.applying(magnitudePerUpdate.current, deltaTime: CGFloat(seconds))
+        var magnitudeForCurrentFrame = timeStep.applying(magnitudePerUpdate.current, deltaTime: CGFloat(seconds))
         let vector = CGVector(radians: node.zRotation) * CGFloat(magnitudeForCurrentFrame * direction) * scalingFactor // TODO: Verify!
         
         // Apply the final vector to the body.
@@ -120,7 +120,7 @@ public final class DirectionControlledThrustComponent: OKComponent, OKUpdatableC
         // #4: Apply acceleration for the next frame.
         
         if  magnitudePerUpdate.isWithinBounds { // CHECK: PERFORMANCE
-            magnitudePerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            magnitudePerUpdate.update(timeStep: timeStep, deltaTime: CGFloat(seconds))
             magnitudePerUpdate.clamp()
         }
     }

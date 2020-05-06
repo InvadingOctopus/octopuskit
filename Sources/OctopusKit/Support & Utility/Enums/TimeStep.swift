@@ -8,28 +8,28 @@
 
 import Foundation
 
-/// Specifies the timestep for time-dependent components.
+/// Specifies the time step for time-dependent components.
 public enum TimeStep {
     
     // CHECK: Add "Between frame" updates?
     // http://expiredpopsicle.com/2014/09/16/Variable_Timesteps_and_Holy_Crap_Math_is_Hard.html
     // http://expiredpopsicle.com/2014/09/18/Tick_Time_Debt.html
     
-    /// Fixed timestep; applies a constant `…perUpdate` change to the affected values in `update(deltaTime:)` every frame.
+    /// Fixed time step; applies a constant `…perUpdate` change to the affected values in `update(deltaTime:)` every frame.
     ///
     /// Use this when slower gameplay is preferred to losing frames.
     case perFrame
     
-    /// Variable timestep; multiples each `…perUpdate` change by `deltaTime` in `update(deltaTime:)` every frame.
+    /// Variable time step; multiples each `…perUpdate` change by `deltaTime` in `update(deltaTime:)` every frame.
     ///
     /// Use this when losing frames is preferred to slower gameplay.
     case perSecond
     
-    /// Shorthand for `(timestep == .perFrame) ? change : change * deltaTime`
+    /// Shorthand for `(timeStep == .perFrame) ? change : change * deltaTime`
     ///
-    /// **Example:** `let acceleratedMagnitude = timestep.applying(acceleration, deltaTime: CGFloat(seconds))`
+    /// **Example:** `let acceleratedMagnitude = timeStep.applying(acceleration, deltaTime: CGFloat(seconds))`
     ///
-    /// - Returns: `change` if the timestep is `perFrame`, or `change * deltaTime` if the timestep is `perSecond`.
+    /// - Returns: `change` if the time step is `perFrame`, or `change * deltaTime` if the time step is `perSecond`.
     @inlinable
     public func applying <Number> (_ change:  Number,
                                    deltaTime: Number) -> Number
@@ -38,9 +38,9 @@ public enum TimeStep {
         return (self == .perFrame) ? change : change * deltaTime
     }
     
-    /// Shorthand for `value += (timestep == .perFrame) ? change : change * deltaTime`
+    /// Shorthand for `value += (timeStep == .perFrame) ? change : change * deltaTime`
     ///
-    /// **Example:** `timestep.apply(acceleration, to: &acceleratedMagnitude, deltaTime: CGFloat(seconds))`
+    /// **Example:** `timeStep.apply(acceleration, to: &acceleratedMagnitude, deltaTime: CGFloat(seconds))`
     @inlinable
     public func apply <Number> (_ change:  Number,
                                 to value:  inout Number,

@@ -24,39 +24,39 @@ public final class DirectionControlledTorqueComponent: OKComponent, OKUpdatableC
          PhysicsComponent.self]
     }
     
-    /// The torque in Newton-meters to apply to the node every update, with optional acceleration. Affected by `timestep`.
+    /// The torque in Newton-meters to apply to the node every update, with optional acceleration. Affected by `timeStep`.
     public var torquePerUpdate: AcceleratedValue<CGFloat>
     
-    /// Specifies a fixed or variable timestep for per-update changes.
-    public var timestep:        TimeStep
+    /// Specifies a fixed or variable time step for per-update changes.
+    public var timeStep:        TimeStep
     
     /// - Parameters:
-    ///   - torquePerUpdate: The amount of torque to apply every update, with optional acceleration. Affected by `timestep`.
-    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    ///   - torquePerUpdate: The amount of torque to apply every update, with optional acceleration. Affected by `timeStep`.
+    ///   - timeStep: Specifies a fixed or variable time step for per-update changes. Default: `.perSecond`
     public init(torquePerUpdate:    AcceleratedValue<CGFloat>,
-                timestep:           TimeStep = .perSecond)
+                timeStep:           TimeStep = .perSecond)
     {
         self.torquePerUpdate    = torquePerUpdate
-        self.timestep           = timestep
+        self.timeStep           = timeStep
         super.init()
     }
     
     /// - Parameters:
-    ///   - torquePerUpdate: The torque in Newton-meters to apply to the physics body every second. Affected by `timestep`.
-    ///   - acceleration: The amount to increase the torque by per second, while there is player input. The torque is reset to the `torquePerUpdate` when there is no player input. Affected by `timestep`.
+    ///   - torquePerUpdate: The torque in Newton-meters to apply to the physics body every second. Affected by `timeStep`.
+    ///   - acceleration: The amount to increase the torque by per second, while there is player input. The torque is reset to the `torquePerUpdate` when there is no player input. Affected by `timeStep`.
     ///   - maximum: The maximum torque to allow after acceleration has been applied.
-    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    ///   - timeStep: Specifies a fixed or variable time step for per-update changes. Default: `.perSecond`
     public convenience init(torquePerUpdate:    CGFloat  = 0.01, // ÷ 60 per frame
                             acceleration:       CGFloat  = 0,
                             maximum:            CGFloat  = 0.01, // ÷ 60 per frame
-                            timestep:           TimeStep = .perSecond)
+                            timeStep:           TimeStep = .perSecond)
     {
         self.init(torquePerUpdate: AcceleratedValue<CGFloat>(base:    torquePerUpdate,
                                                              current: torquePerUpdate,
                                                              maximum: maximum,
                                                              minimum: 0,
                                                              acceleration: acceleration),
-                  timestep: timestep)
+                  timeStep: timeStep)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -81,7 +81,7 @@ public final class DirectionControlledTorqueComponent: OKComponent, OKUpdatableC
         // ❕ NOTE: Positive rotation = counter-clockwise :)
         
         let directionsActive        = directionEventComponent.directionsActive
-        let torqueForCurrentFrame   = timestep.applying(torquePerUpdate.current, deltaTime: CGFloat(seconds))
+        let torqueForCurrentFrame   = timeStep.applying(torquePerUpdate.current, deltaTime: CGFloat(seconds))
         var torqueToApply: CGFloat  = 0
         
         if  directionsActive.contains(.right) { torqueToApply -= torqueForCurrentFrame } // ➡️
@@ -108,7 +108,7 @@ public final class DirectionControlledTorqueComponent: OKComponent, OKUpdatableC
         // #4: Apply acceleration for the next frame.
         
         if  torquePerUpdate.isWithinBounds { // CHECK: PERFORMANCE
-            torquePerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            torquePerUpdate.update(timeStep: timeStep, deltaTime: CGFloat(seconds))
             torquePerUpdate.clamp()
         }
     }

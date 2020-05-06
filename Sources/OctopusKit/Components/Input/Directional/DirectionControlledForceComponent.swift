@@ -30,41 +30,41 @@ public final class DirectionControlledForceComponent: OKComponent, OKUpdatableCo
     public var horizontalFactor:    CGFloat
     public var verticalFactor:      CGFloat
     
-    /// Specifies a fixed or variable timestep for per-update changes.
+    /// Specifies a fixed or variable time step for per-update changes.
     ///
-    /// For physics effects, a per-second timestep may be suitable.
-    public var timestep:            TimeStep
+    /// For physics effects, a per-second time step may be suitable.
+    public var timeStep:            TimeStep
     
     /// - Parameters:
-    ///   - magnitude: The magnitude to apply to the physics body on every update. Affected by `timestep`.
+    ///   - magnitude: The magnitude to apply to the physics body on every update. Affected by `timeStep`.
     ///   - horizontalFactor: Multiply the X axis force by this factor. Default: `1.0`. To reverse the X axis, specify a negative value like `-1`. To disable the X axis, specify `0`.
     ///   - verticalFactor: Multiply the Y axis force by this factor. Default: `1.0`. To reverse the Y axis, specify a negative value like `-1`. To disable the Y axis, specify `0`.
-    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    ///   - timeStep: Specifies a fixed or variable time step for per-update changes. Default: `.perSecond`
     public init(magnitude:          AcceleratedValue<CGFloat>,
                 horizontalFactor:   CGFloat  = 1.0,
                 verticalFactor:     CGFloat  = 1.0,
-                timestep:           TimeStep = .perSecond)
+                timeStep:           TimeStep = .perSecond)
     {
         self.magnitude          = magnitude
         self.horizontalFactor   = horizontalFactor
         self.verticalFactor     = verticalFactor
-        self.timestep           = timestep
+        self.timeStep           = timeStep
         super.init()
     }
     
     /// - Parameters:
-    ///   - baseMagnitude: The minimum magnitude to apply to the physics body on every update. Affected by `timestep`.
+    ///   - baseMagnitude: The minimum magnitude to apply to the physics body on every update. Affected by `timeStep`.
     ///   - maximumMagnitude: The maximum magnitude to allow after acceleration has been applied.
-    ///   - acceleration: The amount to increase the magnitude by, per update, while there is player input. The magnitude is reset to the `baseMagnitude` when there is no player input. Affected by `timestep`.
+    ///   - acceleration: The amount to increase the magnitude by, per update, while there is player input. The magnitude is reset to the `baseMagnitude` when there is no player input. Affected by `timeStep`.
     ///   - horizontalFactor: Multiply the X axis force by this factor. Default: `1.0`. To reverse the X axis, specify a negative value like `-1`. To disable the X axis, specify `0`.
     ///   - verticalFactor: Multiply the Y axis force by this factor. Default: `1.0`. To reverse the Y axis, specify a negative value like `-1`. To disable the Y axis, specify `0`.
-    ///   - timestep: Specifies a fixed or variable timestep for per-update changes. Default: `.perSecond`
+    ///   - timeStep: Specifies a fixed or variable time step for per-update changes. Default: `.perSecond`
     public convenience init(baseMagnitude:      CGFloat  = 600,  // ÷ 60 = 10 per frame
                             maximumMagnitude:   CGFloat  = 1200, // ÷ 60 = 20 per frame
                             acceleration:       CGFloat  = 600,
                             horizontalFactor:   CGFloat  = 1.0,
                             verticalFactor:     CGFloat  = 1.0,
-                            timestep:           TimeStep = .perSecond)
+                            timeStep:           TimeStep = .perSecond)
     {
         self.init(magnitude: AcceleratedValue<CGFloat>(base:         baseMagnitude,
                                                        current:      baseMagnitude,
@@ -73,7 +73,7 @@ public final class DirectionControlledForceComponent: OKComponent, OKUpdatableCo
                                                        acceleration: acceleration),
                   horizontalFactor: horizontalFactor,
                   verticalFactor: verticalFactor,
-                  timestep: timestep)
+                  timeStep: timeStep)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -94,7 +94,7 @@ public final class DirectionControlledForceComponent: OKComponent, OKUpdatableCo
         
         // ❕ NOTE: Don't use `switch` or `else` because we want to process multiple keypresses, to generate diagonal forces and also cancel out opposing directions.
         
-        let magnitudeForCurrentUpdate = timestep.applying(magnitude.current, deltaTime: CGFloat(seconds))
+        let magnitudeForCurrentUpdate = timeStep.applying(magnitude.current, deltaTime: CGFloat(seconds))
         var vector = CGVector.zero
 
         // TODO: Options for discrete (D-Pad) and analog (joystick) input.
@@ -117,7 +117,7 @@ public final class DirectionControlledForceComponent: OKComponent, OKUpdatableCo
         // Apply acceleration for the next update.
         
         if  magnitude.isWithinBounds {
-            magnitude.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            magnitude.update(timeStep: timeStep, deltaTime: CGFloat(seconds))
             magnitude.clamp()
         }
     }

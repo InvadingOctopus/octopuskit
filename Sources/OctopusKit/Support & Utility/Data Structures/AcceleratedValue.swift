@@ -74,10 +74,10 @@ public struct AcceleratedValue <Number: Numeric & Comparable> {
         current += acceleration * deltaTime
     }
     
-    /// Applies `acceleration` to the `current` value, scaling `acceleration` by `deltaTime` if `timestep` is `perSecond`.Does *not* check for `minimum` or `maximum`; call `clamp()` to limit the value within those bounds.
+    /// Applies `acceleration` to the `current` value, scaling `acceleration` by `deltaTime` if `timeStep` is `perSecond`.Does *not* check for `minimum` or `maximum`; call `clamp()` to limit the value within those bounds.
     @inlinable
-    public mutating func update(timestep: TimeStep, deltaTime: Number) {
-        timestep.apply(acceleration, to: &current, deltaTime: deltaTime)
+    public mutating func update(timeStep: TimeStep, deltaTime: Number) {
+        timeStep.apply(acceleration, to: &current, deltaTime: deltaTime)
     }
     
     /// If `current` is less than `minimum`, sets it to `minimum`, or if `current` is greater than `maximum`, sets it to `maximum` (checked in that order.)

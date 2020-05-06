@@ -23,11 +23,11 @@ public final class DirectionControlledRotationComponent: OKComponent, OKUpdatabl
          SpriteKitComponent.self]
     }
     
-    /// The amount to rotate the node by in a single update, with optional acceleration. Affected by `timestep`.
+    /// The amount to rotate the node by in a single update, with optional acceleration. Affected by `timeStep`.
     public var radiansPerUpdate:    AcceleratedValue<CGFloat>
     
-    /// Specifies a fixed or variable timestep for per-update changes.
-    public var timestep:            TimeStep
+    /// Specifies a fixed or variable time step for per-update changes.
+    public var timeStep:            TimeStep
 
     /// If `true`, `radiansPerUpdate` is reset to its base value when there is no rotation, for realistic inertia.
     ///
@@ -38,11 +38,11 @@ public final class DirectionControlledRotationComponent: OKComponent, OKUpdatabl
     public var directionForPreviousFrame: Int = 0 // Not private(set) so update(deltaTime:) can be @inlinable
     
     public init(radiansPerUpdate:   AcceleratedValue<CGFloat>,
-                timestep:           TimeStep = .perSecond,
+                timeStep:           TimeStep = .perSecond,
                 resetAccelerationWhenChangingDirection: Bool = true)
     {
         self.radiansPerUpdate       = radiansPerUpdate
-        self.timestep               = timestep
+        self.timeStep               = timeStep
         self.resetAccelerationWhenChangingDirection = resetAccelerationWhenChangingDirection
         super.init()
     }
@@ -50,7 +50,7 @@ public final class DirectionControlledRotationComponent: OKComponent, OKUpdatabl
     public convenience init(radiansPerUpdate:   CGFloat  = 1.0, // ÷ 60 = 0.01666666667 per frame
                             acceleration:       CGFloat  = 0,
                             maximum:            CGFloat  = 1.0,
-                            timestep:           TimeStep = .perSecond,
+                            timeStep:           TimeStep = .perSecond,
                             resetAccelerationWhenChangingDirection: Bool = true)
     {
         self.init(radiansPerUpdate: AcceleratedValue<CGFloat>(base:    radiansPerUpdate,
@@ -58,7 +58,7 @@ public final class DirectionControlledRotationComponent: OKComponent, OKUpdatabl
                                                               maximum: maximum,
                                                               minimum: 0,
                                                               acceleration: acceleration),
-                  timestep: timestep,
+                  timeStep: timeStep,
                   resetAccelerationWhenChangingDirection: resetAccelerationWhenChangingDirection)
     }
     
@@ -109,7 +109,7 @@ public final class DirectionControlledRotationComponent: OKComponent, OKUpdatabl
         
         // DESIGN: Multiplication instead of a couple `if`s may look smarter, but it would require CGFloat instead of Int :)
         
-        let radiansForCurrentFrame = timestep.applying(radiansPerUpdate.current, deltaTime: CGFloat(seconds))
+        let radiansForCurrentFrame = timeStep.applying(radiansPerUpdate.current, deltaTime: CGFloat(seconds))
         var rotationAmountForCurrentFrame: CGFloat = 0
         
         if  directionsActive.contains(.right) { // ➡️
@@ -123,13 +123,13 @@ public final class DirectionControlledRotationComponent: OKComponent, OKUpdatabl
         node.zRotation += rotationAmountForCurrentFrame
         
         #if LOGINPUTEVENTS
-        debugLog("node.zRotation = \(node.zRotation), rotationAmountForCurrentFrame =  \(rotationAmountForCurrentFrame), radiansPerUpdate = \(radiansPerUpdate), \(timestep)")
+        debugLog("node.zRotation = \(node.zRotation), rotationAmountForCurrentFrame =  \(rotationAmountForCurrentFrame), radiansPerUpdate = \(radiansPerUpdate), \(timeStep)")
         #endif
         
         // #5: Apply any acceleration, and clamp the speed to the pre-specified bounds.
         
         if  radiansPerUpdate.isWithinBounds { // CHECK: PERFORMANCE
-            radiansPerUpdate.update(timestep: timestep, deltaTime: CGFloat(seconds))
+            radiansPerUpdate.update(timeStep: timeStep, deltaTime: CGFloat(seconds))
             radiansPerUpdate.clamp()
         }
     }
