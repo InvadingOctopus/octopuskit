@@ -215,7 +215,7 @@ Your primary workflow will be writing component classes for each "part" of the g
 
 > e.g. say a _ParallaxBackgroundEntity_ containing a _CloudsComponent_, a *HillsComponent* and a *TreesComponent*, or a _GameSessionEntity_ containing a _WorldMapComponent_ and a _MultiplayerSyncComponent_.
 
-**Performance:** Although extensive benchmarks have not been done yet, OK can display **over 3000 sprites on an iPhone X at 60 frames per second**; each sprite represented by an entity with multiple components being updated every frame, and responding to touch input.
+**Performance:** Although extensive benchmarks have not been done yet, OK can display **over 5000 sprites on an iPhone XS at 60 frames per second**; each sprite represented by an entity with multiple components being updated every frame, and responding to touch input.
 
 ## Design Goals
 
