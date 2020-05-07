@@ -1,5 +1,5 @@
 //
-//  SpriteKitActionComponent.swift
+//  NodeActionComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/11/06.
@@ -9,10 +9,12 @@
 import SpriteKit
 import GameplayKit
 
+public typealias SpriteKitActionComponent = NodeActionComponent
+
 /// Adds an action to the entity's `NodeComponent` node with an automatically generated `key`, and removes any action associated with that key when this component is removed from that entity.
 ///
 /// **Dependencies:** `NodeComponent`
-public class SpriteKitActionComponent: OKComponent {
+public class NodeActionComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]
@@ -23,7 +25,7 @@ public class SpriteKitActionComponent: OKComponent {
     
     public init(action: SKAction) {
         self.action = action
-        self.key = "\(SpriteKitActionComponent.self)\(action.debugDescription)@\(Date().timeIntervalSince1970)"
+        self.key = "\(NodeActionComponent.self)\(action.debugDescription)@\(Date().timeIntervalSince1970)"
         super.init()
     }
     
