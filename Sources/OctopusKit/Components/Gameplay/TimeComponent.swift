@@ -10,11 +10,8 @@
 
 import GameplayKit
 
-/// Provides timekeeping for an entity and tracks the number of seconds elapsed.
-public final class TimeComponent: OKComponent, OKUpdatableComponent {
-    
-    /// When `true`, prevents the timekeeping properties from being updated every frame.
-    public var isPaused = false
+/// Tracks the number of seconds elapsed since adding to an entity and provides other timekeeping.
+open class TimeComponent: OKComponent, OKUpdatableComponent {
     
     /// Represents the time elapsed in seconds since the component was added to an entity.
     ///
@@ -31,6 +28,9 @@ public final class TimeComponent: OKComponent, OKUpdatableComponent {
     /// This flag is always set to `false` on the next frame, whether `isPaused` is `true` or not.
     public fileprivate(set) var hasNewSecondElapsed: Bool = false
     
+    /// When `true`, prevents the timekeeping properties from being updated every frame.
+    public var isPaused = false
+    
     public override init() {
         super.init()
     }
@@ -40,7 +40,7 @@ public final class TimeComponent: OKComponent, OKUpdatableComponent {
     /// Useful for syncing with other clocks.
     public init(secondsElapsed: TimeInterval) {
         
-        if secondsElapsed < 0 {
+        if  secondsElapsed < 0 {
             OctopusKit.logForWarnings("secondsElapsed = \(secondsElapsed), negative")
         }
         
@@ -51,7 +51,7 @@ public final class TimeComponent: OKComponent, OKUpdatableComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func update(deltaTime seconds: TimeInterval) {
+    open override func update(deltaTime seconds: TimeInterval) {
         
         hasNewSecondElapsed = false
         
@@ -84,7 +84,7 @@ public final class TimeComponent: OKComponent, OKUpdatableComponent {
     }
 }
 
-// MARK: -
+// MARK: - TimeComponentRecord
 
 /// Provides a log for the users of a `TimeComponent` to keep track of whether they executed any actions during a given second.
 ///
