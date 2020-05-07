@@ -14,9 +14,9 @@ extension GKComponent {
     // "The component system will then forward any component-specific messages it receives to all registered instances of its component class." — https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem
     // TODO: Tests
     
-    /// Convenient shorthand for accessing the SpriteKit node that is associated the `SpriteKitComponent` of this component's entity.
+    /// Convenient shorthand for accessing the SpriteKit node that is associated the `NodeComponent` of this component's entity.
     ///
-    /// If the entity does not have an `SpriteKitComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
+    /// If the entity does not have an `NodeComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
     @inlinable
     public var entityNode: SKNode? {
         #if LOGECSVERBOSE

@@ -14,7 +14,7 @@ public extension GKEntity {
     
     // MARK: - Properties
     
-    /// Returns the SpriteKit scene of either the `SpriteKitSceneComponent`, or the node of the `SpriteKitComponent` or `GKSKNodeComponent` (in that order) associated with this entity, if any.
+    /// Returns the SpriteKit scene of either the `SpriteKitSceneComponent`, or the node of the `NodeComponent` or `GKSKNodeComponent` (in that order) associated with this entity, if any.
     ///
     /// A `RelayComponent` may be used in place of those components.
     @inlinable
@@ -31,7 +31,7 @@ public extension GKEntity {
             ?? self.node?.scene
     }
     
-    /// Convenient shorthand for accessing the SpriteKit node associated with this entity's `SpriteKitComponent` or `GKSKNodeComponent` (in that order.)
+    /// Convenient shorthand for accessing the SpriteKit node associated with this entity's `NodeComponent` or `GKSKNodeComponent` (in that order.)
     ///
     /// A `RelayComponent` may be used in place of those components.
     @inlinable
@@ -44,12 +44,12 @@ public extension GKEntity {
         // ❕ NOTE: componentOrRelay(ofType:) used to cause infinite recursion with a `RelayComponent` that only had a `sceneComponentType`, because the RelayComponent tried to access its `entityNode` which leads back here. :)
         // FIXED: We now skip `componentOrRelay(ofType:)` and just use `component(ofType:)` and check `RelayComponent.directlyReferencedComponent` instead of `RelayComponent.target`
         
-        // ⚠️ WARNING: SUBCLASSES of `SpriteKitComponent` will NOT be recognized here!
+        // ⚠️ WARNING: SUBCLASSES of `NodeComponent` will NOT be recognized here!
         
         let nodeComponent =
-               self.component(ofType: SpriteKitComponent.self)
+               self.component(ofType: NodeComponent.self)
             ?? self.component(ofType: GKSKNodeComponent.self)
-            ?? self.component(ofType: RelayComponent<SpriteKitComponent>.self)?.directlyReferencedComponent
+            ?? self.component(ofType: RelayComponent<NodeComponent>.self)?.directlyReferencedComponent
             ?? self.component(ofType: RelayComponent<GKSKNodeComponent>.self)?.directlyReferencedComponent
         
         #if LOGECSVERBOSE
@@ -61,7 +61,7 @@ public extension GKEntity {
         // CHECK: Is looking for GKSKNodeComponent necessary?
     } 
     
-    /// Convenient shorthand for accessing the SpriteKit node associated with this entity's `SpriteKitComponent` or `GKSKNodeComponent` (in that order) as an `SKSpriteNode` if applicable.
+    /// Convenient shorthand for accessing the SpriteKit node associated with this entity's `NodeComponent` or `GKSKNodeComponent` (in that order) as an `SKSpriteNode` if applicable.
     ///
     /// A `RelayComponent` may be used in place of those components.
     @inlinable
@@ -81,7 +81,7 @@ public extension GKEntity {
     
     // MARK: - Initializers
     
-    // ℹ️ Warnings about initializing with nodes that already have an entity, are the responsibility of the `SpriteKitComponent` or `GKSKNodeComponent`.
+    // ℹ️ Warnings about initializing with nodes that already have an entity, are the responsibility of the `NodeComponent` or `GKSKNodeComponent`.
     
     /// Creates an entity with the supplied components.
     ///
@@ -93,12 +93,12 @@ public extension GKEntity {
         }
     }
     
-    /// Creates an entity with a `SpriteKitComponent` representing the specified node, optionally adding that node to a specified parent node.
+    /// Creates an entity with a `NodeComponent` representing the specified node, optionally adding that node to a specified parent node.
     convenience init(node: SKNode,
                      addToNode parentNode: SKNode? = nil)
     {
         self.init()
-        self.addComponent(SpriteKitComponent(node: node, addToNode: parentNode))
+        self.addComponent(NodeComponent(node: node, addToNode: parentNode))
     }
     
     // MARK: - Component Management

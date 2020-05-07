@@ -10,14 +10,14 @@ import GameplayKit
 
 /// Directs the `PositionSeekingGoalComponent` of the entity towards the point touched or clicked by the player.
 ///
-/// **Dependencies:** `PositionSeekingGoalComponent, SpriteKitComponent, PointerEventComponent`
+/// **Dependencies:** `PositionSeekingGoalComponent, NodeComponent, PointerEventComponent`
 public final class PointerControlledSeekingComponent: OKComponent, OKUpdatableComponent {
 
-    // TODO: A way to not rely on a `SpriteKitComponent` so that entities without a visual representation (i.e. only agents or "ghosts") may be able to use this component.
+    // TODO: A way to not rely on a `NodeComponent` so that entities without a visual representation (i.e. only agents or "ghosts") may be able to use this component.
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PositionSeekingGoalComponent.self,
-         SpriteKitComponent.self,
+         NodeComponent.self,
          PointerEventComponent.self]
     }
     

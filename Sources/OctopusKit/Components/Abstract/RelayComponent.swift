@@ -23,7 +23,7 @@ public final class RelayComponent <MasterComponentType> : OKComponent
     
     /// The component that this `RelayComponent` holds a reference to.
     ///
-    /// At runtime, this property resolves to either the `directlyReferencedComponent`, or if that is `nil`, the `sceneComponentType`, which checks the scene entity of the `SpriteKitComponent` node of this `RelayComponent`'s entity.
+    /// At runtime, this property resolves to either the `directlyReferencedComponent`, or if that is `nil`, the `sceneComponentType`, which checks the scene entity of the `NodeComponent` node of this `RelayComponent`'s entity.
     ///
     /// The `GKComponent.coComponent(ofType:)` and `GKEntity.componentOrRelay(ofType:)` methods will check the entity for a `RelayComponent` which points to a component matching the specified type, if the entity itself does not have a component of the specified type.
     ///
@@ -64,7 +64,7 @@ public final class RelayComponent <MasterComponentType> : OKComponent
     
     // PERFORMANCE: The increased property accesses may decrease performance, especially for components like `TouchEventComponent` that are accessed every frame.
     
-    /// The type of component to look for in the entity which represents the scene associated with the `SpriteKitComponent` node of this `RelayComponent`'s entity.
+    /// The type of component to look for in the entity which represents the scene associated with the `NodeComponent` node of this `RelayComponent`'s entity.
     ///
     /// `RelayComponent.entityNode?.scene?.entity?.component(ofType: sceneComponentType)`
     ///
@@ -99,7 +99,7 @@ public final class RelayComponent <MasterComponentType> : OKComponent
         super.init()
     }
     
-    /// Creates a `RelayComponent` which points to a component of the specified type in the scene entity associated with the `SpriteKitComponent` node of this `RelayComponent`'s entity.
+    /// Creates a `RelayComponent` which points to a component of the specified type in the scene entity associated with the `NodeComponent` node of this `RelayComponent`'s entity.
     ///
     /// Whenever the `target` of this relay is requested, it will check for `self.entityNode?.scene?.entity?.component(ofType: sceneComponentType)`.
     public init (sceneComponentType: MasterComponentType.Type) {

@@ -13,7 +13,7 @@ public typealias OctopusAgent2D = OKAgent2D
 
 /// Adds a 2D agent to an entity, which may then be controlled via goal components.
 ///
-/// When added to an entity, automatically sets the agent's `delegate` to the entity's `SpriteKitComponent` node, and matches its initial `position` and `rotation` to the node.
+/// When added to an entity, automatically sets the agent's `delegate` to the entity's `NodeComponent` node, and matches its initial `position` and `rotation` to the node.
 public final class OKAgent2D: GKAgent2D, OKUpdatableComponent {
     
     public init(radius: Float? = nil,
@@ -35,13 +35,13 @@ public final class OKAgent2D: GKAgent2D, OKUpdatableComponent {
         
         if self.delegate == nil {
             
-            if let spriteKitComponent = coComponent(SpriteKitComponent.self) {
+            if let spriteKitComponent = coComponent(NodeComponent.self) {
                 // NOTE: If you use the `GKSKNodeComponent` class to manage the relationship between an entity and a SpriteKit node, set your `GKSKNodeComponent` instance as the delegate for that entity's agent, and GameplayKit will automatically synchronize the agent and its SpriteKit representation. — https://developer.apple.com/documentation/gameplaykit/gkagentdelegate
-                // `SpriteKitComponent` is a subclass of `GKSKNodeComponent`
+                // `NodeComponent` is a subclass of `GKSKNodeComponent`
                 self.delegate = spriteKitComponent
             }
             else {
-                OctopusKit.logForWarnings("\(entity) missing SpriteKitComponent — Cannot set delegate")
+                OctopusKit.logForWarnings("\(entity) missing NodeComponent — Cannot set delegate")
             }
             
         }
@@ -54,11 +54,11 @@ public final class OKAgent2D: GKAgent2D, OKUpdatableComponent {
             self.rotation = Float(node.zRotation)
         }
         else {
-            OctopusKit.logForWarnings("\(entity) does not have a SpriteKitComponent with a valid node – Cannot set initial position/rotation")
+            OctopusKit.logForWarnings("\(entity) does not have a NodeComponent with a valid node – Cannot set initial position/rotation")
         }
     }
     
-    /// Copies properties such as `radius` and `mass` from the entity's `SpriteKitComponent` node.
+    /// Copies properties such as `radius` and `mass` from the entity's `NodeComponent` node.
     ///
     /// The `radius` is set to the greater value among the node's width or height.
     private func copyPropertiesFromNode() {

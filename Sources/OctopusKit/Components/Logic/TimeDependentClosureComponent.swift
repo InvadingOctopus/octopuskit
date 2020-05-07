@@ -25,7 +25,7 @@ public final class TimeDependentClosureComponent: OKComponent, OKUpdatableCompon
     ///
     ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
     ///
-    ///     **Example:** `component.coComponent(ofType: SpriteKitComponent.self)?.node`
+    ///     **Example:** `component.coComponent(ofType: NodeComponent.self)?.node`
     ///
     /// - Parameter totalTime: The seconds elapsed since this component was initialized.
     ///

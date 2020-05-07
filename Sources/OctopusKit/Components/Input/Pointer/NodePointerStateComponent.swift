@@ -13,7 +13,7 @@
 import SpriteKit
 import GameplayKit
 
-/// An intermediary component which tracks a pointer (touch or mouse) if it begins in the entity's `SpriteKitComponent` node, and updates its state depending on the position of the pointer in relation to the node's bounds.
+/// An intermediary component which tracks a pointer (touch or mouse) if it begins in the entity's `NodeComponent` node, and updates its state depending on the position of the pointer in relation to the node's bounds.
 ///
 /// Other components can simply query this component's `state`, `latestEventForCurrentFrame` and other properties to implement pointer-controlled behavior, such as moving a node while it's being touched or updating a sprite's visual state when it's clicked, without having to directly track touches or the mouse pointer.
 ///
@@ -21,13 +21,13 @@ import GameplayKit
 ///
 /// - NOTE: Whereas a `PointerEventComponent` should generally be added to a scene and then linked to other entities via `RelayComponent`s, a `NodePointerStateComponent` should be added to every entity whose nodes represent a visually interactive area in the scene, such as buttons.
 ///
-/// - NOTE: This component only tracks a single pointer by design; e.g. the first touch that begins inside the entity's `SpriteKitComponent` node. For multi-touch gestures, use components based on gesture-recognizers.
+/// - NOTE: This component only tracks a single pointer by design; e.g. the first touch that begins inside the entity's `NodeComponent` node. For multi-touch gestures, use components based on gesture-recognizers.
 ///
-/// **Dependencies:** `SpriteKitComponent`, `PointerEventComponent`
+/// **Dependencies:** `NodeComponent`, `PointerEventComponent`
 public final class NodePointerStateComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          PointerEventComponent.self]
     }
     
@@ -35,7 +35,7 @@ public final class NodePointerStateComponent: OKComponent, OKUpdatableComponent 
     
     // MARK: State
     
-    /// The current state of player interaction with the entity's `SpriteKitComponent` node. See the descriptions for each case of `NodePointerState`.
+    /// The current state of player interaction with the entity's `NodeComponent` node. See the descriptions for each case of `NodePointerState`.
     ///
     /// Changing this property copies the old value to `previousState.`
     @LogInputEventChanges(propertyName: "NodePointerStateComponent.state")
@@ -67,7 +67,7 @@ public final class NodePointerStateComponent: OKComponent, OKUpdatableComponent 
     
     // MARK: Pointer
     
-    /// Stores the last received event of the event sequence which began inside the entity's `SpriteKitComponent` node.
+    /// Stores the last received event of the event sequence which began inside the entity's `NodeComponent` node.
     ///
     /// This property is set to `nil` whenever the `state` changes to `ready` and when there are no more pointer events related to the node.
     ///
@@ -131,13 +131,13 @@ public final class NodePointerStateComponent: OKComponent, OKUpdatableComponent 
         }
     }
     
-    /// The first observed location of the currently-tracked pointer, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
+    /// The first observed location of the currently-tracked pointer, in the coordinate system of the parent node containing the entity's `NodeComponent` node.
     ///
     /// Other components can compare the current location of the pointer with this value to obtain the total translation over time.
     @LogInputEventChanges(propertyName: "NodePointerStateComponent.initialPointerLocationInParent")
     public private(set) var initialPointerLocationInParent: CGPoint? = nil
     
-    /// Returns the total translation over time of the currently-tracked pointer's location, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
+    /// Returns the total translation over time of the currently-tracked pointer's location, in the coordinate system of the parent node containing the entity's `NodeComponent` node.
     ///
     /// - NOTE: This is *not* a delta value from the last time that the translation was reported.
     public  var pointerTranslationInParent: CGPoint? {

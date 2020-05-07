@@ -6,7 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// CHECK: Should this component be just replaced with `SpriteKitComponent`?
+// CHECK: Should this component be just replaced with `NodeComponent`?
 
 import GameplayKit
 
@@ -24,7 +24,7 @@ public class SpriteKitSceneComponent: OKComponent {
         super.didAddToEntity(withNode: node)
         
         // Remove ourselves if our node is not a scene
-        // ⚠️ NOTE: This does not prevent this component from being added to entities WITHOUT an `SpriteKitComponent`/`GKSKNodeComponent`
+        // ⚠️ NOTE: This does not prevent this component from being added to entities WITHOUT an `NodeComponent`/`GKSKNodeComponent`
         
         guard node is SKScene || node is OKScene // CHECK: Is checking for subclass redundant?
             else {

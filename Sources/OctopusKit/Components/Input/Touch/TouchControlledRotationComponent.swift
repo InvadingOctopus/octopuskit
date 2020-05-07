@@ -13,18 +13,18 @@ import GameplayKit
 
 #if canImport(UIKit)
 
-/// Modifies the `zRotation` of the entity's `SpriteKitComponent` node to gradually turn it towards the touch location as received via a `TouchEventComponent`.
+/// Modifies the `zRotation` of the entity's `NodeComponent` node to gradually turn it towards the touch location as received via a `TouchEventComponent`.
 ///
 /// See also: `PositionSeekingGoalComponent` and `TouchControlledSeekingComponent`
 ///
-/// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
+/// **Dependencies:** `NodeComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
 public final class TouchControlledRotationComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          TouchEventComponent.self]
     }
     

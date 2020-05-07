@@ -51,7 +51,7 @@ public final class PositionSeekingGoalComponent: OKAgentGoalComponent {
         }
     }
     
-    /// If `true`, the `zRotation` of the entity's `SpriteKitComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
+    /// If `true`, the `zRotation` of the entity's `NodeComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
     public var shouldFaceTargetWhenAddedToEntity: Bool
     
     /// A goal to "brake" the agent to a halt when there is no target position.
@@ -65,7 +65,7 @@ public final class PositionSeekingGoalComponent: OKAgentGoalComponent {
     /// - Warning: Setting the value too high may "snap" the agent's heading/rotation erratically.
     public var brakeGoalWeightOverride: Float? = nil
     
-    /// - Parameter shouldFaceTargetWhenAddedToEntity: If `true`, the `zRotation` of the entity's `SpriteKitComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
+    /// - Parameter shouldFaceTargetWhenAddedToEntity: If `true`, the `zRotation` of the entity's `NodeComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
     public init(
         targetPosition: CGPoint? = nil,
         shouldFaceTargetWhenAddedToEntity: Bool = false,

@@ -64,11 +64,11 @@ This prevents the component from being active outside the frame-update cycle, or
     - A SpriteKit scene processes touch and other input events **outside** of its `update(_:)` method; when those event handlers update input-processing components, those components will (should) only be able to act on the input data during the scene's `update(_:)` method.
 
 - OctopusKit components may sometimes cause some "friction" against the SpriteKit API.  
-  e.g.: when adding a `SpriteKitComponent` and a `PhysicsComponent` to an entity; the SpriteKit node may have its own `physicsBody` and the `PhysicsComponent` may have a different `physicsBody`.
+  e.g.: when adding a `NodeComponent` and a `PhysicsComponent` to an entity; the SpriteKit node may have its own `physicsBody` and the `PhysicsComponent` may have a different `physicsBody`.
     - As a general rule, adding a component to an entity assumes that the component adds its encapsulated functionality to that entity, replacing any identical functionality that already exists. 
     
         > e.g.: If you add a "blank" component, e.g. a `PhysicsComponent` with a `nil` `physicsBody`, then the component attempts to "adopt" any existing properties of the underlying SpriteKit object.  
-        In this example, the blank `PhysicsComponent` will set its property to the `physicsBody`, if any, of the `SpriteKitComponent` node. After that, other components should access the node's physics properties through the `PhysicsComponent` instead of the node's `physicsBody` property.
+        In this example, the blank `PhysicsComponent` will set its property to the `physicsBody`, if any, of the `NodeComponent` node. After that, other components should access the node's physics properties through the `PhysicsComponent` instead of the node's `physicsBody` property.
 
 - Entities and components may not always be the answer to everything. *Sometimes* good old classes and structs may be the better solution. (^ - ^")
 

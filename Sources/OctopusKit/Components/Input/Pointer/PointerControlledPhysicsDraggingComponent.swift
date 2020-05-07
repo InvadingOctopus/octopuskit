@@ -18,13 +18,13 @@ import GameplayKit
 /// - Prevents the body from being affected by gravity while it is being held.
 /// - Modifies the body's velocity.
 ///
-/// **Dependencies:** `NodePointerStateComponent, PhysicsComponent, SpriteKitComponent`
+/// **Dependencies:** `NodePointerStateComponent, PhysicsComponent, NodeComponent`
 public final class PointerControlledPhysicsDraggingComponent: OKComponent, OKUpdatableComponent {
     
     // ℹ️ DESIGN: Not pinning to the specific pointer location, because that would be inconvenient for the user to control on a [small] screen, and also seems like overkill in the amount of code it takes and the temporary node it needs to create, as well as likely impacting performance.
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          PhysicsComponent.self,
          NodePointerStateComponent.self]
     }

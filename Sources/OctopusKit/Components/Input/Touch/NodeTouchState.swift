@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// The state of a touch-based interaction in relation to a `SpriteKitComponent` node, as tracked by components which handle player input, such as `NodeTouchStateComponent`.
+/// The state of a touch-based interaction in relation to a `NodeComponent` node, as tracked by components which handle player input, such as `NodeTouchStateComponent`.
 @available(iOS 13.0, *)
 @available(macOS, unavailable, message: "Use NodePointerState")
 public enum NodeTouchState: String, CustomStringConvertible {

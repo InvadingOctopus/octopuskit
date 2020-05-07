@@ -9,11 +9,11 @@
 import SpriteKit
 import GameplayKit
 
-/// Applies a forward or backwards thrust to the entity's `PhysicsComponent` body on every frame, in the direction of the `SpriteKitComponent` node's rotation, based on `DirectionEventComponent` input.
+/// Applies a forward or backwards thrust to the entity's `PhysicsComponent` body on every frame, in the direction of the `NodeComponent` node's rotation, based on `DirectionEventComponent` input.
 ///
 /// Set the `LOGINPUTEVENTS` compilation flag to log values.
 ///
-/// **Dependencies:** `DirectionEventComponent`, `PhysicsComponent`, `SpriteKitComponent`
+/// **Dependencies:** `DirectionEventComponent`, `PhysicsComponent`, `NodeComponent`
 public final class DirectionControlledThrustComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
@@ -23,7 +23,7 @@ public final class DirectionControlledThrustComponent: OKComponent, OKUpdatableC
     public override var requiredComponents: [GKComponent.Type]? {
         [DirectionEventComponent.self,
          PhysicsComponent.self,
-         SpriteKitComponent.self]
+         NodeComponent.self]
     }
         
     /// The amount of thrust to apply in a single update, with optional acceleration. Affected by `timeStep`. Reset when there is no player input.

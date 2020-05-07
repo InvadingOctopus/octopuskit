@@ -26,10 +26,10 @@ public final class AgentSeekingGoalComponent: OKAgentGoalComponent {
         }
     }
 
-    /// If `true`, the `zRotation` of the entity's `SpriteKitComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
+    /// If `true`, the `zRotation` of the entity's `NodeComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
     public var shouldFaceTargetWhenAddedToEntity: Bool
     
-    /// - Parameter shouldFaceTargetWhenAddedToEntity: If `true`, the `zRotation` of the entity's `SpriteKitComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
+    /// - Parameter shouldFaceTargetWhenAddedToEntity: If `true`, the `zRotation` of the entity's `NodeComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
     public init(targetAgent: OKAgent2D? = nil,
                 shouldFaceTargetWhenAddedToEntity: Bool = false,
                 goalWeight:  Float = 5.0,

@@ -8,20 +8,20 @@
 
 import GameplayKit
 
-/// The base class for components that create and add a child node to their entity's primary `SpriteKitComponent` node.
+/// The base class for components that create and add a child node to their entity's primary `NodeComponent` node.
 ///
 /// For example, a UI overlay on a base sprite or even sound effects. When this component is removed from an entity, it also removes the attached node(s) from the parent. To add multiple nodes, use the `SKNode(children:)` construction, as adding multiple components of the same type to an entity is not supported by GameplayKit.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
     
     // 💡 To use, simply subclass with the appropriate generic type, and implement (override) `createAttachment(for:)`.
     
     open override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self]
+        [NodeComponent.self]
     }
     
-    /// The child node to add to the parent node specified by the entity's `SpriteKitComponent`. Subclasses of this component may create this node during `createAttachment(for:)`.
+    /// The child node to add to the parent node specified by the entity's `NodeComponent`. Subclasses of this component may create this node during `createAttachment(for:)`.
     ///
     /// Takes effect only when this component is added to an entity, during `didAddToEntity(withNode:)`.
     public var attachment: AttachmentType?
@@ -60,7 +60,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
 //        fatalError("init(coder:) has not been implemented")
     }
     
-    /// `super` must be called by overriding subclass for proper functionality. Adds `attachment` as a child of the `node` specified by the `SpriteKitComponent`.
+    /// `super` must be called by overriding subclass for proper functionality. Adds `attachment` as a child of the `node` specified by the `NodeComponent`.
     open override func didAddToEntity(withNode node: SKNode) {
         OctopusKit.logForComponents("\(node) ← \(attachment)")
         
@@ -142,7 +142,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
             let existingParent = attachment.parent,
             existingParent !== targetParent
         {
-            OctopusKit.logForWarnings("\(attachment) already has a different parent: \(existingParent) — Moving to \(String(describing: entity))'s SpriteKitComponent node: \(targetParent)")
+            OctopusKit.logForWarnings("\(attachment) already has a different parent: \(existingParent) — Moving to \(String(describing: entity))'s NodeComponent node: \(targetParent)")
             
             attachment.removeFromParent() // ℹ️ DESIGN: Snatch the attachment from its existing parent, as that would be the expected behavior of adding this component.
         }
@@ -170,7 +170,7 @@ open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
         
         OctopusKit.logForComponents("\(node) ~ \(attachment)")
         
-        // If a separate parent was not specified, assume the entity's `SpriteKitComponent` node to be the rightful parent.
+        // If a separate parent was not specified, assume the entity's `NodeComponent` node to be the rightful parent.
         let parent = self.parentOverride ?? node
         
         if attachment.parent !== parent {

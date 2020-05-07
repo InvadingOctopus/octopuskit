@@ -14,9 +14,9 @@
 
 import GameplayKit
 
-/// Creates an `SKAudioNode` from the specified filename and plays it when this component is added to an entity, adding the music node to the entity's `SpriteKitComponent` node.
+/// Creates an `SKAudioNode` from the specified filename and plays it when this component is added to an entity, adding the music node to the entity's `NodeComponent` node.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class MusicComponent: SpriteKitAttachmentComponent<SKAudioNode> {
     
     // ℹ️ DESIGN: As we have to setup the music in our initialization, and play it after it has been added to a parent node, we do not use `createAttachment(for:)` and just set `self.attachment` directly.

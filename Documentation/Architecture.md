@@ -203,7 +203,7 @@ The objects that actually present your game on screen:
 
 - Every SpriteKit node has an optional `entity?` property. Since a scene also ultimately inherits from `SKNode`, it may also have an entity associated with it.
 
-- The `OKScene.entity?` property is initialized with a `SpriteKitComponent` and `SpriteKitSceneComponent` to represent the top of the node tree.
+- The `OKScene.entity?` property is initialized with a `NodeComponent` and `SpriteKitSceneComponent` to represent the top of the node tree.
 
 - Other components may be added directly to the scene entity to represent elements such as background layers, HUD overlays, other high-level visual features or abstract logic that acts upon the scene as a whole.
 
@@ -247,7 +247,7 @@ The objects that actually present your game on screen:
 
 - SpriteKit and GameplayKit features should be abstracted behind and accessed via components as much as conveniently and practically possible.
 	
-	> e.g. access an `SKSpriteNode`'s `physicsBody` through a `PhysicsComponent`, instead of an `SpriteKitComponent`'s node. This way, when the `PhysicsComponent` is removed from an entity, it marks the entity as no longer affected by physics.
+	> e.g. access an `SKSpriteNode`'s `physicsBody` through a `PhysicsComponent`, instead of an `NodeComponent`'s node. This way, when the `PhysicsComponent` is removed from an entity, it marks the entity as no longer affected by physics.
 
 - A component's properties can be supplied upon initialization and should generally be accessible afterwards.
 
@@ -293,7 +293,7 @@ A component may be conceptually classified under one or more of the following ca
 
 ### What should be Entities and what should be Components?
 
-- A spaceship, or a monster, are not components; they are entities. A spaceship may have a *ThrusterComponent*, and a *GunComponent*. A monster may have a *MonsterSpeciesComponent*. Both will have a `SpriteKitComponent`, `PhysicsComponent` etc.
+- A spaceship, or a monster, are not components; they are entities. A spaceship may have a *ThrusterComponent*, and a *GunComponent*. A monster may have a *MonsterSpeciesComponent*. Both will have a `NodeComponent`, `PhysicsComponent` etc.
 
 > TODO: OKComponent API overview
 

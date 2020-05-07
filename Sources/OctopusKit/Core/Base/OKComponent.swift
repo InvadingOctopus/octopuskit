@@ -137,10 +137,10 @@ open class OKComponent: GKComponent {
         
     }
     
-    /// Abstract; To be implemented by subclass. Provides convenient access to the `SpriteKitComponent` node that the entity is associated with.
+    /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
     open func didAddToEntity(withNode node: SKNode) {}
     
-    /// Abstract; To be implemented by subclass. Provides convenient access to the `SpriteKitComponent` node that the entity is associated with.
+    /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
     open func willRemoveFromEntity(withNode node: SKNode) {}
     
     /// Tells the entity to remove components of this type, and clears the `shouldRemoveFromEntityOnDeinit` and `shouldWarnIfDeinitWithoutRemoving` flags.

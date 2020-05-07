@@ -58,7 +58,7 @@ struct ContentView: View {
 var character = OKEntity(components: [
     
     // Start with a blank texture.
-    SpriteKitComponent(node: SKSpriteNode(color: .clear, size: CGSize(widthAndHeight: 42))),
+    NodeComponent(node: SKSpriteNode(color: .clear, size: CGSize(widthAndHeight: 42))),
     
     // Load texture resources.
     TextureDictionaryComponent(atlasName: "PlayerCharacter"),
@@ -168,7 +168,7 @@ for turretNode in scene["//Turret"] {
     // Create a new entity for each node found.
     scene.addEntity(OKEntity(components: [
     
-        SpriteKitComponent(node: turretNode),
+        NodeComponent(node: turretNode),
         RelayComponent(for: sharedPointerEventComponent),
                         
         // Hypothetical game-specific components.

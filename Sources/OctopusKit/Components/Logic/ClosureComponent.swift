@@ -27,7 +27,7 @@ public final class ClosureComponent: SingleUseComponent {
     ///
     ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
     ///
-    ///     **Example:** `component.coComponent(ofType: SpriteKitComponent.self)?.node`
+    ///     **Example:** `component.coComponent(ofType: NodeComponent.self)?.node`
     public typealias ClosureType = (_ component: ClosureComponent) -> Void
     
     /// The block of code to execute when this component is added to an entity.

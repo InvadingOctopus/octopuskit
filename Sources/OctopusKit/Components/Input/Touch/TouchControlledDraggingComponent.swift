@@ -30,14 +30,14 @@ import GameplayKit
 
 #if canImport(UIKit)
 
-/// Allows the player to drag the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchStateComponent`.
+/// Allows the player to drag the entity's `NodeComponent` node based on input from the entity's `NodeTouchStateComponent`.
 ///
-/// **Dependencies:** `NodeTouchStateComponent, SpriteKitComponent`
+/// **Dependencies:** `NodeTouchStateComponent, NodeComponent`
 @available(iOS 13.0, *)
 public final class TouchControlledDraggingComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          NodeTouchStateComponent.self]
     }
     

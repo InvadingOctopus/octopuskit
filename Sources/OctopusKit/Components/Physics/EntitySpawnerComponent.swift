@@ -9,17 +9,17 @@
 import SpriteKit
 import GameplayKit
 
-/// Signals the entity of this component to spawn a new entity, in the direction of the entity's `SpriteKitComponent` node, and applies the specified initial forces to the new entity's physics body if there is one.
+/// Signals the entity of this component to spawn a new entity, in the direction of the entity's `NodeComponent` node, and applies the specified initial forces to the new entity's physics body if there is one.
 ///
 /// This component may be used for launching projectiles (such as bullets or missiles) from a character or another onscreen object.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 open class EntitySpawnerComponent: OKComponent {
 
     // CHECK: Should this be named "Emitter" to be consistent with "Particle Emitter", or should this be named "Spawner" because that may be more accurate?
     
     open override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self]
+        [NodeComponent.self]
     }
     
     // TODO: Fix template copying.
@@ -80,7 +80,7 @@ open class EntitySpawnerComponent: OKComponent {
     /// Requests this component's entity's delegate (i.e. the scene) to spawn a new entity.
     /// - Parameters:
     ///   - entityToSpawnOverride: Overrides the `spawnTemplate` property.
-    ///   - parentOverride: Specifies a different parent node other than this component's entity's `SpriteKitComponent` node.
+    ///   - parentOverride: Specifies a different parent node other than this component's entity's `NodeComponent` node.
     ///   - offsetFromParentOverride: Overrides the `offsetFromParent` property.
     ///   - angleOffsetFromParentOverride: Overrides the `angleOffsetFromParent` property.
     ///   - initialImpulseOverride: Overrides the `initialImpulse` property.

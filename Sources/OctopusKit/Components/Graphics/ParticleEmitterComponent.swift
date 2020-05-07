@@ -8,13 +8,13 @@
 
 import GameplayKit
 
-/// Adds a `SKEmitterNode` to the entity's `SpriteKitComponent` node.
+/// Adds a `SKEmitterNode` to the entity's `NodeComponent` node.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class ParticleEmitterComponent: SpriteKitAttachmentComponent<SKEmitterNode> {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self]
+        [NodeComponent.self]
     }
     
     public var emitterNode: SKEmitterNode

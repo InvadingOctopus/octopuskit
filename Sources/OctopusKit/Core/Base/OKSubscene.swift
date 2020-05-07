@@ -82,7 +82,7 @@ open class OKSubscene: SKNode,
         
         // Create an entity to represent the primary node itself.
         
-        let subsceneEntity = OKEntity(name: self.name, node: self) // NOTE: `node: self` adds a `SpriteKitComponent`.
+        let subsceneEntity = OKEntity(name: self.name, node: self) // NOTE: `node: self` adds a `NodeComponent`.
         self.entity = subsceneEntity
         addEntity(subsceneEntity)
         

@@ -28,13 +28,13 @@
 import SpriteKit
 import GameplayKit
 
-/// Allows the player to drag the entity's `SpriteKitComponent` node based on input from the entity's `NodePointerStateComponent`.
+/// Allows the player to drag the entity's `NodeComponent` node based on input from the entity's `NodePointerStateComponent`.
 ///
-/// **Dependencies:** `NodePointerStateComponent, SpriteKitComponent`
+/// **Dependencies:** `NodePointerStateComponent, NodeComponent`
 public final class PointerControlledDraggingComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          NodePointerStateComponent.self]
     }
     

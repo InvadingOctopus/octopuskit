@@ -11,7 +11,7 @@ import GameplayKit
 
 #if canImport(UIKit)
 
-/// Executes one of the supplied closures for each state of touch-based player interaction with the entity's `SpriteKitComponent` node.
+/// Executes one of the supplied closures for each state of touch-based player interaction with the entity's `NodeComponent` node.
 ///
 /// This component calls the supplied closures with a reference to `self`, so that the component's user can refer to the instance properties of this component, such as its entity or co-components, at the calling site before it has finished initialization.
 ///
@@ -40,14 +40,14 @@ open class NodeTouchClosureComponent: OKComponent, OKUpdatableComponent {
     ///
     ///     **Example:** `(component.entity as? OKEntity)?.name`
     ///
-    /// - Parameter node: The `SpriteKitComponent` node of the entity associated with this component.
+    /// - Parameter node: The `NodeComponent` node of the entity associated with this component.
     public typealias NodeTouchClosureType = (
         _ component: NodeTouchClosureComponent,
         _ node: SKNode)
         -> Void
     
     open override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          NodeTouchStateComponent.self]
     }
     

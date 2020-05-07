@@ -9,18 +9,18 @@
 import SpriteKit
 import GameplayKit
 
-/// Rotates the entity's `SpriteKitComponent` node based on `DirectionEventComponent` input which may come from a keyboard, gamepad or joystick.
+/// Rotates the entity's `NodeComponent` node based on `DirectionEventComponent` input which may come from a keyboard, gamepad or joystick.
 ///
 /// Set the `LOGINPUTEVENTS` compilation flag to log values.
 ///
-/// **Dependencies:** `DirectionEventComponent`, `SpriteKitComponent`
+/// **Dependencies:** `DirectionEventComponent`, `NodeComponent`
 public final class DirectionControlledRotationComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     
     public override var requiredComponents: [GKComponent.Type]? {
         [DirectionEventComponent.self,
-         SpriteKitComponent.self]
+         NodeComponent.self]
     }
     
     /// The amount to rotate the node by in a single update, with optional acceleration. Affected by `timeStep`.

@@ -22,15 +22,15 @@ import GameplayKit
 
 #if os(iOS) // TODO: Add macOS trackpad and tvOS support.
 
-/// Drags the entity's `SpriteKitComponent` node based on input from the entity's `NodeTouchStateComponent` and `PanGestureRecognizerComponent`.
+/// Drags the entity's `NodeComponent` node based on input from the entity's `NodeTouchStateComponent` and `PanGestureRecognizerComponent`.
 ///
-/// **Dependencies:** `NodeTouchStateComponent, PanGestureRecognizerComponent, SpriteKitComponent`
+/// **Dependencies:** `NodeTouchStateComponent, PanGestureRecognizerComponent, NodeComponent`
 public final class PanControlledDraggingComponent: OKComponent, OKUpdatableComponent {
     
     public static let inertialMovementKey = "OctopusKit.PanControlledDraggingComponent.Move"
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          NodeTouchStateComponent.self,
          PanGestureRecognizerComponent.self]
     }

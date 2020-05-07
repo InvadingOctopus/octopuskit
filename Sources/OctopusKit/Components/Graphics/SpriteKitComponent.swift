@@ -1,5 +1,5 @@
 //
-//  SpriteKitComponent.swift
+//  NodeComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/09.
@@ -10,16 +10,16 @@
 
 import GameplayKit
 
-public typealias NodeComponent = SpriteKitComponent
+public typealias SpriteKitComponent = NodeComponent
 
-/// A component that manages a SpriteKit node and provides the primary visual representation for entities.
+/// Manages a SpriteKit node and provides the primary visual representation for entities. One of the core objects in OctopusKit.
 ///
 /// - IMPORTANT: As a temporary fix for APPLEBUG 20180515a, the `isPaused` property of the node is set to `false` when this component is added to an entity.
 ///
-/// - WARNING: Some core OctopusKit functionality (such as accessing the onscreen node of an entity at runtime) specifically requires `GKSKNodeComponent` or `SpriteKitComponent` and may **not** work with their subclasses! Components that represent visuals, such as a `TileMapComponent`, must include a node that must be added to an entity via `SpriteKitComponent(node:)`.
-public final class SpriteKitComponent: GKSKNodeComponent {
+/// - WARNING: Some core OctopusKit functionality (such as accessing the onscreen node of an entity at runtime) specifically requires `GKSKNodeComponent` or `NodeComponent` and may **not** work with their subclasses! Components that represent visuals, such as a `TileMapComponent`, must include a node that must be added to an entity via `NodeComponent(node:)`.
+public final class NodeComponent: GKSKNodeComponent {
   
-    // ⚠️ NOTE: DO NOT subclass `SpriteKitComponent`. See the warning in the documentation above.
+    // ⚠️ NOTE: DO NOT subclass `NodeComponent`. See the warning in the documentation above.
     
     public override var description: String {
         // NOTE: To reduce log clutter, only include the node's name here; full node description should only be in `didAddToEntity()`.
@@ -34,9 +34,9 @@ public final class SpriteKitComponent: GKSKNodeComponent {
     
     // MARK: - Life Cycle
     
-    /// Creates a `SpriteKitComponent` with a new, empty `SKNode`.
+    /// Creates a `NodeComponent` with a new, empty `SKNode`.
     public convenience override init() {
-        // CHECK: Should there be an empty `init()`? We may want the `node` parameter to be explicit at every `SpriteKitComponent` creation point, because the use of `SpriteKitComponent()` might imply that this component should adopt the `entity.node` (though a `GKSKNodeComponent` must be initialized with an `SKNode`)
+        // CHECK: Should there be an empty `init()`? We may want the `node` parameter to be explicit at every `NodeComponent` creation point, because the use of `NodeComponent()` might imply that this component should adopt the `entity.node` (though a `GKSKNodeComponent` must be initialized with an `SKNode`)
         self.init(node: SKNode(), addToNode: nil)
     }
     
@@ -103,9 +103,9 @@ public final class SpriteKitComponent: GKSKNodeComponent {
         node.isPaused = false
     }
     
-    /// Notifies all other existing components of the entity that a `SpriteKitComponent` was added, so they can add their content, if any, to the node.
+    /// Notifies all other existing components of the entity that a `NodeComponent` was added, so they can add their content, if any, to the node.
     ///
-    /// This is useful for the case when other components that depend on a `SpriteKitComponent` were added to an entity before this component.
+    /// This is useful for the case when other components that depend on a `NodeComponent` were added to an entity before this component.
     @inlinable
     public func notifyCoComponents() {
         // CHECK: Should this be `[file]private`?
@@ -144,8 +144,8 @@ public final class SpriteKitComponent: GKSKNodeComponent {
     }
     
     deinit {
-        // Since GameplayKit will remove an existing component from an entity if another component of the same class is added, the `willRemoveFromEntity()` method of the `SpriteKitComponent` or `GKSKNodeComponent` will never be called, because the older component will go straight to `deinit`.
-        // Therefore, as that behavior will cause a `SpriteKitComponent` to be removed from an entity WITHOUT removing the represented SpriteKit node from the scene, we should also remove the node here to make sure it is not visible when this component is replaced.
+        // Since GameplayKit will remove an existing component from an entity if another component of the same class is added, the `willRemoveFromEntity()` method of the `NodeComponent` or `GKSKNodeComponent` will never be called, because the older component will go straight to `deinit`.
+        // Therefore, as that behavior will cause a `NodeComponent` to be removed from an entity WITHOUT removing the represented SpriteKit node from the scene, we should also remove the node here to make sure it is not visible when this component is replaced.
         // For `OKComponent` subclasses, use the `shouldRemoveFromEntityOnDeinit` flag.
         
         if  super.node.parent != nil {

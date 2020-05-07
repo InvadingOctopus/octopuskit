@@ -21,7 +21,7 @@ import GameplayKit
 
 #if canImport(UIKit)
     
-/// Tracks a single touch if it begins in the entity's `SpriteKitComponent` node, and updates its state depending on the position of the touch in relation to the node's bounds.
+/// Tracks a single touch if it begins in the entity's `NodeComponent` node, and updates its state depending on the position of the touch in relation to the node's bounds.
 ///
 /// Other components can simply query this component's `state` and `trackedTouch` properties to implement touch-controlled behavior, such as moving a node while it's being touched or updating a button's visual state, without having to track touches themselves.
 ///
@@ -29,14 +29,14 @@ import GameplayKit
 ///
 /// - NOTE: Whereas a `TouchEventComponent` should generally be added to a scene and then linked to other entities via `RelayComponent`s, a `NodeTouchStateComponent` should be added to every entity whose nodes represent a visually interactive area in the scene, such as buttons.
 ///
-/// - NOTE: This component only tracks a single touch by design; specifically the first touch that begins inside the entity's `SpriteKitComponent` node. For multi-touch gestures, use components based on gesture-recognizers.
+/// - NOTE: This component only tracks a single touch by design; specifically the first touch that begins inside the entity's `NodeComponent` node. For multi-touch gestures, use components based on gesture-recognizers.
 ///
-/// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
+/// **Dependencies:** `NodeComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
 public final class NodeTouchStateComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          TouchEventComponent.self]
     }
     
@@ -44,7 +44,7 @@ public final class NodeTouchStateComponent: OKComponent, OKUpdatableComponent {
     
     // MARK: State
     
-    /// The current state of player interaction with the entity's `SpriteKitComponent` node. See the descriptions for each case of `TouchStateComponent.TouchInteractionState`.
+    /// The current state of player interaction with the entity's `NodeComponent` node. See the descriptions for each case of `TouchStateComponent.TouchInteractionState`.
     ///
     /// Changing this property copies the old value to `previousState.`
     @LogInputEventChanges(propertyName: "NodeTouchStateComponent.state")
@@ -76,7 +76,7 @@ public final class NodeTouchStateComponent: OKComponent, OKUpdatableComponent {
     
     // MARK: Touch
     
-    /// Tracks a touch which began inside the entity's `SpriteKitComponent` node.
+    /// Tracks a touch which began inside the entity's `NodeComponent` node.
     @LogInputEventChanges(propertyName: "NodeTouchStateComponent.trackedTouch")
     public fileprivate(set) var trackedTouch: UITouch? = nil {
         didSet {
@@ -118,13 +118,13 @@ public final class NodeTouchStateComponent: OKComponent, OKUpdatableComponent {
         }
     }
     
-    /// The first observed location of the currently-tracked touch, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
+    /// The first observed location of the currently-tracked touch, in the coordinate system of the parent node containing the entity's `NodeComponent` node.
     ///
     /// Other components can compare the current location of the touch with this value to obtain the total translation over time.
     @LogInputEventChanges(propertyName: "NodeTouchStateComponent.initialTouchLocationInParent")
     public fileprivate(set) var initialTouchLocationInParent: CGPoint? = nil
     
-    /// Returns the total translation over time of the currently-tracked touch's location, in the coordinate system of the parent node containing the entity's `SpriteKitComponent` node.
+    /// Returns the total translation over time of the currently-tracked touch's location, in the coordinate system of the parent node containing the entity's `NodeComponent` node.
     ///
     /// - NOTE: This is *not* a delta value from the last time that the translation was reported.
     public  var touchTranslationInParent: CGPoint? {

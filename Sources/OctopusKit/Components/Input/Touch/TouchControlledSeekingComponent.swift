@@ -6,7 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: A way to not rely on a `SpriteKitComponent` so that entities without a visual representation (i.e. only agents or "ghosts") may be able to use this component. However, that requires the `TouchEventComponent` to associate each tracked touch with the node that received it.
+// TODO: A way to not rely on a `NodeComponent` so that entities without a visual representation (i.e. only agents or "ghosts") may be able to use this component. However, that requires the `TouchEventComponent` to associate each tracked touch with the node that received it.
 
 import GameplayKit
 
@@ -14,13 +14,13 @@ import GameplayKit
     
 /// Directs the `PositionSeekingGoalComponent` of the entity towards the point touched by the player.
 ///
-/// **Dependencies:** `PositionSeekingGoalComponent, SpriteKitComponent, TouchEventComponent`
+/// **Dependencies:** `PositionSeekingGoalComponent, NodeComponent, TouchEventComponent`
 @available(iOS 13.0, *)
 public final class TouchControlledSeekingComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PositionSeekingGoalComponent.self,
-         SpriteKitComponent.self,
+         NodeComponent.self,
          TouchEventComponent.self]
     }
     

@@ -9,19 +9,19 @@
 import SpriteKit
 import GameplayKit
 
-/// Modifies the `zRotation` of the entity's `SpriteKitComponent` node to gradually turn it towards the pointed location as received via a `PointerEventComponent`.
+/// Modifies the `zRotation` of the entity's `NodeComponent` node to gradually turn it towards the pointed location as received via a `PointerEventComponent`.
 ///
 /// Set the `LOGINPUTEVENTS` compilation flag to log values.
 /// 
 /// See also: `PositionSeekingGoalComponent` and `PointerControlledSeekingComponent`
 ///
-/// **Dependencies:** `SpriteKitComponent`, `PointerEventComponent`
+/// **Dependencies:** `NodeComponent`, `PointerEventComponent`
 public final class PointerControlledRotationComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Tests
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          PointerEventComponent.self]
     }
     

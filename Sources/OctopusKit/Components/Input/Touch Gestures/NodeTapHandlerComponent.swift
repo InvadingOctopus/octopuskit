@@ -11,13 +11,13 @@ import GameplayKit
 
 #if os(iOS) // TODO: Add macOS trackpad and tvOS support.
 
-/// Base class for components which handle tap gestures on the entity's `SpriteKitComponent` node.
+/// Base class for components which handle tap gestures on the entity's `NodeComponent` node.
 ///
-/// **Dependencies:** `SpriteKitComponent`, `TapGestureRecognizerComponent`
+/// **Dependencies:** `NodeComponent`, `TapGestureRecognizerComponent`
 open class NodeTapHandlerComponent: OKComponent, OKUpdatableComponent {
     
     open override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          TapGestureRecognizerComponent.self]
     }
     
@@ -89,7 +89,7 @@ open class NodeTapHandlerComponent: OKComponent, OKUpdatableComponent {
         handleTap(deltaTime: seconds)
     }
     
-    /// Abstract method for subclasses to override where they can handle a tap on the entity's `SpriteKitComponent` node.
+    /// Abstract method for subclasses to override where they can handle a tap on the entity's `NodeComponent` node.
     open func handleTap(deltaTime seconds: TimeInterval) {}
     
     open override func willRemoveFromEntity() {

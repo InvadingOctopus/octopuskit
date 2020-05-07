@@ -24,7 +24,7 @@ public protocol OKEntityDelegate: class {
 
 /// A collection of components.
 ///
-/// An entity will usually have a visual representation on-screen via a `SpriteKitComponent` node.
+/// An entity will usually have a visual representation on-screen via a `NodeComponent` node.
 ///
 /// An `OKScene` is also represented by an entity via a `SpriteKitSceneComponent`.
 open class OKEntity: GKEntity {
@@ -62,25 +62,25 @@ open class OKEntity: GKEntity {
         }
     }
     
-    /// Creates an entity, adding an `SpriteKitComponent` to associate it with the specified node and adds any other components if specified.
+    /// Creates an entity, adding an `NodeComponent` to associate it with the specified node and adds any other components if specified.
     ///
     /// Sets the entity's name to the node's name, if any.
     public init(node: SKNode,
                 components: [GKComponent] = [])
     {
-        // 💬 It may be clearer to use `OKEntity(name:components:)` and explicitly write `SpriteKitComponent` in the list.
+        // 💬 It may be clearer to use `OKEntity(name:components:)` and explicitly write `NodeComponent` in the list.
         
         self.name = node.name
         super.init()
         
-        self.addComponent(SpriteKitComponent(node: node))
+        self.addComponent(NodeComponent(node: node))
         
         for component in components {
             self.addComponent(component)
         }
     }
     
-    /// Creates an entity and adds an `SpriteKitComponent` associated with the specified node to the entity, optionally adding the node to a specified parent.
+    /// Creates an entity and adds an `NodeComponent` associated with the specified node to the entity, optionally adding the node to a specified parent.
     public init(name: String? = nil,
                 node: SKNode,
                 addToNode parentNode: SKNode? = nil)
@@ -88,7 +88,7 @@ open class OKEntity: GKEntity {
         // CHECK: Will making `name` an optional argument conflict with the signature of `GKEntity(node:addToNode:)` extensions?
         self.name = name
         super.init()
-        self.addComponent(SpriteKitComponent(node: node, addToNode: parentNode))
+        self.addComponent(NodeComponent(node: node, addToNode: parentNode))
     }
     
     public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }

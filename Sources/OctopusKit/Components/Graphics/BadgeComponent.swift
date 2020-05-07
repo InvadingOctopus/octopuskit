@@ -12,11 +12,11 @@
 import SpriteKit
 import GameplayKit
 
-/// Overlays a child node on an edge or corner of the entity's `SpriteKitComponent` node.
+/// Overlays a child node on an edge or corner of the entity's `NodeComponent` node.
 ///
 /// To change the badge, create a new `BadgeComponent`
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class BadgeComponent: SpriteKitAttachmentComponent<SKNode> {
     
     public let badge: SKNode
@@ -50,11 +50,11 @@ public final class BadgeComponent: SpriteKitAttachmentComponent<SKNode> {
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     public override func createAttachment(for parent: SKNode) -> SKNode? {
-        positionBadge(parentOverride: parent) // Manually specify the parent in case we don't have an `SpriteKitComponent` yet.
+        positionBadge(parentOverride: parent) // Manually specify the parent in case we don't have an `NodeComponent` yet.
         return badge
     }
     
-    /// Sets the badge's position at the specified edge or corner of the specified node. If no arguments are provided, then the component's `placement` property and the entity's `SpriteKitComponent` node are used.
+    /// Sets the badge's position at the specified edge or corner of the specified node. If no arguments are provided, then the component's `placement` property and the entity's `NodeComponent` node are used.
     ///
     /// Only compass directions are valid for this method.
     public func positionBadge(placementOverride: OKDirection? = nil,

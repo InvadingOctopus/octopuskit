@@ -15,11 +15,11 @@
 import SpriteKit
 import GameplayKit
 
-/// Adds a child node which "floats" up from the top or bottom of the entity's `SpriteKitComponent` node (or the specified parent.)
+/// Adds a child node which "floats" up from the top or bottom of the entity's `NodeComponent` node (or the specified parent.)
 ///
 /// Useful for displaying damage values over a character etc.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class BubbleComponent: SpriteKitAttachmentComponent<SKNode> {
     
     public let bubble: SKNode

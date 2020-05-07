@@ -71,7 +71,7 @@ public final class TextureDictionaryComponent: OKComponent {
     
     public override func didAddToEntity(withNode node: SKNode) {
         guard let sprite = node as? SKSpriteNode else {
-            OctopusKit.logForWarnings("\(entity) does not have a SKSpriteNode as its SpriteKitComponent's node")
+            OctopusKit.logForWarnings("\(entity) does not have a SKSpriteNode as its NodeComponent's node")
             return
         }
         

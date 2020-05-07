@@ -101,7 +101,7 @@ final class TitleScene: OKScene {
         // Then we create an entity with the effect node (which contains the label node.)
         
         self.addEntity(OKEntity(name: "TitleEntity", components: [
-            SpriteKitComponent(node: effectNode),
+            NodeComponent(node: effectNode),
             ShaderComponent(shader: shader)
             ]))
         

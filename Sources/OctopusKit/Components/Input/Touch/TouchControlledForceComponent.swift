@@ -21,12 +21,12 @@ import GameplayKit
 
 /// Applies a force to the entity's `PhysicsComponent` body on every frame, based on `TouchEventComponent` input.
 ///
-/// **Dependencies:** `PhysicsComponent`, `SpriteKitComponent`, `TouchEventComponent`
+/// **Dependencies:** `PhysicsComponent`, `NodeComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
 public final class TouchControlledForceComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          PhysicsComponent.self,
          TouchEventComponent.self]
     }

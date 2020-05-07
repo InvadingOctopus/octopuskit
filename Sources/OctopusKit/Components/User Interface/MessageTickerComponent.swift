@@ -17,11 +17,11 @@ public protocol MessageTickerDelegate: class {
     func messageTicker(_ ticker: MessageTickerComponent, didFinishScrollingLastMessage: String)
 }
 
-/// Adds a message ticker to the entity's `SpriteKitComponent` node.
+/// Adds a message ticker to the entity's `NodeComponent` node.
 ///
 /// - NOTE: Requires the parent node to be a `SKSpriteNode` and have an `anchorPoint` of `(x: 0, y: 0)`
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>, OKUpdatableComponent {
     
     public weak var delegate: MessageTickerDelegate?

@@ -11,13 +11,13 @@
 import SpriteKit
 import GameplayKit
 
-/// Animates the entity's `SpriteKitComponent` node with the specified frames, provided as an array of textures or by a `TextureDictionaryComponent`.
+/// Animates the entity's `NodeComponent` node with the specified frames, provided as an array of textures or by a `TextureDictionaryComponent`.
 ///
-/// **Dependencies:** `SpriteKitComponent`, `TextureDictionaryComponent`
+/// **Dependencies:** `NodeComponent`, `TextureDictionaryComponent`
 public final class TextureAnimationComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          TextureDictionaryComponent.self] // ℹ️ Even though a `TextureDictionaryComponent` is not REQUIRED, it is how this `TextureAnimationComponent` is usually used with.
     }
  
@@ -25,7 +25,7 @@ public final class TextureAnimationComponent: OKComponent {
     
     public static let animationKey = "OctopusKit.TextureAnimationComponent.Animate" // CHECK: Should this be static?
     
-    /// Stores the texture of the entity's `SpriteKitComponent` sprite when this component is added to the entity, and restores this texture to the sprite when this component is removed from the entity.
+    /// Stores the texture of the entity's `NodeComponent` sprite when this component is added to the entity, and restores this texture to the sprite when this component is removed from the entity.
     public fileprivate(set) var initialTexture: SKTexture?
     
     // MARK: Animation Settings
@@ -74,7 +74,7 @@ public final class TextureAnimationComponent: OKComponent {
     
     // MARK: - Life Cycle
     
-    /// Creates a `TextureAnimationComponent` that animates the entity's `SpriteKitComponent` sprite with the specified textures when added to an entity.
+    /// Creates a `TextureAnimationComponent` that animates the entity's `NodeComponent` sprite with the specified textures when added to an entity.
     public init(
         initialAnimationFrames: [SKTexture],
         secondsPerFrame: TimeInterval = 1.0,
@@ -88,7 +88,7 @@ public final class TextureAnimationComponent: OKComponent {
         super.init()
     }
     
-    /// Creates a `TextureAnimationComponent` that animates the entity's `SpriteKitComponent` sprite with the specified textures from a `TextureDictionaryComponent` when added to an entity.
+    /// Creates a `TextureAnimationComponent` that animates the entity's `NodeComponent` sprite with the specified textures from a `TextureDictionaryComponent` when added to an entity.
     public convenience init(
         initialAnimationTexturePrefix: String? = nil,
         secondsPerFrame: TimeInterval = 1.0,
@@ -227,13 +227,13 @@ public final class TextureAnimationComponent: OKComponent {
             return false
         }
         
-        guard let nodeComponent = coComponent(SpriteKitComponent.self) else {
-            OctopusKit.logForWarnings("\(entity) is missing a SpriteKitComponent.")
+        guard let nodeComponent = coComponent(NodeComponent.self) else {
+            OctopusKit.logForWarnings("\(entity) is missing a NodeComponent.")
             return false
         }
         
         guard let sprite = nodeComponent.node as? SKSpriteNode else {
-            OctopusKit.logForWarnings("\(entity) does not have a SKSpriteNode associated with its SpriteKitComponent.")
+            OctopusKit.logForWarnings("\(entity) does not have a SKSpriteNode associated with its NodeComponent.")
             return false
         }
         

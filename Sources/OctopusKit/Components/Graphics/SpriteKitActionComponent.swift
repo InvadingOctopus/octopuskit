@@ -9,13 +9,13 @@
 import SpriteKit
 import GameplayKit
 
-/// Adds an action to the entity's `SpriteKitComponent` node with an automatically generated `key`, and removes any action associated with that key when this component is removed from that entity.
+/// Adds an action to the entity's `NodeComponent` node with an automatically generated `key`, and removes any action associated with that key when this component is removed from that entity.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public class SpriteKitActionComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self]
+        [NodeComponent.self]
     }
     
     public let action: SKAction

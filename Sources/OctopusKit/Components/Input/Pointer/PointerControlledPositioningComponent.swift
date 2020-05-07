@@ -9,15 +9,15 @@
 import SpriteKit
 import GameplayKit
 
-/// Sets the position of the entity's `SpriteKitComponent` node to the location of the pointer received by the entity's `PointerEventComponent`.
+/// Sets the position of the entity's `NodeComponent` node to the location of the pointer received by the entity's `PointerEventComponent`.
 ///
-/// **Dependencies:** `SpriteKitComponent`, `PointerEventComponent`
+/// **Dependencies:** `NodeComponent`, `PointerEventComponent`
 public final class PointerControlledPositioningComponent: OKComponent, OKUpdatableComponent {
     
     // TODO: Add options for buttons and hover.
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          PointerEventComponent.self]
     }
     

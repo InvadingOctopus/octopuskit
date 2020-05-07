@@ -8,7 +8,7 @@
 
 import GameplayKit
 
-/// Updates the coordinates of the entity's `TileBasedPositionComponent` on a new game turn, ultimately setting the position of the entity's `SpriteKitComponent` node.
+/// Updates the coordinates of the entity's `TileBasedPositionComponent` on a new game turn, ultimately setting the position of the entity's `NodeComponent` node.
 open class TurnBasedTileBasedPositionComponent: OKTurnBasedComponent {
         
     open override var requiredComponents: [GKComponent.Type]? {

@@ -16,7 +16,7 @@ public protocol OKEntityContainer: class {
     
     // CHECK: Replace `GKEntity` with `OKEntity`?
     
-    // CHECK: Extract `createEntityFromChildNode(...)` and `addChildFromOrphanSpriteKitComponent(...)` out to an SKNode-specific protocol?
+    // CHECK: Extract `createEntityFromChildNode(...)` and `addChildFromOrphanNodeComponent(...)` out to an SKNode-specific protocol?
     
     var entities:                     Set<GKEntity> { get set }
     var entitiesToRemoveOnNextUpdate: Set<GKEntity> { get set }
@@ -51,7 +51,7 @@ public protocol OKEntityContainerNode: OKEntityContainer where Self: SKNode {
         addEntityToScene: Bool)
         -> OKEntity?
     
-    func addChildFromOrphanSpriteKitComponent(in entity: GKEntity)
+    func addChildFromOrphanNodeComponent(in entity: GKEntity)
 }
 
 // MARK: - Default Implementation
@@ -78,11 +78,11 @@ public extension OKEntityContainer {
             octopusEntity.delegate = self as? OKEntityDelegate // CHECK: PERFORMANCE: Impact from casting?
         }
         
-        // If the entity has as `SpriteKitComponent` or `GKSKNodeComponent` whose node does not belong to any parent, add that node to this scene.
+        // If the entity has as `NodeComponent` or `GKSKNodeComponent` whose node does not belong to any parent, add that node to this scene.
         
-        // ℹ️ This lets `OKEntityDelegate` methods spawn new visual entities without explicitly specifying the scene, and also lets us conveniently add new entities by simply writing `self.addEntity(OKEntity(components: [SpriteKitComponent(node: someSprite)]))`
+        // ℹ️ This lets `OKEntityDelegate` methods spawn new visual entities without explicitly specifying the scene, and also lets us conveniently add new entities by simply writing `self.addEntity(OKEntity(components: [NodeComponent(node: someSprite)]))`
         
-        (self as? OKEntityContainerNode)?.addChildFromOrphanSpriteKitComponent(in: entity) // CHECK: PERFORMANCE: Impact from casting?
+        (self as? OKEntityContainerNode)?.addChildFromOrphanNodeComponent(in: entity) // CHECK: PERFORMANCE: Impact from casting?
         
         // In case the entity added components to itself before its `OKEntityDelegate` was set (which ensures that new components are automatically registered with the scene's component systems), add the entity's components to this scene's systems now to make sure we don't miss any.
         
@@ -135,7 +135,7 @@ public extension OKEntityContainer {
         }
     }
     
-    /// Sets the names of all unnamed entities to the name of their `SpriteKitComponent` or `GKSKNodeComponent` nodes.
+    /// Sets the names of all unnamed entities to the name of their `NodeComponent` or `GKSKNodeComponent` nodes.
     func renameUnnamedEntitiesToNodeNames() {
         for case let entity as (OKEntity & Nameable) in entities {
             if  let node = entity.node,
@@ -183,7 +183,7 @@ public extension OKEntityContainer {
         // Unregister the entity's components from systems first.
         componentSystems.removeComponents(foundIn: entityToRemove)
         
-        // Remove the entity's `SpriteKitComponent` node, if any, from the scene.
+        // Remove the entity's `NodeComponent` node, if any, from the scene.
         
         if  let nodeToRemove = entityToRemove.node,
             (self as? SKNode)?.children.contains(nodeToRemove) ?? false // If the entity container is not an `SKNode` descendant, then let the entity's node remain in its parent. CHECK: Is this intuitive? PERFORMANCE: Any impact from casting?
@@ -240,7 +240,7 @@ public extension OKEntityContainerNode {
     ///
     /// Useful for loading scenes and reference nodes built in the Xcode Scene Editor.
     ///
-    /// - NOTE: A `SpriteKitComponent` is automatically added to the entity.
+    /// - NOTE: A `NodeComponent` is automatically added to the entity.
     ///
     /// - NOTE: If the node is already associated with an existing entity, it will be re-associated with the new entity.
     ///
@@ -273,15 +273,15 @@ public extension OKEntityContainerNode {
         return newEntity
     }
     
-    /// Adds an `entity`'s `SpriteKitComponent` or `GKSKNodeComponent` node to the scene if that node does not currently have a parent.
+    /// Adds an `entity`'s `NodeComponent` or `GKSKNodeComponent` node to the scene if that node does not currently have a parent.
     ///
     /// This is useful in cases like spawning sub-entities from a master/parent entity without explicitly specifying the scene.
     ///
-    /// - WARNING: Subclasses of `SpriteKitComponent` or `GKSKNodeComponent` will **not** be added, because component access at runtime looks for specific classes.
-    func addChildFromOrphanSpriteKitComponent(in entity: GKEntity) {
+    /// - WARNING: Subclasses of `NodeComponent` or `GKSKNodeComponent` will **not** be added, because component access at runtime looks for specific classes.
+    func addChildFromOrphanNodeComponent(in entity: GKEntity) {
         
         guard
-            let node = entity.node, // ⚠️ Either `SpriteKitComponent` or `GKSKNodeComponent` (in case the Scene Editor was used) but NOT their subclasses! See the warning in the method documentation above.
+            let node = entity.node, // ⚠️ Either `NodeComponent` or `GKSKNodeComponent` (in case the Scene Editor was used) but NOT their subclasses! See the warning in the method documentation above.
             node != self // Tricky pitfall to avoid there! "A Node can't parent itself" :P
             else { return }
         
@@ -315,8 +315,8 @@ public extension OKEntityContainerNode {
 
 extension OKEntityDelegate where Self: OKEntityContainer {
     
-    /// Registers the new component with the scene's component systems, and if the component was a `SpriteKitComponent` or `GKSKNodeComponent`, adds the node to the scene if the node does not already have a parent.
-    /// This assists in cases such as dynamically adding a `SpriteKitComponent` or `GKSKNodeComponent` without knowing which scene or parent to add the node to.
+    /// Registers the new component with the scene's component systems, and if the component was a `NodeComponent` or `GKSKNodeComponent`, adds the node to the scene if the node does not already have a parent.
+    /// This assists in cases such as dynamically adding a `NodeComponent` or `GKSKNodeComponent` without knowing which scene or parent to add the node to.
     public func entity(_ entity: GKEntity, didAddComponent component: GKComponent) {
         guard entities.contains(entity) else {
             OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
@@ -331,10 +331,10 @@ extension OKEntityDelegate where Self: OKEntityContainer {
             }
         }
         
-        // If the component was a `SpriteKitComponent` or `GKSKNodeComponent` with an orphan node, adopt that node into this scene.
+        // If the component was a `NodeComponent` or `GKSKNodeComponent` with an orphan node, adopt that node into this scene.
         
-        if component is SpriteKitComponent || component is GKSKNodeComponent {
-           (self as? OKEntityContainerNode)?.addChildFromOrphanSpriteKitComponent(in: entity) // CHECK: PERFORMANCE: Any impact from casting?
+        if component is NodeComponent || component is GKSKNodeComponent {
+           (self as? OKEntityContainerNode)?.addChildFromOrphanNodeComponent(in: entity) // CHECK: PERFORMANCE: Any impact from casting?
         }
         
     }

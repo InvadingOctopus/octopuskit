@@ -17,7 +17,7 @@ import GameplayKit
 open class ShaderComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self]
+        [NodeComponent.self]
     }
     
     public var shader: SKShader? {

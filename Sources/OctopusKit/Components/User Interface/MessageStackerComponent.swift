@@ -17,9 +17,9 @@ public protocol MessageStackerDelegate: class {
     func messageStacker(_ stacker: MessageStackerComponent, didFinishDisplayingLastMessage: String)
 }
 
-/// Adds a message stacker to the entity's `SpriteKitComponent` node.
+/// Adds a message stacker to the entity's `NodeComponent` node.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode> {
     
     public weak var delegate: MessageStackerDelegate?

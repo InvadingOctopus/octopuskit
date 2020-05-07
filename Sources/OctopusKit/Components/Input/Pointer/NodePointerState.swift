@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// The state of a pointer-based interaction (touch or mouse) in relation to a `SpriteKitComponent` node, as tracked by components which handle player input, such as `NodePointerStateComponent`.
+/// The state of a pointer-based interaction (touch or mouse) in relation to a `NodeComponent` node, as tracked by components which handle player input, such as `NodePointerStateComponent`.
 public enum NodePointerState: String, CustomStringConvertible {
     
     // The enum has a `rawValue` of `String` to assist with `description` for `CustomStringConvertible`.

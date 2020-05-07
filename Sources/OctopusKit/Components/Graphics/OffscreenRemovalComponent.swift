@@ -8,13 +8,13 @@
 
 import GameplayKit
 
-/// Removes the entity's `SpriteKitComponent` node, and optionally the entity as well, from its parent after it has been outside the viewable area of its scene for the specified duration.
+/// Removes the entity's `NodeComponent` node, and optionally the entity as well, from its parent after it has been outside the viewable area of its scene for the specified duration.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class OffscreenRemovalComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self]
+        [NodeComponent.self]
     }
     
     public fileprivate(set) var secondsElapsedSinceOffscreen: TimeInterval = 0
@@ -58,7 +58,7 @@ public final class OffscreenRemovalComponent: OKComponent, OKUpdatableComponent 
         super.update(deltaTime: seconds)
                 
         guard
-            let node = super.entityNode, // We want either SpriteKitComponent or GKSKNodeComponent (in case the Scene Editor was used))
+            let node = super.entityNode, // We want either NodeComponent or GKSKNodeComponent (in case the Scene Editor was used))
             let scene = node.scene
             else {
                 return }

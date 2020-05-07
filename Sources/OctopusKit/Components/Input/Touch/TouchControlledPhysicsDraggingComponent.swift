@@ -20,14 +20,14 @@ import GameplayKit
 /// - Prevents the body from being affected by gravity while it is being held.
 /// - Modifies the body's velocity.
 ///
-/// **Dependencies:** `NodeTouchStateComponent, PhysicsComponent.self, SpriteKitComponent`
+/// **Dependencies:** `NodeTouchStateComponent, PhysicsComponent.self, NodeComponent`
 @available(iOS 13.0, *)
 public final class TouchControlledPhysicsDraggingComponent: OKComponent, OKUpdatableComponent {
     
     // ℹ️ DESIGN: Not pinning to the specific point of touch, because that would be inconvenient for the user to control on a [small] touchscreen, and also seems like overkill in the amount of code it takes and the temporary node it needs to create, as well as likely impacting performance.
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          PhysicsComponent.self,
          NodeTouchStateComponent.self]
     }

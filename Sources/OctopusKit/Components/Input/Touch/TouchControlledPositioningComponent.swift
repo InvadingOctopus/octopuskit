@@ -11,14 +11,14 @@ import GameplayKit
 
 #if canImport(UIKit)
 
-/// Sets the position of the entity's `SpriteKitComponent` node to the location of the first or latest touch received by the entity's `TouchEventComponent`.
+/// Sets the position of the entity's `NodeComponent` node to the location of the first or latest touch received by the entity's `TouchEventComponent`.
 ///
-/// **Dependencies:** `SpriteKitComponent`, `TouchEventComponent`
+/// **Dependencies:** `NodeComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
 public final class TouchControlledPositioningComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          TouchEventComponent.self]
     }
     

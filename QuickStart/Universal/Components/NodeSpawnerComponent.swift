@@ -16,7 +16,7 @@ import OctopusKit
 final class NodeSpawnerComponent: OKComponent, OKUpdatableComponent {
     
     override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self,
+        [NodeComponent.self,
          PointerEventComponent.self]
     }
     

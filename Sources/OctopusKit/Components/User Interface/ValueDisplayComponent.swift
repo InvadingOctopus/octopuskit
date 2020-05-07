@@ -12,11 +12,11 @@
 import SpriteKit
 import GameplayKit
 
-/// Displays a list of labels and values over the entity's `SpriteKitComponent` node. Useful for displaying live debugging information.
+/// Displays a list of labels and values over the entity's `NodeComponent` node. Useful for displaying live debugging information.
 ///
 /// - NOTE: The order in which the labels are displayed is not deterministic. This is because the collection type used to store the label:value pairs is a `Dictionary`, which is unordered.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class ValueDisplayComponent: SpriteKitAttachmentComponent<SKLabelNode>, OKUpdatableComponent {
     
     // MARK: - Properties

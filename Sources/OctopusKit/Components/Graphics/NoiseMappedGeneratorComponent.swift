@@ -14,9 +14,9 @@ import SpriteKit
 import GameplayKit
 import simd
 
-/// Executes a supplied `SKNode` generating closure that uses the specified `GKNoiseMap` and draws its output inside the frame of an `SpriteKitComponent`.
+/// Executes a supplied `SKNode` generating closure that uses the specified `GKNoiseMap` and draws its output inside the frame of an `NodeComponent`.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<SKNode> {
     
     /// A closure called by a `NoiseMappedGeneratorComponent` to generate a node for the given parameters.
@@ -25,7 +25,7 @@ public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<S
     ///
     ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
     ///
-    ///     **Example:** `component.coComponent(ofType: SpriteKitComponent.self)?.node`
+    ///     **Example:** `component.coComponent(ofType: NodeComponent.self)?.node`
     ///
     /// - Parameter parent: The parent node that the returned node will be placed in.
     /// - Parameter position: The position that the returned node will be placed in.
@@ -40,7 +40,7 @@ public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<S
         -> SKNode?
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self]
+        [NodeComponent.self]
     }
     
     /// The noise field for the nodes generator.

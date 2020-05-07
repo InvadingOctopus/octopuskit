@@ -10,13 +10,13 @@ import GameplayKit
 
 /// Encapsulates an `SKPhysicsBody` and maintains its properties to the specified values, if any.
 ///
-/// Replaces the `physicsBody` of its entity's `SpriteKitComponent`'s node with the `physicsBody` supplied to this component. If this component's `physicsBody` is `nil`, then this component adopts the `physicsBody` of the `SpriteKitComponent`'s node.
+/// Replaces the `physicsBody` of its entity's `NodeComponent`'s node with the `physicsBody` supplied to this component. If this component's `physicsBody` is `nil`, then this component adopts the `physicsBody` of the `NodeComponent`'s node.
 ///
-/// **Dependencies:** `SpriteKitComponent`
+/// **Dependencies:** `NodeComponent`
 public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitComponent.self]
+        [NodeComponent.self]
     }
     
     public var physicsBody: SKPhysicsBody? {
@@ -47,7 +47,7 @@ public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
     /// The angular velocity in Newton-meters to limit the `physicsBody` to.
     public var maximumAngularVelocity: CGFloat?
     
-    /// Overrides this component's `physicsBody` property and creates a new rectangular `SKPhysicsBody` from the frame of the entity's `SpriteKitComponent` node.
+    /// Overrides this component's `physicsBody` property and creates a new rectangular `SKPhysicsBody` from the frame of the entity's `NodeComponent` node.
     ///
     /// As creating physics bodies may be a costly runtime operation, this setting defaults to `false`.
     public var createBodyFromNodeFrame: Bool = false

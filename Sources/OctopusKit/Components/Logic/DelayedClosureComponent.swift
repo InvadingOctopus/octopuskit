@@ -31,7 +31,7 @@ public final class DelayedClosureComponent: OKComponent, OKUpdatableComponent {
     ///
     ///     You can use this to access the instance properties of this component, such as its associated entity and co-components.
     ///
-    ///     **Example:** `component.coComponent(ofType: SpriteKitComponent.self)?.node`
+    ///     **Example:** `component.coComponent(ofType: NodeComponent.self)?.node`
     public typealias ClosureType = (_ component: DelayedClosureComponent) -> Void
     
     /// The block of code to execute after the time specified by `executionDelay` has passed.
