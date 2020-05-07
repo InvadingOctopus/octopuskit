@@ -17,7 +17,7 @@ import simd
 /// Executes a supplied `SKNode` generating closure that uses the specified `GKNoiseMap` and draws its output inside the frame of an `NodeComponent`.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class NoiseMappedGeneratorComponent: SpriteKitAttachmentComponent<SKNode> {
+public final class NoiseMappedGeneratorComponent: NodeAttachmentComponent<SKNode> {
     
     /// A closure called by a `NoiseMappedGeneratorComponent` to generate a node for the given parameters.
     ///

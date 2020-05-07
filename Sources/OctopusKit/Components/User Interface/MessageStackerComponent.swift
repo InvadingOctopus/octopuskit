@@ -20,7 +20,7 @@ public protocol MessageStackerDelegate: class {
 /// Adds a message stacker to the entity's `NodeComponent` node.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class MessageStackerComponent: SpriteKitAttachmentComponent<SKNode> {
+public final class MessageStackerComponent: NodeAttachmentComponent<SKNode> {
     
     public weak var delegate: MessageStackerDelegate?
     

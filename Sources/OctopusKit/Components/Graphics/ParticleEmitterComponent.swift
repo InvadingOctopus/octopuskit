@@ -11,7 +11,7 @@ import GameplayKit
 /// Adds a `SKEmitterNode` to the entity's `NodeComponent` node.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class ParticleEmitterComponent: SpriteKitAttachmentComponent<SKEmitterNode> {
+public final class ParticleEmitterComponent: NodeAttachmentComponent<SKEmitterNode> {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]

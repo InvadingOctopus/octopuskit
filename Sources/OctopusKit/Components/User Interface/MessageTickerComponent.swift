@@ -22,7 +22,7 @@ public protocol MessageTickerDelegate: class {
 /// - NOTE: Requires the parent node to be a `SKSpriteNode` and have an `anchorPoint` of `(x: 0, y: 0)`
 ///
 /// **Dependencies:** `NodeComponent`
-public final class MessageTickerComponent: SpriteKitAttachmentComponent<SKNode>, OKUpdatableComponent {
+public final class MessageTickerComponent: NodeAttachmentComponent<SKNode>, OKUpdatableComponent {
     
     public weak var delegate: MessageTickerDelegate?
     

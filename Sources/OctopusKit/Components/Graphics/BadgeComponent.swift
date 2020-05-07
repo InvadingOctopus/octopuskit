@@ -17,7 +17,7 @@ import GameplayKit
 /// To change the badge, create a new `BadgeComponent`
 ///
 /// **Dependencies:** `NodeComponent`
-public final class BadgeComponent: SpriteKitAttachmentComponent<SKNode> {
+public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
     
     public let badge: SKNode
     

@@ -20,7 +20,7 @@ import GameplayKit
 /// Useful for displaying damage values over a character etc.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class BubbleComponent: SpriteKitAttachmentComponent<SKNode> {
+public final class BubbleComponent: NodeAttachmentComponent<SKNode> {
     
     public let bubble: SKNode
     public let yOffset: CGFloat

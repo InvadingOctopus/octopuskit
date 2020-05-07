@@ -1,5 +1,5 @@
 //
-//  SpriteKitAttachmentComponent.swift
+//  NodeAttachmentComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/14.
@@ -8,12 +8,16 @@
 
 import GameplayKit
 
+public typealias SpriteKitAttachmentComponent = NodeAttachmentComponent
+
 /// The base class for components that create and add a child node to their entity's primary `NodeComponent` node.
 ///
 /// For example, a UI overlay on a base sprite or even sound effects. When this component is removed from an entity, it also removes the attached node(s) from the parent. To add multiple nodes, use the `SKNode(children:)` construction, as adding multiple components of the same type to an entity is not supported by GameplayKit.
 ///
 /// **Dependencies:** `NodeComponent`
-open class SpriteKitAttachmentComponent<AttachmentType: SKNode>: OKComponent {
+open class NodeAttachmentComponent <AttachmentType> : OKComponent
+    where AttachmentType: SKNode
+{
     
     // 💡 To use, simply subclass with the appropriate generic type, and implement (override) `createAttachment(for:)`.
     

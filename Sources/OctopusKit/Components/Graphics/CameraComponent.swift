@@ -15,7 +15,7 @@ import GameplayKit
 /// To allow the player to move the camera, use `CameraPanComponent` and `CameraZoomComponent`.
 ///
 /// **Dependencies:** `SceneComponent`
-public final class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
+public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SceneComponent.self]
