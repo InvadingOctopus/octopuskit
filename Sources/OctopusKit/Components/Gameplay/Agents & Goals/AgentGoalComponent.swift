@@ -11,18 +11,18 @@
 import SpriteKit
 import GameplayKit
 
-/// The base class for components that apply a goal to the behavior of an `OKAgent2D`.
+/// The base class for components that apply a goal to the behavior of an `AgentComponent`.
 ///
-/// **Dependencies:** `OKAgent2D`
+/// **Dependencies:** `AgentComponent`
 open class OKAgentGoalComponent: OKComponent {
     
     open override var requiredComponents: [GKComponent.Type]? {
-        [OKAgent2D.self]
+        [AgentComponent.self]
     }
     
-    /// Returns the entity's `OKAgent2D` component, if any.
-    public var agent: OKAgent2D? {
-        coComponent(OKAgent2D.self)
+    /// Returns the entity's `AgentComponent` component, if any.
+    public var agent: AgentComponent? {
+        coComponent(AgentComponent.self)
     }
     
     public fileprivate(set) var goal: GKGoal?
@@ -89,13 +89,13 @@ open class OKAgentGoalComponent: OKComponent {
         return nil
     }
     
-    /// Applies this component's goal to the entity's `OKAgent2D` component.
+    /// Applies this component's goal to the entity's `AgentComponent` component.
     ///
     /// Creates the goal object if it's currently `nil`, via `createGoal()`.
     open func applyGoalToAgent() {
         
         guard let agent = self.agent else {
-            OctopusKit.logForWarnings("\(entity) missing OKAgent2D")
+            OctopusKit.logForWarnings("\(entity) missing AgentComponent")
             return
         }
         
@@ -119,7 +119,7 @@ open class OKAgentGoalComponent: OKComponent {
         agent.behavior?.setWeight(goalWeight, for: goal)
     }
     
-    /// Removes the goal from the entity's `OKAgent2D` component.
+    /// Removes the goal from the entity's `AgentComponent` component.
     ///
     /// - NOTE: Does not delete this component's `goal` property.
     open func removeGoalFromAgent() {

@@ -10,9 +10,9 @@
 
 import GameplayKit
 
-/// Sets a `GKGoal` on the entity's `OKAgent2D` component to wander around.
+/// Sets a `GKGoal` on the entity's `AgentComponent` component to wander around.
 ///
-/// **Dependencies:** `OKAgent2D`
+/// **Dependencies:** `AgentComponent`
 public final class WanderingGoalComponent: OKAgentGoalComponent {
     
     /// The forward speed for the agent to maintain while turning at random.

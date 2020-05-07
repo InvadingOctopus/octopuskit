@@ -8,9 +8,9 @@
 
 import GameplayKit
 
-/// Sets a `GKGoal` on the entity's `OKAgent2D` component to avoid the specified obstacles.
+/// Sets a `GKGoal` on the entity's `AgentComponent` component to avoid the specified obstacles.
 ///
-/// **Dependencies:** `OKAgent2D`
+/// **Dependencies:** `AgentComponent`
 public final class ObstacleAvoidanceGoalComponent: OKAgentGoalComponent {
     
     /// The list of obstacles for the agent of this component's entity to avoid.

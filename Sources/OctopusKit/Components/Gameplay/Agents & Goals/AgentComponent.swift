@@ -1,5 +1,5 @@
 //
-//  OKAgent2D.swift
+//  AgentComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2017/10/13.
@@ -8,13 +8,13 @@
 
 import GameplayKit
 
-public typealias AgentComponent = OKAgent2D
-public typealias OctopusAgent2D = OKAgent2D
+public typealias OKAgent2D      = AgentComponent
+public typealias OctopusAgent2D = AgentComponent
 
 /// Adds a 2D agent to an entity, which may then be controlled via goal components.
 ///
 /// When added to an entity, automatically sets the agent's `delegate` to the entity's `NodeComponent` node, and matches its initial `position` and `rotation` to the node.
-public final class OKAgent2D: GKAgent2D, OKUpdatableComponent {
+public final class AgentComponent: GKAgent2D, OKUpdatableComponent {
     
     public init(radius: Float? = nil,
                 mass: Float? = nil,

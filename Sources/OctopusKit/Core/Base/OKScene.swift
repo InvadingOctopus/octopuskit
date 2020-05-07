@@ -337,7 +337,7 @@ open class OKScene: SKScene,
             PointerControlledRotationComponent.self,
             PointerControlledSeekingComponent.self,
             
-            OKAgent2D.self,
+            AgentComponent.self,
             
             // The physics component should come in after other components have modified node properties, so it can clamp the velocity etc. if such limits have been specified.
             

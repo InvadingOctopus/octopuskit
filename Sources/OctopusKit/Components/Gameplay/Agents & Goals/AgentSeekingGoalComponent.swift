@@ -10,15 +10,15 @@
 
 import GameplayKit
 
-/// Sets a `GKGoal` on the entity's `OKAgent2D` component to seek out another agent.
+/// Sets a `GKGoal` on the entity's `AgentComponent` component to seek out another agent.
 ///
-/// **Dependencies:** `OKAgent2D`
+/// **Dependencies:** `AgentComponent`
 public final class AgentSeekingGoalComponent: OKAgentGoalComponent {
     
     /// The target for the agent of this component's entity to seek.
     ///
     /// When this value is modified, a new goal is created with the new target. If `targetAgent` is set to `nil` then the goal is removed from the agent.
-    public var targetAgent: OKAgent2D? {
+    public var targetAgent: AgentComponent? {
         didSet {
             if  targetAgent != oldValue { // Avoid redundancy.
                 targetAgent == nil ? removeGoalFromAgent() : recreateAndReapplyGoal()
@@ -30,7 +30,7 @@ public final class AgentSeekingGoalComponent: OKAgentGoalComponent {
     public var shouldFaceTargetWhenAddedToEntity: Bool
     
     /// - Parameter shouldFaceTargetWhenAddedToEntity: If `true`, the `zRotation` of the entity's `NodeComponent` node is modified to point to the `targetAgent` when this component is added to an entity.
-    public init(targetAgent: OKAgent2D? = nil,
+    public init(targetAgent: AgentComponent? = nil,
                 shouldFaceTargetWhenAddedToEntity: Bool = false,
                 goalWeight:  Float = 5.0,
                 isPaused:    Bool  = false)

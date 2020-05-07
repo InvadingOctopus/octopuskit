@@ -15,7 +15,7 @@ open class OKEntityState: GKState {
     
     public let entity: OKEntity
     
-    // ⚠️ NOTE: Component arrays should be of type `GKComponent` instead of the more specific `OKComponent`, so that `GKAgent` and `OKAgent2D` etc. can be added.
+    // ⚠️ NOTE: Component arrays should be of type `GKComponent` instead of the more specific `OKComponent`, so that `GKAgent` and `AgentComponent` etc. can be added.
     
     /// The components to be added to the entity when its state machine enters this state.
     ///
