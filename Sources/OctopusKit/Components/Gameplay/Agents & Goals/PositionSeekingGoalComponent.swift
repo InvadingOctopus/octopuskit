@@ -17,7 +17,7 @@ import GameplayKit
 /// Uses an internal `GKAgent2D` to serve as the target of a `GKGoal(toSeekAgent:)` and modifies the target agent's position to match `targetPosition`.
 ///
 /// **Dependencies:** `AgentComponent`
-public final class PositionSeekingGoalComponent: OKAgentGoalComponent {
+public final class PositionSeekingGoalComponent: AgentGoalComponent {
 
     /// An internal agent to serve as the target of a `GKGoal(toSeekAgent:)`, whose position will be modified to match `targetPosition`.
     private let targetAgent: GKAgent2D

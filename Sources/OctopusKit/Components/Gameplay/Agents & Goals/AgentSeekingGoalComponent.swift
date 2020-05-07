@@ -13,7 +13,7 @@ import GameplayKit
 /// Sets a `GKGoal` on the entity's `AgentComponent` component to seek out another agent.
 ///
 /// **Dependencies:** `AgentComponent`
-public final class AgentSeekingGoalComponent: OKAgentGoalComponent {
+public final class AgentSeekingGoalComponent: AgentGoalComponent {
     
     /// The target for the agent of this component's entity to seek.
     ///

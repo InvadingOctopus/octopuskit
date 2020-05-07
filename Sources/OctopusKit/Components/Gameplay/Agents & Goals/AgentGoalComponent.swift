@@ -1,5 +1,5 @@
 //
-//  OKAgentGoalComponent.swift
+//  AgentGoalComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2018/03/30.
@@ -11,10 +11,12 @@
 import SpriteKit
 import GameplayKit
 
+public typealias OKAgentGoalComponent = AgentGoalComponent
+
 /// The base class for components that apply a goal to the behavior of an `AgentComponent`.
 ///
 /// **Dependencies:** `AgentComponent`
-open class OKAgentGoalComponent: OKComponent {
+open class AgentGoalComponent: OKComponent {
     
     open override var requiredComponents: [GKComponent.Type]? {
         [AgentComponent.self]

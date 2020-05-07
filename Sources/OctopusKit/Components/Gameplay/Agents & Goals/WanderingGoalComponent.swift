@@ -13,7 +13,7 @@ import GameplayKit
 /// Sets a `GKGoal` on the entity's `AgentComponent` component to wander around.
 ///
 /// **Dependencies:** `AgentComponent`
-public final class WanderingGoalComponent: OKAgentGoalComponent {
+public final class WanderingGoalComponent: AgentGoalComponent {
     
     /// The forward speed for the agent to maintain while turning at random.
     ///
