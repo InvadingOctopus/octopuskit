@@ -13,7 +13,7 @@ import GameplayKit
 public typealias SpriteKitSceneComponent = SceneComponent
 
 /// An abstraction layer for accessing SpriteKit scene features via a component. This component should only be added to an `SKScene.entity` or `OKScene.entity` and is used to identify the entity as a scene to other components.
-public class SceneComponent: OKComponent {
+public final class SceneComponent: OKComponent {
     
     public let scene: OKScene
     
