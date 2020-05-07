@@ -26,7 +26,7 @@ public protocol OKEntityDelegate: class {
 ///
 /// An entity will usually have a visual representation on-screen via a `NodeComponent` node.
 ///
-/// An `OKScene` is also represented by an entity via a `SpriteKitSceneComponent`.
+/// An `OKScene` is also represented by an entity via a `SceneComponent`.
 open class OKEntity: GKEntity {
     
     // ℹ️ Also see GKEntity+OctopusKit extensions.

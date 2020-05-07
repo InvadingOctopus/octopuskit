@@ -14,13 +14,13 @@ import GameplayKit
 
 //#if os(iOS) // TODO: Add macOS trackpad support.
 
-/// Creates an `OSPanGestureRecognizer` and attaches it to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
+/// Creates an `OSPanGestureRecognizer` and attaches it to the `SceneComponent` `SKView` when this component is added to the scene entity.
 ///
 /// - Important: The x and y values report the total translation over time. They are not delta values from the last time that the translation was reported. Apply the translation value to the state of the view when the gesture is first recognized — do not concatenate the value each time the handler is called.
 ///
 /// - Note: On iOS, adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
 ///
-/// **Dependencies:** `SpriteKitSceneComponent`
+/// **Dependencies:** `SceneComponent`
 public final class PanGestureRecognizerComponent: OKGestureRecognizerComponent<OSPanGestureRecognizer> {
     
     // ⚠️ NOTE: https://developer.apple.com/documentation/uikit/uipangesturerecognizer/1621207-translation

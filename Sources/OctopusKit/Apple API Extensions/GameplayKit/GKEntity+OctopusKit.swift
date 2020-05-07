@@ -14,7 +14,7 @@ public extension GKEntity {
     
     // MARK: - Properties
     
-    /// Returns the SpriteKit scene of either the `SpriteKitSceneComponent`, or the node of the `NodeComponent` or `GKSKNodeComponent` (in that order) associated with this entity, if any.
+    /// Returns the SpriteKit scene of either the `SceneComponent`, or the node of the `NodeComponent` or `GKSKNodeComponent` (in that order) associated with this entity, if any.
     ///
     /// A `RelayComponent` may be used in place of those components.
     @inlinable
@@ -26,8 +26,8 @@ public extension GKEntity {
         
         // NOTE: To avoid infinite recursion when a RelayComponent checks its node's scene, we now skip `componentOrRelay(ofType:)` and just use `component(ofType:)` and check `RelayComponent.directlyReferencedComponent` instead of `RelayComponent.target`
         
-        return self.component(ofType: SpriteKitSceneComponent.self)?.scene
-            ?? self.component(ofType: RelayComponent<SpriteKitSceneComponent>.self)?.directlyReferencedComponent?.scene
+        return self.component(ofType: SceneComponent.self)?.scene
+            ?? self.component(ofType: RelayComponent<SceneComponent>.self)?.directlyReferencedComponent?.scene
             ?? self.node?.scene
     }
     

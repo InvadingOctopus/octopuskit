@@ -8,13 +8,13 @@
 
 import GameplayKit
 
-/// Retains a reference to the `physicsWorld` of an `SKScene` to be used by other components. Must be assigned to an entity with an `SpriteKitSceneComponent`. If the `physicsWorld` has no `contactDelegate` then it's set to the scene, if the scene conforms to `SKPhysicsContactDelegate` (as `OKScene` always does.)
+/// Retains a reference to the `physicsWorld` of an `SKScene` to be used by other components. Must be assigned to an entity with an `SceneComponent`. If the `physicsWorld` has no `contactDelegate` then it's set to the scene, if the scene conforms to `SKPhysicsContactDelegate` (as `OKScene` always does.)
 ///
-/// **Dependencies:** `SpriteKitSceneComponent`
+/// **Dependencies:** `SceneComponent`
 public final class PhysicsWorldComponent: OKComponent {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitSceneComponent.self]
+        [SceneComponent.self]
     }
     
     public weak var physicsWorld: SKPhysicsWorld? // CHECK: Should this be weak?
@@ -22,8 +22,8 @@ public final class PhysicsWorldComponent: OKComponent {
     public override func didAddToEntity() {
         super.didAddToEntity()
         
-        guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene  else {
-            OctopusKit.logForWarnings("\(entity) missing SpriteKitSceneComponent – Cannot assign physicsWorld")
+        guard let scene = coComponent(SceneComponent.self)?.scene  else {
+            OctopusKit.logForWarnings("\(entity) missing SceneComponent – Cannot assign physicsWorld")
             return
         }
         

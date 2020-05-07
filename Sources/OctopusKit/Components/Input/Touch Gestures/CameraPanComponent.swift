@@ -22,13 +22,13 @@ import GameplayKit
 ///
 /// - Important: The `CameraPanComponent` must be updated before `PanGestureRecognizerComponent` ??
 ///
-/// **Dependencies:** `CameraComponent`, `PanGestureRecognizerComponent`, `SpriteKitSceneComponent`
+/// **Dependencies:** `CameraComponent`, `PanGestureRecognizerComponent`, `SceneComponent`
 public final class CameraPanComponent: OKComponent, OKUpdatableComponent {
     
     public static let inertialMovementKey = "OctopusKit.CameraPanComponent.Move"
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitSceneComponent.self,
+        [SceneComponent.self,
          CameraComponent.self,
          PanGestureRecognizerComponent.self]
     }
@@ -116,7 +116,7 @@ public final class CameraPanComponent: OKComponent, OKUpdatableComponent {
         guard
             !isPaused,
             let camera = coComponent(CameraComponent.self)?.camera,
-            let scene = coComponent(SpriteKitSceneComponent.self)?.scene,
+            let scene = coComponent(SceneComponent.self)?.scene,
             !scene.didPresentSubsceneThisFrame || !scene.didDismissSubsceneThisFrame,
             let view = scene.view,
             let panGestureRecognizer = coComponent(PanGestureRecognizerComponent.self)?.gestureRecognizer

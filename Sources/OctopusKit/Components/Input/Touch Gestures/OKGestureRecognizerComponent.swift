@@ -11,7 +11,7 @@
 import SpriteKit
 import GameplayKit
 
-/// A base class for components that attach an `OSGestureRecognizer` to the `SKView` of the `SpriteKitSceneComponent` when this component is added to the scene entity.
+/// A base class for components that attach an `OSGestureRecognizer` to the `SKView` of the `SceneComponent` when this component is added to the scene entity.
 ///
 /// By default, there is no action (handler) for the gesture events. To use this component, call `gestureRecognizer.addTarget(_:action:)` to assign your event handlers.
 ///
@@ -19,13 +19,13 @@ import GameplayKit
 ///
 /// - Note: On iOS, adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
 ///
-/// **Dependencies:** `SpriteKitSceneComponent`
+/// **Dependencies:** `SceneComponent`
 open class OKGestureRecognizerComponent <GestureRecognizerType> : OKComponent, OSGestureRecognizerDelegate
     where GestureRecognizerType: OSGestureRecognizer
 {
         
     open override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitSceneComponent.self]
+        [SceneComponent.self]
     }
     
     public fileprivate(set) var gestureRecognizer: GestureRecognizerType // CHECK: Should this be optional?
@@ -50,8 +50,8 @@ open class OKGestureRecognizerComponent <GestureRecognizerType> : OKComponent, O
     open override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)
         
-        guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene else {
-            OctopusKit.logForWarnings("\(entity) missing SpriteKitSceneComponent — Detaching")
+        guard let scene = coComponent(SceneComponent.self)?.scene else {
+            OctopusKit.logForWarnings("\(entity) missing SceneComponent — Detaching")
             self.removeFromEntity()
             return
         }
@@ -68,8 +68,8 @@ open class OKGestureRecognizerComponent <GestureRecognizerType> : OKComponent, O
     open override func willRemoveFromEntity(withNode node: SKNode) {
         super.willRemoveFromEntity(withNode: node)
         
-        guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene else {
-            OctopusKit.logForWarnings("\(entity) missing SpriteKitSceneComponent — Detaching")
+        guard let scene = coComponent(SceneComponent.self)?.scene else {
+            OctopusKit.logForWarnings("\(entity) missing SceneComponent — Detaching")
             self.removeFromEntity()
             return
         }

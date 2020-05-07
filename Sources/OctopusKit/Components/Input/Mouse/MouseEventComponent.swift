@@ -123,7 +123,7 @@ public final class MouseEventComponent: OKComponent, OKUpdatableComponent {
         // #1: Discard all events if we are part of a scene that has displayed or dismissed a subscene in this frame.
         // CHECK: Necessary? Useful?
         
-        if  let scene = coComponent(SpriteKitSceneComponent.self)?.scene,
+        if  let scene = coComponent(SceneComponent.self)?.scene,
             scene.didPresentSubsceneThisFrame || scene.didDismissSubsceneThisFrame
         {
             clearAllEvents()

@@ -10,15 +10,15 @@
 
 import GameplayKit
 
-/// Manages the camera for the scene represented by the entity's `SpriteKitSceneComponent`, optionally tracking an specified node and limiting the camera position within the specified bounds.
+/// Manages the camera for the scene represented by the entity's `SceneComponent`, optionally tracking an specified node and limiting the camera position within the specified bounds.
 ///
 /// To allow the player to move the camera, use `CameraPanComponent` and `CameraZoomComponent`.
 ///
-/// **Dependencies:** `SpriteKitSceneComponent`
+/// **Dependencies:** `SceneComponent`
 public final class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [SpriteKitSceneComponent.self]
+        [SceneComponent.self]
     }
     
     public var camera: SKCameraNode {
@@ -88,8 +88,8 @@ public final class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
     public override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)
         
-        guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene else {
-            OctopusKit.logForErrors("\(entity) missing SpriteKitSceneComponent – Cannot assign camera")
+        guard let scene = coComponent(SceneComponent.self)?.scene else {
+            OctopusKit.logForErrors("\(entity) missing SceneComponent – Cannot assign camera")
             return
         }
         
@@ -108,7 +108,7 @@ public final class CameraComponent: SpriteKitAttachmentComponent<SKCameraNode> {
     
     public override func willRemoveFromEntity(withNode node: SKNode) {
         super.willRemoveFromEntity(withNode: node)
-        guard let scene = coComponent(SpriteKitSceneComponent.self)?.scene else { return }
+        guard let scene = coComponent(SceneComponent.self)?.scene else { return }
         
         // ℹ️ DESIGN: If the scene has a different camera by now, remove it anyway, since that would be the expected behavior when removing this component.
         

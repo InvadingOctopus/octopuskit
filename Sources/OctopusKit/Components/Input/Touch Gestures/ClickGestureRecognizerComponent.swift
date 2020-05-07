@@ -11,11 +11,11 @@ import GameplayKit
 
 #if canImport(AppKit)
 
-/// Creates a `NSClickGestureRecognizer` and attaches it to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
+/// Creates a `NSClickGestureRecognizer` and attaches it to the `SceneComponent` `SKView` when this component is added to the scene entity.
 ///
 /// - Important: The player must click the specified mouse button the required number of times without dragging the mouse for the gesture to be recognized.
 ///
-/// **Dependencies:** `SpriteKitSceneComponent`
+/// **Dependencies:** `SceneComponent`
 @available(macOS 10.15, *)
 public final class ClickGestureRecognizerComponent: OKGestureRecognizerComponent<NSClickGestureRecognizer> {
     

@@ -11,7 +11,7 @@ import GameplayKit
 
 #if os(iOS) // TODO: Add macOS trackpad support.
 
-/// Creates a `UIPinchGestureRecognizer` and attaches it to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
+/// Creates a `UIPinchGestureRecognizer` and attaches it to the `SceneComponent` `SKView` when this component is added to the scene entity.
 ///
 /// When the player moves the two fingers toward each other, the conventional meaning is zoom-out; when the player moves the two fingers away from each other, the conventional meaning is zoom-in.
 ///
@@ -21,7 +21,7 @@ import GameplayKit
 ///
 /// - Note: Adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
 ///
-/// **Dependencies:** `SpriteKitSceneComponent`
+/// **Dependencies:** `SceneComponent`
 public final class PinchGestureRecognizerComponent: OKGestureRecognizerComponent<UIPinchGestureRecognizer> {
     
     // ⚠️ NOTE: https://developer.apple.com/documentation/uikit/uipinchgesturerecognizer/1622235-scale

@@ -203,7 +203,7 @@ The objects that actually present your game on screen:
 
 - Every SpriteKit node has an optional `entity?` property. Since a scene also ultimately inherits from `SKNode`, it may also have an entity associated with it.
 
-- The `OKScene.entity?` property is initialized with a `NodeComponent` and `SpriteKitSceneComponent` to represent the top of the node tree.
+- The `OKScene.entity?` property is initialized with a `NodeComponent` and `SceneComponent` to represent the top of the node tree.
 
 - Other components may be added directly to the scene entity to represent elements such as background layers, HUD overlays, other high-level visual features or abstract logic that acts upon the scene as a whole.
 

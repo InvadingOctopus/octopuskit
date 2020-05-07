@@ -279,10 +279,10 @@ open class OKScene: SKScene,
             // CHECK: Remove the existing entity here, or exit the method here?
         }
         
-        // Create an entity to represent the scene itself, with an `NodeComponent` and `SpriteKitSceneComponent`.
+        // Create an entity to represent the scene itself, with an `NodeComponent` and `SceneComponent`.
         
         let sceneEntity = OKEntity(name: self.name, node: self) // NOTE: `node: self` adds a `NodeComponent`.
-        sceneEntity.addComponent(SpriteKitSceneComponent(scene: self))
+        sceneEntity.addComponent(SceneComponent(scene: self))
         self.entity = sceneEntity
         addEntity(sceneEntity)
         

@@ -11,13 +11,13 @@ import GameplayKit
 
 #if os(iOS) // CHECK: Add tvOS support?
 
-/// Creates a `UITapGestureRecognizer` and attaches it to the `SpriteKitSceneComponent` `SKView` when this component is added to the scene entity.
+/// Creates a `UITapGestureRecognizer` and attaches it to the `SceneComponent` `SKView` when this component is added to the scene entity.
 ///
 /// - Important: Although taps are discrete gestures, they are discrete for each state of the gesture recognizer; thus the associated action message is sent when the gesture begins and is sent for each intermediate state until (and including) the ending state of the gesture.
 ///
 /// - Note: Adding a gesture recognizer to the scene's view may prevent touches from being delivered to the scene and its nodes. To allow gesture-based components to cooperate with touch-based components, set properties such as `gestureRecognizer.cancelsTouchesInView` to `false` for this component.
 ///
-/// **Dependencies:** `SpriteKitSceneComponent`
+/// **Dependencies:** `SceneComponent`
 @available(iOS 13.0, *)
 public final class TapGestureRecognizerComponent: OKGestureRecognizerComponent<UITapGestureRecognizer> {
     
