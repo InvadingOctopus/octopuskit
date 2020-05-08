@@ -16,7 +16,7 @@ open class TurnBasedTileBasedPositionComponent: OKTurnBasedComponent {
     }
 
     /// The coordinates to set on the entity's `TileBasedPositionComponent` in `updateTurn(delta:)`.
-    var pendingCoordinates: CGPoint?
+    open var pendingCoordinates: CGPoint?
     
     open override func updateTurn(delta turns: Int) {
         guard
