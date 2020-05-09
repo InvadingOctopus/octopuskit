@@ -84,7 +84,7 @@ redirect_from: "/Documentation/Usage%2Guide.html"
             func application(_ application: UIApplication,
             didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
             {
-                OctopusKit(gameCoordinator: coordinator)
+                try! OctopusKit(gameCoordinator: coordinator)
                 return true
             }
             ```
@@ -93,12 +93,12 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     
             ```
             required init?(coder aDecoder: NSCoder) {
-                OctopusKit(gameCoordinator: gameCoordinator)
+                try! OctopusKit(gameCoordinator: gameCoordinator)
                 super.init(coder: aDecoder)
             }
             
             required init(gameCoordinator: OKGameCoordinator? = nil) {
-                super.init(gameCoordinator: gameCoordinator)
+                try! super.init(gameCoordinator: gameCoordinator)
             }
             ``` 
             
