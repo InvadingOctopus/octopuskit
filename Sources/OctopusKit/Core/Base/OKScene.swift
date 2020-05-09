@@ -352,6 +352,7 @@ open class OKScene: SKScene,
             TimeDependentClosureComponent.self,
             RepeatingClosureComponent.self,
             DelayedClosureComponent.self,
+            CameraZoomComponent.self,
             CameraComponent.self]
         
         return timeAndState + playerInput + movementAndPhysics + miscellaneous
