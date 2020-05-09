@@ -15,7 +15,7 @@ import GameplayKit
 
 #if os(iOS) // TODO: Add macOS trackpad support.
 
-/// Scales the `CameraComponent` node based on input from a `PinchGestureRecognizerComponent`
+/// Scales the `CameraComponent` node based on input from a `PinchGestureRecognizerComponent`.
 ///
 /// **Dependencies:** `CameraComponent`, `PinchGestureRecognizerComponent`
 public final class CameraZoomComponent: OKComponent, OKUpdatableComponent {
@@ -31,10 +31,10 @@ public final class CameraZoomComponent: OKComponent, OKUpdatableComponent {
     ///
     /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
     @LogInputEventChanges(propertyName: "CameraZoomComponent.haveGestureToProcess")
-    private var haveGestureToProcess: Bool = false
+    private var haveGestureToProcess:   Bool = false
     
-    private var initialCameraScale: CGFloat?
-    private var initialGestureScale: CGFloat?
+    private var initialCameraScale:     CGFloat?
+    private var initialGestureScale:    CGFloat?
     
     // MARK: - Life Cycle
     
@@ -72,15 +72,14 @@ public final class CameraZoomComponent: OKComponent, OKUpdatableComponent {
         switch pinchGestureRecognizer.state {
             
         case .began:
-            self.initialCameraScale = CGFloat.maximum(camera.xScale, camera.yScale)
+            self.initialCameraScale  = CGFloat.maximum(camera.xScale, camera.yScale)
             self.initialGestureScale = pinchGestureRecognizer.scale
             
         case .changed:
-            if
-                let initialGestureScale = self.initialGestureScale,
-                let initialCameraScale = self.initialCameraScale
+            if  let initialGestureScale = self.initialGestureScale,
+                let initialCameraScale  = self.initialCameraScale
             {
-                let gestureScaleDelta = pinchGestureRecognizer.scale - initialGestureScale
+                let gestureScaleDelta   = pinchGestureRecognizer.scale - initialGestureScale
                 
                 // ⚠️ NOTE: Have to invert `gestureScaleDelta` for correct/conventional/expected behavior (moving fingers closer = zoom out, moving fingers apart = zoom in.)
                 
