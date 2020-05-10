@@ -16,6 +16,14 @@ import GameplayKit
 /// This class may be inherited from to create convenient components containing custom shaders along with their associated uniforms and attributes.
 open class ShaderComponent: OKComponent {
     
+    // 💡 https://developer.apple.com/documentation/spritekit/skshader
+    //
+    // Initialize shader objects when your game launches, not while the game is running.
+    //
+    // Avoid changing the shader’s source or changing the list of uniforms or attributes while your game is running. Either of these things recompiles the shader.
+    //
+    // Share shader objects whenever possible. If multiple sprites need the same behavior, create one shader object and associate it with every sprite that needs that behavior. Do not create a separate shader for each sprite.
+    
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]
     }
@@ -34,9 +42,9 @@ open class ShaderComponent: OKComponent {
                     assignShader(to: node)
                 }
                     
-                // Otherwise, if our shader was set to `nil`, then set the node's shader to `nil` as well, as this would be the expected behavior of modifying the `ShaderComponent` of an entity with an existing node.
+                    // Otherwise, if our shader was set to `nil`, then set the node's shader to `nil` as well, as this would be the expected behavior of modifying the `ShaderComponent` of an entity with an existing node.
                 else if self.shader == nil {
-                     node.shader = nil
+                    node.shader = nil
                 }
             }
         }
@@ -93,15 +101,15 @@ open class ShaderComponent: OKComponent {
             self.shader = node.shader
         }
             
-        // Otherwise, if this component has a shader and the node doesn't, try to assign our shader to the node.
+            // Otherwise, if this component has a shader and the node doesn't, try to assign our shader to the node.
             
         else if let shader = self.shader,
-                node.shader == nil
+            node.shader == nil
         {
             node.shader = shader
         }
             
-        // If this component has a shader and the node also has a shader, and they're different, log a warning, then replace the node's shader with this component's shader, as that would be the expected behavior of adding a `ShaderComponent` to an entity with an existing node.
+            // If this component has a shader and the node also has a shader, and they're different, log a warning, then replace the node's shader with this component's shader, as that would be the expected behavior of adding a `ShaderComponent` to an entity with an existing node.
             
         else if self.shader != nil && node.shader != nil && self.shader !== node.shader {
             
@@ -124,7 +132,7 @@ open class ShaderComponent: OKComponent {
         // Remove the shader even if the node had a different one, to keep the expected behavior of removing shader effects from the node when a ShaderComponent is removed.
         node.shader = nil
     }
- 
+    
     /// Add some missing attributes that are commonly used.
     open func addCommonAttributes() {
         
