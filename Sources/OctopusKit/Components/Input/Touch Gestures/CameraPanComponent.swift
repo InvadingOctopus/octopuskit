@@ -69,15 +69,15 @@ public final class CameraPanComponent: OKComponent, OKUpdatableComponent {
     
     // MARK: - Life Cycle
     
-    public init(minimumNumberOfTouches: Int = 2,
+    public init(minimumNumberOfTouches:     Int  = 2,
                 isInertialScrollingEnabled: Bool = true,
-                invertXAxis: Bool = false,
-                invertYAxis: Bool = false)
+                invertXAxis:                Bool = false,
+            invertYAxis:                    Bool = false)
     {
-        self.minimumNumberOfTouches = minimumNumberOfTouches
+        self.minimumNumberOfTouches     = minimumNumberOfTouches
         self.isInertialScrollingEnabled = isInertialScrollingEnabled
-        self.invertXAxis = invertXAxis
-        self.invertYAxis = invertYAxis
+        self.invertXAxis                = invertXAxis
+        self.invertYAxis                = invertYAxis
         super.init()
     }
     
@@ -100,7 +100,7 @@ public final class CameraPanComponent: OKComponent, OKUpdatableComponent {
         guard panGestureRecognizer.numberOfTouches >= self.minimumNumberOfTouches else { return }
         haveGestureToProcess = true
         
-        if panGestureRecognizer.state == .ended {
+        if  panGestureRecognizer.state == .ended {
             self.isPanning = false
         }
     }
@@ -116,7 +116,7 @@ public final class CameraPanComponent: OKComponent, OKUpdatableComponent {
         guard
             !isPaused,
             let camera = coComponent(CameraComponent.self)?.camera,
-            let scene = coComponent(SceneComponent.self)?.scene,
+            let scene  = coComponent(SceneComponent.self)?.scene,
             !scene.didPresentSubsceneThisFrame || !scene.didDismissSubsceneThisFrame,
             let view = scene.view,
             let panGestureRecognizer = coComponent(PanGestureRecognizerComponent.self)?.gestureRecognizer
@@ -153,7 +153,7 @@ public final class CameraPanComponent: OKComponent, OKUpdatableComponent {
                 var translation = panGestureRecognizer.translation(in: view)
                 
                 // See comment about coordinate systems and axis inversion above.
-                if invertYAxis { translation.y = -translation.y }
+                if  invertYAxis { translation.y = -translation.y }
                 if !invertXAxis { translation.x = -translation.x }
                 
                 camera.position = initialCameraPosition + translation
@@ -177,7 +177,7 @@ public final class CameraPanComponent: OKComponent, OKUpdatableComponent {
                 var velocity = panGestureRecognizer.velocity(in: view)
                 
                 // See comment about coordinate systems and axis inversion above.
-                if invertYAxis { velocity.y = -velocity.y }
+                if  invertYAxis { velocity.y = -velocity.y }
                 if !invertXAxis { velocity.x = -velocity.x }
                 
                 // Calculate the inertial velocity and slide duration.
