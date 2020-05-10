@@ -179,7 +179,8 @@ public struct OKLog {
     
     /// The title of the log. Appended to the beginning of printed entries.
     public let title: String
-    public fileprivate(set) var entries = [OKLogEntry]()
+    
+    public var entries = [OKLogEntry]() // Not private so functions can be @inlinable
     
     /// If `true`, uses `NSLog` to print new entries to the debug console when they are added.
     /// If `false`, prints new entries in a custom format. This is the default.
@@ -243,6 +244,7 @@ public struct OKLog {
     }
     
     /// Prints a new entry and adds it to the log.
+    @inlinable
     public mutating func add(
         _ text:         String? = nil,
         callerFile:     String  = #file,
