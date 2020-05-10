@@ -167,7 +167,7 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
         // Remove existing bounds constraint, if any.
         
         if  let existingBoundsConstraint = self.boundsConstraint,
-            var constraints = camera.constraints,
+            var constraints   = camera.constraints,
             let indexToRemove = constraints.firstIndex(of: existingBoundsConstraint)
         {
             existingBoundsConstraint.enabled = false // CHECK: Necessary?
