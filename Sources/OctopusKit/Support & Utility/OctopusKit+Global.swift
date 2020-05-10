@@ -20,16 +20,3 @@ public func 💩(_ closure: () -> Void) {
     closure()
     #endif
 }
-
-// MARK: SpriteKit Flags
-
-public extension OctopusKit {
-
-    /// A dictionary of flags for SpriteKit, mainly for debugging.
-    ///
-    /// `debugDrawStats_SKContextType`: When `true`, prints "Metal" or "OpenGL" in the corner of the `SKView` depending on which renderer is active.
-    ///
-    /// See Apple Technical Note TN2451: SpriteKit Debugging Guide: https://developer.apple.com/library/archive/technotes/tn2451/_index.html#//apple_ref/doc/uid/DTS40017609-CH1-SHADERCOMPILATION
-    @OKUserDefault(key: "SKDefaults", defaultValue: [:]) var flagsForSpriteKit: [String: Any]
-
-}
