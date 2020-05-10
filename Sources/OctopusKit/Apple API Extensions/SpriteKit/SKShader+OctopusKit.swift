@@ -22,21 +22,30 @@ public extension SKShader {
                      uniforms:      [SKUniform]?   = nil,
                      attributes:    [SKAttribute]? = nil)
     {
-        /* CHECK: PERFORMANCE: Should we use `SKShader.init(fileNamed:)` or `SKShader.init(source: String, uniforms: [SKUniform])`?
+        // ℹ️ https://developer.apple.com/library/archive/technotes/tn2451/_index.html#//apple_ref/doc/uid/DTS40017609-CH1-SHADERCOMPILATION
+        // Note that error handling is encapsulated when using SKShader's convenience initializer init(fileNamed:) (see the signature comments in SKShader.h). To enable compilation failure logging, use SKShader(source:uniforms:) instead.
+        
+        // CHECK: PERFORMANCE: Should we use `SKShader.init(fileNamed:)` or `SKShader.init(source: String, uniforms: [SKUniform])`?
     
-         guard let path = Bundle.main.path(forResource: name, ofType: "fsh") else {
+        guard let path = Bundle.main.path(forResource: name, ofType: "fsh") else {
             OctopusKit.logForErrors("\(name).fsh not found in bundle")
             fatalError()
-         }
-         
-         guard let source = try? String(contentsOfFile: path) else {
+        }
+        
+        guard let source = try? String(contentsOfFile: path, encoding: .utf8) else {
             OctopusKit.logForErrors("Cannot load \(name).fsh as String")
             fatalError()
-         }
-         */
+        }
         
-        self.init(fileNamed: name)
-        self.uniforms   = uniforms   ?? []
+        if  let uniforms = uniforms {
+            self.init(source: source, uniforms: uniforms)
+        } else {
+            self.init(source: source)
+        }
+        
+        // self.init(fileNamed: name)
+        // self.uniforms = uniforms   ?? []
+        
         self.attributes = attributes ?? []
     }
      

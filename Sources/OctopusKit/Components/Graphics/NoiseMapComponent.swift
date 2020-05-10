@@ -13,6 +13,11 @@ import GameplayKit
 /// **Dependencies:** `NoiseComponent`
 open class NoiseMapComponent: OKComponent {
 
+    // ℹ️ Hierarchy: Noise Source » Noise » Noise Map
+    // https://developer.apple.com/documentation/gameplaykit/gknoisesource
+    // https://developer.apple.com/documentation/gameplaykit/gknoise
+    // https://developer.apple.com/documentation/gameplaykit/gknoisemap
+    
     open override var requiredComponents: [GKComponent.Type]? {
         [NoiseComponent.self]
     }

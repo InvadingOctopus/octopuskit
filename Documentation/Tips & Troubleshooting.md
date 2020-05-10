@@ -9,6 +9,7 @@ permalink: documentation/tips.html
 3. [Tips & Tricks](#tips--tricks)
 4. [Pitfalls & Gotchas](#pitfalls--gotchas)
 5. [Conditional Compilation Flags & Debugging Aids](#conditional-compilation-flags--debugging-aids)
+6. [Other Resources](#other-resources)
 
 * 🚀 **To quickly start using OctopusKit with a template project, see [QuickStart.][quickstart]**
 * ❓ **To see how to do common tasks, check the [Usage Guide.][guide]**
@@ -94,6 +95,10 @@ If an entity needs multiple components of the same type but with different param
 ⚠️ Setting any of the logging flags may reduce engine performance.
 
 * `DISABLELOGCHANGES` - Suppresses the `@LogChanges` property modifier. May improve performance.
+
+## Other Resources
+
+* [Apple Technical Note TN2451: SpriteKit Debugging Guide](https://developer.apple.com/library/archive/technotes/tn2451/_index.html#//apple_ref/doc/uid/DTS40017609-CH1-SHADERCOMPILATION)
 
 ----
 
