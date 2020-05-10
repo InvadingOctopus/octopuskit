@@ -6,8 +6,6 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: Tests
-
 import GameplayKit
 
 /// Manages the camera for the scene represented by the entity's `SceneComponent`, optionally tracking an specified node and limiting the camera position within the specified bounds.
@@ -16,6 +14,8 @@ import GameplayKit
 ///
 /// **Dependencies:** `SceneComponent`
 public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
+
+    // TODO: Tests
     
     public override var requiredComponents: [GKComponent.Type]? {
         [SceneComponent.self]
@@ -59,16 +59,16 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
     }
     
     public fileprivate(set) var trackingConstraint: SKConstraint?
-    public fileprivate(set) var boundsConstraint: SKConstraint?
+    public fileprivate(set) var boundsConstraint:   SKConstraint?
     
-    public init(cameraNode: SKCameraNode? = nil,
-                nodeToTrack: SKNode? = nil,
-                constrainToBounds bounds: CGRect? = nil,
-                insetBoundsByScreenSize: Bool = false)
+    public init(cameraNode:                 SKCameraNode? = nil,
+                nodeToTrack:                SKNode?       = nil,
+                constrainToBounds bounds:   CGRect?       = nil,
+                insetBoundsByScreenSize:    Bool          = false)
     {
-        self.camera = cameraNode ?? SKCameraNode()
+        self.camera      = cameraNode ?? SKCameraNode()
         self.nodeToTrack = nodeToTrack
-        self.bounds = bounds
+        self.bounds      = bounds
         self.insetBoundsByScreenSize = insetBoundsByScreenSize
         
         super.init()
@@ -97,7 +97,7 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
         // CHECK: Necessary?
         
         if  scene.camera != nil
-            && scene.camera != self.camera
+        &&  scene.camera != self.camera
         {
             OctopusKit.logForWarnings("\(scene) already has \(scene.camera) — Replacing with \(self.camera)")
         }
@@ -112,7 +112,7 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
         
         // ℹ️ DESIGN: If the scene has a different camera by now, remove it anyway, since that would be the expected behavior when removing this component.
         
-        if scene.camera !== self.camera {
+        if  scene.camera !== self.camera {
             OctopusKit.logForWarnings("\(scene) has a different camera that is not associated with this component: \(scene.camera) — Removing")
         }
         
@@ -122,11 +122,11 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
     // MARK: - Constraints
     
     public func resetConstraints() {
-        if self.nodeToTrack != nil {
+        if  self.nodeToTrack != nil {
             resetTrackingConstraint()
         }
         
-        if self.bounds != nil {
+        if  self.bounds != nil {
             resetBoundsConstraint()
         }
     }
@@ -135,8 +135,7 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
         
         // Remove existing tracking constraint, if any.
         
-        if
-            let existingTrackingConstraint = self.trackingConstraint,
+        if  let existingTrackingConstraint = self.trackingConstraint,
             var constraints = camera.constraints,
             let indexToRemove = constraints.firstIndex(of: existingTrackingConstraint)
         {
@@ -148,12 +147,12 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
         
         // Apply new tracking constraint, if applicable.
         
-        if let nodeToTrack = self.nodeToTrack {
+        if  let nodeToTrack = self.nodeToTrack {
             // Constrain the camera to stay a constant distance of 0 points from the player node.
             self.trackingConstraint = SKConstraint.distance(SKRange.zero, to: nodeToTrack)
         }
         
-        if let trackingConstraint = self.trackingConstraint {
+        if  let trackingConstraint = self.trackingConstraint {
             
             // Create a new constraints array if the node has none.
             if camera.constraints == nil { camera.constraints = [] }
@@ -179,11 +178,11 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
         
         // Apply new bounds constraint, if applicable.
         
-        if let bounds = self.bounds {
+        if  let bounds = self.bounds {
             self.boundsConstraint = createBoundsConstraint(to: bounds)
         }
         
-        if let boundsConstraint = self.boundsConstraint {
+        if  let boundsConstraint = self.boundsConstraint {
             
             // Create a new constraints array if the node has none.
             if camera.constraints == nil { camera.constraints = [] }
@@ -222,8 +221,7 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
             xRange = SKRange(lowerLimit: insetBounds.minX, upperLimit: insetBounds.maxX)
             yRange = SKRange(lowerLimit: insetBounds.minY, upperLimit: insetBounds.maxY)
     
-        }
-        else {
+        } else {
             xRange = SKRange(lowerLimit: bounds.minX, upperLimit: bounds.maxX)
             yRange = SKRange(lowerLimit: bounds.minY, upperLimit: bounds.maxY)
         }
