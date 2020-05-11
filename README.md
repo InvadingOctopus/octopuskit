@@ -1,13 +1,14 @@
 # OctopusKit ![OctopusKit Logo](https://github.com/InvadingOctopus/octopuskit/blob/develop/Assets/Images/SinclairZXSpectrumOK-Slim.png?raw=true)
 
-A 2D game engine in 100% Swift for iOS, macOS and tvOS.
+A 2D game engine based on ECS and written in 100% Swift for iOS, macOS and tvOS. 
 
-OctopusKit wraps and extends Apple's frameworks:  
-• **GameplayKit**'s flexible Entity-Component-System architecture lets you dynamically compose game behavior.  
-• **SpriteKit** gives you full access to textures, physics and GPU shaders.  
-• **SwiftUI**'s declarative syntax lets you quickly design fluid, scalable HUDs.  
-• **Metal** under the hood ensures the best native performance.  
-• OS-independent components let you handle mouse + touch input with the same code, and compile natively for iOS + macOS without needing Catalyst etc.
+If you've tried making a game in Swift while sticking to the official APIs, this may be for you! OctopusKit wraps and extends Apple's frameworks:
+
+• **GameplayKit** for a flexible Entity-Component-System architecture to dynamically compose game behavior.  
+• **SpriteKit** for 2D graphics, physics and GPU shaders.  
+• **SwiftUI** for quickly designing fluid, scalable HUDs with a declarative syntax.  
+• **Metal** to ensure the best native performance under the hood.  
+• OS-independent components let you handle mouse/touch or keyboard/gamepad input with the same code, and compile natively for iOS + macOS without needing Catalyst.
 
 ![QuickStart Demo](https://github.com/InvadingOctopus/octopuskit/blob/develop/QuickStart/Images/OctopusKitQuickStartDemo.gif?raw=true)
 
@@ -21,7 +22,7 @@ OctopusKit wraps and extends Apple's frameworks:
 
 > This project is a result of trying to make games in pure Swift. I fell in love with the language but couldn't find any engines that supported it or had the kind of architecture that I wanted to work with, so I started making my own.
 
-> Any advice on how to improve the API or code style etc. would be appreciated! *– ShinryakuTako*
+> Feedback welcome! *– ShinryakuTako*
  
 ## Examples
 
