@@ -1,5 +1,5 @@
 //
-//  DirectionControlledTileBasedPositioningComponent.swift
+//  DirectionControlledTileBasedMovementComponent.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2020/04/28.
@@ -11,7 +11,7 @@ import GameplayKit
 /// Changes the coordinates of the entity's `TileBasedPositionComponent` based on player input via a `DirectionEventComponent`.
 ///
 /// **Dependencies:** `DirectionEventComponent`, `TileBasedPositionComponent`
-open class DirectionControlledTileBasedPositioningComponent: OKComponent, OKUpdatableComponent {
+open class DirectionControlledTileBasedMovementComponent: OKComponent, OKUpdatableComponent {
     
     open override var requiredComponents: [GKComponent.Type]? {
         [DirectionEventComponent.self,
