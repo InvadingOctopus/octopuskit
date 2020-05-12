@@ -5,7 +5,7 @@
 //  Created by ShinryakuTako@invadingoctopus.io on 2020/05/13.
 //  ORIGINAL: SOURCE: https://github.com/twostraws/ShaderKit/blob/master/ShaderKitExtensions.swift
 //  ORIGINAL: CREDIT: Copyright © 2019 Paul Hudson. Licensed under MIT License (see below)
-//  UPDATE: Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
+//  UPDATES:  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 // MIT License

@@ -2,10 +2,10 @@
 //  SKUniform+OctopusKit.swift
 //  OctopusKit
 //
-//  Created by Paul Hudson https://github.com/twostraws
-//  Original source at https://github.com/twostraws/ShaderKit/blob/master/ShaderKitExtensions.swift
-//  Updated by ShinryakuTako@invadingoctopus.io on 2020/04/14.
-//  Copyright © 2020 Invading Octopus and © 2019 Paul Hudson. Licensed under Apache License v2.0 (see LICENSE.txt) and MIT License (see below)
+//  Created by ShinryakuTako@invadingoctopus.io on 2020/04/14.
+//  ORIGINAL: SOURCE: https://github.com/twostraws/ShaderKit/blob/master/ShaderKitExtensions.swift
+//  ORIGINAL: CREDIT: Copyright © 2019 Paul Hudson. Licensed under MIT License (see below)
+//  UPDATES:  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 // MIT License

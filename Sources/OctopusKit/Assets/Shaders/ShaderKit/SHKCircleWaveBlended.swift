@@ -4,8 +4,8 @@
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2020/05/12.
 //  ORIGINAL: SOURCE: https://github.com/twostraws/ShaderKit
-//  CREDIT: Copyright © 2017 Paul Hudson. Licensed under MIT License (see LICENSE in the ShaderKit folder)
-//  See the original header in the shader source string below.
+//  ORIGINAL: CREDIT: Copyright © 2017 Paul Hudson. Licensed under MIT License (see the original header in the shader source string below)
+//  UPDATES:  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
 import SpriteKit
