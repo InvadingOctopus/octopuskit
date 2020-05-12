@@ -13,6 +13,7 @@ import SpriteKit
 public final class ColorAlphaShader: SKShader {
 
     public init(color: SKColor = .green) {
+        
         let uniforms: [SKUniform] = [
             SKUniform(name: "u_color", color: color)
         ]

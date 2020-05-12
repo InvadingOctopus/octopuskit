@@ -19,7 +19,6 @@ public final class EmbossGrayShader: SKShader {
         ]
         
         super.init(source: SHKEmbossGrayShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

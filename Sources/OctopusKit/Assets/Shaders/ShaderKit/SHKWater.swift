@@ -13,6 +13,7 @@ import SpriteKit
 public final class WaterShader: SKShader {
 
     public override init() {
+        
         let uniforms: [SKUniform] = [
             SKUniform(name: "u_speed",      float: 3),
             SKUniform(name: "u_strength",   float: 2.5),
@@ -20,7 +21,6 @@ public final class WaterShader: SKShader {
         ]
         
         super.init(source: SHKWaterShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

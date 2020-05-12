@@ -14,7 +14,6 @@ public final class StaticGrayNoiseShader: SKShader {
 
     public override init() {
         super.init(source: SHKStaticGrayNoiseShaderSource)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

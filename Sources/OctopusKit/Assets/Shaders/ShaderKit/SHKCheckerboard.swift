@@ -13,6 +13,7 @@ import SpriteKit
 public final class CheckerboardShader: SKShader {
     
     public override init() {
+        
         let uniforms: [SKUniform] = [
             SKUniform(name: "u_rows",           float: 12),
             SKUniform(name: "u_cols",           float: 12),
@@ -21,7 +22,6 @@ public final class CheckerboardShader: SKShader {
         ]
         
         super.init(source: SHKCheckerboardShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

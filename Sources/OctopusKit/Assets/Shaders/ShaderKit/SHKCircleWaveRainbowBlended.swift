@@ -13,6 +13,7 @@ import SpriteKit
 public final class CircleWaveRainbowBlendedShader: SKShader {
 
     public override init() {
+        
         let uniforms: [SKUniform] = [
             SKUniform(name: "u_speed",      float: 1),
             SKUniform(name: "u_brightness", float: 0.5),
@@ -23,7 +24,6 @@ public final class CircleWaveRainbowBlendedShader: SKShader {
         ]
         
         super.init(source: SHKCircleWaveRainbowBlendedShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

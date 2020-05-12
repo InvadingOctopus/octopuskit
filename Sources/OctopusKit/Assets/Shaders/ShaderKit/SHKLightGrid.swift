@@ -13,6 +13,7 @@ import SpriteKit
 public final class LightGridShader: SKShader {
 
     public override init() {
+        
         let uniforms: [SKUniform] = [
             SKUniform(name: "u_density",    float: 8),
             SKUniform(name: "u_speed",      float: 3),
@@ -21,7 +22,6 @@ public final class LightGridShader: SKShader {
         ]
         
         super.init(source: SHKLightGridShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

@@ -14,7 +14,6 @@ public final class DynamicGrayNoiseShader: SKShader {
 
     public override init() {
         super.init(source: SHKDynamicGrayNoiseShaderSource)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
