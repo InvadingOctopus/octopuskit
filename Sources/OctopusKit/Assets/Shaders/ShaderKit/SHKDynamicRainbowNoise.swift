@@ -13,7 +13,8 @@ import SpriteKit
 public final class DynamicRainbowNoiseShader: SKShader {
 
     public override init() {
-        super.init(source: SHKDynamicRainbowNoiseShaderSource)
+        // ⚠️ Calling `super.init(source:)` causes "Fatal error: Use of unimplemented initializer 'init(source:uniforms:)'" 2020-05-12
+        super.init(source: SHKDynamicRainbowNoiseShaderSource, uniforms: [])
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

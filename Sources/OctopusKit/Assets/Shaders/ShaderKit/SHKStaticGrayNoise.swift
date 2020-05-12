@@ -13,7 +13,8 @@ import SpriteKit
 public final class StaticGrayNoiseShader: SKShader {
 
     public override init() {
-        super.init(source: SHKStaticGrayNoiseShaderSource)
+        // ⚠️ Calling `super.init(source:)` causes "Fatal error: Use of unimplemented initializer 'init(source:uniforms:)'" 2020-05-12
+        super.init(source: SHKStaticGrayNoiseShaderSource, uniforms: [])
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
