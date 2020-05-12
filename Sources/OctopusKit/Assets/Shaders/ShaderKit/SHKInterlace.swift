@@ -19,10 +19,11 @@ public final class InterlaceShader: SKShader {
         let uniforms: [SKUniform] = [
             SKUniform(name: "u_width",      float: width),
             SKUniform(name: "u_color",      color: color),
-            SKUniform(name: "u_strength",   float: strength),
+            SKUniform(name: "u_strength",   float: strength)
         ]
         
         super.init(source: SHKInterlaceShaderSource, uniforms: uniforms)
+        self.attributes = [SKAttribute(name: "a_size", type: .vectorFloat2)]
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
