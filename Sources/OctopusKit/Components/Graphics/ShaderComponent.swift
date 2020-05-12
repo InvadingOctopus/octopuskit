@@ -24,6 +24,8 @@ open class ShaderComponent: OKComponent {
     //
     // Share shader objects whenever possible. If multiple sprites need the same behavior, create one shader object and associate it with every sprite that needs that behavior. Do not create a separate shader for each sprite.
     
+    // ⚠️ WARNING: Shaders with uniforms cause a runtime error when applied to an `SKTileMapNode`: "validateFunctionArguments:3476: failed assertion `Fragment Function(SKShader_FragFunc): missing buffer binding at index N for u_xxxxx[0].' 2020-05-12
+    
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]
     }
@@ -143,8 +145,8 @@ open class ShaderComponent: OKComponent {
         
         guard
             let shader   = self.shader,
-            let node     = entityNode  as? SKNodeWithShader,
-            let nodeSize = (entityNode as? SKNodeWithDimensions)?.size
+            let node     = entityNode as? SKNodeWithShader,
+            let nodeSize = (entityNode as? SKTileMapNode)?.tileSize ?? (entityNode as? SKNodeWithDimensions)?.size // For tile maps, use the tile size instead of the map node's entire frame.
             else { return }
         
         // Add attributes that are not already present.
@@ -152,19 +154,15 @@ open class ShaderComponent: OKComponent {
         shader.addAttributesIfNotPresent([sizeAttributeName: .vectorFloat2])
         
         // Apply the values.
-        
-        let nodeSizeVector = vector_float2(x: Float(nodeSize.width),
-                                           y: Float(nodeSize.height))
-        
+
         // SWIFT LIMITATION: Casting to concrete types here is not necessary, but we do it to avoid this deprecation warning: "setValue(_:forAttribute:) was deprecated in iOS 10.0" for SKNode.
         
         if  let node = node as? SKEffectNode { // Includes SKScene
-            node.setValue(SKAttributeValue(vectorFloat2: nodeSizeVector),
+            node.setValue(SKAttributeValue(size: nodeSize),
                           forAttribute: sizeAttributeName)
             
-        }   else if let node = node as? SKSpriteNode {
-            
-            node.setValue(SKAttributeValue(vectorFloat2: nodeSizeVector),
+        }   else if let node = node as? SKSpriteNode {            
+            node.setValue(SKAttributeValue(size: nodeSize),
                           forAttribute: sizeAttributeName)
         }
     }
