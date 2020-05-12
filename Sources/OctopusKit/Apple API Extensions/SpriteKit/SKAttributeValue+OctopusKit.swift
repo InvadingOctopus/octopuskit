@@ -39,9 +39,9 @@ public extension SKAttributeValue {
     ///
     /// - Parameters:
     ///   - size: The input size, i.e. the node's size. For an `SKTileMapNode` this is the `tileSize`.
-    public convenience init(size: CGSize) {
-        let size = vector_float2(Float(size.width),
-                                 Float(size.height))
+    convenience init(size: CGSize) {
+        let size = vector_float2(x: Float(size.width),
+                                 y: Float(size.height))
         self.init(vectorFloat2: size)
     }
 }
