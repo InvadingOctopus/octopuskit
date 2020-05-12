@@ -12,14 +12,15 @@ import SpriteKit
 
 public final class LinearGradientShader: SKShader {
 
-    public override init() {
+    public init(firstColor:     SKColor = .red,
+                secondColor:    SKColor = .green)
+    {
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_first_color",    color: .blue),
-            SKUniform(name: "u_second_color",   color: .clear)
+            SKUniform(name: "u_first_color",    color: firstColor),
+            SKUniform(name: "u_second_color",   color: secondColor)
         ]
         
         super.init(source: SHKLinearGradientShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

@@ -12,13 +12,13 @@ import SpriteKit
 
 public final class DesaturateShader: SKShader {
 
-    public override init() {
+    public init(strength: Float = 0.5) {
+        
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_strength", float: 0.5)
+            SKUniform(name: "u_strength", float: strength)
         ]
         
         super.init(source: SHKDesaturateShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

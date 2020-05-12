@@ -12,15 +12,17 @@ import SpriteKit
 
 public final class ScanlinesShader: SKShader {
 
-    public override init() {
+    public init(width:      Float   = 4,
+                brightness: Float   = 0.75,
+                color:      SKColor = .white)
+    {
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_width",      float: 4.0),
-            SKUniform(name: "u_brightness", float: 0.75),
-            SKUniform(name: "u_color",      color: .white),
+            SKUniform(name: "u_width",      float: width),
+            SKUniform(name: "u_brightness", float: brightness),
+            SKUniform(name: "u_color",      color: color),
         ]
         
         super.init(source: SHKScanlinesShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

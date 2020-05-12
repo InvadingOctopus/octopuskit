@@ -12,14 +12,15 @@ import SpriteKit
 
 public final class ColorizeShader: SKShader {
 
-    public override init() {
+    public init(color:      SKColor = .green,
+                strength:   Float   = 1)
+    {
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_color",      color: .green),
-            SKUniform(name: "u_strength",   float: 1)
+            SKUniform(name: "u_color",      color: color),
+            SKUniform(name: "u_strength",   float: strength)
         ]
         
         super.init(source: SHKColorizeShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

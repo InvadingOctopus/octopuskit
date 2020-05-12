@@ -12,15 +12,17 @@ import SpriteKit
 
 public final class ScreenShader: SKShader {
 
-    public override init() {
+    public init(width:      Float   = 2,
+                color:      SKColor = .clear,
+                strength:   Float   = 1)
+    {
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_width",      float: 2),
-            SKUniform(name: "u_color",      color: .clear),
-            SKUniform(name: "u_strength",   float: 1),
+            SKUniform(name: "u_width",      float: width),
+            SKUniform(name: "u_color",      color: color),
+            SKUniform(name: "u_strength",   float: strength),
         ]
         
         super.init(source: SHKScreenShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

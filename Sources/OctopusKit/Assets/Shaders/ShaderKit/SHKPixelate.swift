@@ -12,13 +12,13 @@ import SpriteKit
 
 public final class PixelateShader: SKShader {
 
-    public override init() {
+    public init(strength: Float = 8) {
+        
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_strength", float: 8)
+            SKUniform(name: "u_strength", float: strength)
         ]
         
         super.init(source: SHKPixelateShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

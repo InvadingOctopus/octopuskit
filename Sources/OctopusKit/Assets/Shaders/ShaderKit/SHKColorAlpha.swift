@@ -12,13 +12,12 @@ import SpriteKit
 
 public final class ColorAlphaShader: SKShader {
 
-    public override init() {
+    public init(color: SKColor = .green) {
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_color", color: .green)
+            SKUniform(name: "u_color", color: color)
         ]
         
         super.init(source: SHKColorAlphaShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

@@ -12,13 +12,13 @@ import SpriteKit
 
 public final class EmbossColorShader: SKShader {
 
-    public override init() {
+    public init(strength: Float = 1) {
+        
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_strength", float: 1)
+            SKUniform(name: "u_strength", float: strength)
         ]
         
         super.init(source: SHKEmbossColorShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

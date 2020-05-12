@@ -12,9 +12,10 @@ import SpriteKit
 
 public final class EmbossGrayShader: SKShader {
 
-    public override init() {
+    public init(strength: Float = 1) {
+        
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_strength", float: 1)
+            SKUniform(name: "u_strength", float: strength)
         ]
         
         super.init(source: SHKEmbossGrayShaderSource, uniforms: uniforms)

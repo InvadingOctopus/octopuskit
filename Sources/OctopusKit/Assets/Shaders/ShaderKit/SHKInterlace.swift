@@ -12,16 +12,17 @@ import SpriteKit
 
 public final class InterlaceShader: SKShader {
 
-    public override init() {
+    public init(width:      Float   = 2,
+                color:      SKColor = .black,
+                strength:   Float   = 0.35)
+    {
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_width",      float: 2),
-            SKUniform(name: "u_color",      color: .black),
-            SKUniform(name: "u_strength",   float: 0.35),
-
+            SKUniform(name: "u_width",      float: width),
+            SKUniform(name: "u_color",      color: color),
+            SKUniform(name: "u_strength",   float: strength),
         ]
         
         super.init(source: SHKInterlaceShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

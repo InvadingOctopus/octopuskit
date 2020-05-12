@@ -12,15 +12,17 @@ import SpriteKit
 
 public final class RadialGradientShader: SKShader {
 
-    public override init() {
+    public init(firstColor:     SKColor = .red,
+                secondColor:    SKColor = .green,
+                center:         CGPoint = CGPoint(x: 0.75, y: 0.25))
+    {
         let uniforms: [SKUniform] = [
-            SKUniform(name: "u_first_color",    color: .clear),
-            SKUniform(name: "u_second_color",   color: .darkGray),
-            SKUniform(name: "u_center",         point: CGPoint(x: 0.75, y: 0.25))
+            SKUniform(name: "u_first_color",    color: firstColor),
+            SKUniform(name: "u_second_color",   color: secondColor),
+            SKUniform(name: "u_center",         point: center)
         ]
         
         super.init(source: SHKRadialGradientShaderSource, uniforms: uniforms)
-
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
