@@ -20,19 +20,20 @@ public protocol OKEntityContainer: class {
     
     var entities:                     Set<GKEntity> { get set }
     var entitiesToRemoveOnNextUpdate: Set<GKEntity> { get set }
-    var componentSystems:  [OKComponentSystem] { get set }
+    var componentSystems:       [OKComponentSystem] { get set }
     
     // MARK: Entities & Components
     
     func addEntity  (_ entity:    GKEntity)
     func addEntities(_ entities: [GKEntity])
     
-    func addAllComponentsFromAllEntities(to systemsCollection: [OKComponentSystem]?)
+    func checkSystemsAvailability        (for entity: GKEntity)
+    func addAllComponentsFromAllEntities (to systemsCollection: [OKComponentSystem]?)
+    func renameUnnamedEntitiesToNodeNames()
     
     // CHECK: DESIGN: entities(withName:) returns an non-optional array to reduce unwrapping in cases like `entities(withName: "name")?.first?` or will it increase memory usage compared to returning `nil`?
     
     func entities(withName name: String) -> [OKEntity]?
-    func renameUnnamedEntitiesToNodeNames()
     
     @discardableResult func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool
     @discardableResult func removeEntity            (_ entityToRemove: GKEntity) -> Bool
@@ -63,6 +64,7 @@ public extension OKEntityContainer {
     /// Adds an entity to the `entities` set, disallowing duplicate entities, and registers its components with the relevant systems.
     ///
     /// If the entity is an `OKEntity`, this scene is set as its delegate.
+    @inlinable
     func addEntity(_ entity: GKEntity) {
         
         guard entities.insert(entity).inserted else {
@@ -72,11 +74,17 @@ public extension OKEntityContainer {
         
         OctopusKit.logForComponents("\(entity.debugDescription), entities.count = \(entities.count)")
         
-        // If it's an `OKEntity` (as opposed to a basic `GKEntity`) set this scene as its delegate.
+        // If it's an `OKEntity` (as opposed to a basic `GKEntity`) and this entity container is an `OKEntityDelegate` (e.g. an `OKScene`) then introduce them to each other.
         
-        if  let octopusEntity = entity as? OKEntity {
-            octopusEntity.delegate = self as? OKEntityDelegate // CHECK: PERFORMANCE: Impact from casting?
-        }
+        // CHECK: PERFORMANCE: Impact from casting?
+        
+        let octopusEntity = entity as? OKEntity
+        
+        octopusEntity?.delegate = self as? OKEntityDelegate
+        
+        // Issue a warning if the entity has any components that must be updated every frame or turn to perform their functions, but this scene does not have any component systems for them.
+        
+        self.checkSystemsAvailability(for: entity)
         
         // If the entity has as `NodeComponent` or `GKSKNodeComponent` whose node does not belong to any parent, add that node to this scene.
         
@@ -88,12 +96,12 @@ public extension OKEntityContainer {
         
         self.componentSystems.addComponents(foundIn: entity)
         
-        // CHECK: Should we issue a warning if the entity has any components that must be updated every frame to perform their function, but this scene does not have any component systems for them? Or would it hurt performance to do such checks every time an entity is added?
     }
     
     /// Adds multiple entities to the `entities` set in the order they are listed in the specified array, disallowing duplicate entities, and registers their components with the relevant systems.
     ///
     /// If an entity is an `OKEntity`, this scene is set as its delegate.
+    @inlinable
     func addEntities(_ entities: [GKEntity]) {
         for entity in entities {
             self.addEntity(entity)
@@ -103,6 +111,7 @@ public extension OKEntityContainer {
     /// Attempts to add all of the components from all entities in the scene, to all of the systems in the specified array that match the types of the components.
     ///
     /// If no `systemsCollection` is specified, then `componentSystems` is used.
+    @inlinable
     func addAllComponentsFromAllEntities(to systemsCollection: [OKComponentSystem]? = nil) {
         
         let systemsCollection = systemsCollection ?? self.componentSystems
@@ -115,6 +124,7 @@ public extension OKEntityContainer {
     }
     
     /// Returns an array of `OKEntity`s containing all the entities matching `name`, or `nil` if none were found.
+    @inlinable
     func entities(withName name: String) -> [OKEntity]? {
         
         let filteredSet = entities.filter {
@@ -136,6 +146,7 @@ public extension OKEntityContainer {
     }
     
     /// Sets the names of all unnamed entities to the name of their `NodeComponent` or `GKSKNodeComponent` nodes.
+    @inlinable
     func renameUnnamedEntitiesToNodeNames() {
         for case let entity as (OKEntity & Nameable) in entities {
             if  let node = entity.node,
@@ -151,6 +162,7 @@ public extension OKEntityContainer {
     /// - Returns: `true` if the entry was in the `entities` set.
     ///
     /// This ensures that the list of entities is not mutated during a frame update, which would cause an exception/crash because of mutating a collection while it is being enumerated during the update
+    @inlinable
     @discardableResult func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool {
         
         guard entities.contains(entityToRemove) else {
@@ -172,6 +184,7 @@ public extension OKEntityContainer {
     /// - Returns: `true` if the entry was in the `entities` set and removed.
     ///
     /// - Important: Attempting to modify the list of entities during a frame update will cause an exception/crash, because of mutating a collection while it is being enumerated. To ensure safe removal, use `removeEntityOnNextUpdate(_:)`.
+    @inlinable
     @discardableResult func removeEntity(_ entityToRemove: GKEntity) -> Bool {
         
         guard entities.contains(entityToRemove) else {
@@ -213,11 +226,40 @@ public extension OKEntityContainer {
         
     }
     
+    // MARK: Validation
+    
+    /// Checks whether the entity container (e.g. scene) has the relevant component systems for all the entity's components that must be updated every frame or turn, and warns about any missing systems.
+    ///
+    /// Components without a system will not have their per-frame or per-turn logic executed automatically, resulting in incorrect or unexpected game behavior.
+    @inlinable
+    func checkSystemsAvailability(for entity: GKEntity) {
+        
+        // CHECK: PERFORMANCE
+        
+        for component in entity.components
+            where component is OKUpdatableComponent
+               || component is OKTurnBasedComponent
+        {
+            let found = self.componentSystems.contains {
+                $0.componentClass == type(of: component)
+            }
+            
+            if  found {
+                continue
+            } else {
+                OctopusKit.logForWarnings("\(self) missing component system for \(component) in \(entity)")
+            }
+
+        }
+
+    }
+    
     // MARK: Frame Update
     
     /// Updates each of the component systems in the order they're listed in the specified array. If no `systemsCollection` is specified, then the scene's `componentSystems` property is used.
     ///
     /// A deterministic order of systems in the component systems array ensures that all components get updated after the other components they depend on.
+    @inlinable
     func updateSystems(in systemsCollection: [OKComponentSystem]? = nil,
                        deltaTime seconds:    TimeInterval)
     {
@@ -230,7 +272,7 @@ public extension OKEntityContainer {
 
 }
 
-// MARK: Node-based Container
+// MARK: - Node-based Container
 
 public extension OKEntityContainerNode {
     
@@ -247,6 +289,7 @@ public extension OKEntityContainerNode {
     /// - NOTE: For processing multiple entities that share the same name, use `for node in scene[name]`
     ///
     /// - Parameter name: The name to search for. This may be either the literal name of the node or a customized search string. See [Searching the Node Tree](apple-reference-documentation://hsY9-_wZau) in Apple documentation.
+    @inlinable
     @discardableResult func createEntityFromChildNode(
         withName name: String,
         addingComponents components: [GKComponent]? = nil,
@@ -278,6 +321,7 @@ public extension OKEntityContainerNode {
     /// This is useful in cases like spawning sub-entities from a master/parent entity without explicitly specifying the scene.
     ///
     /// - WARNING: Subclasses of `NodeComponent` or `GKSKNodeComponent` will **not** be added, because component access at runtime looks for specific classes.
+    @inlinable
     func addChildFromOrphanNodeComponent(in entity: GKEntity) {
         
         guard
@@ -317,6 +361,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     
     /// Registers the new component with the scene's component systems, and if the component was a `NodeComponent` or `GKSKNodeComponent`, adds the node to the scene if the node does not already have a parent.
     /// This assists in cases such as dynamically adding a `NodeComponent` or `GKSKNodeComponent` without knowing which scene or parent to add the node to.
+    @inlinable
     public func entity(_ entity: GKEntity, didAddComponent component: GKComponent) {
         guard entities.contains(entity) else {
             OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
@@ -339,6 +384,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
         
     }
     
+    @inlinable
     public func entity(_ entity: GKEntity, willRemoveComponent component: GKComponent) {
         guard entities.contains(entity) else {
             OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
@@ -354,6 +400,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     
     /// If the entity that sends this event is in the scene's `entities` array, add the newly-spawned entity to the array, and register its components to the default list of systems.
     /// - Returns: `true` if the entity was accepted and added to the scene. `false` if the entity was rejected or otherwise could not be added to the scene.
+    @inlinable
     @discardableResult public func entity(_ entity: GKEntity, didSpawn spawnedEntity: GKEntity) -> Bool {
         guard entities.contains(entity) else {
             OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
@@ -365,6 +412,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
         return true
     }
     
+    @inlinable
     public func entityDidRequestRemoval(_ entity: GKEntity) {
         // OctopusKit.logForComponents("\(entity)") // Already logging in `removeEntityOnNextUpdate(_:)`
         removeEntityOnNextUpdate(entity)
