@@ -24,7 +24,12 @@ open class ShaderComponent: OKComponent {
     //
     // Share shader objects whenever possible. If multiple sprites need the same behavior, create one shader object and associate it with every sprite that needs that behavior. Do not create a separate shader for each sprite.
     
-    // ⚠️ WARNING: Shaders with uniforms cause a runtime error when applied to an `SKTileMapNode`: "validateFunctionArguments:3476: failed assertion `Fragment Function(SKShader_FragFunc): missing buffer binding at index N for u_xxxxx[0].' 2020-05-12
+    // ⚠️ BUG 20200512A: APPLEBUG? Shaders with uniforms cause a runtime error when applied to an `SKTileMapNode`: "validateFunctionArguments:3476: failed assertion `Fragment Function(SKShader_FragFunc): missing buffer binding at index 2 for u_xxxxx[0].'" 2020-05-12
+    // ⚠️ BUG 20200512B: APPLEBUG? `SKTileMapNode` does not propagate its `SKAttribute` to a shader.
+    // 💡 WORKAROUND: Convert the uniforms and attributes to constant values in the shader's source code.
+    
+    // ⚠️ BUG 20200512C: APPLEBUG: An `SKScene` with a `camera` is not fully compatible with shaders. `SKCameraNode` scaling and node tracking do not work when the scene's `shouldEnableEffects` is `true`; the scene will only render a fixed region (apparently around (x:0, y:0) and equivalent to the screen size). 2020-05-12
+    // 💡 WORKAROUND: UNTESTED: Use an `SKEffectNode` with Core Image filters to apply effects to an entire scene.
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]

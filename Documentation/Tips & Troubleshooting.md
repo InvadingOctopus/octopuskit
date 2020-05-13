@@ -9,7 +9,8 @@ permalink: documentation/tips.html
 3. [Tips & Tricks](#tips--tricks)
 4. [Pitfalls & Gotchas](#pitfalls--gotchas)
 5. [Conditional Compilation Flags & Debugging Aids](#conditional-compilation-flags--debugging-aids)
-6. [Other Resources](#other-resources)
+6. [Bugs](#bug)
+7. [Other Resources](#other-resources)
 
 * 🚀 **To quickly start using OctopusKit with a template project, see [QuickStart.][quickstart]**
 * ❓ **To see how to do common tasks, check the [Usage Guide.][guide]**
@@ -95,6 +96,25 @@ If an entity needs multiple components of the same type but with different param
 ⚠️ Setting any of the logging flags may reduce engine performance.
 
 * `DISABLELOGCHANGES` - Suppresses the `@LogChanges` property modifier. May improve performance.
+
+## Bugs
+
+There seem to be some bugs in Apple's own APIs and frameworks that we cannot do much about:
+
+* SpriteKit: **Scenes with cameras are not fully compatible with shaders and `shouldEnableEffects`.** 2020-05-12, 20200512C
+
+    * Setting `shouldEnableEffects = true` on an `SKScene` instance, e.g. for applying a shader to the entire scene, messes up the scene's `camera`:
+    * The `SKCameraNode`'s position remains fixed.
+    * If the `SKCameraNode` is scaled (zoomed) in or out, the scene becomes blank (black) outside the camera's former frame (apparently equal to the screen size).
+    * This happens whether the scene's has a `shader` or not.
+    * 💡 Workaround: Untested: Use an `SKEffectNode` and Core Image filters to apply effects to the entire scene.
+
+* SpriteKit: **Shaders with associated uniforms or attributes do not work with `SKTileMapNode`.** 2020-05-12, 20200512A, 20200512B
+
+    * If the shader has uniforms, a runtime crash occurs: `validateFunctionArguments:3476: failed assertion 'Fragment Function(SKShader_FragFunc): missing buffer binding at index 2 for u_xxxxx[0].'`
+    * If the `SKTileMapNode` has an `SKAttribute`, it is not propagated to the shader.
+    * Shaders without uniforms or attributes work fine with `SKTileMapNode`.
+    * 💡 Workaround: Convert the uniforms and attributes to constant values in the shader's source code.
 
 ## Other Resources
 
