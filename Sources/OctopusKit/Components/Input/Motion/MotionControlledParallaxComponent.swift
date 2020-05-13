@@ -18,7 +18,7 @@ import CoreMotion
 /// Adds a shift in the position of the entity's `NodeComponent` node every frame, based on the device's motion.
 ///
 /// **Dependencies:** `MotionManagerComponent`, `NodeComponent`
-public class MotionControlledParallaxComponent: OKComponent, OKUpdatableComponent {
+public class MotionControlledParallaxComponent: OKComponent, UpdatedPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self,

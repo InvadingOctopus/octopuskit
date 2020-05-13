@@ -19,7 +19,7 @@ import GameplayKit
 /// - Modifies the body's velocity.
 ///
 /// **Dependencies:** `NodePointerStateComponent, PhysicsComponent, NodeComponent`
-public final class PointerControlledPhysicsDraggingComponent: OKComponent, OKUpdatableComponent {
+public final class PointerControlledPhysicsDraggingComponent: OKComponent, UpdatedPerFrame {
     
     // ℹ️ DESIGN: Not pinning to the specific pointer location, because that would be inconvenient for the user to control on a [small] screen, and also seems like overkill in the amount of code it takes and the temporary node it needs to create, as well as likely impacting performance.
     

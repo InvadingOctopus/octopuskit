@@ -20,7 +20,7 @@ import SpriteKit
 ///
 /// - NOTE: Touch events are delivered by the system to a scene or a node with the `isUserInteractionEnabled` property set to `true`. The scene or node must forward the event data from its `touchesBegan(_,with:)` and related methods, to this component for it to function.
 @available(iOS 13.0, *)
-public final class TouchEventComponent: OKComponent, OKUpdatableComponent {
+public final class TouchEventComponent: OKComponent, UpdatedPerFrame {
     
     // MARK: - Subtypes
     

@@ -10,16 +10,18 @@
 
 import GameplayKit
 
-public typealias OctopusUpdatableComponent = OKUpdatableComponent
-public typealias OctopusComponent = OKComponent
+public typealias OctopusComponent           = OKComponent
+public typealias OctopusUpdatableComponent  = UpdatedPerFrame
+public typealias OKUpdatableComponent       = UpdatedPerFrame
 
 /// A protocol for components that must be updated every frame to perform their function.
 ///
 /// The component must be updated every frame during the scene's `update(_:)` method, by directly calling the component's `update(deltaTime:)` method, updating the component's entity, or updating the component system which this component is registered with.
-public protocol OKUpdatableComponent {
-    // TODO: Better name.
+///
+/// When a component with this protocol is added to a scene but the scene does not the relevant component system, a warning is logged to help reduce bugs and incorrect behaviors that result from missing systems.
+public protocol UpdatedPerFrame {
     
-    // ℹ️ Swift does not have a means to enforce implementation of methods in subclasses, so this protocol is mostly fluff and simply serves as documentation for now. 2018-05-05
+    // ℹ️ Swift does not have a means to enforce implementation of methods in subclasses, so this protocol simply serves as documentation and to warn about missing systems. 2018-05-05
     
     func update(deltaTime seconds: TimeInterval)
 }

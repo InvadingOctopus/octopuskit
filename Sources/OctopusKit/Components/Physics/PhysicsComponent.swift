@@ -13,7 +13,7 @@ import GameplayKit
 /// Replaces the `physicsBody` of its entity's `NodeComponent`'s node with the `physicsBody` supplied to this component. If this component's `physicsBody` is `nil`, then this component adopts the `physicsBody` of the `NodeComponent`'s node.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class PhysicsComponent: OKComponent, OKUpdatableComponent {
+public final class PhysicsComponent: OKComponent, UpdatedPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]

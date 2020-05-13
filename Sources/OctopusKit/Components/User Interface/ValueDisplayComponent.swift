@@ -17,7 +17,7 @@ import GameplayKit
 /// - NOTE: The order in which the labels are displayed is not deterministic. This is because the collection type used to store the label:value pairs is a `Dictionary`, which is unordered.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class ValueDisplayComponent: NodeAttachmentComponent<SKLabelNode>, OKUpdatableComponent {
+public final class ValueDisplayComponent: NodeAttachmentComponent<SKLabelNode>, UpdatedPerFrame {
     
     // MARK: - Properties
     

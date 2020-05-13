@@ -22,7 +22,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeTouchStateComponent, PhysicsComponent.self, NodeComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledPhysicsDraggingComponent: OKComponent, OKUpdatableComponent {
+public final class TouchControlledPhysicsDraggingComponent: OKComponent, UpdatedPerFrame {
     
     // ℹ️ DESIGN: Not pinning to the specific point of touch, because that would be inconvenient for the user to control on a [small] touchscreen, and also seems like overkill in the amount of code it takes and the temporary node it needs to create, as well as likely impacting performance.
     

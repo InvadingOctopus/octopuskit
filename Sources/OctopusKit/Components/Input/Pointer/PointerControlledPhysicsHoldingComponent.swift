@@ -17,7 +17,7 @@ import GameplayKit
 /// - These properties are reapplied every frame.
 ///
 /// **Dependencies:** `NodePointerStateComponent`, `PhysicsComponent`
-public final class PointerControlledPhysicsHoldingComponent: OKComponent, OKUpdatableComponent {
+public final class PointerControlledPhysicsHoldingComponent: OKComponent, UpdatedPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PhysicsComponent.self,

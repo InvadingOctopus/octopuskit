@@ -23,7 +23,7 @@ import GameplayKit
 ///     DelayedClosureComponent(executionDelay: 60.0) {
 ///         $0.entityNode?.alpha = 0.1
 ///     }
-public final class DelayedClosureComponent: OKComponent, OKUpdatableComponent {
+public final class DelayedClosureComponent: OKComponent, UpdatedPerFrame {
     
     /// The block of code to be executed by a `DelayedClosureComponent`.
     ///

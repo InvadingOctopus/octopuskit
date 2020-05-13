@@ -11,7 +11,7 @@
 import GameplayKit
 
 /// Tracks the number of seconds elapsed since adding to an entity and provides other timekeeping.
-open class TimeComponent: OKComponent, OKUpdatableComponent {
+open class TimeComponent: OKComponent, UpdatedPerFrame {
     
     /// Represents the time elapsed in seconds since the component was added to an entity.
     ///

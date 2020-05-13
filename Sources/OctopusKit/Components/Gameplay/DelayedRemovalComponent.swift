@@ -11,7 +11,7 @@ import GameplayKit
 /// Removes this component's entity from the scene after the specified time has passed.
 ///
 /// If the entity's `delegate` is `nil`, then only the entity's `NodeComponent` node will be removed from its parent.
-public final class DelayedRemovalComponent: OKComponent, OKUpdatableComponent {
+public final class DelayedRemovalComponent: OKComponent, UpdatedPerFrame {
     
     /// The duration in seconds to wait before removing the node.
     public var removalDelay: TimeInterval = 0

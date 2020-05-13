@@ -6,7 +6,7 @@ import OctopusKit
 import SwiftUI
 
 /// A component with an associated SwiftUI view.
-final class ___FILEBASENAMEASIDENTIFIER___: OKComponent, OKUpdatableComponent, ObservableObject  {
+final class ___FILEBASENAMEASIDENTIFIER___: OKComponent, UpdatedPerFrame, ObservableObject  {
     
     override var requiredComponents: [GKComponent.Type]? {
         []

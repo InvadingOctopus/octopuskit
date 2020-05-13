@@ -13,7 +13,7 @@ import GameplayKit
 /// Modifies the `gravity` of a scene's `PhysicsWorldComponent` based on the input from a `MotionManagerComponent`.
 ///
 /// **Dependencies:** `MotionManagerComponent`, `PhysicsWorldComponent`
-public class MotionControlledGravityComponent: OKComponent, OKUpdatableComponent {
+public class MotionControlledGravityComponent: OKComponent, UpdatedPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PhysicsWorldComponent.self,

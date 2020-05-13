@@ -14,7 +14,7 @@ public typealias OKInputDirection = CGVector
 public typealias OctopusInputDirection = OKInputDirection
 
 /// Provides an abstraction layer for directional input from a keyboard, gamepad, joystick, or similar controllers.
-public final class DirectionEventComponent: OKComponent, OKUpdatableComponent {
+public final class DirectionEventComponent: OKComponent, UpdatedPerFrame {
     
     // TODO: Support for multiple keys for each direction (e.g. WASD and arrows)
     

@@ -14,7 +14,7 @@ import GameplayKit
 /// Base class for components which handle tap gestures on the entity's `NodeComponent` node.
 ///
 /// **Dependencies:** `NodeComponent`, `TapGestureRecognizerComponent`
-open class NodeTapHandlerComponent: OKComponent, OKUpdatableComponent {
+open class NodeTapHandlerComponent: OKComponent, UpdatedPerFrame {
     
     open override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self,

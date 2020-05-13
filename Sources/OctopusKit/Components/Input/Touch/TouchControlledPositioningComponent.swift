@@ -15,7 +15,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledPositioningComponent: OKComponent, OKUpdatableComponent {
+public final class TouchControlledPositioningComponent: OKComponent, UpdatedPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self,

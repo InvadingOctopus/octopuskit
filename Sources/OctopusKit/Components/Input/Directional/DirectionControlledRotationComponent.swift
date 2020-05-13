@@ -14,7 +14,7 @@ import GameplayKit
 /// Set the `LOGINPUTEVENTS` compilation flag to log values.
 ///
 /// **Dependencies:** `DirectionEventComponent`, `NodeComponent`
-public final class DirectionControlledRotationComponent: OKComponent, OKUpdatableComponent {
+public final class DirectionControlledRotationComponent: OKComponent, UpdatedPerFrame {
     
     // TODO: Tests
     

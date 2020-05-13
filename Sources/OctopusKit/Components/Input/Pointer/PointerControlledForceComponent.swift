@@ -18,7 +18,7 @@ import GameplayKit
 /// Applies a force to the entity's `PhysicsComponent` body on every frame, based on `PointerEventComponent` input.
 ///
 /// **Dependencies:** `PhysicsComponent`, `NodeComponent`, `PointerEventComponent`
-public final class PointerControlledForceComponent: OKComponent, OKUpdatableComponent {
+public final class PointerControlledForceComponent: OKComponent, UpdatedPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self,

@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 /// Updates the entity's `NodeComponent` node's position in every frame to align with the center of a tile in a `TileMapComponent`.
-public final class TileBasedPositionComponent: OKComponent, OKUpdatableComponent {
+public final class TileBasedPositionComponent: OKComponent, UpdatedPerFrame {
     
     // TODO: Warp-around option.
     

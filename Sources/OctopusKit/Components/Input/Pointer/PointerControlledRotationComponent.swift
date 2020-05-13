@@ -16,7 +16,7 @@ import GameplayKit
 /// See also: `PositionSeekingGoalComponent` and `PointerControlledSeekingComponent`
 ///
 /// **Dependencies:** `NodeComponent`, `PointerEventComponent`
-public final class PointerControlledRotationComponent: OKComponent, OKUpdatableComponent {
+public final class PointerControlledRotationComponent: OKComponent, UpdatedPerFrame {
     
     // TODO: Tests
     

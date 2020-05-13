@@ -14,7 +14,7 @@ import GameplayKit
 /// Stores events about contacts between physics bodies in a scene. The events may be observed by other components, and are cleared every frame.
 ///
 /// - Note: Unless events are manually forwarded to another entity, this component should be added to an `OKScene.entity` and the `OKScene.physicsWorld.contactDelegate` must be set to the scene. This is automatically done when a `PhysicsWorldComponent` is added to the scene entity.
-public final class PhysicsEventComponent: OKComponent, OKUpdatableComponent {
+public final class PhysicsEventComponent: OKComponent, UpdatedPerFrame {
     
     public final class ContactEvent: Equatable {
         
