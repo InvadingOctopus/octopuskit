@@ -24,6 +24,9 @@ public struct ContiguousArray2D <Element> {
     
     public typealias IndexUnit = Int
     
+    /// A tuple representing a (column, row).
+    public typealias Coordinates = (column: IndexUnit, row: IndexUnit)
+    
     public enum Rotation: Int {
         case none       = 0
         case degrees90  = 90
@@ -152,9 +155,7 @@ public struct ContiguousArray2D <Element> {
         return row * columnCount
     }
     
-    /// Returns the element at `[column, row]`
-    ///
-    /// Affected by rotations and transformations.
+    /// Returns the element at `[column, row]`. Affected by rotations and transformations.
     @inlinable
     public subscript(column: IndexUnit, row: IndexUnit) -> Element {
         
@@ -177,6 +178,12 @@ public struct ContiguousArray2D <Element> {
         }
     }
     
+    /// Returns the element at `coordinates`. Affected by rotations and transformations.
+    @inlinable
+    public subscript(_ coordinates: Coordinates) -> Element {
+        return self[coordinates.column, coordinates.row]
+    }
+    
     /// Writes the `elements` sequence into the array starting at the specified column and row, overwriting existing elements and ignoring any elements which may not fit.
     ///
     /// - Returns: An array of elements which were written.
@@ -187,7 +194,63 @@ public struct ContiguousArray2D <Element> {
                                    elements:       AnySequence<Element>) -> [Element]
     {
         // TODO
-        return []
+        fatalError("NOT IMPLEMENTED")
+        // return []
+    }
+    
+    /// Returns a tuple of `(coordinates, element)` representing the cell in the specified direction from the reference coordinates. The `element` member will be `nil` if the new coordinates are not a valid index within the 2D array.
+    /// - Parameters:
+    ///   - direction: One of `.up, .right, .down, .left` or a compass direction like `.northEast` or `.southWest`.
+    @inlinable
+    public func cellInDirection(_ direction: OKDirection,
+                                from coordinates: Coordinates,
+                                steps: IndexUnit) -> (Coordinates, Element?)
+    {
+        
+        // TODO: Respect transformations.
+        
+        var newCoordinates = coordinates
+        
+        switch direction {
+            
+        case .north,    .up,        .top,       .fore:
+            newCoordinates.row      -= steps
+            
+        case .northEast:
+            newCoordinates.column   += steps
+            newCoordinates.row      -= steps
+            
+        case .east,     .right,     .starboard:
+            newCoordinates.column   += steps
+            
+        case .southEast:
+            newCoordinates.column   += steps
+            newCoordinates.row      += steps
+            
+        case .south,    .down,      .bottom,    .aft:
+            newCoordinates.row      += steps
+            
+        case .southWest:
+            newCoordinates.column   -= steps
+            newCoordinates.row      += steps
+            
+        case .west,     .left,      .port:
+            newCoordinates.column   -= steps
+            
+        case .northWest:
+            newCoordinates.column   -= steps
+            newCoordinates.row      -= steps
+            
+        default:
+            OctopusKit.logForErrors("Invalid direction: \(direction)")
+            return(newCoordinates, nil)
+        }
+        
+        if  validateCoordinates(newCoordinates) {
+            return(newCoordinates, self[newCoordinates])
+        } else {
+            return(newCoordinates, nil)
+        }
     }
     
     // MARK: - Multiple Element Access
@@ -244,7 +307,6 @@ public struct ContiguousArray2D <Element> {
     
     // MARK: - Advanced Operations
 
-    
     /// Returns a smaller section of the 2D array, using the existing underlying storage.
     @inlinable
     @available(*, unavailable, message: "Not Yet Implemented")
@@ -298,9 +360,24 @@ public struct ContiguousArray2D <Element> {
     
     // MARK: - Miscellaneous
     
-    /// Returns the column and row coordinates (in a tuple) for the specific index in the underlying 1D storage array.
-    ///
-    /// Respects transformations.
+    /// Returns `true` if the coordinates are within valid bounds. Respects transformations.
+    @inlinable
+    public func validateCoordinates(column: IndexUnit, row: IndexUnit) -> Bool {
+        // TODO: Support clipping/viewports
+        return  column  >= 0
+            &&  column  <  transformedColumnCount
+            &&  row     >= 0
+            &&  row     <  transformedRowCount
+    }
+    
+    /// Returns `true` if the coordinates are within valid bounds. Respects transformations.
+    @inlinable
+    public func validateCoordinates(_ coordinates: Coordinates) -> Bool {
+        // 😡 Because Swift won't let us just use a tuple as method arguments (anymore?)
+        return  validateCoordinates(column: coordinates.column, row: coordinates.row)
+    }
+    
+    /// Returns the column and row coordinates (in a tuple) for the specific index in the underlying 1D storage array. Affected by transformations.
     @inlinable
     public func coordinatesForStorageIndex(_ index: IndexUnit) -> (column: IndexUnit, row: IndexUnit) {
         
