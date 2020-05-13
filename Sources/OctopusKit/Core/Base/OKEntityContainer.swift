@@ -84,7 +84,9 @@ public extension OKEntityContainer {
         
         // Issue a warning if the entity has any components that must be updated every frame or turn to perform their functions, but this scene does not have any component systems for them.
         
-        self.checkSystemsAvailability(for: entity)
+        if !(octopusEntity?.suppressSystemsAvailabilityCheck ?? false) { // A flag for improving performance by skipping this check for frequently-added entities.
+            self.checkSystemsAvailability(for: entity)
+        }
         
         // If the entity has as `NodeComponent` or `GKSKNodeComponent` whose node does not belong to any parent, add that node to this scene.
         

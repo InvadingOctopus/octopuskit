@@ -43,6 +43,9 @@ open class OKEntity: GKEntity {
         "\(super.description) \"\(self.name ?? "")\""
     }
     
+    /// Indicates whether a scene should check whether it has systems for each of this entity's components that must be updated every frame or turn. Setting `true` may improve performance for entities that are added frequently. Setting `false` may help reduce bugs that result from missing systems.
+    open var suppressSystemsAvailabilityCheck: Bool = false
+    
     open override var debugDescription: String {
         "\(self.description)\(components.count > 0 ? " \(components.count) components = \(components)" : "")"
     }
