@@ -20,11 +20,20 @@ open class TurnBasedTileBasedPositionComponent: OKTurnBasedComponent {
     /// The coordinates to set on the entity's `TileBasedPositionComponent` in `updateTurn(delta:)`.
     open var pendingCoordinates: CGPoint?
     
+    /// Set before `pendingCoordinates` are applied, and cleared at the start of a new turn.
+    public fileprivate(set) var previousCoordinates: CGPoint?
+    
+    open override func beginTurn(delta turns: Int = 1) {
+        self.previousCoordinates = nil
+    }
+    
     open override func updateTurn(delta turns: Int) {
         guard
             let pendingCoordinates = self.pendingCoordinates,
             let tileBasedPositionComponent = coComponent(TileBasedPositionComponent.self)
             else { return }
+        
+        self.previousCoordinates = tileBasedPositionComponent.coordinates
         
         tileBasedPositionComponent.coordinates = pendingCoordinates
         
