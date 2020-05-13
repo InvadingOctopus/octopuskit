@@ -39,8 +39,8 @@ public typealias OctopusSubscene = OKSubscene
 
 /// A base class for special nodes that may contain entities and component systems of their own, to implement self-contained "pseudoscenes" inside the parent scene, such as paused-state or inventory overlays, cutscenes or minigames.
 open class OKSubscene: SKNode,
-                            OKEntityContainerNode,
-                            OKEntityDelegate
+                       OKEntityContainerNode,
+                       OKEntityDelegate
 {
     
     // ℹ️ NOTE: This class currently contains a lot of duplicate code from `OKScene`. The `OKEntityContainer` protocol is meant to reduce code duplication in the future but cannot be elegantly implemented currently because of the issues associated with Default Implementations (via Extensions) and inheritance. 2018-05-08
