@@ -12,6 +12,5 @@
 
 import SpriteKit
 
-public typealias Point  = CGPoint
 public typealias Size   = CGSize
 public typealias Vector = CGVector
