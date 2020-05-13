@@ -12,13 +12,13 @@ import SpriteKit
 
 public extension SKShader {
     
-    /// Creates a new shader object by loading the source for a fragment shader from a file stored in the app’s bundle, and initializes it with the specified uniform data and attributes list, if any.
+    /// Creates a new shader object by loading the source for a fragment shader from a file stored in the app’s bundle, and initializes it with the specified uniform data and attributes list, if any. Also logs shader compilation failures.
     ///
     /// - Parameters:
-    ///   - name: The name of the fragment shader to load. The file must be present in your app bundle with the same name and a .fsh file extension.
-    ///   - uniforms: A list of uniforms to add to the shader object. May be `nil`.
+    ///   - name:       The name of the fragment shader to load. The file must be present in your app bundle with the same name and a .fsh file extension.
+    ///   - uniforms:   A list of uniforms to add to the shader object. May be `nil`.
     ///   - attributes: A list of attributes to add to the shader object. May be `nil`.
-    convenience init(fileNamed name: String,
+    convenience init(sourceFromFileNamed name: String,
                      uniforms:      [SKUniform]?   = nil,
                      attributes:    [SKAttribute]? = nil)
     {
