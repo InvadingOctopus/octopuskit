@@ -22,7 +22,11 @@ permalink: documentation/tips.html
 
 - Does the entity have all the components that the non-functioning component depends on? A component's dependencies must be added to the entity before the component that depends on them. [TODO: make this automatic]
 
-- Check the log.
+- Pay attention to the order of components when adding them to an entity and when adding their systems to the scene.
+
+    > Suppose *ComponentB* depends on *ComponentA*, but *ComponentB* has to execute its logic *before* *ComponentA* during every frame update cycle; so *ComponentB* must be added to the entity ***after*** *ComponentA*, but the *system* for *ComponentB* must be added to the scene ***before*** *ComponentA*.
+
+- Check the log for warnings.
 
 #### Components having *too* much effect? 
 - Make sure that a component is updated (if applicable) only once per frame.
