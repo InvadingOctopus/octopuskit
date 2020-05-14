@@ -25,7 +25,7 @@ public struct ContiguousArray2D <Element> {
     public typealias IndexUnit = Int
     
     /// A tuple representing a (column, row).
-    public typealias Coordinates = (column: IndexUnit, row: IndexUnit)
+    public typealias Coordinates = Point
     
     public enum Rotation: Int {
         case none       = 0
@@ -181,7 +181,7 @@ public struct ContiguousArray2D <Element> {
     /// Returns the element at `coordinates`. Affected by rotations and transformations.
     @inlinable
     public subscript(_ coordinates: Coordinates) -> Element {
-        return self[coordinates.column, coordinates.row]
+        return self[coordinates.x, coordinates.y]
     }
     
     /// Writes the `elements` sequence into the array starting at the specified column and row, overwriting existing elements and ignoring any elements which may not fit.
@@ -214,32 +214,32 @@ public struct ContiguousArray2D <Element> {
         switch direction {
             
         case .north,    .up,        .top,       .fore:
-            newCoordinates.row      -= steps
+            newCoordinates.y    -= steps
             
         case .northEast:
-            newCoordinates.column   += steps
-            newCoordinates.row      -= steps
+            newCoordinates.x    += steps
+            newCoordinates.y    -= steps
             
         case .east,     .right,     .starboard:
-            newCoordinates.column   += steps
+            newCoordinates.x    += steps
             
         case .southEast:
-            newCoordinates.column   += steps
-            newCoordinates.row      += steps
+            newCoordinates.x    += steps
+            newCoordinates.y    += steps
             
         case .south,    .down,      .bottom,    .aft:
-            newCoordinates.row      += steps
+            newCoordinates.y    += steps
             
         case .southWest:
-            newCoordinates.column   -= steps
-            newCoordinates.row      += steps
+            newCoordinates.x    -= steps
+            newCoordinates.y    += steps
             
         case .west,     .left,      .port:
-            newCoordinates.column   -= steps
+            newCoordinates.x    -= steps
             
         case .northWest:
-            newCoordinates.column   -= steps
-            newCoordinates.row      -= steps
+            newCoordinates.x    -= steps
+            newCoordinates.y    -= steps
             
         default:
             OctopusKit.logForErrors("Invalid direction: \(direction)")
@@ -374,7 +374,7 @@ public struct ContiguousArray2D <Element> {
     @inlinable
     public func validateCoordinates(_ coordinates: Coordinates) -> Bool {
         // 😡 Because Swift won't let us just use a tuple as method arguments (anymore?)
-        return  validateCoordinates(column: coordinates.column, row: coordinates.row)
+        return  validateCoordinates(column: coordinates.x, row: coordinates.y)
     }
     
     /// Returns the column and row coordinates (in a tuple) for the specific index in the underlying 1D storage array. Affected by transformations.
