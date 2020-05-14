@@ -25,6 +25,12 @@ extension GKComponent {
         return self.entity?.node
     }
     
+    /// Returns the name for the entity associated with this component, if it is an `OKEntity`. A convenience for quickly writing log entries.
+    @inlinable
+    public var entityName: String? {
+        (self.entity as? OKEntity)?.name
+    }
+    
     /// Returns the component of type `componentClass`, or a `RelayComponent` linked to a component of that type, if it's present in the entity that is associated with this component.
     ///
     /// Returns `nil` if the requested `componentClass` is this component's class, as that would not be a "co" component, and entities can have only one component of each class.
