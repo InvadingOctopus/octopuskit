@@ -181,7 +181,8 @@ public struct ContiguousArray2D <Element> {
     /// Returns the element at `coordinates`. Affected by rotations and transformations.
     @inlinable
     public subscript(_ coordinates: Coordinates) -> Element {
-        return self[coordinates.x, coordinates.y]
+        get { self[coordinates.x, coordinates.y] }
+        set { self[coordinates.x, coordinates.y] = newValue }
     }
     
     /// Writes the `elements` sequence into the array starting at the specified column and row, overwriting existing elements and ignoring any elements which may not fit.
