@@ -97,18 +97,18 @@ public extension String {
 }
 
 extension DefaultStringInterpolation {
-
+    
     /// Fixes the warnings about "String interpolation produces a debug description for an optional value; did you mean to make this explicit?"
     ///
     /// When a debug description for an optional value is needed, use `String(describing:)`
     @inlinable
-    mutating func appendInterpolation <T> (optional optionalValue: T?) {
+    public mutating func appendInterpolation <T> (optional optionalValue: T?) {
         appendInterpolation(String(optional: optionalValue))
     }
     
     /// Shorthand for `"\(optional: someValue)"`
     @inlinable
-    mutating func appendInterpolation <T> (_ optionalValue: T?) {
+    public mutating func appendInterpolation <T> (_ optionalValue: T?) {
         appendInterpolation(String(optional: optionalValue))
     }
     
