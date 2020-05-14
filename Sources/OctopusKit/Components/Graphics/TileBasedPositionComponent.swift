@@ -30,7 +30,7 @@ public final class TileBasedPositionComponent: OKComponent, UpdatedPerFrame {
     public var offsetFromTileCenter: CGPoint = .zero
     
     /// The coordinates of a tile in the `TileMapComponent`'s `SKTileMapNode`. The entity's node's position is set to this tile's center in every frame, adding the `offsetFromTileCenter`.
-    public var coordinates: CGPoint = .zero {
+    public var coordinates: Point = .zero {
         didSet {
             if  coordinates != oldValue {
                 alignNodePositionOnUpdate = true
@@ -62,7 +62,7 @@ public final class TileBasedPositionComponent: OKComponent, UpdatedPerFrame {
     ///   - animate: If `true`, an `SKAction` animates the entity's node from its current position to the tile's position. If `false`, the node is moved to the new position immediately.
     public init(tileMapComponentOverride:   TileMapComponent?   = nil,
                 tileMapLayer:               Int                 = 0,
-                coordinates:                CGPoint             = .zero,
+                coordinates:                Point               = .zero,
                 offsetFromTileCenter:       CGPoint             = .zero,
                 animate:                    Bool                = true,
                 animationDuration:          TimeInterval        = 0.2,
@@ -108,8 +108,8 @@ public final class TileBasedPositionComponent: OKComponent, UpdatedPerFrame {
         }
         
         let tileMapNode = tileMapComponent.layers[tileMapLayer]
-        let column      = Int(self.coordinates.x)
-        let row         = Int(self.coordinates.y)
+        let column      = self.coordinates.x
+        let row         = self.coordinates.y
         
         guard // SKTileMapNode is 0-indexed
             column  >= 0,
@@ -165,9 +165,9 @@ public final class TileBasedPositionComponent: OKComponent, UpdatedPerFrame {
         
         // CHECK: PERFORMANCE: Impact from range allocations?
         
-        let column      = Int(coordinates.x).clamped(to: 0..<tileMapNode.numberOfColumns)
-        let row         = Int(coordinates.y).clamped(to: 0..<tileMapNode.numberOfRows)
+        let column      = coordinates.x.clamped(to: 0 ..< tileMapNode.numberOfColumns)
+        let row         = coordinates.y.clamped(to: 0 ..< tileMapNode.numberOfRows)
         
-        coordinates     = CGPoint(x: column, y: row)
+        coordinates     = Point(x: column, y: row)
     }
 }

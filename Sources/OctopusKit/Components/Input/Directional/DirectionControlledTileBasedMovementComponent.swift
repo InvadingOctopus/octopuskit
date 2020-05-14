@@ -18,7 +18,7 @@ open class DirectionControlledTileBasedMovementComponent: OKComponent, UpdatedPe
          TileBasedPositionComponent.self]
     }
     
-    /// The property of the `DirectionEventComponent` to monitor for input, such as `directionsBeganForCurrentFrame` or `directionsActive`. May be overriden in a subclass to effectively chooses whether to move once (e.g. when a key is first pressed) or to move repeatedly until an input ends (e.g. until a key is lifted).
+    /// The property of the `DirectionEventComponent` to monitor for input, such as `directionsBeganForCurrentFrame` or `directionsActive`. May be overridden in a subclass to effectively chooses whether to move once (e.g. when a key is first pressed) or to move repeatedly until an input ends (e.g. until a key is lifted).
     @inlinable
     open var directionsSource: Set<OKInputDirection>? {
         guard let directionEventComponent = coComponent(DirectionEventComponent.self) else { return nil }
@@ -26,7 +26,7 @@ open class DirectionControlledTileBasedMovementComponent: OKComponent, UpdatedPe
     }
     
     /// The number of tiles to move in for each input event.
-    open var stepMultiplier: CGFloat = 1
+    open var stepMultiplier: Int = 1
     
     public fileprivate(set) var didMoveThisFrame: Bool = false
     
@@ -71,11 +71,11 @@ open class DirectionControlledTileBasedMovementComponent: OKComponent, UpdatedPe
     }
     
     /// Override in a subclass to specify the conditions for valid moves, e.g. checking the map data for walls etc. `destination` may be modified to set different final coordinates based on game-specific logic.
-    open func shouldMove(from currentCoordinates: CGPoint,
-                         to    destination: inout CGPoint) -> Bool { true }
+    open func shouldMove(from currentCoordinates: Point,
+                         to    destination: inout Point) -> Bool { true }
     
     /// Abstract; Override in a subclass to perform any tasks that must occur after movement, e.g. decreasing the player's remaining time or energy.
-    open func didMove(from previousCoordinates: CGPoint,
-                      to   currentCoordinates:  CGPoint) {}
+    open func didMove(from previousCoordinates: Point,
+                      to   currentCoordinates:  Point) {}
     
 }

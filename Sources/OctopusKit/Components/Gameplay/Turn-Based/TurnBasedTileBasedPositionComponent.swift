@@ -18,10 +18,10 @@ open class TurnBasedTileBasedPositionComponent: OKTurnBasedComponent {
     }
 
     /// The coordinates to set on the entity's `TileBasedPositionComponent` in `updateTurn(delta:)`.
-    open var pendingCoordinates: CGPoint?
+    open var pendingCoordinates: Point?
     
     /// Set before `pendingCoordinates` are applied, and cleared at the start of a new turn.
-    public fileprivate(set) var previousCoordinates: CGPoint?
+    public fileprivate(set) var previousCoordinates: Point?
     
     open override func beginTurn(delta turns: Int = 1) {
         self.previousCoordinates = nil
