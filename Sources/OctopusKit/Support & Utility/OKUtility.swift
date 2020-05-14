@@ -63,7 +63,7 @@ public struct OKUtility {
     ///
     /// - WARNING: The argument's value is captured when the closure is created. When the returned closure is called, it will use that captured value, and may not have the latest expected value even if the original variable is changed.
     @inlinable
-    public func combineClosure <A, B> (
+    public static func combineClosure <A, B> (
         with argument: A,
         closure: @escaping (A) -> B)
         -> () -> B
