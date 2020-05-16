@@ -6,12 +6,11 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-import SpriteKit
 import GameplayKit
 
 /// A component for storing a dictionary of arbitrary types and values. May be used for sharing data between other components.
 ///
-/// If you need to share a lot of data or properties between components, consider writing a custom data component specific to your game.
+/// - Note: If you need to share a lot of data or properties between components, consider writing a custom data component specific to your game.
 public final class DictionaryComponent<KeyType: Hashable, ValueType>: OKComponent {
     
     public var dictionary: [KeyType: ValueType]
@@ -35,6 +34,5 @@ public final class DictionaryComponent<KeyType: Hashable, ValueType>: OKComponen
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    
 }
 
