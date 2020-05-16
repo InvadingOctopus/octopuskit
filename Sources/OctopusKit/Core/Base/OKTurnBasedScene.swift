@@ -36,7 +36,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                           delta turns: Int)
     {
         for componentSystem in systemsCollection {
-            for case let component as OKTurnBasedComponent in componentSystem.components
+            for case let component as TurnBased in componentSystem.components
                 where !component.disallowBeginTurn
             {
                 component.beginTurn(delta: turns)
@@ -54,7 +54,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                            delta turns: Int)
     {
         for componentSystem in systemsCollection {
-            for case let component as OKTurnBasedComponent in componentSystem.components
+            for case let component as TurnBased in componentSystem.components
                 where !component.disallowUpdateTurn
             {
                 component.updateTurn(delta: turns)
@@ -72,7 +72,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                         delta turns: Int)
     {
         for componentSystem in systemsCollection {
-            for case let component as OKTurnBasedComponent in componentSystem.components
+            for case let component as TurnBased in componentSystem.components
                 where !component.disallowEndTurn
             {
                 component.endTurn(delta: turns)

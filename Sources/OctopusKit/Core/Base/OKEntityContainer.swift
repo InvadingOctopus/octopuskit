@@ -240,7 +240,7 @@ public extension OKEntityContainer {
         
         for component in entity.components
             where component is UpdatedPerFrame
-               || component is OKTurnBasedComponent
+               || component is TurnBased
         {
             let found = self.componentSystems.contains {
                 $0.componentClass == type(of: component)
