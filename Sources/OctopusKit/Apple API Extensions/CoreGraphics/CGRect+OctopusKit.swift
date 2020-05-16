@@ -12,6 +12,32 @@ import CoreGraphics
 
 public extension CGRect {
     
+    // MARK: - Initializers
+    
+    /// Convenience initializer for using an existing `CGPoint` as the origin and customizing the dimensions.
+    init(origin:    CGPoint,
+         width:     CGFloat,
+         height:    CGFloat)
+    {
+        self.init(x:        origin.x,
+                  y:        origin.y,
+                  width:    width,
+                  height:   height)
+    }
+
+    /// Convenience initializer for using an existing `CGSize` for the dimensions and customizing the origin.
+    init(x:         CGFloat,
+         y:         CGFloat,
+         size:      CGSize)
+    {
+        self.init(x:        x,
+                  y:        y,
+                  width:    size.width,
+                  height:   size.height)
+    }
+
+    // MARK: - Properties
+    
     /// Returns a point at the rectangle's `midX` and `midY`.
     @inlinable
     var center: CGPoint {
@@ -34,6 +60,8 @@ public extension CGRect {
     var withZeroOrigin: CGRect {
         CGRect(origin: CGPoint.zero, size: self.size)
     }
+    
+    // MARK: - Common Tasks
     
     /// Returns a new rectangle that is equivalent to this rectangle scaled by the specified factors.
     @inlinable
