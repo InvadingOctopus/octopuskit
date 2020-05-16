@@ -11,6 +11,21 @@ import Foundation
 /// A protocol for objects in a turn-based system.
 public protocol TurnBased {
     
+    /// A flag that may be implemented by subclasses, e.g. to prevent multiple calls of `beginTurn()` during a single cycle.
+    ///
+    /// - Note: Using `OKGameState` may be more suitable for managing the begin/update/end turn cycle. See `OKTurnBasedComponent` comments for tips.
+    var disallowBeginTurn: Bool { get }
+    
+    /// A flag that may be implemented by subclasses, e.g. to prevent multiple calls of `updateTurn()` during a single cycle.
+    ///
+    /// - Note: Using `OKGameState` may be more suitable for managing the begin/update/end turn cycle. See `OKTurnBasedComponent` comments for tips.
+    var disallowUpdateTurn: Bool { get }
+    
+    /// A flag that may be implemented by subclasses, e.g. to prevent multiple calls of `endTurn()` during a single cycle.
+    ///
+    /// - Note: Using `OKGameState` may be more suitable for managing the begin/update/end turn cycle. See `OKTurnBasedComponent` comments for tips.
+    var disallowEndTurn: Bool { get }
+    
     // *Abstract; override in subclass.* Use this to perform any tasks that must occur at the beginning of each turn, *before* `updateTurn(delta:)`, such as health regeneration effects.
     ///
     /// - Parameter turns: The number of turns passed since the previous update.
@@ -25,4 +40,15 @@ public protocol TurnBased {
     ///
     /// - Parameter turns: The number of turns passed since the previous update.
     func endTurn(delta turns: Int)
+}
+
+public extension TurnBased {
+    
+    /// ℹ️ This extension basically allows conforming types to skip the implementation of these flags, like `OKTurnBasedEntity`.
+    
+    var disallowBeginTurn:  Bool { false }
+    
+    var disallowUpdateTurn: Bool { false }
+    
+    var disallowEndTurn:    Bool { false }
 }
