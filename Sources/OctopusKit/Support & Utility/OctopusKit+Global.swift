@@ -20,3 +20,16 @@ public func 💩(_ closure: () -> Void) {
     closure()
     #endif
 }
+
+/// Runs the supplied closure and returns its optional result only if the `DEBUG` compilation flag is set. Marks temporary debugging code and list members for easy removal when no longer needed. Set a single breakpoint inside this function's definition to pause execution on every call.
+///
+/// **Example**: `let oddNumbers = [1, 💩{2}!, 3]`
+///
+@inlinable
+public func 💩 <ReturnValue> (_ closure: () -> ReturnValue?) -> ReturnValue? {
+    #if DEBUG
+    return closure()
+    #else
+    return nil
+    #endif
+}
