@@ -248,6 +248,10 @@ open class OKScene: SKScene,
             // Convenient customization point for subclasses, so they can have a standard method for setting up the initial list of component systems.
             componentSystems.createSystems(forClasses: createComponentSystems())
             
+            // Remember to add components from the scene's root entity!
+            /// This takes care of including any additional components that were added during a subclass's override of `createSceneEntity()`, such as `OKTurnBasedScene` adding a `TurnCounterComponent`.
+            componentSystems.addComponents(foundIn: self.entity!)
+            
             OctopusKit.logForFramework("Calling createContents() for \(self)")
             createContents()
             
