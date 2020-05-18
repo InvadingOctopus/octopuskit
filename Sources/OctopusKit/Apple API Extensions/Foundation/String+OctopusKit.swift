@@ -24,6 +24,8 @@ public extension String {
         }
     }
     
+    // MARK: - Type Methods
+    
     /// Generates and returns a function that concatenates strings in the order they're sent, with an optional (comma by default) separator.
     @inlinable
     static func createConcatenator(withSeparator separator: String = ", ")
@@ -94,6 +96,13 @@ public extension String {
         return concatenator
     }
     
+    // MARK: - Common Tasks
+    
+    /// Shortcut for `padding(toLength:withPad:startingAt:)`.
+    func paddedWithSpace(toLength newLength: Int) -> Self {
+        return self.padding(toLength: newLength, withPad: " ", startingAt: 0)
+    }
+    
 }
 
 extension DefaultStringInterpolation {
@@ -113,3 +122,4 @@ extension DefaultStringInterpolation {
     }
     
 }
+
