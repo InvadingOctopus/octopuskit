@@ -550,11 +550,15 @@ open class OKScene: SKScene,
         
     }
     
+    // MARK: Update Delegation
+    
     /// This method is called at the end of `OKScene.update()` to determine whether to call `OctopusKit.shared.gameCoordinator.update()` on every frame.
     ///
     /// If the game uses a custom subclass of `OKGameCoordinator` that implements an `update(deltaTime:)` method then an `OKScene` subclass may override `shouldUpdateGameCoordinator(deltaTime:)` to customize the per-frame logic.
     ///
     /// This method is called before `shouldUpdateSystems()` during the frame update.
+    ///
+    /// - IMPORTANT: To update the *components* of the game coordinator's *entity*, the entity **must be added** to the scene and the scene must have the relevant component systems.
     ///
     /// - RETURNS: The default implementation calls `shouldUpdateSystems` and forwards its result.
     open func shouldUpdateGameCoordinator(deltaTime: TimeInterval) -> Bool {
