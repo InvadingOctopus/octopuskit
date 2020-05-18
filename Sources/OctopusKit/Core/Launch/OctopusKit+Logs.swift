@@ -24,6 +24,9 @@ extension OctopusKit {
     /// A log for operations that involve loading, downloading, caching and writing game assets and related resources.
     public static var logForResources   = OKLog(title: "🐙📦", suffix: "📦")
     
+    /// A log for the cycle of turn updates in a turn-based game.
+    public static var logForTurns       = OKLog(title: "🐙🔄", suffix: "🔄")
+    
     /// A log for deinitializations; when an object is freed from memory.
     public static var logForDeinits     = OKLog(title: "🐙💀", suffix: "💀")
     

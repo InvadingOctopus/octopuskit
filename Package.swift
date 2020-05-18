@@ -33,6 +33,7 @@ let package = Package(
 //                 .define("LOGECSVERBOSE"),       // Log detailed ECS core events. ⚠️ May decrease performance.
 //                 .define("LOGINPUTEVENTS"),      // Log detailed mouse/touch/pointer input events. ⚠️ May decrease performance.
 //                 .define("LOGPHYSICS")           // Log physics contact/collision events. ⚠️ May decrease performance.
+//                 .define("LOGVERBOSETURNS")      // Log each begin/update/end cycle for turn-based components. ⚠️ May decrease performance.
 //            ]
         ),
         .testTarget(
