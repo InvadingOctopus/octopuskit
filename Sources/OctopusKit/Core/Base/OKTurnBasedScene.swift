@@ -20,6 +20,16 @@ open class OKTurnBasedScene: OKScene, TurnBased {
     
     // CHECK: PERFORMANCE
     
+    /// The number of the current turn according to the scene's root entity's `TurnCounterComponent`, if any.
+    open var currentTurn:  Int {
+        self.entity?[TurnCounterComponent.self]?.currentTurn ?? 0 /// CHECK: Should it be `nil`?
+    }
+    
+    /// The number of turns elapsed according to the scene's root entity's `TurnCounterComponent`, if any.
+    open var turnsElapsed: Int {
+        self.entity?[TurnCounterComponent.self]?.turnsElapsed ?? 0 /// CHECK: Should it be `nil`?
+    }
+    
     @inlinable
     open override func createSceneEntity() {
         super.createSceneEntity()
@@ -43,8 +53,11 @@ open class OKTurnBasedScene: OKScene, TurnBased {
             {
                 #if LOGTURNBASED
                 let entityName = ((component as? OKComponent)?.entityName ?? "\(type(of: (component as? OKComponent)?.entity))")
-                    .padding(toLength: 15, withPad: " ", startingAt: 0)
-                OctopusKit.logForTurns("\(entityName) \(component))")
+                    .paddedWithSpace(toLength: 16)
+                let turn = "T\(self.currentTurn)"
+                    .paddedWithSpace(toLength: 6)
+                
+                OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🟢")
                 #endif
                 
                 component.beginTurn(delta: turns)
@@ -67,8 +80,11 @@ open class OKTurnBasedScene: OKScene, TurnBased {
             {
                 #if LOGTURNBASED
                 let entityName = ((component as? OKComponent)?.entityName ?? "\(type(of: (component as? OKComponent)?.entity))")
-                    .padding(toLength: 15, withPad: " ", startingAt: 0)
-                OctopusKit.logForTurns("\(entityName) \(component))")
+                    .paddedWithSpace(toLength: 16)
+                let turn = "T\(self.currentTurn)"
+                    .paddedWithSpace(toLength: 6)
+                
+                OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🟡")
                 #endif
                 
                 component.updateTurn(delta: turns)
@@ -91,8 +107,11 @@ open class OKTurnBasedScene: OKScene, TurnBased {
             {
                 #if LOGTURNBASED
                 let entityName = ((component as? OKComponent)?.entityName ?? "\(type(of: (component as? OKComponent)?.entity))")
-                    .padding(toLength: 15, withPad: " ", startingAt: 0)
-                OctopusKit.logForTurns("\(entityName) \(component))")
+                    .paddedWithSpace(toLength: 16)
+                let turn = "T\(self.currentTurn)"
+                    .paddedWithSpace(toLength: 6)
+                
+                OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🔴")
                 #endif
                 
                 component.endTurn(delta: turns)
