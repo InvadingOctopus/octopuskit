@@ -33,7 +33,7 @@ public func debugLog(
     // Trim and pad the calling file's name.
     
     let callerFile = ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension // ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension
-    let paddedFile = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
+    let paddedFile = callerFile.paddedWithSpace(toLength: 35)
 
     print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedFile)\(separator)\(callerFunction)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
 }
@@ -160,7 +160,7 @@ public struct OKLog {
             print("")
         }
         
-        let currentFrameNumberString = " F" + "\(currentFrameNumber)".padding(toLength: 7, withPad: " ", startingAt: 0) + "\(currentFrameNumber > OKLog.lastFrameLogged ? "•" : " ")"
+        let currentFrameNumberString = " F" + "\(currentFrameNumber)".paddedWithSpace(toLength: 7) + "\(currentFrameNumber > OKLog.lastFrameLogged ? "•" : " ")"
         
         // Remember the last frame we logged (assuming that the output of this function will be logged) so that we can insert an empty line between future frames if `printEmptyLineBetweenFrames` is set.
         
@@ -296,8 +296,8 @@ public struct OKLog {
             } else {
                 // TODO: Truncate filenames with "…"
                 
-                let paddedTitle = title.padding(toLength: 8, withPad: " ", startingAt: 0)
-                let paddedFile  = callerFile.padding(toLength: 35, withPad: " ", startingAt: 0)
+                let paddedTitle = title.paddedWithSpace(toLength: 8)
+                let paddedFile  = callerFile.paddedWithSpace(toLength: 35)
                  
                 if  OKLog.printTextOnSecondLine {
                     consoleText = """
