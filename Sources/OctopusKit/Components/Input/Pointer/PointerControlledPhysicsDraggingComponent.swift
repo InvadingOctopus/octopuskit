@@ -51,11 +51,11 @@ public final class PointerControlledPhysicsDraggingComponent: OKComponent, Updat
         // If the pointer is in any state other than `ready` or `disabled`, then it means the pointer may have moved, otherwise this component has nothing to do.
         
         guard
-            let node = self.entityNode,
-            let parent = node.parent,
+            let node        = self.entityNode,
+            let parent      = node.parent,
             let physicsBody = coComponent(ofType: PhysicsComponent.self)?.physicsBody,
             let nodePointerStateComponent = coComponent(NodePointerStateComponent.self),
-            nodePointerStateComponent.state != .ready || nodePointerStateComponent.state != .disabled,
+                nodePointerStateComponent.state != .ready || nodePointerStateComponent.state != .disabled,
             let latestEvent = nodePointerStateComponent.latestEventForCurrentFrame
             else {
                 releaseBody()
@@ -69,7 +69,7 @@ public final class PointerControlledPhysicsDraggingComponent: OKComponent, Updat
         #if LOGINPUTEVENTS
         let previousPointerLocation = nodePointerStateComponent.previousEvent?.location(in: parent) ?? currentPointerLocation // Instead of `CGPoint.zero` so we don't report a false delta for the first event in a sequence.
         let pointerLocationDelta = currentPointerLocation - previousPointerLocation
-        debugLog("trackedPointer.location in parent: \(previousPointerLocation) → \(currentPointerLocation), delta: \(pointerLocationDelta), translation: \(nodePointerComponent.pointerTranslationInParent)")
+        debugLog("trackedPointer.location in parent: \(previousPointerLocation) → \(currentPointerLocation), delta: \(pointerLocationDelta), translation: \(nodePointerStateComponent.pointerTranslationInParent)")
         #endif
         
         // #2: Move the node's physics body.
