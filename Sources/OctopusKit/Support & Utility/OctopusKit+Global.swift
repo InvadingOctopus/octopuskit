@@ -33,3 +33,51 @@ public func 💩 <ReturnValue> (_ closure: () -> ReturnValue?) -> ReturnValue? {
     return nil
     #endif
 }
+
+// MARK: NSLog Replacements
+
+#if DEBUG
+
+/// Prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
+///
+/// Available in debug configurations (when the `DEBUG` compilation flag is set). A blank function in non-debug configurations.
+///
+/// - Parameters:
+///   - entry:      The text of the entry.
+///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
+///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
+///   - separator:  The separator to place between time, topic, function and entry. Default: A single space.
+@inlinable
+public func debugLog(
+    _ entry:    String? = nil,
+    topic:      String  = #file,
+    function:   String  = #function,
+    separator:  String  = " ")
+{
+    // Trim and pad the calling file's name.
+    
+    let topic       = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
+    let paddedTopic = topic.paddedWithSpace(toLength: 35)
+
+    print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedTopic)\(separator)\(function)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
+}
+
+/// Alias for `NSLog(_:_:)` in debug configurations (when the `DEBUG` compilation flag is set). A blank function in non-debug configurations.
+@inlinable
+public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {
+    NSLog(format, args)
+}
+
+#else
+
+/// A blank function in non-debug configurations (when the `DEBUG` compilation flag is *not* set). Alias for `NSLog(_:_:)` in debug configurations.
+@inlinable
+public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {}
+
+/// A blank function in non-debug configurations (when the `DEBUG` compilation flag is *not* set).
+///
+/// In debug configurations, prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
+@inlinable
+public func debugLog(_ entry: String? = nil, topic: String = #file, function: String = #function, separator: String = " ") {}
+    
+#endif
