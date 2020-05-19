@@ -32,7 +32,7 @@ public final class PointerEventComponent: OKComponent, UpdatedPerFrame {
         case ended
     }
     
-    public final class PointerEvent: Equatable {
+    public final class PointerEvent: Equatable, CustomStringConvertible {
         
         // NOTE: `Equatable` conformance cannot be automatically synthesized by Swift 4.1 for classes.
         
@@ -50,6 +50,8 @@ public final class PointerEventComponent: OKComponent, UpdatedPerFrame {
                 &&  left.node           === right.node
                 &&  left.locationInNode ==  right.locationInNode)
         }
+        
+        public var description: String { "\(category) \(locationInNode)" }
         
         #if canImport(AppKit)
         
