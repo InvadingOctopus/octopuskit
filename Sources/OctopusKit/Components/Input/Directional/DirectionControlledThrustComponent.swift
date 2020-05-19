@@ -106,7 +106,7 @@ public final class DirectionControlledThrustComponent: OKComponent, UpdatedPerFr
         
         // #3: Apply the force in relation to the node's current rotation.
         
-        var magnitudeForCurrentFrame = timeStep.applying(magnitudePerUpdate.current, deltaTime: CGFloat(seconds))
+        let magnitudeForCurrentFrame = timeStep.applying(magnitudePerUpdate.current, deltaTime: CGFloat(seconds))
         let vector = CGVector(radians: node.zRotation) * CGFloat(magnitudeForCurrentFrame * direction) * scalingFactor // TODO: Verify!
         
         // Apply the final vector to the body.
