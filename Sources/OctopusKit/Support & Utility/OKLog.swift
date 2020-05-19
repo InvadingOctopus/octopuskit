@@ -69,10 +69,15 @@ public func debugLog(_ entry: String? = nil, topic: String = #file, function: St
 /// An entry in an `OKLog`.
 public struct OKLogEntry: Identifiable, CustomStringConvertible {
     
+    /// The title of the log, if any, in which this entry was logged.
+    public let title:       String
+    
     public let time:        Date
     
+    /// The number of the scene frame during which this entry was logged. May be `0` if there was no active scene.
     public let frame:       UInt64
    
+    /// Specifies whether this entry was logged at the beginning of a new frame of a scene, if any. Used for highlighting new frames in a list of entries.
     public let isNewFrame:  Bool
     
     public let text:        String
@@ -88,11 +93,15 @@ public struct OKLogEntry: Identifiable, CustomStringConvertible {
     
     /// Creates a new log entry.
     /// - Parameters:
+    ///   - title:      The title of the log, if any, in which this entry is logged.
     ///   - time:       The date and time at which this entry is logged.
+    ///   - frame:      The current frame count of the current scene, if any, otherwise `0`.
+    ///   - isNewFrame: `true` if the entry is logged at the beginning of a new frame in the current scene, if any. Used for highlighting new frames.
     ///   - text:       The content of the entry.
     ///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
     ///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
     public init(
+        title:      String  = "",
         time:       Date    = Date(),
         frame:      UInt64  = OKLog.currentFrame,
         isNewFrame: Bool    = OKLog.isNewFrame,
@@ -100,6 +109,7 @@ public struct OKLogEntry: Identifiable, CustomStringConvertible {
         topic:      String  = #file,
         function:   String  = #function)
     {
+        self.title      = title
         self.time       = time
         self.frame      = frame
         self.isNewFrame = isNewFrame
@@ -119,6 +129,13 @@ public struct OKLogEntry: Identifiable, CustomStringConvertible {
 
 // MARK: - OKLog
 
+public extension OctopusKit {
+    
+    /// Contains all the entries that are logged to any log. May be used for displaying all entries in a log viewer.
+    fileprivate(set) static var unifiedLog = OKLog (title: "🐙")
+
+}
+
 /// An object that keeps a list of log entries, prefixing each entry with a customizable time format and the name of the file and function that added the entry. Designed to optimize readability in the Xcode debug console.
 ///
 /// Use multiple `OKLog`s to separate different concerns, such as warnings from errors, and to selectively enable or disable specific logs.
@@ -127,7 +144,7 @@ public struct OKLogEntry: Identifiable, CustomStringConvertible {
 public struct OKLog {
     
     // MARK: Static properties, methods & global options
-    
+        
     /// If `true` then an empty line is printed between each entry in the debug console.
     public static var printEmptyLineBetweenEntries: Bool = false
     
@@ -307,16 +324,54 @@ public struct OKLog {
     ///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
     ///   - useNSLog:   If `true`, `NSLog(_:)` is used instead of `print(_:)`. Default: `nil`; this log's `useNSLog` property is used.
     @inlinable
-    public mutating func add(
-        _ text:     String  = "",
-        topic:      String  = #file,
-        function:   String  = #function,
-        useNSLog:   Bool?   = nil)
+    public mutating func add(_ text:     String  = "",
+                             topic:      String  = #file,
+                             function:   String  = #function,
+                             useNSLog:   Bool?   = nil)
     {
         // CHECK: Cocoa Notifications for log observers etc.?
         
         guard !disabled else { return }
         
+        /// Save the time closest to when this method was called, to avoid any "drift" between processing the arguments and saving the actual entry.
+        let time = Date()
+        
+        /// Print the entry to the debug console or `NSLog`.
+        
+        self.printEntry(text,
+                        topic:      topic,
+                        function:   function,
+                        useNSLog:   useNSLog)
+        
+        // Add the entry to the log.
+        
+        let newEntry = OKLogEntry(title:    self.title,
+                                  time:     time,
+                                  text:     text,
+                                  topic:    topic,
+                                  function: function)
+        
+        entries.append(newEntry)
+        
+        // Also append the entry to the global unified log. Useful for a log viewer.
+        
+//        OKLog.unifiedLog.entries.append(newEntry)
+        
+        // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
+        
+        if  haltApplicationOnNewEntry {
+//            fatalError(consoleText)
+        }
+    }
+    
+    /// Prints the entry to the runtime debug console or `NSLog`.
+    @inlinable
+    public func printEntry(_ text:     String  = "",
+                           topic:      String  = #file,
+                           function:   String  = #function,
+                           useNSLog:   Bool?   = nil)
+    {
+            
         // Override the `useNSLog` instance property if specified here.
         let useNSLog = useNSLog ?? self.useNSLog
         
@@ -379,18 +434,6 @@ public struct OKLog {
             if OKLog.printEmptyLineBetweenEntries { print() }
         }
         
-        // Add the entry to the log.
-        
-        entries.append(OKLogEntry(time:     Date(),
-                                  text:     text,
-                                  topic:    topic,
-                                  function: function))
-        
-        // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
-        
-        if  haltApplicationOnNewEntry {
-            fatalError(consoleText)
-        }
     }
     
     /// A convenience for adding entries by simply writing `logName(...)` instead of calling the `.add(...)` method.
