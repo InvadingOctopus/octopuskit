@@ -57,7 +57,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let turn = "T\(self.currentTurn)"
                     .paddedWithSpace(toLength: 5)
                 
-                OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🟢")
+                OctopusKit.logForTurns("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🟢")
                 #endif
                 
                 component.beginTurn(delta: turns)
@@ -84,7 +84,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let turn = "T\(self.currentTurn)"
                     .paddedWithSpace(toLength: 5)
                 
-                OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🟡")
+                OctopusKit.logForTurns("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🟡")
                 #endif
                 
                 component.updateTurn(delta: turns)
@@ -111,7 +111,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let turn = "T\(self.currentTurn)"
                     .paddedWithSpace(toLength: 5)
                 
-                OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🔴")
+                OctopusKit.logForTurns("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🔴")
                 #endif
                 
                 component.endTurn(delta: turns)

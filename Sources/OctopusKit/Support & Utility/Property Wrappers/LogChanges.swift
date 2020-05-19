@@ -27,8 +27,8 @@ public struct LogChanges <ValueType: Equatable> {
                 }
                 
                 debugLog(text,
-                         callerFile:     propertyName.components(separatedBy: ".").first ?? propertyName,
-                         callerFunction: propertyName.components(separatedBy: ".").last ?? "")
+                         topic:     propertyName.components(separatedBy: ".").first ?? propertyName,
+                         function:  propertyName.components(separatedBy: ".").last ?? "")
             }
         }
     }

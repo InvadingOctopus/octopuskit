@@ -13,7 +13,7 @@
 
 import Foundation
 
-public typealias OctopusLog = OKLog
+public typealias OctopusLog      = OKLog
 public typealias OctopusLogEntry = OKLogEntry
 
 // MARK: - NSLog Replacements
@@ -22,23 +22,29 @@ public typealias OctopusLogEntry = OKLogEntry
 
 /// Prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
 ///
-/// Available in debug configurations (when the `DEBUG` flag is set). A blank function in non-debug configurations.
+/// Available in debug configurations (when the `DEBUG` compilation flag is set). A blank function in non-debug configurations.
+///
+/// - Parameters:
+///   - entry:      The text of the entry.
+///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
+///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
+///   - separator:  The separator to place between time, topic, function and entry. Default: A single space.
 @inlinable
 public func debugLog(
-    _ entry: String? = nil,
-    callerFile: String = #file,
-    callerFunction: String = #function,
-    separator: String = " ")
+    _ entry:    String? = nil,
+    topic:      String  = #file,
+    function:   String  = #function,
+    separator:  String  = " ")
 {
     // Trim and pad the calling file's name.
     
-    let callerFile = ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension // ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension
-    let paddedFile = callerFile.paddedWithSpace(toLength: 35)
+    let topic       = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
+    let paddedTopic = topic.paddedWithSpace(toLength: 35)
 
-    print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedFile)\(separator)\(callerFunction)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
+    print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedTopic)\(separator)\(function)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
 }
 
-/// Alias for `NSLog(_:_:)` in debug configurations (when the `DEBUG` flag is set). A blank function in non-debug configurations.
+/// Alias for `NSLog(_:_:)` in debug configurations (when the `DEBUG` compilation flag is set). A blank function in non-debug configurations.
 @inlinable
 public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {
     NSLog(format, args)
@@ -46,47 +52,72 @@ public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {
 
 #else
 
-/// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set). Alias for `NSLog(_:_:)` in debug configurations.
+/// A blank function in non-debug configurations (when the `DEBUG` compilation flag is *not* set). Alias for `NSLog(_:_:)` in debug configurations.
 @inlinable
 public func debugLogWithoutCaller(_ format: String, _ args: CVarArg...) {}
 
-/// A blank function in non-debug configurations (when the `DEBUG` flag is *not* set).
+/// A blank function in non-debug configurations (when the `DEBUG` compilation flag is *not* set).
 ///
 /// In debug configurations, prints a line to the console with the current time and the name of the calling file and function, followed by an optional string.
 @inlinable
-public func debugLog(_ entry: String? = nil, callerFile: String = #file, callerFunction: String = #function, separator: String = " ") {}
+public func debugLog(_ entry: String? = nil, topic: String = #file, function: String = #function, separator: String = " ") {}
     
 #endif
 
-// MARK: - OKLog
+// MARK: - OKLogEntry
 
 /// An entry in an `OKLog`.
-public struct OKLogEntry: CustomStringConvertible {
+public struct OKLogEntry: Identifiable, CustomStringConvertible {
     
-    public let time:                Date
-    public let text:                String?
-    public let addedFromFile:       String?
-    public let addedFromFunction:   String?
+    public let time:        Date
     
+    public let frame:       UInt64
+   
+    public let isNewFrame:  Bool
+    
+    public let text:        String
+    
+    /// The file name, type name, runtime object, or subsystem from which this entry was logged.
+    public let topic:       String
+    
+    /// The specific function or task inside the topic from which this entry is logged.
+    public let function:    String
+    
+    /// A unique identifier for compatibility with SwiftUI lists.
+    public let id           = UUID()
+    
+    /// Creates a new log entry.
+    /// - Parameters:
+    ///   - time:       The date and time at which this entry is logged.
+    ///   - text:       The content of the entry.
+    ///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
+    ///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
     public init(
-        time:               Date    = Date(),
-        text:               String? = nil,
-        addedFromFile:      String  = #file,
-        addedFromFunction:  String  = #function)
+        time:       Date    = Date(),
+        frame:      UInt64  = OKLog.currentFrame,
+        isNewFrame: Bool    = OKLog.isNewFrame,
+        text:       String  = "",
+        topic:      String  = #file,
+        function:   String  = #function)
     {
-        self.time                   = time
-        self.text                   = text
-        self.addedFromFile          = addedFromFile
-        self.addedFromFunction      = addedFromFunction
+        self.time       = time
+        self.frame      = frame
+        self.isNewFrame = isNewFrame
+        
+        self.text       = text
+        self.topic      = topic
+        self.function   = function
     }
     
     @inlinable
     public var description: String {
-        let text = self.text ?? "" // CHECK: Trim whitespace?
+        let text = self.text // CHECK: Trim whitespace?
         
         return ("\(OKLog.timeFormatter.string(from: self.time))\(text.isEmpty ? "" : " ")\(text)")
     }
 }
+
+// MARK: - OKLog
 
 /// An object that keeps a list of log entries, prefixing each entry with a customizable time format and the name of the file and function that added the entry. Designed to optimize readability in the Xcode debug console.
 ///
@@ -108,7 +139,7 @@ public struct OKLog {
     
     /// If `true` then debug console output is printed in tab-delimited CSV format, that may then be copied into a spreadsheet table such as Numbers etc.
     ///
-    /// The values are: currentTime, currentFrameNumber, title, callerFile, callerFunction, text, suffix.
+    /// The values are: currentTime, currentFrameNumber, title, topic, function, text, suffix.
     public static var printAsCSV: Bool = false
     
     /// The separator to print between values when `printAsCSV` is `true`.
@@ -122,49 +153,65 @@ public struct OKLog {
     ///
     /// To customize the `dateFormat` property, see the Unicode Technical Standard #35 version tr35-31: http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_Patterns
     public static let timeFormatter: DateFormatter = {
-        let timeFormatter = DateFormatter()
-        timeFormatter.locale = Locale(identifier: "en_US_POSIX")
-        timeFormatter.dateFormat = "HH:mm:ss"
+        let timeFormatter           = DateFormatter()
+        timeFormatter.locale        = Locale(identifier: "en_US_POSIX")
+        timeFormatter.dateFormat    = "HH:mm:ss"
         return timeFormatter
     }()
     
     /// Returns a string with the current time formatted by the global `OKLog.timeFormatter`.
     @inlinable
-    public static func currentTime() -> String {
+    public static func currentTimeString() -> String {
         // TODO: A better way to get nanoseconds like `NSLog`
         
-        let now = Date()
+        let now         = Date()
         let nanoseconds = "\(Calendar.current.component(.nanosecond, from: now))".prefix(6)
-        let time = OKLog.timeFormatter.string(from: now)
+        let time        = OKLog.timeFormatter.string(from: now)
         
         let timeWithNanoseconds = "\(time).\(nanoseconds)"
         
         return timeWithNanoseconds
     }
     
-    /// Returns a string with the number of the frame being rendered by the current scene, if any.
-    public static func currentFrame() -> String {
-        
-        var currentFrameNumber: UInt64 = 0
-        
+    /// Returns the `currentFrameNumber` of `OctopusKit.shared.currentScene`, if available, otherwise `0`.
+    public static var currentFrame: UInt64 {
         // ⚠️ Trying to access `OctopusKit.shared.currentScene` at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so we delay it by checking something like `gameCoordinator.didEnterInitialState`
         
         if  OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false {
-            currentFrameNumber = OctopusKit.shared.currentScene?.currentFrameNumber ?? 0
+            return OctopusKit.shared.currentScene?.currentFrameNumber ?? 0
         } else {
-            lastFrameLogged = 0
+            return 0
+        }
+    }
+    
+    /// Returns `true` if the `currentFrame` count is higher than `lastFrameLogged`.
+    public static var isNewFrame: Bool {
+        self.currentFrame > self.lastFrameLogged
+    }
+    
+    /// Returns a string with the number of the frame being rendered by the current scene, if any.
+    public static func currentFrameString() -> String {
+        
+        // If there is no scene, reset the last frame counter.
+        
+        if  OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false
+        ||  OctopusKit.shared?.currentScene == nil
+        {
+            self.lastFrameLogged = 0
         }
         
-        if  printEmptyLineBetweenFrames && currentFrameNumber > OKLog.lastFrameLogged {
+        let currentFrame = self.currentFrame
+        
+        if  printEmptyLineBetweenFrames && currentFrame > OKLog.lastFrameLogged {
             // CHECK: Should this be the job of the time function?
             print("")
         }
         
-        let currentFrameNumberString = " F" + "\(currentFrameNumber)".paddedWithSpace(toLength: 7) + "\(currentFrameNumber > OKLog.lastFrameLogged ? "•" : " ")"
+        let currentFrameNumberString = " F" + "\(currentFrame)".paddedWithSpace(toLength: 7) + "\(currentFrame > OKLog.lastFrameLogged ? "•" : " ")"
         
         // Remember the last frame we logged (assuming that the output of this function will be logged) so that we can insert an empty line between future frames if `printEmptyLineBetweenFrames` is set.
         
-        lastFrameLogged = currentFrameNumber
+        lastFrameLogged = currentFrame
         
         return currentFrameNumberString
     }
@@ -172,7 +219,7 @@ public struct OKLog {
     /// Returns a string with the current time formatted by the global `OKLog.timeFormatter` and the number of the frame being rendered by the current scene, if any.
     @inlinable
     public static func currentTimeAndFrame() -> String {
-        currentTime() + currentFrame()
+        currentTimeString() + currentFrameString()
     }
     
     // MARK: Instance properties and methods
@@ -195,12 +242,12 @@ public struct OKLog {
     /// If `true` then new log entries are ignored.
     public var disabled: Bool = false
     
-    /// - Returns: The `OKLogEntry` at `index`.
+    /// Returns the `OKLogEntry` at `index`.
     public subscript(index: Int) -> OKLogEntry {
         // ℹ️ An out-of-bounds index should not crash the game just for logging. :)
         guard index >= 0 && index < entries.count else {
             OctopusKit.logForErrors("Index \(index) out of bounds (\(entries.count) entries) — Returning dummy `OKLogEntry`")
-            return OKLogEntry(time: Date(), text: nil)
+            return OKLogEntry(time: Date())
         }
         
         return entries[index]
@@ -229,27 +276,42 @@ public struct OKLog {
     /// Useful for logs that display critical errors.
     public var haltApplicationOnNewEntry: Bool = false
     
-    // MARK: -
+    // MARK: Initializer
     
+    /// Creates a new log for grouping related entries.
+    ///
+    /// You may create multiple logs, e.g. one for each subsystem such as input, physics, etc.
+    /// - Parameters:
+    ///   - title:      The title of the log.
+    ///   - suffix:     The text to add at the end of each entry's text **when printing only**; not stored in the actual `OKLogEntry`.
+    ///   - useNSLog:   If `true`, `NSLog(_:)` is used instead of `print(_:)`. Default: `false`.
+    ///   - haltApplicationOnNewEntry: If `true`, a `fatalError()` exception is raised when a new entry is added. This may be useful for logs that report critical errors.
     public init(
-        title:      String  = "OKLog",
-        suffix:     String? = nil,
-        useNSLog:   Bool    = false,
-        haltApplicationOnNewEntry: Bool = false)
+        title:                      String  = "OKLog",
+        suffix:                     String? = nil,
+        useNSLog:                   Bool    = false,
+        haltApplicationOnNewEntry:  Bool    = false)
     {
-        self.title      = title
-        self.suffix     = suffix
-        self.useNSLog   = useNSLog
-        self.haltApplicationOnNewEntry = haltApplicationOnNewEntry
+        self.title                          = title
+        self.suffix                         = suffix
+        self.useNSLog                       = useNSLog
+        self.haltApplicationOnNewEntry      = haltApplicationOnNewEntry
     }
     
+    // MARK: Add Entry
+    
     /// Prints a new entry and adds it to the log.
+    /// - Parameters:
+    ///   - text:       The content of the entry.
+    ///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
+    ///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
+    ///   - useNSLog:   If `true`, `NSLog(_:)` is used instead of `print(_:)`. Default: `nil`; this log's `useNSLog` property is used.
     @inlinable
     public mutating func add(
-        _ text:         String? = nil,
-        callerFile:     String  = #file,
-        callerFunction: String  = #function,
-        useNSLog:       Bool?   = nil)
+        _ text:     String  = "",
+        topic:      String  = #file,
+        function:   String  = #function,
+        useNSLog:   Bool?   = nil)
     {
         // CHECK: Cocoa Notifications for log observers etc.?
         
@@ -258,11 +320,11 @@ public struct OKLog {
         // Override the `useNSLog` instance property if specified here.
         let useNSLog = useNSLog ?? self.useNSLog
         
-        let callerFile = ((callerFile as NSString).lastPathComponent as NSString).deletingPathExtension
+        let topic    = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
         
         // If there is any text to log, insert a space between the log prefix and the text.
         
-        var textWithSpacePrefixIfNeeded = text ?? ""
+        var textWithSpacePrefixIfNeeded = text
         
         if !textWithSpacePrefixIfNeeded.isEmpty {
             textWithSpacePrefixIfNeeded = " \(textWithSpacePrefixIfNeeded)"
@@ -277,19 +339,19 @@ public struct OKLog {
         var consoleText: String = ""
         
         if  useNSLog {
-            NSLog("\(title) \(callerFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)")
+            NSLog("\(title) \(topic) \(function)\(textWithSpacePrefixIfNeeded)")
             
         } else {
           
             if  OKLog.printAsCSV {
                 
                 consoleText = [
-                    OKLog.currentTime(),
+                    OKLog.currentTimeString(),
                     "\(OctopusKit.shared.currentScene?.currentFrameNumber ?? 0)",
                     #""\#(title)""#,
-                    #""\#(callerFile)""#,
-                    #""\#(callerFunction)""#,
-                    #""\#(text ?? "")""#,
+                    #""\#(topic)""#,
+                    #""\#(function)""#,
+                    #""\#(text)""#,
                     #""\#(suffix)""#
                 ].joined(separator: OKLog.csvDelimiter)
                 
@@ -297,16 +359,16 @@ public struct OKLog {
                 // TODO: Truncate filenames with "…"
                 
                 let paddedTitle = title.paddedWithSpace(toLength: 8)
-                let paddedFile  = callerFile.paddedWithSpace(toLength: 35)
+                let paddedTopic = topic.paddedWithSpace(toLength: 35)
                  
                 if  OKLog.printTextOnSecondLine {
                     consoleText = """
-                        \(OKLog.currentTimeAndFrame()) \(paddedTitle) \(callerFile)
-                        \(String(repeating: " ", count: 35))\(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)
+                        \(OKLog.currentTimeAndFrame()) \(paddedTitle) \(topic)
+                        \(String(repeating: " ", count: 35))\(function)\(textWithSpacePrefixIfNeeded)\(suffix)
                         """
                     
                 } else {
-                    consoleText = "\(OKLog.currentTimeAndFrame()) \(paddedTitle) \(paddedFile) \(callerFunction)\(textWithSpacePrefixIfNeeded)\(suffix)"
+                    consoleText = "\(OKLog.currentTimeAndFrame()) \(paddedTitle) \(paddedTopic) \(function)\(textWithSpacePrefixIfNeeded)\(suffix)"
                 }
             }
             
@@ -319,10 +381,10 @@ public struct OKLog {
         
         // Add the entry to the log.
         
-        entries.append(OKLogEntry(time: Date(),
-                                       text: text,
-                                       addedFromFile:     callerFile,
-                                       addedFromFunction: callerFunction))
+        entries.append(OKLogEntry(time:     Date(),
+                                  text:     text,
+                                  topic:    topic,
+                                  function: function))
         
         // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
         
@@ -334,14 +396,14 @@ public struct OKLog {
     /// A convenience for adding entries by simply writing `logName(...)` instead of calling the `.add(...)` method.
     @inlinable
     public mutating func callAsFunction(
-        _ text:         String? = nil,
-        callerFile:     String  = #file,
-        callerFunction: String  = #function,
-        useNSLog:       Bool?   = nil)
+        _ text:     String  = "",
+        topic:      String  = #file,
+        function:   String  = #function,
+        useNSLog:   Bool?   = nil)
     {
         self.add(text,
-                 callerFile: callerFile,
-                 callerFunction: callerFunction,
-                 useNSLog: useNSLog)
+                 topic:     topic,
+                 function:  function,
+                 useNSLog:  useNSLog)
     }
 }
