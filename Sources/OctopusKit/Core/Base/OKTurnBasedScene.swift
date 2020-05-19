@@ -55,7 +55,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let entityName = ((component as? OKComponent)?.entityName ?? "\(type(of: (component as? OKComponent)?.entity))")
                     .paddedWithSpace(toLength: 16)
                 let turn = "T\(self.currentTurn)"
-                    .paddedWithSpace(toLength: 6)
+                    .paddedWithSpace(toLength: 5)
                 
                 OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🟢")
                 #endif
@@ -82,7 +82,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let entityName = ((component as? OKComponent)?.entityName ?? "\(type(of: (component as? OKComponent)?.entity))")
                     .paddedWithSpace(toLength: 16)
                 let turn = "T\(self.currentTurn)"
-                    .paddedWithSpace(toLength: 6)
+                    .paddedWithSpace(toLength: 5)
                 
                 OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🟡")
                 #endif
@@ -109,7 +109,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let entityName = ((component as? OKComponent)?.entityName ?? "\(type(of: (component as? OKComponent)?.entity))")
                     .paddedWithSpace(toLength: 16)
                 let turn = "T\(self.currentTurn)"
-                    .paddedWithSpace(toLength: 6)
+                    .paddedWithSpace(toLength: 5)
                 
                 OctopusKit.logForTurns("\(entityName) \(component))", callerFile: "\(self.name)", callerFunction: "\(turn) 🔴")
                 #endif
