@@ -28,7 +28,10 @@ public extension Comparable {
     mutating func clamp(to range: ClosedRange<Self>) {
         self = self.clamped(to: range)
     }
+    
 }
+
+// MARK: BinaryInteger
 
 public extension Comparable where Self: BinaryInteger {
     
@@ -44,5 +47,25 @@ public extension Comparable where Self: BinaryInteger {
     @inlinable
     mutating func clamp(to range: Range<Self>) {
         self = self.clamped(to: range)
+    }
+}
+
+// MARK: - Operators
+
+infix operator !> : ComparisonPrecedence
+infix operator !< : ComparisonPrecedence
+
+public extension Comparable {
+
+    /// Not Greater Than; a comparison that returns `true` if the left-hand side is equal to or less than (`<=`) the right-hand side.
+    @inlinable
+    static func !> (left: Self, right: Self) -> Bool {
+        left <= right
+    }
+    
+    /// Not Less Than; a comparison that returns `true` if the left-hand side is equal to or greater than (`>=`) the right-hand side.
+    @inlinable
+    static func !< (left: Self, right: Self) -> Bool {
+        left >= right
     }
 }
