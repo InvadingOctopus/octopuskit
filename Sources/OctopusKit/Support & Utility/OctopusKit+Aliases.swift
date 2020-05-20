@@ -6,6 +6,8 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+// SEE ALSO: OSAgnosticTypeAliases.swift
+
 // Some cleaner aliases without prefixes for commonly-used types.
 
 // NOTE: The engine API should always use the original types for specific clarity. These aliases are provided for the engine's clients.

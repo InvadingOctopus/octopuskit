@@ -18,16 +18,18 @@ import Foundation
 import AppKit
 
 public typealias OSApplication      = NSApplication
+public typealias OSViewController   = NSViewController
+
 public typealias OSFont             = NSFont
 public typealias OSImage            = NSImage
-public typealias OSViewController   = NSViewController
+public typealias OSColor            = NSColor // ❕ Many differences between AppKit and UIKit.
 
 public typealias OSGestureRecognizer            = NSGestureRecognizer
 public typealias OSGestureRecognizerDelegate    = NSGestureRecognizerDelegate
 public typealias OSClickOrTapGestureRecognizer  = NSClickGestureRecognizer
 public typealias OSPanGestureRecognizer         = NSPanGestureRecognizer
 
-public typealias OSMouseOrTouchEventComponent   = MouseEventComponent
+public typealias OSMouseOrTouchEventComponent           = MouseEventComponent
 public typealias OSClickOrTapGestureRecognizerComponent = ClickGestureRecognizerComponent
 
 #elseif canImport(UIKit)
@@ -35,9 +37,11 @@ public typealias OSClickOrTapGestureRecognizerComponent = ClickGestureRecognizer
 import UIKit
 
 public typealias OSApplication      = UIApplication
+public typealias OSViewController   = UIViewController
+
 public typealias OSFont             = UIFont
 public typealias OSImage            = UIImage
-public typealias OSViewController   = UIViewController
+public typealias OSColor            = UIColor // ❕ Many differences between AppKit and UIKit.
 
 public typealias OSGestureRecognizer            = UIGestureRecognizer
 public typealias OSGestureRecognizerDelegate    = UIGestureRecognizerDelegate
@@ -48,8 +52,8 @@ public typealias OSMouseOrTouchEventComponent   = TouchEventComponent
 
 #endif
 
-#if os(iOS)
+#if os(iOS) // Not available on tvOS
 
-public typealias OSClickOrTapGestureRecognizerComponent = TapGestureRecognizerComponent // Not available on tvOS
+public typealias OSClickOrTapGestureRecognizerComponent = TapGestureRecognizerComponent
 
 #endif
