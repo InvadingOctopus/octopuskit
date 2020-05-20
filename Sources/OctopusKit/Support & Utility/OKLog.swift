@@ -247,7 +247,7 @@ public struct OKLog: Codable {
         
         // Also append the entry to the global unified log. Useful for a log viewer.
         
-//        OKLog.unifiedLog.entries.append(newEntry)
+        OctopusKit.unifiedLog.entries.append(newEntry)
         
         // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
         
