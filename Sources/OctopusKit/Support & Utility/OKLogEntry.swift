@@ -11,7 +11,7 @@ import Foundation
 public typealias OctopusLogEntry = OKLogEntry
 
 /// An entry in an `OKLog`.
-public struct OKLogEntry: Identifiable, Codable, CustomStringConvertible {
+public struct OKLogEntry: Identifiable, Hashable, Codable, CustomStringConvertible {
     
     /// The title of the log, if any, in which this entry was logged.
     public let title:       String
