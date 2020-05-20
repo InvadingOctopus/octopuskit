@@ -224,10 +224,10 @@ public struct OKLog {
         
         /// Print the entry to the debug console or `NSLog`.
         
-        self.printEntry(text,
-                        topic:      topic,
-                        function:   function,
-                        useNSLog:   useNSLog)
+        let consoleText = printEntry(text,
+                                     topic:     topic,
+                                     function:  function,
+                                     useNSLog:  useNSLog)
         
         // Add the entry to the log.
         
@@ -246,16 +246,17 @@ public struct OKLog {
         // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
         
         if  haltApplicationOnNewEntry {
-//            fatalError(consoleText)
+            fatalError(consoleText)
         }
     }
     
-    /// Prints the entry to the runtime debug console or `NSLog`.
-    @inlinable
+    /// Formats and prints the entry to the runtime debug console or `NSLog`, and returns the formatted string.
+    @inlinable @discardableResult
     public func printEntry(_ text:     String  = "",
                            topic:      String  = #file,
                            function:   String  = #function,
                            useNSLog:   Bool?   = nil)
+        -> String
     {
             
         // Override the `useNSLog` instance property if specified here.
@@ -320,6 +321,7 @@ public struct OKLog {
             if OKLog.printEmptyLineBetweenEntries { print() }
         }
         
+        return consoleText
     }
     
     /// A convenience for adding entries by simply writing `logName(...)` instead of calling the `.add(...)` method.
