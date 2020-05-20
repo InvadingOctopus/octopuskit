@@ -222,6 +222,12 @@ public struct OKLog {
         /// Save the time closest to when this method was called, to avoid any "drift" between processing the arguments and saving the actual entry.
         let time = Date()
         
+        // Override the `useNSLog` instance property if specified here.
+        let useNSLog = useNSLog ?? self.useNSLog
+        
+        // Trim the path from topic to only include the file name.
+        let topic = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
+        
         /// Print the entry to the debug console or `NSLog`.
         
         let consoleText = printEntry(text,
@@ -255,15 +261,9 @@ public struct OKLog {
     public func printEntry(_ text:     String  = "",
                            topic:      String  = #file,
                            function:   String  = #function,
-                           useNSLog:   Bool?   = nil)
-        -> String
+                           useNSLog:   Bool    = false)
+                        -> String
     {
-            
-        // Override the `useNSLog` instance property if specified here.
-        let useNSLog = useNSLog ?? self.useNSLog
-        
-        let topic    = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
-        
         // If there is any text to log, insert a space between the log prefix and the text.
         
         var textWithSpacePrefixIfNeeded = text
