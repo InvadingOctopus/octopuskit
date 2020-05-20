@@ -11,7 +11,7 @@ import Foundation
 public typealias OctopusLogEntry = OKLogEntry
 
 /// An entry in an `OKLog`.
-public struct OKLogEntry: Identifiable, CustomStringConvertible {
+public struct OKLogEntry: Identifiable, Codable, CustomStringConvertible {
     
     /// The title of the log, if any, in which this entry was logged.
     public let title:       String
@@ -33,7 +33,7 @@ public struct OKLogEntry: Identifiable, CustomStringConvertible {
     public let function:    String
     
     /// A unique identifier for compatibility with SwiftUI lists.
-    public let id           = UUID()
+    public let id         = UUID()
     
     /// Creates a new log entry.
     /// - Parameters:

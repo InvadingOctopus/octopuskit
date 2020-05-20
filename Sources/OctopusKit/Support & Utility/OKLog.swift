@@ -27,7 +27,7 @@ public extension OctopusKit {
 /// Use multiple `OKLog`s to separate different concerns, such as warnings from errors, and to selectively enable or disable specific logs.
 ///
 /// The log allows entries with no text, so you can simply log the time and name of function and method calls.
-public struct OKLog {
+public struct OKLog: Codable {
     
     // MARK: Static properties, methods & global options
         
