@@ -35,7 +35,7 @@ public struct OKLog: Codable {
     public static var printEmptyLineBetweenEntries: Bool = false
     
     /// If `true` then an empty line is printed between entries with different frame counts (e.g. F0 and F1).
-    public static var printEmptyLineBetweenFrames: Bool = false
+    public static var printEmptyLineBetweenFrames:  Bool = false
     
     /// If `true` then an entry is printed on at least 2 lines in the debug console, where the time and calling file is on the first line and the text is on the second line.
     public static var printTextOnSecondLine: Bool = false
@@ -139,10 +139,10 @@ public struct OKLog: Codable {
     /// A string to add at the end of all entries. Not printed if using `NSLog`.
     public let suffix: String?
     
-    /// If `true` and `useNSLog` is `false`, the log appends the `suffix` string to the end of all printed entries.
+    /// If `true` and `useNSLog` is `false`, the log appends the `suffix` string to the end of all printed lines, but not to the saved entry.
     public var printsSuffix: Bool = true
     
-    /// If `true` then new log entries are ignored.
+    /// If `true` then new entries are ignored and the `add(...)` method is skipped.
     public var disabled: Bool = false
     
     /// Returns the `OKLogEntry` at `index`.
