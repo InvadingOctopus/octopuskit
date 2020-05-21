@@ -13,8 +13,10 @@ public typealias OctopusComponentSystem = OKComponentSystem
 /// Manages periodic update messages for all component objects of a specified class. Adds a number of convenience methods for common tasks to `GKComponentSystem`.
 public final class OKComponentSystem: GKComponentSystem <GKComponent> {
 
+    /// TODO: Add warnings for components that are not marked as `RequiresUpdatesPerFrame` — Seems tricky to implement a protocol check for `AnyClass` that the `GKComponentSystem` init requires. 2020-05-21
+        
     /// Adds an applicable component to this system, ignoring duplicates.
-    public override func addComponent(_ component: GKComponent) {
+    public final override func addComponent(_ component: GKComponent) {
         
         guard !(components.contains(component)) else {
             OctopusKit.logForDebug("\(component) already in system – Skipping")
@@ -27,12 +29,12 @@ public final class OKComponentSystem: GKComponentSystem <GKComponent> {
     }
 
     /// Adds all applicable components from the specified entity to this system, ignoring duplicates.
-    public override func addComponent(foundIn entity: GKEntity) {
+    public final override func addComponent(foundIn entity: GKEntity) {
         super.addComponent(foundIn: entity)
     }
     
     /// Adds all applicable components from the specified entities to this system, ignoring duplicates.
-    public func addComponents(foundIn entities: [GKEntity]) {
+    public final func addComponents(foundIn entities: [GKEntity]) {
         // ⚠️ NOTE: Cannot add this method as an extension to `GKComponentSystem` as of 2017/10/14, because "Extension of a generic Objective-C class cannot access the class's generic parameters at runtime"
         
         for entity in entities {
