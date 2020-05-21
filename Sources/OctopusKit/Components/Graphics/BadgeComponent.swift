@@ -37,11 +37,11 @@ public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
     }
     
     public init(
-        badge: SKNode,
+        badge:     SKNode,
         placement: OKDirection = .northEast,
         zPosition: CGFloat = 1)
     {
-        self.badge = badge
+        self.badge     = badge
         self.placement = placement
         self.zPosition = zPosition
         super.init()
@@ -64,10 +64,10 @@ public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
         
         let placement = placementOverride ?? self.placement
         
-        // TODO: Accomodate for different `anchorPoint` values?
+        // TODO: Accommodate for different `anchorPoint` values?
         
-        let (maxX, maxY) = (parent.frame.size.width, parent.frame.size.height)
-        var (x, y) = (parent.frame.size.width / 2, parent.frame.size.height / 2)
+        let (maxX, maxY) = (parent.frame.size.width,     parent.frame.size.height)
+        var (x, y)       = (parent.frame.size.width / 2, parent.frame.size.height / 2)
         
         switch placement { // TODO: Fix
         case .north:        y = maxY
@@ -81,7 +81,7 @@ public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
         default: break
         }
         
-        badge.position = CGPoint(x: x, y: y)
+        badge.position  = CGPoint(x: x, y: y)
         badge.zPosition = zPosition // CHECK: Necessary?
     }
     
@@ -89,11 +89,11 @@ public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
     
     /// Creates a text-based badge with the specified background and border.
     public class func createLabelBadge(
-        text: String,
-        background: SKColor! = nil,
-        backgroundSizeOffset: CGFloat = 5.0,
-        border: SKColor! = nil,
-        borderSizeOffset: CGFloat = 3.0)
+        text:                   String,
+        background:             SKColor! = nil,
+        backgroundSizeOffset:   CGFloat  = 5.0,
+        border:                 SKColor! = nil,
+        borderSizeOffset:       CGFloat  = 3.0)
         -> SKLabelNode
     {
         // TODO: Improve parameter names and descriptions.
@@ -106,7 +106,7 @@ public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
         
         let backgroundSize = label.frame.size + backgroundSizeOffset
         
-        if let background = background {
+        if  let background = background {
             let labelBackground = SKSpriteNode(color: background, size: backgroundSize)
             labelBackground.zPosition = -1
             label.addChild(labelBackground)
@@ -117,7 +117,7 @@ public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
         
         let borderSize = backgroundSize + borderSizeOffset
         
-        if let border = border {
+        if  let border = border {
             let labelBorder = SKSpriteNode(color: border, size: borderSize)
             labelBorder.zPosition = -2
             label.addChild(labelBorder)
