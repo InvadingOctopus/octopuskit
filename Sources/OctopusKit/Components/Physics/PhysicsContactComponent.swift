@@ -11,7 +11,7 @@ import GameplayKit
 /// A base class for components that act upon a physics contact event if it involves the entity's `NodeComponent` node. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.
 ///
 /// **Dependencies:** `PhysicsComponent`, `PhysicsEventComponent`
-open class PhysicsContactComponent: OKComponent, UpdatedPerFrame {
+open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
     
     open override var requiredComponents: [GKComponent.Type]? {
         [PhysicsComponent.self,

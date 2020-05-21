@@ -20,7 +20,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeTouchStateComponent`, `PhysicsComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledPhysicsHoldingComponent: OKComponent, UpdatedPerFrame {
+public final class TouchControlledPhysicsHoldingComponent: OKComponent, RequiresUpdatesPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PhysicsComponent.self,

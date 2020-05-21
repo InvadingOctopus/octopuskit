@@ -16,7 +16,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `PositionSeekingGoalComponent, NodeComponent, TouchEventComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledSeekingComponent: OKComponent, UpdatedPerFrame {
+public final class TouchControlledSeekingComponent: OKComponent, RequiresUpdatesPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [PositionSeekingGoalComponent.self,

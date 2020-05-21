@@ -25,7 +25,7 @@ import GameplayKit
 ///         .tapped             : { $1.run(.repeat(.blink(), count: 3)) }
 ///     ])
 ///
-open class NodePointerClosureComponent: OKComponent, UpdatedPerFrame {
+open class NodePointerClosureComponent: OKComponent, RequiresUpdatesPerFrame {
 
     // ℹ️ This class is not marked as `final` so that subclasses can be created, each providing a different set of event handlers for the same entity.
     

@@ -28,7 +28,7 @@ import GameplayKit
 ///     ])
 ///
 @available(iOS 13.0, *)
-open class NodeTouchClosureComponent: OKComponent, UpdatedPerFrame {
+open class NodeTouchClosureComponent: OKComponent, RequiresUpdatesPerFrame {
 
     // ℹ️ This class is not marked as `final` so that subclasses can be created, each providing a different set of event handlers for the same entity.
     

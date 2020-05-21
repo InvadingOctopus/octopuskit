@@ -17,7 +17,7 @@ import GameplayKit
 ///     TimeDependentClosureComponent() { component, totalTime, deltaTime in
 ///         component.entityNode?.position  =  CGPoint(x: 50 * sin(totalTime), y: 50 * cos(totalTime))
 ///     }
-public final class TimeDependentClosureComponent: OKComponent, UpdatedPerFrame {
+public final class TimeDependentClosureComponent: OKComponent, RequiresUpdatesPerFrame {
     
     /// The block of code to be executed every frame by a `TimeDependentClosureComponent`.
     ///

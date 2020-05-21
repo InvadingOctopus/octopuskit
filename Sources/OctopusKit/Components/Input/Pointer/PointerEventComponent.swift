@@ -16,7 +16,7 @@ import GameplayKit
 /// Only stores the location of a single pointer; does not differentiate between number of pointers (fingers), type of mouse buttons (left/right), or modifier keys (Shift/Control/etc.)
 ///
 /// **Dependencies:** `TouchEventComponent` on iOS, `MouseEventComponent` on macOS.
-public final class PointerEventComponent: OKComponent, UpdatedPerFrame {
+public final class PointerEventComponent: OKComponent, RequiresUpdatesPerFrame {
     
     // MARK: - Subtypes
     

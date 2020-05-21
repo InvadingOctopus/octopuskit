@@ -33,7 +33,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
-public final class NodeTouchStateComponent: OKComponent, UpdatedPerFrame {
+public final class NodeTouchStateComponent: OKComponent, RequiresUpdatesPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self,
@@ -366,7 +366,7 @@ public final class NodeTouchStateComponent: OKComponent, UpdatedPerFrame {
 
 @available(*, unavailable, renamed: "NodeTouchStateComponent")
 @available(macOS, unavailable, message: "Use NodePointerStateComponent")
-public final class NodeTouchComponent: OKComponent, UpdatedPerFrame {}
+public final class NodeTouchComponent: OKComponent, RequiresUpdatesPerFrame {}
 
 #endif
 

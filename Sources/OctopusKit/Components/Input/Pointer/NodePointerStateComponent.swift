@@ -24,7 +24,7 @@ import GameplayKit
 /// - NOTE: This component only tracks a single pointer by design; e.g. the first touch that begins inside the entity's `NodeComponent` node. For multi-touch gestures, use components based on gesture-recognizers.
 ///
 /// **Dependencies:** `NodeComponent`, `PointerEventComponent`
-public final class NodePointerStateComponent: OKComponent, UpdatedPerFrame {
+public final class NodePointerStateComponent: OKComponent, RequiresUpdatesPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self,

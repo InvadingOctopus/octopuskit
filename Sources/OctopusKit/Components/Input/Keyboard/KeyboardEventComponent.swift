@@ -20,7 +20,7 @@ import SpriteKit
 ///
 /// - NOTE: The scene or node must forward the event data from its `keyDown(with:)` and related methods, to this component for it to function.
 @available(macOS 10.15, *)
-public final class KeyboardEventComponent: OKComponent, UpdatedPerFrame {
+public final class KeyboardEventComponent: OKComponent, RequiresUpdatesPerFrame {
     
     // MARK: - Subtypes
     

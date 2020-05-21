@@ -12,7 +12,7 @@ import GameplayKit
 /// Sets the position of the entity's `NodeComponent` node to the location of the pointer received by the entity's `PointerEventComponent`.
 ///
 /// **Dependencies:** `NodeComponent`, `PointerEventComponent`
-public final class PointerControlledPositioningComponent: OKComponent, UpdatedPerFrame {
+public final class PointerControlledPositioningComponent: OKComponent, RequiresUpdatesPerFrame {
     
     // TODO: Add options for buttons and hover.
     

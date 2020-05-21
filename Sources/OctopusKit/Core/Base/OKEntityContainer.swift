@@ -239,7 +239,7 @@ public extension OKEntityContainer {
         // CHECK: PERFORMANCE
         
         for component in entity.components
-            where component is UpdatedPerFrame
+            where component is RequiresUpdatesPerFrame
                || component is TurnBased
         {
             let found = self.componentSystems.contains {

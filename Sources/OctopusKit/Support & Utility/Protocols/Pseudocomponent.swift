@@ -11,7 +11,7 @@ import GameplayKit
 public typealias OKPseudocomponent = Pseudocomponent
 
 /// A protocol for types that can perform per-frame updates and hold a reference to an `OKEntity`. Such types may be used as the properties of a component, but otherwise cannot be added to an entity or component system.
-public protocol Pseudocomponent: UpdatedPerFrame {
+public protocol Pseudocomponent: RequiresUpdatesPerFrame {
     var entity: OKEntity? { get }
     func update(deltaTime seconds: TimeInterval)
 }

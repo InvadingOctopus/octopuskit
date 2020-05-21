@@ -14,7 +14,7 @@ import GameplayKit
 /// Set the `LOGINPUTEVENTS` compilation flag to log values.
 ///
 /// **Dependencies:** `DirectionEventComponent`, `PhysicsComponent`
-public final class DirectionControlledForceComponent: OKComponent, UpdatedPerFrame {
+public final class DirectionControlledForceComponent: OKComponent, RequiresUpdatesPerFrame {
     
     // TODO: Tests
     

@@ -19,7 +19,7 @@ import SpriteKit
 ///
 /// - NOTE: The scene or node must forward the event data from its `mouseEntered(with:)` and related methods, to this component for it to function.
 @available(macOS 10.15, *)
-public final class MouseEventComponent: OKComponent, UpdatedPerFrame {
+public final class MouseEventComponent: OKComponent, RequiresUpdatesPerFrame {
     
     // MARK: - Subtypes
     

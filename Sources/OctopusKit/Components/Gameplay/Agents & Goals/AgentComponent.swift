@@ -14,7 +14,7 @@ public typealias OctopusAgent2D = AgentComponent
 /// Adds a 2D agent to an entity, which may then be controlled via goal components.
 ///
 /// When added to an entity, automatically sets the agent's `delegate` to the entity's `NodeComponent` node, and matches its initial `position` and `rotation` to the node.
-public final class AgentComponent: GKAgent2D, UpdatedPerFrame {
+public final class AgentComponent: GKAgent2D, RequiresUpdatesPerFrame {
     
     public init(radius: Float? = nil,
                 mass: Float? = nil,

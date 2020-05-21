@@ -19,7 +19,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeComponent`, `TouchEventComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledRotationComponent: OKComponent, UpdatedPerFrame {
+public final class TouchControlledRotationComponent: OKComponent, RequiresUpdatesPerFrame {
     
     // TODO: Tests
     

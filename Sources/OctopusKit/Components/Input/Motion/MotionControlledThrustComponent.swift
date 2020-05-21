@@ -15,7 +15,7 @@ import GameplayKit
 /// Controls the entity's `ThrustComponent` based on the motion data from a `MotionManagerComponent`.
 ///
 /// **Dependencies:** `MotionManagerComponent`, `ThrustComponent`
-public final class MotionControlledThrustComponent: OKComponent, UpdatedPerFrame {
+public final class MotionControlledThrustComponent: OKComponent, RequiresUpdatesPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [MotionManagerComponent.self,

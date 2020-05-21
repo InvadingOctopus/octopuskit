@@ -11,7 +11,7 @@ import GameplayKit
 /// Changes the coordinates of the entity's `TileBasedPositionComponent` based on player input via a `DirectionEventComponent`.
 ///
 /// **Dependencies:** `DirectionEventComponent`, `TileBasedPositionComponent`
-open class DirectionControlledTileBasedMovementComponent: OKComponent, UpdatedPerFrame {
+open class DirectionControlledTileBasedMovementComponent: OKComponent, RequiresUpdatesPerFrame {
     
     open override var requiredComponents: [GKComponent.Type]? {
         [DirectionEventComponent.self,

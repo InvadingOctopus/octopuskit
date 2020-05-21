@@ -34,7 +34,7 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeTouchStateComponent, NodeComponent`
 @available(iOS 13.0, *)
-public final class TouchControlledDraggingComponent: OKComponent, UpdatedPerFrame {
+public final class TouchControlledDraggingComponent: OKComponent, RequiresUpdatesPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self,

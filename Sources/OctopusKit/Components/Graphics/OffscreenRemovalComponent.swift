@@ -11,7 +11,7 @@ import GameplayKit
 /// Removes the entity's `NodeComponent` node, and optionally the entity as well, from its parent after it has been outside the viewable area of its scene for the specified duration.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class OffscreenRemovalComponent: OKComponent, UpdatedPerFrame {
+public final class OffscreenRemovalComponent: OKComponent, RequiresUpdatesPerFrame {
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]

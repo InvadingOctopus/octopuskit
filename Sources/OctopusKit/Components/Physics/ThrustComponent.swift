@@ -12,7 +12,7 @@ import GameplayKit
 /// Applies a `thrustVector` to a `PhysicsComponent` every frame.
 ///
 /// **Dependencies:** `PhysicsComponent`
-public final class ThrustComponent: OKComponent, UpdatedPerFrame {
+public final class ThrustComponent: OKComponent, RequiresUpdatesPerFrame {
 
     // TODO: CHECK: Use deltaTime to determine thrust per update, instead of a fixed value?
     // CHECK: Should it be renamed to ForceComponent?
