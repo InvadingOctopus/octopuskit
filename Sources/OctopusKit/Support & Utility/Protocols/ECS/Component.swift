@@ -189,9 +189,9 @@ public extension Component {
         shouldWarnIfDeinitWithoutRemoving = false
         
         // NOTE: Since removeComponent(ofType:) CANNOT be overridden in a GKEntity subclass (because "Declarations from extensions cannot be overridden yet" and "Overriding non-open instance method outside of its defining module") as of 2017-11-14, use this method to notify the OKEntityDelegate about component removal.
-        if  let entity = self.entity as? OKEntity {
+        // if  let entity = self.entity as? OKEntity {
             // TODO: entity.delegate?.entity(entity, willRemoveComponent: self)
-        }
+        // }
     }
     
     /* Classes only
