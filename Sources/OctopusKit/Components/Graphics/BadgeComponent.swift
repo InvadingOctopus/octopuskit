@@ -17,7 +17,7 @@ import GameplayKit
 /// To change the badge, create a new `BadgeComponent`
 ///
 /// **Dependencies:** `NodeComponent`
-public final class BadgeComponent: NodeAttachmentComponent <SKNode> {
+open class BadgeComponent: NodeAttachmentComponent <SKNode> {
     
     public let badge: SKNode
     
@@ -36,10 +36,9 @@ public final class BadgeComponent: NodeAttachmentComponent <SKNode> {
         }
     }
     
-    public init(
-        badge:     SKNode,
-        placement: OKDirection = .northEast,
-        zPosition: CGFloat = 1)
+    public init(badge:     SKNode,
+                placement: OKDirection = .northEast,
+                zPosition: CGFloat = 1)
     {
         self.badge     = badge
         self.placement = placement
@@ -80,7 +79,8 @@ public final class BadgeComponent: NodeAttachmentComponent <SKNode> {
         case .southWest:    x = minX; y = minY
         case .west:         x = minX;
         case .northWest:    x = minX; y = maxY
-        default: break
+        case .center:       break
+        default: OctopusKit.logForWarnings("Invalid placement: \(placement)") // CHECK: Should this be a `fatalError()`?
         }
         
         // Since the parent's min/max frame values will be in the grandparent's (e.g. scene) coordinate space, try to convert them to the parent's space.
