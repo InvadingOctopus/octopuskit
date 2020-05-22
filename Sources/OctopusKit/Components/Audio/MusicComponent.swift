@@ -6,29 +6,37 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: Use `AVAudioPlayer`, as it is more suitable for music according to Apple documentation.
-
-// CHECK: A way to add multiple `AudioComponent`s to an entity, as GameplayKit replaces older components of the same type? We may only want a single `MusicComponent` but multiple `AudoComponents`.
-
-// BUG: `isPositional = false` does not seem to be working.
-
 import GameplayKit
 
 /// Creates an `SKAudioNode` from the specified filename and plays it when this component is added to an entity, adding the music node to the entity's `NodeComponent` node.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class MusicComponent: NodeAttachmentComponent<SKAudioNode> {
-    
+public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
+
+    // TODO: Use `AVAudioPlayer`, as it is more suitable for music according to Apple documentation.
+
+    // CHECK: A way to add multiple `AudioComponent`s to an entity, as GameplayKit replaces older components of the same type? We may only want a single `MusicComponent` but multiple `AudioComponents`.
+
+    // BUG: `isPositional = false` does not seem to be working.
+
     // ℹ️ DESIGN: As we have to setup the music in our initialization, and play it after it has been added to a parent node, we do not use `createAttachment(for:)` and just set `self.attachment` directly.
     
     public let musicNode: SKAudioNode
     
+    /// The file name this component was initialized with.
+    public let fileName: String
+    
     public init(fileNamed fileName: String) {
         // TODO: Error-handling for missing files.
+        
+        self.fileName  = fileName
         self.musicNode = SKAudioNode(fileNamed: fileName)
-        musicNode.autoplayLooped = true
-        musicNode.isPositional = false // BUG: Not effective.
+        
+        self.musicNode.autoplayLooped = true
+        self.musicNode.isPositional   = false // BUG: Not effective.
+        
         super.init()
+        
         self.attachment = self.musicNode
     }
     
