@@ -17,7 +17,7 @@ import GameplayKit
 /// To change the badge, create a new `BadgeComponent`
 ///
 /// **Dependencies:** `NodeComponent`
-public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
+public final class BadgeComponent: NodeAttachmentComponent <SKNode> {
     
     public let badge: SKNode
     
@@ -58,30 +58,38 @@ public final class BadgeComponent: NodeAttachmentComponent<SKNode> {
     ///
     /// Only compass directions are valid for this method.
     public func positionBadge(placementOverride: OKDirection? = nil,
-                              parentOverride: SKNode? = nil)
+                              parentOverride:    SKNode?      = nil)
     {
         guard let parent = parentOverride ?? self.entityNode else { return }
         
-        let placement = placementOverride ?? self.placement
+        let placement    = placementOverride ?? self.placement
+        let parentFrame  = parent.calculateAccumulatedFrame()
         
         // TODO: Accommodate for different `anchorPoint` values?
         
-        let (maxX, maxY) = (parent.frame.size.width,     parent.frame.size.height)
-        var (x, y)       = (parent.frame.size.width / 2, parent.frame.size.height / 2)
+        let (maxX, maxY) = (parentFrame.maxX, parentFrame.maxY)
+        let (minX, minY) = (parentFrame.minX, parentFrame.minY)
+        var (x, y)       = (parentFrame.midX, parentFrame.midY)
         
-        switch placement { // TODO: Fix
+        switch placement { // TODO: Verify
         case .north:        y = maxY
         case .northEast:    x = maxX; y = maxY
         case .east:         x = maxX
-        case .southEast:    x = maxX; y = 0
-        case .south:        y = 0
-        case .southWest:    x = 0; y = 0
-        case .west:         x = 0;
-        case .northWest:    x = 0; y = maxY
+        case .southEast:    x = maxX; y = minY
+        case .south:        y = minY
+        case .southWest:    x = minX; y = minY
+        case .west:         x = minX;
+        case .northWest:    x = minX; y = maxY
         default: break
         }
         
-        badge.position  = CGPoint(x: x, y: y)
+        // Since the parent's min/max frame values will be in the grandparent's (e.g. scene) coordinate space, try to convert them to the parent's space.
+        // TODO: Verify
+        
+        let position    = CGPoint(x: x, y: y)
+        let grandParent = parent.parent
+        
+        badge.position  = grandParent?.convert(position, to: parent) ?? position
         badge.zPosition = zPosition // CHECK: Necessary?
     }
     
