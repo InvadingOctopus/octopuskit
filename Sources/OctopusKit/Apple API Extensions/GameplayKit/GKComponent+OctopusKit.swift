@@ -22,7 +22,7 @@ extension GKComponent {
         #if LOGECSVERBOSE
         debugLog("self: \(self)")
         #endif
-        self.entity?.node
+        return self.entity?.node
     }
     
     /// Convenient shorthand for accessing the OctopusKit scene containing the SpriteKit node that is associated with the `NodeComponent` of this component's entity.
