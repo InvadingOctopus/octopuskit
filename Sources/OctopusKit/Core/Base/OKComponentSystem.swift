@@ -13,8 +13,20 @@ public typealias OctopusComponentSystem = OKComponentSystem
 /// Manages periodic update messages for all component objects of a specified class. Adds a number of convenience methods for common tasks to `GKComponentSystem`.
 public final class OKComponentSystem: GKComponentSystem <GKComponent> {
 
-    /// TODO: Add warnings for components that are not marked as `RequiresUpdatesPerFrame` — Seems tricky to implement a protocol check for `AnyClass` that the `GKComponentSystem` init requires. 2020-05-21
+    public override init(componentClass cls: AnyClass) {
         
+        // Warn about unnecessary systems.
+        
+        if !(cls.self is RequiresUpdatesPerFrame.Type)
+        && !(cls.self is TurnBased.Type)
+        {
+            OctopusKit.logForWarnings("System created for component that is not marked as RequiresUpdatesPerFrame: \(cls)")
+            OctopusKit.logForTips("Either this system is unnecessary, or you forgot to add `RequiresUpdatesPerFrame` protocol conformance to \(cls)")
+        }
+        
+        super.init(componentClass: cls)
+    }
+    
     /// Adds an applicable component to this system, ignoring duplicates.
     public final override func addComponent(_ component: GKComponent) {
         
