@@ -145,7 +145,7 @@ public struct OKLog: Codable {
     public var printsSuffix: Bool = true
     
     /// If `true` then new entries are ignored and the `add(...)` method is skipped.
-    public var disabled: Bool = false
+    public var isDisabled: Bool = false
     
     /// Returns the `OKLogEntry` at `index`.
     public subscript(index: Int) -> OKLogEntry {
@@ -219,7 +219,7 @@ public struct OKLog: Codable {
     {
         // CHECK: Cocoa Notifications for log observers etc.?
         
-        guard !disabled else { return }
+        guard !isDisabled else { return }
         
         /// Save the time closest to when this method was called, to avoid any "drift" between processing the arguments and saving the actual entry.
         let time = Date()
