@@ -6,10 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// CHECK: Cocoa Notifications?
-// CHECK: Adopt `os_log`?
-// CHECK: Adopt `os_signpost`?
-// CHECK: PERFORMANCE: Does padding etc. reduce app performance, i.e. during frequent logging?
+/// 💡 SEE ALSO: `debugLog(...)` in `OctopusKit+Global.swift`
 
 import Foundation
 
@@ -29,6 +26,11 @@ public extension OctopusKit {
 /// The log allows entries with no text, so you can simply log the time and name of function and method calls.
 public struct OKLog: Codable {
     
+    // CHECK: Cocoa Notifications?
+    // CHECK: Adopt `os_log`?
+    // CHECK: Adopt `os_signpost`?
+    // CHECK: PERFORMANCE: Does padding etc. reduce app performance, i.e. during frequent logging?
+
     // MARK: Static properties, methods & global options
         
     /// If `true` then an empty line is printed between each entry in the debug console.
