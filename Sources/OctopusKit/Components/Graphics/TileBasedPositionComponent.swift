@@ -16,7 +16,8 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self,
-         TileMapComponent.self] /// CHECK: Should we warn about missing a `TileMapComponent`, since having one on the entity may not make sense in most cases?
+         /// TileMapComponent.self /// DESIGN: Do not warn about missing a `TileMapComponent`; having one on a player/character entity may not make sense in most cases, and it causes too many warnings even when `tileMapComponentOverride` is provided.
+        ]
     }
     
     /// Specifies a `TileMapComponent` or its subclass which may be in another entity, e.g. a map entity. If `nil` then this component's entity's `TileMapComponent` (but not a subclass) is used, if any.
