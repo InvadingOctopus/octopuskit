@@ -12,38 +12,88 @@ import GameplayKit
 ///
 /// **Dependencies:** `NodeComponent`
 public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
-
+    
     // TODO: Use `AVAudioPlayer`, as it is more suitable for music according to Apple documentation.
-
+    
     // CHECK: A way to add multiple `AudioComponent`s to an entity, as GameplayKit replaces older components of the same type? We may only want a single `MusicComponent` but multiple `AudioComponents`.
-
+    
     // BUG: `isPositional = false` does not seem to be working.
-
+    
     // ℹ️ DESIGN: As we have to setup the music in our initialization, and play it after it has been added to a parent node, we do not use `createAttachment(for:)` and just set `self.attachment` directly.
     
-    public let musicNode: SKAudioNode
+    public let masterNode: SKAudioNode
     
-    /// The file name this component was initialized with.
-    public let fileName: String
+    /// The file name of the most-recently queued music. Useful for avoiding repeats or duplicate queues.
+    public private(set) var latestFileName: String
+    
+    public let fadeInKey  = "OctopusKit.MusicComponent.FadeIn"
+    public let fadeOutKey = "OctopusKit.MusicComponent.FadeOut"
     
     public init(fileNamed fileName: String) {
         // TODO: Error-handling for missing files.
         
-        self.fileName  = fileName
-        self.musicNode = SKAudioNode(fileNamed: fileName)
+        let firstMusicNode              = SKAudioNode(fileNamed: fileName)
         
-        self.musicNode.autoplayLooped = true
-        self.musicNode.isPositional   = false // BUG: Not effective.
+        firstMusicNode.autoplayLooped   = true
+        firstMusicNode.isPositional     = false // BUG: Not effective.
+        
+        self.masterNode                 = SKAudioNode(children: [firstMusicNode])
+        self.latestFileName             = fileName
         
         super.init()
         
-        self.attachment = self.musicNode
+        self.attachment = self.masterNode
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     public override func willRemoveFromEntity(withNode node: SKNode) {
-        musicNode.run(SKAction.stop()) // CHECK: Necessary?
+        for case let audioNode as SKAudioNode in masterNode.children {
+            audioNode.run(.stop()) // CHECK: Necessary?
+        }
+        masterNode.removeAllChildren()
         super.willRemoveFromEntity(withNode: node)
+    }
+    
+    // MARK: Music Management
+    
+    public func fadeCurrentMusicAndAddNew(fileNamed newFileName: String,
+                                          fadeOutDuration:    TimeInterval = 5.0,
+                                          fadeInDuration:     TimeInterval = 5.0)
+    {
+        // Fade-out any current music.
+        
+        for case let previousAudio as SKAudioNode in masterNode.children {
+            // CHECK: Is it helpful to check if an action key is already running?
+            if  previousAudio.action(forKey: fadeOutKey) == nil {
+                
+                let fadeOut = SKAction.changeVolume(to: 0, duration: fadeOutDuration)
+                
+                previousAudio.run(.sequence([fadeOut,
+                                             .removeFromParent()]),
+                                  withKey: fadeOutKey)
+            }
+        }
+        
+        // Add the new music.
+        
+        let newMusic = SKAudioNode(fileNamed: newFileName)
+        
+        newMusic.autoplayLooped = true
+        newMusic.isPositional   = false // BUG: Not effective.
+        
+        self.masterNode.addChild(newMusic)
+        
+        // Apply a fade-in.
+        
+        let zeroVolume = SKAction.changeVolume(to: 0, duration: 0)
+        let fadeIn     = SKAction.changeVolume(to: 1, duration: fadeInDuration)
+        
+        newMusic.run(.sequence([zeroVolume, fadeIn]),
+                     withKey: fadeInKey)
+        
+        // Set the most-recent file name.
+        
+        self.latestFileName = newFileName
     }
 }
