@@ -15,7 +15,8 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
     // TODO: Warp-around option.
     
     public override var requiredComponents: [GKComponent.Type]? {
-        [NodeComponent.self]
+        [NodeComponent.self,
+         TileMapComponent.self] /// CHECK: Should we warn about missing a `TileMapComponent`, since having one on the entity may not make sense in most cases?
     }
     
     /// Specifies a `TileMapComponent` or its subclass which may be in another entity, e.g. a map entity. If `nil` then this component's entity's `TileMapComponent` (but not a subclass) is used, if any.
@@ -43,6 +44,12 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
     /// If the entity's node's position is modified by other components, then this flag must be set to `true` or `alignNodePositionToTile()` must be called manually to re-align the node with its map tile.
     public var alignNodePositionOnUpdate: Bool = false
     
+    /// If `true`, the `zPosition` of the entity's node is also modified so that entities on lower rows are in front of entities on higher rows, such that a `y` (row) coordinate of `0` would have a `zPosition` equal to the `numberOfRows` in the `SKTileMapNode`, and the highest row would have a `zPosition` of `0`.
+    public var setZPosition:        Bool = true
+    
+    /// The amount to adjust the `zPosition` of the entity's node by, *after* setting its `zPosition` according to this component's `y` (row) coordinate.
+    public var zPositionModifier:   CGFloat = 0
+    
     /// If `true`, an `SKAction` animates the entity's node from its current position to the tile's position. If `false`, the node is moved to the new position immediately.
     public var animate:             Bool
     
@@ -59,11 +66,18 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
     ///   - coordinates: The coordinates of the initial tile in the `TileMapComponent`'s `SKTileMapNode`. The entity's node's position is set to this tile's center in every frame.
     ///   - tileMapLayer: The index of the `TileMapComponent` layer to use, i.e. the `SKTileMapNode` to query for the tile coordinates.
     ///   - offsetFromTileCenter: The additional offset to apply to the entity's node.
+    ///   - setZPosition: If `true`, the `zPosition` of the entity's node is also modified so that entities on lower rows are in front of entities on higher rows. Default: `true`
+    ///   - zPositionModifier: The amount to adjust the `zPosition` of the entity's node by, *after* setting its `zPosition` according to this component's `y` (row) coordinate.
     ///   - animate: If `true`, an `SKAction` animates the entity's node from its current position to the tile's position. If `false`, the node is moved to the new position immediately.
     public init(tileMapComponentOverride:   TileMapComponent?   = nil,
                 tileMapLayer:               Int                 = 0,
+                
                 coordinates:                Point               = .zero,
                 offsetFromTileCenter:       CGPoint             = .zero,
+                
+                setZPosition:               Bool                = true,
+                zPositionModifier:          CGFloat             = 0,
+                
                 animate:                    Bool                = true,
                 animationDuration:          TimeInterval        = 0.2,
                 animationTimingMode:        SKActionTimingMode  = .easeIn)
@@ -137,7 +151,15 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
             newNodePosition = tiledPosition
         }
         
-        // Finally! Move the node to new position.
+        // Set the node's z position, so that entities on lower tiles are in front of entities on higher tiles.
+        // The bottom-most row (0) should have the highest z height (equal to the number of rows).
+        
+        if  setZPosition {
+            let rows = tileMapNode.numberOfRows
+            node.zPosition = CGFloat(rows - row) + zPositionModifier
+        }
+        
+        // Finally! Move the node to new position, animating the movement if needed.
         
         if animate {
             let moveAction = SKAction.move(to: newNodePosition, duration: animationDuration)
@@ -146,6 +168,7 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
         } else {
             node.position = newNodePosition
         }
+        
     }
     
     /// Clamps the `coordinates` to within `0` and the number of columns and rows in the `TileMapComponent`'s `SKTileMapNode` `layer`.
