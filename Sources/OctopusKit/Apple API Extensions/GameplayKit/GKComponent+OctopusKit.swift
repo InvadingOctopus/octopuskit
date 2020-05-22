@@ -14,7 +14,7 @@ extension GKComponent {
     // "The component system will then forward any component-specific messages it receives to all registered instances of its component class." — https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem
     // TODO: Tests
     
-    /// Convenient shorthand for accessing the SpriteKit node that is associated the `NodeComponent` of this component's entity.
+    /// Convenient shorthand for accessing the SpriteKit node that is associated with the `NodeComponent` of this component's entity.
     ///
     /// If the entity does not have an `NodeComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
     @inlinable
@@ -22,7 +22,15 @@ extension GKComponent {
         #if LOGECSVERBOSE
         debugLog("self: \(self)")
         #endif
-        return self.entity?.node
+        self.entity?.node
+    }
+    
+    /// Convenient shorthand for accessing the OctopusKit scene containing the SpriteKit node that is associated with the `NodeComponent` of this component's entity.
+    ///
+    /// If the entity does not have an `NodeComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
+    @inlinable
+    public var entityScene: OKScene? {
+        self.entityNode?.scene as? OKScene
     }
     
     /// Returns the name for the entity associated with this component, if it is an `OKEntity`. A convenience for quickly writing log entries.
