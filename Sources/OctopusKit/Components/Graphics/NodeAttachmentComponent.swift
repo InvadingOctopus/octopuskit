@@ -45,15 +45,15 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
     /// Takes effect only when this component is added to an entity, during `didAddToEntity(withNode:)`.
     public var zPositionOverride: CGFloat?
     
-    public init(_ attachment: AttachmentType? = nil,
-                parentOverride: SKNode? = nil,
-                positionOffset: CGPoint? = nil,
-                zPositionOverride: CGFloat? = nil)
+    public init(_ attachment:       AttachmentType? = nil,
+                parentOverride:     SKNode?         = nil,
+                positionOffset:     CGPoint?        = nil,
+                zPositionOverride:  CGFloat?        = nil)
     {
-        self.attachment = attachment
-        self.parentOverride = parentOverride
-        self.positionOffset = positionOffset
-        self.zPositionOverride = zPositionOverride
+        self.attachment         = attachment
+        self.parentOverride     = parentOverride
+        self.positionOffset     = positionOffset
+        self.zPositionOverride  = zPositionOverride
         super.init()
     }
     
@@ -72,10 +72,9 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         
         // CHECK: Warning necessary?
         
-        if
-            let parentOverride = self.parentOverride,
+        if  let parentOverride = self.parentOverride,
             !node.children.contains(parentOverride)
-                && parentOverride != node // Skip warning if the `parentOverride` IS the node. This will be the case in situations like `parentOverride = scene.camera ?? scene` where a child node is added to a scene's camera if there is one, otherwise to the scene itself.
+            && parentOverride != node // Skip warning if the `parentOverride` IS the node. This will be the case in situations like `parentOverride = scene.camera ?? scene` where a child node is added to a scene's camera if there is one, otherwise to the scene itself.
         {
             OctopusKit.logForWarnings("The specified parentOverride \(parentOverride) is not a child of \(entity)'s node: \(node)")
         }
@@ -142,8 +141,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         
         // If the attachment is already the child of a different parent, warn and move the attachment over to our target.
         
-        if
-            let existingParent = attachment.parent,
+        if  let existingParent = attachment.parent,
             existingParent !== targetParent
         {
             OctopusKit.logForWarnings("\(attachment) already has a different parent: \(existingParent) — Moving to \(String(describing: entity))'s NodeComponent node: \(targetParent)")
@@ -153,11 +151,11 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         
         // Apply the position offset and z-position override, if specified.
         
-        if let positionOffset = self.positionOffset {
+        if  let positionOffset = self.positionOffset {
             attachment.position += positionOffset
         }
         
-        if let zPositionOverride = self.zPositionOverride {
+        if  let zPositionOverride = self.zPositionOverride {
             attachment.zPosition = zPositionOverride
         }
         
@@ -177,7 +175,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // If a separate parent was not specified, assume the entity's `NodeComponent` node to be the rightful parent.
         let parent = self.parentOverride ?? node
         
-        if attachment.parent !== parent {
+        if  attachment.parent !== parent {
             OctopusKit.logForWarnings("\(attachment) was not a child of \(parent) — Removing from \(attachment.parent)")
         }
         
@@ -188,7 +186,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
     }
     
     deinit {
-        if shouldRemoveFromEntityOnDeinit {
+        if  shouldRemoveFromEntityOnDeinit {
             attachment?.removeFromParent()
         }
     }
