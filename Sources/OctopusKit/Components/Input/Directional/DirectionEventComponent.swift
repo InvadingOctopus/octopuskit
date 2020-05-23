@@ -63,6 +63,7 @@ public final class DirectionEventComponent: OKComponent, RequiresUpdatesPerFrame
     // DESIGN: These properties are not private(set) so update(deltaTime:) can be @inlinable
     
     /// A set of the directions that were included in the `directionBegan` events received in the current frame.
+    @LogInputEventChanges(propertyName: "DirectionEventComponent.directionsBeganForCurrentFrame")
     public var directionsBeganForCurrentFrame: Set<OKInputDirection> = [] {
         didSet {
             // Add any new directions to the list of directions that are active.
@@ -71,6 +72,7 @@ public final class DirectionEventComponent: OKComponent, RequiresUpdatesPerFrame
     }
     
     /// A set of the directions that were included in the `directionEnded` events received in the current frame.
+    @LogInputEventChanges(propertyName: "DirectionEventComponent.directionsEndedForCurrentFrame")
     public var directionsEndedForCurrentFrame: Set<OKInputDirection> = [] {
         didSet {
             // Remove the ending directions from the list of directions that are active.
@@ -79,6 +81,7 @@ public final class DirectionEventComponent: OKComponent, RequiresUpdatesPerFrame
     }
     
     /// A set of the directions that were included in all `directionBegan` events received so far but not in any `directionEnded` events yet.
+    @LogInputEventChanges(propertyName: "DirectionEventComponent.directionsActive")
     public var directionsActive: Set<OKInputDirection> = []
     
     /// The final vector after adding all the active directions, i.e. cancelling out opposing inputs.
@@ -88,14 +91,14 @@ public final class DirectionEventComponent: OKComponent, RequiresUpdatesPerFrame
     }
     
     /// The `manualDirections` set is copied to this property when modified, and compared against to determine which events began in the current frame and which events ended. Cleared at the end of every frame update.
+    @LogInputEventChanges(propertyName: "DirectionEventComponent.previousManualDirections")
     public var previousManualDirections: Set<OKInputDirection> = []
     
     /// When `DirectionEventSource.manual` is used, this property can be manually modified to inject code via logic in code. Cleared at the end of every frame update.
-    public var manualDirections: Set<OKInputDirection> = [] {
-        didSet {
-            previousManualDirections = oldValue
-        }
-    }
+    @LogInputEventChanges(propertyName: "DirectionEventComponent.manualDirections")
+     public var manualDirections: Set<OKInputDirection> = []
+    /// ❕ LESSON: Do **NOT** set `previousManualDirections` when `manualDirections` is modified, as that may interfere with adding multiple directions during a single frame; e.g. adding "North" then "North-West" for a diagonal movement, will cause `previousManualDirections` = "North" on the second assignment, which would then cause `directionsBeganForCurrentFrame` to be incorrect.
+    //
     
     public init(source: DirectionEventSource) {
         self.eventSource = source
@@ -159,6 +162,10 @@ public final class DirectionEventComponent: OKComponent, RequiresUpdatesPerFrame
             || !previousManualDirections.isEmpty
             else { return}
         
+        #if LOGINPUTEVENTS
+        debugLog("manualDirections: \(manualDirections), previousManualDirections: \(previousManualDirections)")
+        #endif
+        
         // Events that are in `manualDirections` but not in `previousManualDirections`
         
         directionsBeganForCurrentFrame = manualDirections.subtracting(previousManualDirections)
@@ -167,10 +174,13 @@ public final class DirectionEventComponent: OKComponent, RequiresUpdatesPerFrame
         
         directionsEndedForCurrentFrame = previousManualDirections.subtracting(manualDirections)
         
-        // Clear the lists so they don't keep repeating every frame unless manually re-added.
+        /// Set `previousManualDirections` here because setting it in a `didSet` for `manualDirections` does not work in the case of multiple directions. See comment for `manualDirections` above.
+        
+        previousManualDirections = manualDirections
+        
+        /// Clear `manualDirections` so they don't keep repeating every frame unless manually re-added.
         
         manualDirections.removeAll(keepingCapacity: true)
-        previousManualDirections.removeAll(keepingCapacity: true)
     }
     
     #if canImport(AppKit)
