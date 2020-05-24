@@ -2,14 +2,14 @@
 //  ComponentTests.swift
 //  OctopusKitTests
 //
-//  Created by ShinryakuTako@invadingoctopus.io on 2019/11/5.
+//  Created by ShinryakuTako@invadingoctopus.io on 2019/11/05.
 //
 
 import XCTest
 import GameplayKit
 @testable import OctopusKit
 
-/// Tests for the Entity-Component-System core objects.
+/// Tests for the core Components logic.
 final class ComponentTests: XCTestCase {
     
     // MARK: - Types
