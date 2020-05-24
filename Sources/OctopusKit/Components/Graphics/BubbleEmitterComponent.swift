@@ -58,6 +58,7 @@ public struct NodeBubble {
     public init(
         text:               String,
         font:               OKFont      = OKFont.spriteBubbleFontDefault,
+        color:              SKColor     = .white,
         offset:             CGPoint     = .zero,
         spawnAtBottom:      Bool        = false,
         alphaOnEmit:        CGFloat?    = nil,
@@ -69,7 +70,8 @@ public struct NodeBubble {
                                 font: font,
                                 horizontalAlignment: .center,
                                 verticalAlignment: spawnAtBottom ? .top : .bottom)
-        
+                    
+        label.fontColor = color
         label.name = "Bubble: \(text)"
         
         self.init(node:             label,
