@@ -45,6 +45,8 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
     /// Takes effect only when this component is added to an entity, during `didAddToEntity(withNode:)`.
     public var zPositionOverride: CGFloat?
     
+    // MARK: - Initialization
+    
     public init(_ attachment:       AttachmentType? = nil,
                 parentOverride:     SKNode?         = nil,
                 positionOffset:     CGPoint?        = nil,
@@ -88,10 +90,12 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // Add the attachment to the the `parentOverride` if any has been specified, or the primary node of this component's entity.
         
         addAttachment(to: self.parentOverride ?? node)
-        
     }
     
+    // MARK: Attachment
+    
     /// Abstract; to be overridden by subclass. `didAddToEntity(withNode:)` calls this method and sets this component's `attachment` to its return value. If this method is not implemented by the subclass, then `didAddToEntity(withNode:)` will not replace any existing `attachment` with `nil`.
+    @inlinable
     open func createAttachment(for parent: SKNode) -> AttachmentType? {
         return nil // CHECK: Should this be a `fatalError` if unimplemented?
     }
@@ -99,6 +103,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
     /// Recreates the `attachment` for its current parent, if any.
     ///
     /// Sets `attachment` to `nil` then calls `createAttachment(for:)` with the previous parent of `attachment`.
+    @inlinable
     open func recreateAttachmentForCurrentParent() {
         
         // Make sure we have a parent to begin with.
@@ -124,6 +129,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         self.attachment = newAttachment
     }
 
+    @inlinable
     open func addAttachment(to targetParent: SKNode) {
         
         guard let attachment = self.attachment else {
@@ -162,6 +168,8 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         targetParent.addChild(attachment)
         
     }
+    
+    // MARK: - Removal
     
     /// `super` must be called by overriding subclass for proper functionality. Removes `attachment` from its parent.
     open override func willRemoveFromEntity(withNode node: SKNode) {
