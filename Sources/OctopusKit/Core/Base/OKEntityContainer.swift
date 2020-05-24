@@ -23,6 +23,9 @@ public protocol OKEntityContainer: class {
     var componentSystems:       [OKComponentSystem] { get set }
     
     // MARK: Entities & Components
+
+    func entities(withName name: String) -> [OKEntity]
+
     
     func addEntity  (_ entity:    GKEntity)
     func addEntities(_ entities: [GKEntity])
@@ -30,10 +33,6 @@ public protocol OKEntityContainer: class {
     func checkSystemsAvailability        (for entity: GKEntity)
     func addAllComponentsFromAllEntities (to systemsCollection: [OKComponentSystem]?)
     func renameUnnamedEntitiesToNodeNames()
-    
-    // CHECK: DESIGN: entities(withName:) returns an non-optional array to reduce unwrapping in cases like `entities(withName: "name")?.first?` or will it increase memory usage compared to returning `nil`?
-    
-    func entities(withName name: String) -> [OKEntity]?
     
     @discardableResult func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool
     @discardableResult func removeEntity            (_ entityToRemove: GKEntity) -> Bool
@@ -59,7 +58,7 @@ public protocol OKEntityContainerNode: OKEntityContainer where Self: SKNode {
 
 public extension OKEntityContainer {
     
-    // MARK: Entities & Components
+    // MARK: Adding Entities
     
     /// Adds an entity to the `entities` set, disallowing duplicate entities, and registers its components with the relevant systems.
     ///
@@ -125,28 +124,6 @@ public extension OKEntityContainer {
         }
     }
     
-    /// Returns an array of `OKEntity`s containing all the entities matching `name`, or `nil` if none were found.
-    @inlinable
-    func entities(withName name: String) -> [OKEntity]? {
-        
-        let filteredSet = entities.filter {
-            
-            if  let entity = $0 as? OKEntity {
-                return entity.name == name
-            } else {
-                return false
-            }
-        }
-        
-        if  let filteredArray = Array(filteredSet) as? [OKEntity],
-            !filteredArray.isEmpty
-        {
-            return filteredArray
-        } else {
-            return nil
-        }
-    }
-    
     /// Sets the names of all unnamed entities to the name of their `NodeComponent` or `GKSKNodeComponent` nodes.
     @inlinable
     func renameUnnamedEntitiesToNodeNames() {
@@ -159,11 +136,34 @@ public extension OKEntityContainer {
         }
     }
     
+    // MARK: Finding Entities
+    
+    /// Returns an array of `OKEntity`s containing all the entities matching `name`. The array may be empty if no matches are found.
+    @inlinable
+    func entities(withName name: String) -> [OKEntity] {
+        
+        /// CHECK: Why an `Array` instead of a `Set`?
+        
+        let matches: [OKEntity] = self.entities.compactMap { entity in
+            if  let hit = (entity as? OKEntity),
+                hit.name == name
+            {
+                return hit
+            } else {
+                return nil
+            }
+        }
+        
+        return matches
+    }
+    
+    // MARK: Removing Entities
+    
     /// Marks an entity for removal in the next frame, at the beginning of the next call to `update(_:)`.
     ///
-    /// - Returns: `true` if the entry was in the `entities` set.
-    ///
     /// This ensures that the list of entities is not mutated during a frame update, which would cause an exception/crash because of mutating a collection while it is being enumerated during the update
+    ///
+    /// - Returns: `true` if the entry was in the `entities` set.
     @inlinable
     @discardableResult func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool {
         
@@ -186,8 +186,8 @@ public extension OKEntityContainer {
     /// - Returns: `true` if the entry was in the `entities` set and removed.
     ///
     /// - Important: Attempting to modify the list of entities during a frame update will cause an exception/crash, because of mutating a collection while it is being enumerated. To ensure safe removal, use `removeEntityOnNextUpdate(_:)`.
-    @inlinable
-    @discardableResult func removeEntity(_ entityToRemove: GKEntity) -> Bool {
+    @inlinable @discardableResult
+    func removeEntity(_ entityToRemove: GKEntity) -> Bool {
         
         guard entities.contains(entityToRemove) else {
             // CHECK: Warn on missing entry if the entity is going to leave anyway?
@@ -227,8 +227,8 @@ public extension OKEntityContainer {
         }
         
     }
-    
-    // MARK: Validation
+
+    // MARK: Validating Entities
     
     /// Checks whether the entity container (e.g. scene) has the relevant component systems for all the entity's components that must be updated every frame or turn, and warns about any missing systems.
     ///
@@ -256,7 +256,7 @@ public extension OKEntityContainer {
 
     }
     
-    // MARK: Frame Update
+    // MARK: - Frame Update
     
     /// Updates each of the component systems in the order they're listed in the specified array. If no `systemsCollection` is specified, then the scene's `componentSystems` property is used.
     ///
