@@ -24,7 +24,7 @@ public extension SKNode {
                                                         from: Data(contentsOf: Bundle.main.url(forResource: name, withExtension: "sks")!))) as? T
     }
     
-    /// MARK: - Initializers
+    // MARK: - Initializers
     
     /// Creates a new node with the specified `position` and `zPosition`.
     ///
@@ -176,6 +176,20 @@ public extension SKNode {
     final func replaceNode(named name: String, in placeholderParent: SKNode) {
         if  let placeholder = placeholderParent.childNode(withName: name) {
             self.replaceNode(placeholder)
+        }
+    }
+    
+    /// Removes this node from its parent *only if* the node is a child of the specified parent.
+    /// - Returns: `true` if the node is removed from the specified parent or if the node had no parent. `false` if the node has a different parent.
+    @inlinable @discardableResult
+    final func removeFromParent(ifParentIs parent: SKNode) -> Bool {
+        if  self.parent == nil {
+            return true
+        } else if self.parent! != parent {
+            return false
+        } else {
+            self.removeFromParent()
+            return true
         }
     }
     
