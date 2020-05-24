@@ -1,5 +1,5 @@
 //
-//  ECSTests.swift
+//  ComponentTests.swift
 //  OctopusKitTests
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019/11/5.
@@ -10,7 +10,7 @@ import GameplayKit
 @testable import OctopusKit
 
 /// Tests for the Entity-Component-System core objects.
-final class ECSTests: XCTestCase {
+final class ComponentTests: XCTestCase {
     
     // MARK: - Types
     
