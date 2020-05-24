@@ -13,12 +13,14 @@ import GameplayKit
 ///
 /// Useful for displaying damage values over a character etc.
 ///
+/// - NOTE: To emit multiple bubbles from a single component, use `BubbleEmitterComponent`.
+///
 /// **Dependencies:** `NodeComponent`
+@available(*, deprecated, message: "Use BubbleEmitterComponent")
 public final class BubbleComponent: NodeAttachmentComponent <SKNode> {
     
     // TODO: Tests
     // TODO: Fully customizable direction.
-    // TODO: Queue multiple Bubbles to appear in line with one another, not overlaying and obscuring each other at once.
 
     public let bubble:          SKNode
     public let yOffset:         CGFloat
