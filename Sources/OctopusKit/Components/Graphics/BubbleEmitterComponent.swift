@@ -83,22 +83,29 @@ public struct NodeBubble {
     
     // MARK: Emission
     
+    
+    /// Adds the bubble `node` to the specified parent, resets its position and alpha, animates it, then removes the bubble from the parent at the end of its animation.
+    /// - Parameters:
+    ///   - parent:     The parent node to emit the bubble from. This **must** be a node with a non-zero `frame` and be part of a grandparent node or scene. If the parent is an `SKNode` (which has an empty `frame`) or does not have a parent (scene) of its own, then the bubble will not be positioned or animated correctly.
+    ///   - zPosition:  Sets the bubble `node.zPosition` to the specified value, otherwise uses the current `zPosition`. Default: `nil`
+    /// - Returns: The emitted `node`.
     @inlinable @discardableResult
     public func emit(from parent:   SKNode,
-                     zPosition:     CGFloat?) -> SKNode
+                     zPosition:     CGFloat? = nil) -> SKNode
     {
-        
         // TODO: Validate parent size and account for `anchorPoint`
+     
+        /// ❕ If we use `calculateAccumulatedFrame()` then subsequent bubbles may incorrectly start at increasing positions because the frame will be larger.
         
-        let parentFrame = parent.calculateAccumulatedFrame()
+        let parentFrame = parent.frame
         let bubble      = self.node
         
         // Initialize position and alpha
         
         bubble.removeAllActions()
         
-        bubble.position.x = offset.x // Reset the position in case the bubble is re-emitted.
-        bubble.position.y = spawnAtBottom ? offset.y : parentFrame.size.height + offset.y
+        bubble.position.x = parentFrame.midX + offset.x // Reset the position in case the bubble is re-emitted.
+        bubble.position.y = spawnAtBottom ? parentFrame.minY + offset.y : parentFrame.maxY + offset.y
         
         if  let zPosition = zPosition {
             bubble.zPosition = zPosition
@@ -108,9 +115,14 @@ public struct NodeBubble {
             bubble.alpha = alphaOnEmit
         }
         
+        if  let grandparent = parent.parent {
+            bubble.position = grandparent.convert(bubble.position, to: parent)
+        }
+        
         // Add to parent
         
         bubble.removeFromParent() // Make sure
+        
         parent.addChild(bubble)
         
         // Animate
@@ -181,6 +193,14 @@ public final class BubbleEmitterComponent: OKComponent {
     
     // MARK: Initializers
     
+    /// Creates a `BubbleEmitterComponent` with an optional bubble to emit.
+    ///
+    /// - IMPORTANT: if the entity's `NodeComponent` node does not have a non-zero `frame` (e.g. an `SKNode` that contains other nodes), then bubbles will not be correctly positioned. Provide a `parentOverride` to a node with a non-zero `frame`.
+    ///
+    /// - Parameters:
+    ///   - initialBubble:  The bubble to emit once when this component is added to an entity with a `NodeComponent`.
+    ///   - parentOverride: By default, bubbles are added to the entity's `NodeComponent` node. If the entity node does not have a non-zero `frame`, such as an `SKNode` which contains other nodes, then the bubbles will not be positioned or animated correctly. Use this parameter to specify a parent with a non-zero `frame`.
+    ///   - zPosition:      The zPosition of all bubbles. This should be a high enough value to ensure that bubbles are not obscured by other content. Default: `1`
     public init(initialBubble:  NodeBubble? = nil,
                 parentOverride: SKNode? = nil,
                 zPosition:      CGFloat = 1)
@@ -196,6 +216,7 @@ public final class BubbleEmitterComponent: OKComponent {
     // MARK: Emission
     
     public override func didAddToEntity(withNode node: SKNode) {
+       // Emit the first bubble if any.
         guard let initialBubble = self.initialBubble else { return }
         self.emit(bubble: initialBubble)
     }
@@ -210,10 +231,8 @@ public final class BubbleEmitterComponent: OKComponent {
         return bubble.emit(from: parent, zPosition: zPositionOverride ?? self.zPosition)
     }
     
-//    @inlinable
-//    public override func createAttachment(for parent: SKNode) -> SKNode? {
-//        guard let initialBubble = self.initialBubble else { return nil }
-//        return initialBubble.emit(from: parent)
-//    }
+    public override func willRemoveFromEntity(withNode node: SKNode) {
+        self.initialBubble?.node.removeFromParent()
+    }
     
 }
