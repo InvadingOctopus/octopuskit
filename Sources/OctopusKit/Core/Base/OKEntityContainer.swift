@@ -25,7 +25,6 @@ public protocol OKEntityContainer: class {
     // MARK: Entities & Components
 
     func entities(withName name: String) -> [OKEntity]
-
     
     func addEntity  (_ entity:    GKEntity)
     func addEntities(_ entities: [GKEntity])
@@ -36,6 +35,7 @@ public protocol OKEntityContainer: class {
     
     @discardableResult func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool
     @discardableResult func removeEntity            (_ entityToRemove: GKEntity) -> Bool
+    @discardableResult func removeEntities          (named name: String) -> Int
     
     // MARK: Frame Update
     
@@ -164,8 +164,8 @@ public extension OKEntityContainer {
     /// This ensures that the list of entities is not mutated during a frame update, which would cause an exception/crash because of mutating a collection while it is being enumerated during the update
     ///
     /// - Returns: `true` if the entry was in the `entities` set.
-    @inlinable
-    @discardableResult func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool {
+    @inlinable @discardableResult
+    func removeEntityOnNextUpdate(_ entityToRemove: GKEntity) -> Bool {
         
         guard entities.contains(entityToRemove) else {
             // CHECK: Warn on missing entry if the entity is going to leave anyway?
@@ -183,9 +183,9 @@ public extension OKEntityContainer {
     
     /// Removes an entity from the scene, and unregisters its components from the default component systems array.
     ///
-    /// - Returns: `true` if the entry was in the `entities` set and removed.
+    /// - IMPORTANT: ⚠️ Attempting to modify the list of entities during a frame update will cause an exception/crash, because of mutating a collection while it is being enumerated. To ensure safe removal, use `removeEntityOnNextUpdate(_:)`.
     ///
-    /// - Important: Attempting to modify the list of entities during a frame update will cause an exception/crash, because of mutating a collection while it is being enumerated. To ensure safe removal, use `removeEntityOnNextUpdate(_:)`.
+    /// - Returns: `true` if the entry was in the `entities` set and removed.
     @inlinable @discardableResult
     func removeEntity(_ entityToRemove: GKEntity) -> Bool {
         
@@ -226,6 +226,25 @@ public extension OKEntityContainer {
             return false
         }
         
+    }
+
+    /// Removes all entries that match the specified name.
+    /// - Returns: The number of entities that were removed.
+    @inlinable @discardableResult
+    func removeEntities(named name: String) -> Int {
+        
+        var removalCount = 0
+        
+        // Create a separate array so we don't modify the `entities` property while iterating through it.
+        
+        let entitiesToRemove = self.entities(withName: name)
+            .filter { $0.name == name }
+        
+        for entity in entitiesToRemove { // May be better than `forEach`, considering the `removalCount` mutation.
+            if self.removeEntityOnNextUpdate(entity) { removalCount += 1 }
+        }
+        
+        return removalCount
     }
 
     // MARK: Validating Entities
