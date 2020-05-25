@@ -102,7 +102,9 @@ public final class RelayComponent <MasterComponentType> : OKComponent
     /// Creates a `RelayComponent` which points to a component of the specified type in the scene entity associated with the `NodeComponent` node of this `RelayComponent`'s entity.
     ///
     /// Whenever the `target` of this relay is requested, it will check for `self.entityNode?.scene?.entity?.component(ofType: sceneComponentType)`.
-    public init (sceneComponentType: MasterComponentType.Type) {
+    ///
+    /// - IMPORTANT: ⚠️ Newly-created entities will not be able to find components via `RelayComponent(sceneComponentType:)` *before* they are added to a scene.
+    public init(sceneComponentType: MasterComponentType.Type) {
         
         #if LOGECSVERBOSE
         debugLog("sceneComponentType: \(sceneComponentType)")
