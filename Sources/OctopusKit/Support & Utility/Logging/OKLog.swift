@@ -52,7 +52,7 @@ public struct OKLog: Codable {
     public static var csvDelimiter: String = "\t"
     
     /// Stores the frame number during the most recent log entry, so we can mark the beginning of a new frame to make logs easier to read.
-    public fileprivate(set) static var lastFrameLogged: UInt64 = 0
+    public static var lastFrameLogged: UInt64 = 0 // Not fileprivate(set) so functions can be @inlinable
     
     /// The global time formatter for all OctopusKit logging functions.
     ///
@@ -79,6 +79,7 @@ public struct OKLog: Codable {
     }
     
     /// Returns the `currentFrameNumber` of `OctopusKit.shared.currentScene`, if available, otherwise `0`.
+    @inlinable
     public static var currentFrame: UInt64 {
         // ⚠️ Trying to access `OctopusKit.shared.currentScene` at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so we delay it by checking something like `gameCoordinator.didEnterInitialState`
         
@@ -90,29 +91,31 @@ public struct OKLog: Codable {
     }
     
     /// Returns `true` if the `currentFrame` count is higher than `lastFrameLogged`.
+    @inlinable
     public static var isNewFrame: Bool {
         self.currentFrame > self.lastFrameLogged
     }
     
     /// Returns a string with the number of the frame being rendered by the current scene, if any.
+    @inlinable
     public static func currentFrameString() -> String {
         
-        // If there is no scene, reset the last frame counter.
+        let currentFrame = self.currentFrame // PERFORMANCE: Don't query the scene repeatedly via properties.
         
-        if  OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false
-        ||  OctopusKit.shared?.currentScene == nil
-        {
+        /// If the `lastFrameLogged` is higher than the `currentFrame`, then it may mean the active scene has changed and we should reset the last-frame counter.
+        
+        if  self.lastFrameLogged > currentFrame {
             self.lastFrameLogged = 0
         }
         
-        let currentFrame = self.currentFrame
+        let isNewFrame = (currentFrame > self.lastFrameLogged) // PERFORMANCE: Again, don't query the properties.
         
-        if  printEmptyLineBetweenFrames && currentFrame > OKLog.lastFrameLogged {
+        if  printEmptyLineBetweenFrames && isNewFrame {
             // CHECK: Should this be the job of the time function?
             print("")
         }
         
-        let currentFrameNumberString = " F" + "\(currentFrame)".paddedWithSpace(toLength: 7) + "\(currentFrame > OKLog.lastFrameLogged ? "•" : " ")"
+        let currentFrameNumberString = " F" + "\(currentFrame)".paddedWithSpace(toLength: 7) + "\(isNewFrame ? "•" : " ")"
         
         // Remember the last frame we logged (assuming that the output of this function will be logged) so that we can insert an empty line between future frames if `printEmptyLineBetweenFrames` is set.
         
@@ -148,6 +151,7 @@ public struct OKLog: Codable {
     public var isDisabled: Bool = false
     
     /// Returns the `OKLogEntry` at `index`.
+    @inlinable
     public subscript(index: Int) -> OKLogEntry {
         // ℹ️ An out-of-bounds index should not crash the game just for logging. :)
         guard index >= 0 && index < entries.count else {
@@ -158,7 +162,7 @@ public struct OKLog: Codable {
         return entries[index]
     }
     
-    /// - Returns: The `description` for the `OKLogEntry` at `index`.
+    /// Returns the `description` for the `OKLogEntry` at `index`.
     @inlinable
     public subscript(index: Int) -> String {
         // ℹ️ An out-of-bounds index should not crash the game just for logging. :)
@@ -170,7 +174,7 @@ public struct OKLog: Codable {
         return "\(entries[index])" // Simply return the `OKLogEntry` as it conforms to `CustomStringConvertible`.
     }
 
-    /// - Returns: The `description` of the last entry added to the log, if any.
+    /// Returns the `description` of the last entry added to the log, if any.
     @inlinable
     public var lastEntryText: String? {
         entries.last?.text
