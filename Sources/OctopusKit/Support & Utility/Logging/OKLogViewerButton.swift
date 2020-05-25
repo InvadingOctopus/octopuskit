@@ -12,12 +12,19 @@ import SwiftUI
 /// A viewer for `OctopusKit.unifiedLog`.
 public struct OKLogViewerButton: View {
     
-    @State var showingLogViewer: Bool = false
+    @State var showingLogs: Bool = false
+    
+    private let logs = [
+        OctopusKit.unifiedLog,
+        OctopusKit.logForFramework,
+        OctopusKit.logForWarnings,
+        OctopusKit.logForErrors
+    ]
     
     public init() {}
     
     public var body: some View {
-        Button(action: { self.showingLogViewer.toggle() } ) {
+        Button(action: { self.showingLogs.toggle() } ) {
             Text("📜")
                 .accessibility(label: Text("View OctopusKit Log"))
                 .padding(5)
@@ -28,8 +35,8 @@ public struct OKLogViewerButton: View {
                         .blendMode(.difference)
                 )
         }
-        .sheet(isPresented: $showingLogViewer) {
-            OKLogList(OctopusKit.unifiedLog)
+        .sheet(isPresented: $showingLogs) {
+            OKLogBinder(logs: self.logs, showingLogs: self.$showingLogs)
         }
     }
 }

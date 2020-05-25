@@ -7,25 +7,99 @@
 //
 
 import SwiftUI
+import OctopusUI
+
+// MARK: - Log Binder
 
 /// A container for a collection of logs.
 public struct OKLogBinder: View {
     
     let logs: [OKLog]
     
-    @State var selectedLogIndex: Int = 0
+    @Binding var showingLogs:      Bool
     
-    public init(logs: [OKLog]) {
+    @State private var selectedLogIndex  = 0
+    @State private var showingShareSheet = false
+    
+    private var selectedLog: OKLog {
+        self.logs[selectedLogIndex]
+    }
+    
+    private var selectedLogJSON: String {
+        let encoder = JSONEncoder()
+        let data    = try! encoder.encode(logs[selectedLogIndex])
+        return String(data: data, encoding: .utf8)!
+    }
+    
+    public init(logs: [OKLog],
+                showingLogs: Binding<Bool>)
+    {
         self.logs = logs
+        self._showingLogs = showingLogs
     }
     
     public var body: some View {
-        OKLogViewer(logs[selectedLogIndex])
+        
+        // TODO: Different layout on macOS/tvOS
+        
+        VStack {
+            logChooser
+                .padding()
+            
+            OKLogViewer(logs[selectedLogIndex])
+            buttons
+                .accentColor(.purple)
+                .padding()
+        }
+        
     }
+    
+    var logChooser: some View {
+        CollapsableGroup(label: Text("Log: \(selectedLog.title)")) {
+            
+            HStack() {
+                ForEach(0 ..< self.logs.endIndex) { index in
+            
+                    Text(self.logs[index].title)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 5)
+                                .foregroundColor(self.selectedLogIndex == index ? .purple : .clear)
+                        )
+                        .onTapGesture {
+                            self.selectedLogIndex = index
+                        }
+                }
+            }
+        }
+    }
+    
+    var buttons: some View {
+        HStack {
+            
+            Button(action: { self.showingLogs.toggle() }) {
+                Text("Close")
+            }
+            
+            Spacer()
+            
+            Button(action: { self.showingShareSheet.toggle() }) {
+                Symbol(macOS: "􀈂", iOS: "square.and.arrow.up")
+            }
+            .sheet(isPresented: $showingShareSheet) {
+                ShareSheet(activityItems: [self.selectedLogJSON])
+            }
+        }
+    }
+    
 }
+
+// MARK: - Log Viewer
 
 /// Displays a single log with filtering controls.
 public struct OKLogViewer: View {
+    
+    // TODO: Filtering options
     
     let log: OKLog
     
@@ -38,6 +112,8 @@ public struct OKLogViewer: View {
         OKLogList(log)
     }
 }
+
+// MARK: - Log List
 
 /// Lists all the entries in a log.
 public struct OKLogList: View {
@@ -55,6 +131,8 @@ public struct OKLogList: View {
         .listRowBackground(Rectangle().foregroundColor(.red))
     }
 }
+
+// MARK: - Log Entry
 
 /// A persistent flag to changing the color of alternating rows for better readability.
 fileprivate var rowColorAlternator: Bool = false
@@ -95,7 +173,7 @@ public struct OKLogEntryView: View {
             }
             .lineLimit(1)
             .padding(2)
-            .foregroundColor(Color(OSColor.systemGray)) // TODO: tertiaryLabel / tertiaryLabelColor :(
+                .foregroundColor(Color(OSColor.systemGray)) // TODO: tertiaryLabel / tertiaryLabelColor :(
             
             Text(entry.text)
                 .lineLimit(3)
@@ -153,12 +231,12 @@ public struct OKLogEntryView: View {
     
 }
 
+// MARK: - 
+
 /*
 struct OKLogBinder_Previews: PreviewProvider {
     static var previews: some View {
-        
         let log = try! JSONDecoder().decode(OKLog.self, from: previewLog.data(using: .utf8)! )
-        
         return LogBinder(logs: [log])
     }
 }
