@@ -24,7 +24,7 @@ public extension OctopusKit {
 /// Use multiple `OKLog`s to separate different concerns, such as warnings from errors, and to selectively enable or disable specific logs.
 ///
 /// The log allows entries with no text, so you can simply log the time and name of function and method calls.
-public struct OKLog: Codable {
+public struct OKLog {
     
     // CHECK: Cocoa Notifications?
     // CHECK: Adopt `os_log`?
@@ -182,6 +182,9 @@ public struct OKLog: Codable {
     ///
     /// Useful for logs that display critical errors.
     public var haltApplicationOnNewEntry: Bool = false
+    
+    /// A unique identifier for compatibility with SwiftUI lists.
+    public let id = UUID()
     
     // MARK: Initializer
     
@@ -344,5 +347,14 @@ public struct OKLog: Codable {
                  topic:     topic,
                  function:  function,
                  useNSLog:  useNSLog)
+    }
+}
+
+extension OKLog: Codable {
+    enum CodingKeys: String, CodingKey {
+        /// ℹ️ Exclude the long and unnecessary `id` strings.
+        case title,  useNSLog, isDisabled
+        case suffix, printsSuffix
+        case entries
     }
 }
