@@ -117,9 +117,7 @@ public struct OKLog: Codable {
         
         let currentFrameNumberString = " F" + "\(currentFrame)".paddedWithSpace(toLength: 7) + "\(isNewFrame ? "•" : " ")"
         
-        // Remember the last frame we logged (assuming that the output of this function will be logged) so that we can insert an empty line between future frames if `printEmptyLineBetweenFrames` is set.
-        
-        lastFrameLogged = currentFrame
+        /// BUG FIXED: Set `lastFrameLogged` in `OKLog.add(...)` instead of here, so that `OKLogEntry.init(...)` has a chance to check `isNewFrame` correctly.
         
         return currentFrameNumberString
     }
@@ -260,6 +258,10 @@ public struct OKLog: Codable {
         if  haltApplicationOnNewEntry {
             fatalError(consoleText)
         }
+        
+        /// Remember the last frame we logged, so that we can highlight the first entries logged during a frame, and insert an empty line between future frames if `printEmptyLineBetweenFrames` is set.
+        
+        OKLog.lastFrameLogged = OKLog.currentFrame
     }
     
     /// Formats and prints the entry to the runtime debug console or `NSLog`, and returns the formatted string.
