@@ -92,7 +92,7 @@ open class OKComponent: GKComponent {
     /// Logs a warning if the entity is missing any of the components in `requiredComponents`.
     ///
     /// - RETURNS: `true` if there are no missing dependencies or no `requiredComponents`
-    @discardableResult
+    @inlinable @discardableResult
     public func checkEntityForRequiredComponents() -> Bool {
         
         // ℹ️ DESIGN: See description of `requiredComponents` for explanation about not halting execution on missing dependencies.
