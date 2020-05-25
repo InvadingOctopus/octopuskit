@@ -13,7 +13,7 @@ public extension OctopusKit {
     // MARK: Global Logs
     
     /// A log for core or general engine events.
-    static var logForFramework  = OKLog(title: "Framework", prefix: "🐙")
+    static var logForFramework  = OKLog(title: "Framework", prefix: "⚙️")
     
     /// A log for transitions within game states and entity states.
     static var logForStates     = OKLog(title: "States",    prefix: "🚦", suffix: "🚦")
