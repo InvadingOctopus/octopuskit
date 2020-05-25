@@ -150,11 +150,11 @@ public struct OKLogEntryView: View {
     
     var headerColor: Color {
         #if !os(macOS)
-        entry.isNewFrame ? .red
+        return entry.isNewFrame ? .red
             : self.selected ? Color(OSColor.secondaryLabel)
                 : Color(OSColor.tertiaryLabel)
         #else
-        entry.isNewFrame ? .red
+        return entry.isNewFrame ? .red
             : self.selected ? Color(OSColor.secondaryLabelColor)
                 : Color(OSColor.tertiaryLabelColor)
         #endif
