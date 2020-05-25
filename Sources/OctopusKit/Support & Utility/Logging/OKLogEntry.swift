@@ -13,8 +13,8 @@ public typealias OctopusLogEntry = OKLogEntry
 /// An entry in an `OKLog`.
 public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     
-    /// The title of the log, if any, in which this entry was logged.
-    public let title:       String
+    /// The prefix of the log, if any, in which this entry was logged. Used for distinguishing entries from different logs. May be emojis or symbols.
+    public let prefix:      String
     
     public let time:        Date
     
@@ -38,7 +38,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     
     /// Creates a new log entry.
     /// - Parameters:
-    ///   - title:      The title of the log, if any, in which this entry is logged.
+    ///   - prefix:     The prefix of the log, if any, in which this entry was logged. May be emojis or symbols for distinguishing entries from different logs.
     ///   - time:       The date and time at which this entry is logged.
     ///   - frame:      The current frame count of the current scene, if any, otherwise `0`.
     ///   - isNewFrame: `true` if the entry is logged at the beginning of a new frame in the current scene, if any. Used for highlighting new frames.
@@ -46,7 +46,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     ///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
     ///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
     public init(
-        title:      String  = "",
+        prefix:     String  = "",
         time:       Date    = Date(),
         frame:      UInt64  = OKLog.currentFrame,
         isNewFrame: Bool    = OKLog.isNewFrame,
@@ -54,7 +54,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
         topic:      String  = #file,
         function:   String  = #function)
     {
-        self.title      = title
+        self.prefix     = prefix
         self.time       = time
         self.frame      = frame
         self.isNewFrame = isNewFrame
@@ -75,7 +75,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
 extension OKLogEntry: Codable {
     enum CodingKeys: String, CodingKey {
         /// ℹ️ Exclude the long and unnecessary `id` strings.
-        case title, time, frame, isNewFrame
+        case prefix, time, frame, isNewFrame
         case topic, function, text
     }
 }

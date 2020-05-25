@@ -15,7 +15,7 @@ public typealias OctopusLog = OKLog
 public extension OctopusKit {
     
     /// Contains all the entries that are logged to any log. May be used for displaying all entries in a log viewer.
-    fileprivate(set) static var unifiedLog = OKLog (title: "🐙")
+    fileprivate(set) static var unifiedLog = OKLog (title: "Combined Logs", prefix: "🐙")
 
 }
 
@@ -44,7 +44,7 @@ public struct OKLog {
     
     /// If `true` then debug console output is printed in tab-delimited CSV format, that may then be copied into a spreadsheet table such as Numbers etc.
     ///
-    /// The values are: currentTime, currentFrameNumber, title, topic, function, text, suffix.
+    /// The values are: currentTime, currentFrameNumber, prefix, topic, function, text, suffix.
     public static var printAsCSV: Bool = false
     
     /// The separator to print between values when `printAsCSV` is `true`.
@@ -130,8 +130,11 @@ public struct OKLog {
     
     // MARK: Instance properties and methods
     
-    /// The title of the log. Appended to the beginning of printed entries.
-    public let title: String
+    /// The descriptive title of the log. Not printed or saved in entries.
+    public let title:  String
+    
+    /// The prefix appended to the beginning of printed entries. May be emojis or symbols.
+    public let prefix: String
     
     public var entries = [OKLogEntry]() // Not private so functions can be @inlinable
     
@@ -192,20 +195,23 @@ public struct OKLog {
     ///
     /// You may create multiple logs, e.g. one for each subsystem such as input, physics, etc.
     /// - Parameters:
-    ///   - title:      The title of the log.
+    ///   - title:      The descriptive title of the log.
+    ///   - prefix:     A prefix appended to the beginning of printed entries, to distinguish entries from different logs. May be emojis or symbols.
     ///   - suffix:     The text to add at the end of each entry's text **when printing only**; not stored in the actual `OKLogEntry`.
     ///   - useNSLog:   If `true`, `NSLog(_:)` is used instead of `print(_:)`. Default: `false`.
     ///   - haltApplicationOnNewEntry: If `true`, a `fatalError()` exception is raised when a new entry is added. This may be useful for logs that report critical errors.
     public init(
-        title:                      String  = "OKLog",
+        title:                      String  = "Log",
+        prefix:                     String  = "•",
         suffix:                     String? = nil,
         useNSLog:                   Bool    = false,
         haltApplicationOnNewEntry:  Bool    = false)
     {
-        self.title                          = title
-        self.suffix                         = suffix
-        self.useNSLog                       = useNSLog
-        self.haltApplicationOnNewEntry      = haltApplicationOnNewEntry
+        self.title                      = title
+        self.prefix                     = prefix
+        self.suffix                     = suffix
+        self.useNSLog                   = useNSLog
+        self.haltApplicationOnNewEntry  = haltApplicationOnNewEntry
     }
     
     // MARK: Add Entry
@@ -244,7 +250,7 @@ public struct OKLog {
         
         // Add the entry to the log.
         
-        let newEntry = OKLogEntry(title:    self.title,
+        let newEntry = OKLogEntry(prefix:   self.prefix,
                                   time:     time,
                                   text:     text,
                                   topic:    topic,
@@ -266,6 +272,8 @@ public struct OKLog {
         
         OKLog.lastFrameLogged = OKLog.currentFrame
     }
+    
+    // MARK: Print Entry
     
     /// Formats and prints the entry to the runtime debug console or `NSLog`, and returns the formatted string.
     @inlinable @discardableResult
@@ -292,7 +300,7 @@ public struct OKLog {
         var consoleText: String = ""
         
         if  useNSLog {
-            NSLog("\(title) \(topic) \(function)\(textWithSpacePrefixIfNeeded)")
+            NSLog("\(prefix) \(topic) \(function)\(textWithSpacePrefixIfNeeded)")
             
         } else {
           
@@ -301,7 +309,7 @@ public struct OKLog {
                 consoleText = [
                     OKLog.currentTimeString(),
                     "\(OctopusKit.shared.currentScene?.currentFrameNumber ?? 0)",
-                    #""\#(title)""#,
+                    #""\#(prefix)""#,
                     #""\#(topic)""#,
                     #""\#(function)""#,
                     #""\#(text)""#,
@@ -311,7 +319,7 @@ public struct OKLog {
             } else {
                 // TODO: Truncate filenames with "…"
                 
-                let paddedTitle = title.paddedWithSpace(toLength: 8)
+                let paddedTitle = prefix.paddedWithSpace(toLength: 8)
                 let paddedTopic = topic.paddedWithSpace(toLength: 35)
                  
                 if  OKLog.printTextOnSecondLine {
@@ -353,7 +361,8 @@ public struct OKLog {
 extension OKLog: Codable {
     enum CodingKeys: String, CodingKey {
         /// ℹ️ Exclude the long and unnecessary `id` strings.
-        case title,  useNSLog, isDisabled
+        case title, prefix
+        case useNSLog, isDisabled
         case suffix, printsSuffix
         case entries
     }

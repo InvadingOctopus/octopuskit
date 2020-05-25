@@ -195,7 +195,7 @@ public struct OKLogEntryView: View {
     
     /// Log Title
     var title: some View {
-        Text(entry.title)
+        Text(entry.prefix)
             .opacity(0.75)
     }
     
