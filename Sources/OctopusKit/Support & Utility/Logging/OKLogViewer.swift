@@ -149,10 +149,15 @@ public struct OKLogEntryView: View {
     }
     
     var headerColor: Color {
-        // TODO: tertiaryLabel / tertiaryLabelColor >:(
+        #if !os(macOS)
         entry.isNewFrame ? .red
-            : self.selected ? .black
-                : Color(OSColor.systemGray)
+            : self.selected ? Color(OSColor.secondaryLabel)
+                : Color(OSColor.tertiaryLabel)
+        #else
+        entry.isNewFrame ? .red
+            : self.selected ? Color(OSColor.secondaryLabelColor)
+                : Color(OSColor.tertiaryLabelColor)
+        #endif
     }
     
     public init(_ entry: OKLogEntry) {
@@ -195,7 +200,7 @@ public struct OKLogEntryView: View {
     /// Log Title
     var title: some View {
         Text(entry.prefix)
-            .opacity(0.75)
+            .opacity(self.selected ? 1 : 0.75)
     }
     
     /// Time and Frame
@@ -232,10 +237,11 @@ public struct OKLogEntryView: View {
     var entryText: some View {
         Text(entry.text)
             .font(.system(size: 13, weight: .medium, design: .monospaced))
-            .lineLimit(selected ? nil : 2)
+            .lineLimit(self.selected ? nil : 2)
             .fixedSize(horizontal: false, vertical: true)
             .padding(2)
             .layoutPriority(1)
+            .foregroundColor(self.selected ? .primary : .secondary)
             .onTapGesture {
                 self.selected.toggle()
             }
