@@ -168,6 +168,7 @@ public final class PointerEventComponent: OKComponent, RequiresUpdatesPerFrame {
     
     /// Returns the event which was received during this frame. To check the last event received in previous frames, use `lastEvent`
 //    @inlinable
+    @LogInputEventChanges(propertyName: "PointerEventComponent.latestEventForCurrentFrame")
     public var latestEventForCurrentFrame: PointerEvent? = nil // Not private(set) so update(deltaTime:) can be @inlinable
 //    {
 //        [pointerBegan, pointerMoved, pointerEnded]
