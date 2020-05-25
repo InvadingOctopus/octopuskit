@@ -48,10 +48,9 @@ public struct OKLogBinder: View {
             
             OKLogViewer(logs[selectedLogIndex])
             buttons
-                .accentColor(.purple)
                 .padding()
         }
-        
+        .accentColor(.purple)
     }
     
     var logChooser: some View {
@@ -60,11 +59,12 @@ public struct OKLogBinder: View {
             HStack() {
                 ForEach(0 ..< self.logs.endIndex) { index in
             
-                    Text(self.logs[index].title)
+                    Text(self.logs[index].prefix)
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 5)
-                                .foregroundColor(self.selectedLogIndex == index ? .purple : .clear)
+                                .foregroundColor(self.selectedLogIndex == index ? .accentColor : .clear)
+                                .opacity(0.5)
                         )
                         .onTapGesture {
                             self.selectedLogIndex = index
@@ -128,7 +128,6 @@ public struct OKLogList: View {
         List(log.entries) { entry in
             OKLogEntryView(entry)
         }
-        .listRowBackground(Rectangle().foregroundColor(.red))
     }
 }
 
@@ -142,9 +141,18 @@ public struct OKLogEntryView: View {
     
     let entry: OKLogEntry
     
+    @State private var selected: Bool = false
+    
     var rowColor: Color {
         rowColorAlternator.toggle()
         return (rowColorAlternator ? Color(OSColor.systemIndigo) : Color.clear)
+    }
+    
+    var headerColor: Color {
+        // TODO: tertiaryLabel / tertiaryLabelColor >:(
+        entry.isNewFrame ? .red
+            : self.selected ? .black
+                : Color(OSColor.systemGray)
     }
     
     public init(_ entry: OKLogEntry) {
@@ -158,36 +166,27 @@ public struct OKLogEntryView: View {
             HStack(alignment: .firstTextBaseline) { // Header
                 
                 HStack {
-                    title
-                        .layoutPriority(0)
-                    
-                    time
-                        .foregroundColor(entry.isNewFrame ? .red : Color(OSColor.systemGray)) // TODO: tertiaryLabel / tertiaryLabelColor :(
-                        .layoutPriority(1)
+                    title.layoutPriority(0)
+                    time .layoutPriority(1)
                 }
                 .layoutPriority(1)
                 
-                topic
-                    .font(.caption)
+                topic.font(.caption)
                 
             }
             .lineLimit(1)
             .padding(2)
-                .foregroundColor(Color(OSColor.systemGray)) // TODO: tertiaryLabel / tertiaryLabelColor :(
+            .foregroundColor(headerColor)
             
-            Text(entry.text)
-                .lineLimit(3)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(2)
-                .layoutPriority(1)
+            entryText
             
         }
         .font(.system(size: 13))
         .padding(2)
         .background(
             RoundedRectangle(cornerRadius: 5)
-                .foregroundColor(self.rowColor)
-                .opacity(0.1)
+                .foregroundColor(self.selected ? .accentColor : self.rowColor)
+                .opacity(self.selected ? 0.4 : 0.1)
         )
     }
     
@@ -229,9 +228,23 @@ public struct OKLogEntryView: View {
         }
     }
     
+    /// Entry
+    var entryText: some View {
+        Text(entry.text)
+            .font(.system(size: 13, weight: .medium, design: .monospaced))
+            .lineLimit(selected ? nil : 2)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(2)
+            .layoutPriority(1)
+            .onTapGesture {
+                self.selected.toggle()
+            }
+    }
+
+    
 }
 
-// MARK: - 
+// MARK: -
 
 /*
 struct OKLogBinder_Previews: PreviewProvider {

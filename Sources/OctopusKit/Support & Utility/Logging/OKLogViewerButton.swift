@@ -17,8 +17,10 @@ public struct OKLogViewerButton: View {
     private let logs = [
         OctopusKit.unifiedLog,
         OctopusKit.logForFramework,
+        OctopusKit.logForComponents,
         OctopusKit.logForWarnings,
-        OctopusKit.logForErrors
+        OctopusKit.logForErrors,
+        OctopusKit.logForDebug
     ]
     
     public init() {}
