@@ -41,14 +41,14 @@ extension GKComponent {
     
     /// Returns the component of type `componentClass`, or a `RelayComponent` linked to a component of that type, if it's present in the entity that is associated with this component.
     ///
-    /// Returns `nil` if the requested `componentClass` is this component's class, as that would not be a "co" component, and entities can have only one component of each class.
+    /// Returns `nil` if the requested `componentClass` is this component's class, as that would not be a "co" component, and entities may have only one component of each class.
     ///
     /// - WARNING: This method will **not** find *subclasses* of `componentClass`.
     @inlinable
     public func coComponent <ComponentType> (
         ofType componentClass: ComponentType.Type,
-        ignoreRelayComponents: Bool = false)
-        -> ComponentType? where ComponentType: GKComponent
+        ignoreRelayComponents: Bool = false) -> ComponentType?
+        where ComponentType:   GKComponent
     {
         #if LOGECSVERBOSE
         debugLog("ComponentType: \(ComponentType.self), componentClass: \(componentClass), ignoreRelayComponents: \(ignoreRelayComponents), self: \(self)")
@@ -56,13 +56,15 @@ extension GKComponent {
         
         if  componentClass == type(of: self) {
             
+            /// Return `nil` if this component is looking for its own class. See reason in method documentation.
+            
             #if LOGECSVERBOSE
             debugLog("componentClass == type(of: self) — Returning `nil`")
             #endif
             
             return nil
         
-        }   else if ignoreRelayComponents {
+        } else if ignoreRelayComponents {
             
             let match = self.entity?.component(ofType: componentClass)
             
@@ -72,7 +74,7 @@ extension GKComponent {
             
             return match
             
-        }   else {
+        } else {
             
             let match = self.entity?.componentOrRelay(ofType: componentClass)
             
@@ -80,16 +82,16 @@ extension GKComponent {
             debugLog("self.entity?.componentOrRelay(ofType: componentClass) == \(match)")
             #endif
             
-            return self.entity?.componentOrRelay(ofType: componentClass)
+            return match
         }
     }
     
     /// A shortcut for `coComponent(ofType:)` without a parameter name to reduce text clutter.
     @inlinable
     public func coComponent <ComponentType> (
-        _ componentClass: ComponentType.Type,
-        ignoreRelayComponents: Bool = false)
-        -> ComponentType? where ComponentType: GKComponent
+        _ componentClass:       ComponentType.Type,
+        ignoreRelayComponents:  Bool = false) -> ComponentType?
+        where ComponentType:    GKComponent
     {
         return self.coComponent(ofType: componentClass, ignoreRelayComponents: ignoreRelayComponents)
     }
