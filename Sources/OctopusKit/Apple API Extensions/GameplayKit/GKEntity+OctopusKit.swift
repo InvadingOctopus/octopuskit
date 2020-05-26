@@ -69,6 +69,14 @@ public extension GKEntity {
         self.node as? SKSpriteNode
     }
     
+    /// Convenient shorthand for accessing the `SKPhysicsBody` associated with this entity's `PhysicsComponent` or its `NodeComponent` node (in that order).
+    ///
+    /// A `RelayComponent` may be used in place of those components.
+    @inlinable
+    var physicsBody: SKPhysicsBody? {
+        self[PhysicsComponent.self]?.physicsBody ?? self.node?.physicsBody
+    }
+    
     /// Returns the component matching `componentClass` or a `RelayComponent` linked to that type, if present in the entity.
     ///
     /// This subscript is a shortcut for the `componentOrRelay(ofType:)` method.
