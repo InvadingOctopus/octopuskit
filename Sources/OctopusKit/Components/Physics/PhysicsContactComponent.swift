@@ -40,7 +40,7 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
         
         for event in contactEventComponent.contactBeginnings {
             
-            let contact = event.contact // PERFORMANCE? Does this help? CHECK: Better way to write this?
+            let contact = event.contact
             
             if contact.bodyA == physicsComponent.physicsBody
             || contact.bodyB == physicsComponent.physicsBody {
