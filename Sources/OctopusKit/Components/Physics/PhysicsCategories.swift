@@ -38,4 +38,7 @@ public struct PhysicsCategories: OptionSet {
         self.rawValue = rawValue
     }
     
+    /// Indicates that this physics body will not interact with any other bodies for the particular property.
+    public static let none = PhysicsCategories([])
+    
 }
