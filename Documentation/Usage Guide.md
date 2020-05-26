@@ -12,7 +12,8 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 3. [Player Input](#player-input)
 4. [Sharing Data](#sharing-data)
 5. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
-6. [Advanced Stuff](#advanced-stuff)
+6. [Physics Collisions & Contact Detection](#physics-collisions)
+7. [Advanced Stuff](#advanced-stuff)
 
 ##### Related Documentation
 
@@ -219,6 +220,63 @@ var body: some View {
 ```
 
 💡 You may write a custom property wrapper like say `@Component` to simplify accessing components from the current scene etc.
+
+## Physics Collisions
+
+```swift
+scene.entity?.addComponents([PhysicsWorldComponent(),
+                            sharedPhysicsEventComponent])
+
+scene.componentSystems.createSystem(forClass: PlayerContactComponent.self)
+```
+
+```swift
+class PlayerContactComponent: PhysicsContactComponent {
+    
+    override func didBegin(_ contact: SKPhysicsContact, in scene: OKScene?) {
+       // Handle the collision.
+    }
+}
+```
+
+```swift
+extension PhysicsCategories {
+    static let player       = PhysicsCategories(1 << 0)
+    static let enemy        = PhysicsCategories(1 << 1)
+    static let projectile   = PhysicsCategories(1 << 2)
+}
+```
+
+```swift
+playerPhysicsBody
+    .categoryBitMask    (.player)
+    .collisionBitMask   (.enemy)
+    .contactTestBitMask ([.enemy, .projectile])
+    
+playerEntity.addComponents([PhysicsComponent(physicsBody: playerPhysicsBody),
+                            RelayComponent(for: scene.sharedPhysicsEventComponent),
+                            PlayerContactComponent())
+
+```
+
+* A `PhysicsEventComponent` is like a `TouchEventComponent`; it makes more sense to create just one and add it to the scene's root entity, then share it with child entities via `RelayComponents`.  
+Every `OKScene` has a `sharedPhysicsEventComponent` property. Your child entities can access it with a `RelayComponent(for: scene.sharedPhysicsEventComponent)`.
+
+* A `PhysicsContactComponent` of an entity checks the `PhysicsEventComponent` of the scene (via a relay) during its `update(deltaTime:)` method, and looks for events which involve the `PhysicsComponent` body of its entity.
+
+* If an entity's physics body is involved in a contact event, then that entity's `PhysicsContactComponent` calls its `didBegin(_:in:)` or `didEnd(_:in:)` method, which are empty, abstract methods that must be customized by a game-specific subclass of `PhysicsContactComponent`.
+
+* You must create a subclass of `PhysicsContactComponent`, for example a `MonsterContactComponent`, and add it to all monster entities (and of course, remember to create a component system for `MonsterContactComponent.self`).
+
+* Your `PhysicsContactComponent` should override at least the `didBegin(_:in:)` method, and use it to decide what happens when a monster is involved in any physics collisions (after checking the arguments passed to that method to inspect the scene and other bodies).
+
+> ❗️ Your scene's `physicsWorld.contactDelegate` property must be set to the scene itself, otherwise the scene's `PhysicsEventComponent` will not receive any events! (The property is set automatically when you add a `PhysicsWorldComponent` to the scene entity.)
+
+> ❗️ Your physics bodies should have their `categoryBitMask`, `collisionBitMask` and `contactTestBitMask` properties set according to which other bodies they should interact with and report events for. See Apple's SpriteKit documentation for details.
+
+> ❗️ `PhysicsEventComponent` and `PhysicsContactComponent` need to be updated every frame, so create component systems for them (and for their subclasses, if any)! Contact handling components must be updated *after* the `PhysicsEventComponent` component, so be mindful of the order of component systems as well.
+
+* 💡 Set the `LOGPHYSICS` custom compilation flag to see debugging information related to physics.
 
 ## Advanced Stuff
 
