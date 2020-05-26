@@ -36,7 +36,29 @@ public extension SKPhysicsBody {
         sprite.physicsBody = self
     }
 
-    // MARK: - Common Tasks
+    // MARK: - Modifiers
+    // As in SwiftUI
+    
+    /// Sets whether this physics body is affected by the physics world’s gravity, then returns the body.
+    @inlinable @discardableResult
+    final func affectedByGravity(_ newValue: Bool) -> Self {
+        self.affectedByGravity = newValue
+        return self
+    }
+    
+    /// Sets whether this physics body is affected by angular forces and impulses applied to it, then returns the body.
+    @inlinable @discardableResult
+    final func allowsRotation(_ newValue: Bool) -> Self {
+        self.allowsRotation = newValue
+        return self
+    }
+    
+    /// Sets whether this physics body is moved by the physics simulation, then returns the body.
+    @inlinable @discardableResult
+    final func isDynamic(_ newValue: Bool) -> Self {
+        self.affectedByGravity = newValue
+        return self
+    }
     
     /// Sets the categories that this physics body belongs to, then returns the body.
     ///
