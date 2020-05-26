@@ -55,6 +55,9 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
     /// As creating physics bodies may be a costly runtime operation, this setting defaults to `false`.
     public var createBodyFromNodeFrame: Bool = false
     
+    /// If `true`, this component will allow settings its `physicsBody` property to the body of a node which is not the entity's `NodeComponent` node. Useful for specifying the body of a child node of the entity's node.
+    public var allowBodyFromDifferentNode: Bool = false
+    
     // MARK: Initialization
     
     /// Creates a component that either adds a new physics body to the entity's `NodeComponent` node, or represents the node's current body.
@@ -63,15 +66,20 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
     ///   - createBodyFromNodeFrame:    If `true` and if neither this component nor the entity's `NodeComponent` node have a `physicsBody`, a rectangular body is created from the node's `frame` property. Default: `false`
     ///   - maximumVelocity:            Clamps the body's `velocity` to the specified limit, if any, on `update(deltaTime:)` every frame. Default: `nil`
     ///   - maximumAngularVelocity:     Clamps the body's `angularVelocity` to the specified limit, if any, on `update(deltaTime:)` every frame. Default: `nil`
+    ///   - allowBodyFromDifferentNode: If `true`, there will be no error raised by setting this component's `physicsBody` property to the body of a node which is not the entity's `NodeComponent` node. This may be useful in cases where this component must represent the body of a child node of the entity's node.
+    ///
+    ///     **Example:** If the entity's node is a `SKNode` containing a sprite and its shadow, then the `physicsBody` represented by this component must be on the sprite and not include the shadow.
     public init(physicsBody:             SKPhysicsBody? = nil,
                 createBodyFromNodeFrame: Bool           = false,
                 maximumVelocity:         CGFloat?       = nil,
-                maximumAngularVelocity:  CGFloat?       = nil)
+                maximumAngularVelocity:  CGFloat?       = nil,
+                allowBodyFromDifferentNode: Bool        = false)
     {
         self.physicsBody             = physicsBody
         self.createBodyFromNodeFrame = createBodyFromNodeFrame
         self.maximumVelocity         = maximumVelocity
         self.maximumAngularVelocity  = maximumAngularVelocity
+        self.allowBodyFromDifferentNode = allowBodyFromDifferentNode
         super.init()
     }
     
@@ -104,7 +112,8 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
     
     // MARK: Sync
     
-    /// Syncs the `physicsBody` that this component represents, with the `physicsBody` of the `NodeComponent` node associated with this component's entity.
+    /// Syncs the `physicsBody` that this component represents, with the `physicsBody` of the entity's `NodeComponent`, and performs validation checks.
+    @inlinable
     public func assignBody(to node: SKNode) {
         
         // TODO: Test all scenarios! (component's body, node's body, body's node, etc.)
@@ -136,10 +145,24 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
                 node.physicsBody = self.physicsBody
             
             } else if physicsBody.node! != node {
-                // ℹ️ DESIGN: Log an error and detach from the entity, as an `PhysicsComponent` with a body that belongs to another node, has no valid behavior.
-                OctopusKit.logForErrors("\(physicsBody) already associated with \(physicsBody.node!) — Detaching from entity")
-                self.removeFromEntity()
-                return
+                
+                /// If our body's node is not the entity's `NodeComponent` node, log an error and detach from the entity, as an `PhysicsComponent` with a body that belongs to another node, *may* be invalid/undesired behavior in most cases.
+                
+                if !allowBodyFromDifferentNode {
+                    OctopusKit.logForErrors("\(physicsBody) already associated with \(physicsBody.node!) — Detaching from entity. If this is intentional, set the `allowBodyFromDifferentNode` flag.")
+                    self.removeFromEntity()
+                    return
+                    
+                } else {
+                    
+                    /// **However,** if the `allowBodyFromDifferentNode` flag is set, then this may be a case where this `PhysicsComponent` represents a body which belongs to a *child* node of the entity's node tree.
+                    /// In that case, just warn if the body is not part of the entity's hierarchy.
+                    
+                    if !physicsBody.node!.inParentHierarchy(node) {
+                        OctopusKit.logForWarnings("\(physicsBody) already associated with \(physicsBody.node!) which is not in the hierarchy of \(node) — This may not be the desired behavior.")
+                        return
+                    }
+                }
             }
         }
             
