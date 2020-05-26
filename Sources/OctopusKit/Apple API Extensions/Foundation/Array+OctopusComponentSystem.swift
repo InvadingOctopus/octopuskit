@@ -19,7 +19,18 @@ public extension Array where Element == OKComponentSystem {
     /// The new system is added to the end of the list, so it will be updated after all currently-added systems.
     @inlinable
     mutating func createSystem(forClass componentClass: GKComponent.Type) {
-        // TODO: Warn against or discard duplicates.
+        
+        // Warn against duplicates.
+        
+        let isDuplicateSystem = self.contains { system in
+            system.componentClass == componentClass
+        }
+        
+        if  isDuplicateSystem {
+            OctopusKit.logForErrors("\(componentClass) added more than once! This may cause components to update multiple times every frame.")
+        }
+        
+        // Create and add the new system.
         
         let newSystem = OKComponentSystem(componentClass: componentClass)
         self.append(newSystem)
