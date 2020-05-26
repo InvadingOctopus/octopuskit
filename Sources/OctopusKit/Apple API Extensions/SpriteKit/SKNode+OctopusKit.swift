@@ -12,7 +12,7 @@ import SpriteKit
 
 public extension SKNode {
     
-    /// - Type Methods
+    // MARK: - Type Methods
     
     /// Attempts to unarchive the specified "sks" file from the main application bundle and returns it.
     @inlinable
@@ -23,7 +23,7 @@ public extension SKNode {
         return (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [SKNode.self],
                                                         from: Data(contentsOf: Bundle.main.url(forResource: name, withExtension: "sks")!))) as? T
     }
-    
+        
     // MARK: - Initializers
     
     /// Creates a new node with the specified `position` and `zPosition`.
