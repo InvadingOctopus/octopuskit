@@ -19,11 +19,14 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
         [NodeComponent.self]
     }
     
+    // MARK: Properties
+    
+    /// Sets the body of the entity's `NodeComponent` node, and represents the node's current body.
     public var physicsBody: SKPhysicsBody? {
         // CHECK: Should this be weak?
         
         didSet {
-            //  If we're part of an entity that has a SpriteKit node,
+            /// If we're part of an entity that has a `NodeComponent` node,
             if  let node = entityNode {
                 
                 //  And this component was supplied with a new physics body,
@@ -33,7 +36,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
                     assignBody(to: node)
                 }
                     
-                // Otherwise, if our body was set to `nil`, then set the node's body to `nil` as well, as this would be the expected behavior of modifying the `PhysicsComponent` of an entity with an existing node.
+                /// Otherwise, if our body was set to `nil`, then set the node's body to `nil` as well, as this would be the expected behavior of modifying the `PhysicsComponent` of an entity with an existing node.
                 else if self.physicsBody == nil {
                     node.physicsBody = nil
                 }
@@ -41,10 +44,10 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
         }
     }
     
-    /// The scalar to limit the velocity of the `physicsBody` to.
+    /// The scalar to limit the velocity of the `physicsBody` to, on every frame update.
     public var maximumVelocity: CGFloat?
     
-    /// The angular velocity in Newton-meters to limit the `physicsBody` to.
+    /// The angular velocity in Newton-meters to limit the `physicsBody` to, on every frame update.
     public var maximumAngularVelocity: CGFloat?
     
     /// Overrides this component's `physicsBody` property and creates a new rectangular `SKPhysicsBody` from the frame of the entity's `NodeComponent` node.
@@ -52,6 +55,14 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
     /// As creating physics bodies may be a costly runtime operation, this setting defaults to `false`.
     public var createBodyFromNodeFrame: Bool = false
     
+    // MARK: Initialization
+    
+    /// Creates a component that either adds a new physics body to the entity's `NodeComponent` node, or represents the node's current body.
+    /// - Parameters:
+    ///   - physicsBody:                Specifies the body to assign to the entity's `NodeComponent` node. If `nil`, then this component will represent the node's current body, if any. Default: `nil`
+    ///   - createBodyFromNodeFrame:    If `true` and if neither this component nor the entity's `NodeComponent` node have a `physicsBody`, a rectangular body is created from the node's `frame` property. Default: `false`
+    ///   - maximumVelocity:            Clamps the body's `velocity` to the specified limit, if any, on `update(deltaTime:)` every frame. Default: `nil`
+    ///   - maximumAngularVelocity:     Clamps the body's `angularVelocity` to the specified limit, if any, on `update(deltaTime:)` every frame. Default: `nil`
     public init(physicsBody:             SKPhysicsBody? = nil,
                 createBodyFromNodeFrame: Bool           = false,
                 maximumVelocity:         CGFloat?       = nil,
@@ -69,30 +80,36 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
     public override func didAddToEntity(withNode node: SKNode) {
         super.didAddToEntity(withNode: node)
         
-        // If `createBodyFromNodeFrame` is set and neither this component nor the entity's node have a physics body, then create a new rectangular body from the node's frame.
+        /// If `createBodyFromNodeFrame` is set and neither this component nor the entity's node have a physics body, then create a new rectangular body from the node's frame.
         
         if  createBodyFromNodeFrame
             && (self.physicsBody == nil && node.physicsBody == nil)
         {
-            // NOTE: CHECK: Is this a costly operation? Should `createBodyFromNodeFrame` be `true` or `false` by default?
+            /// NOTE: CHECK: PERFORMANCE: Is this a costly operation? Should `createBodyFromNodeFrame` be `true` or `false` by default?
             
             OctopusKit.logForDebug("\(self) creating new physicsBody from the frame of \(String(describing: node))") // Not a warning because this would be the expected behavior of adding a `PhysicsComponent` with no arguments to a fresh entity/node.
             
+            /// CHECK: Should this be `calculateAccumulatedFrame()`?
+            
+            /// WARNING: ⚠️ Some nodes like `SKNode` have a zero-sized `frame`!
+            
             self.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
             
-            // Setting our `physicsBody` should call `assignBody(to: node)` via the property observer now.
+            /// ℹ️ Setting our `physicsBody` should call `assignBody(to: node)` via the property observer now.
             
         } else {
             assignBody(to: node)
         }
     }
     
+    // MARK: Sync
+    
+    /// Syncs the `physicsBody` that this component represents, with the `physicsBody` of the `NodeComponent` node associated with this component's entity.
     public func assignBody(to node: SKNode) {
-        // This is a separate method so that the `physicsBody` `didSet` can call it without superfluously logging a `didAddToEntity(withNode:)` call.
         
         // TODO: Test all scenarios! (component's body, node's body, body's node, etc.)
         
-        // Sync the `physicsBody` that this component represents, with the `physicsBody` of the SpriteKit node associated with this component's entity.
+        // This is a separate method so that the `physicsBody` `didSet` can call it without superfluously logging a `didAddToEntity(withNode:)` call.
         
         // First off, are we already in sync? Then there's nothing to do here!
         
@@ -136,18 +153,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
         }
     }
     
-    public override func willRemoveFromEntity(withNode node: SKNode) {
-        
-        if  let nodePhysicsBody = node.physicsBody,
-            nodePhysicsBody !== self.physicsBody
-        {
-            OctopusKit.logForWarnings("\(node.name ?? String(describing: node)) had a different physicsBody than this component – Removing")
-        }
-        
-        // Remove the physicsBody even if the node had a different one, to keep the expected behavior of removing physics from the node when a PhysicsComponent is removed.
-        
-        node.physicsBody = nil
-    }
+    // MARK: Update
     
     public override func update(deltaTime seconds: TimeInterval) {
 
@@ -164,4 +170,20 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
             physicsBody.angularVelocity = maximumAngularVelocity * CGFloat(sign(Float(physicsBody.angularVelocity)))
         }
     }
+    
+    // MARK: Removal
+    
+    public override func willRemoveFromEntity(withNode node: SKNode) {
+        
+        if  let nodePhysicsBody = node.physicsBody,
+            nodePhysicsBody !== self.physicsBody
+        {
+            OctopusKit.logForWarnings("\(node.name ?? String(describing: node)) had a different physicsBody than this component – Removing")
+        }
+        
+        // Remove the physicsBody even if the node had a different one, to keep the expected behavior of removing physics from the node when a PhysicsComponent is removed.
+        
+        node.physicsBody = nil
+    }
+    
 }
