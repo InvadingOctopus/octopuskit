@@ -32,9 +32,9 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
     
     open override func update(deltaTime seconds: TimeInterval) {
         guard
-        let physicsComponent = coComponent(PhysicsComponent.self),
-        let contactEventComponent = coComponent(PhysicsEventComponent.self)
-        else { return }
+            let physicsComponent        = coComponent(PhysicsComponent.self),
+            let contactEventComponent   = coComponent(PhysicsEventComponent.self)
+            else { return }
         
         // Handle the beginning of new contacts.
         
@@ -72,9 +72,9 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
     }
     
     /// Abstract; to be implemented by a subclass.
-    open func didBegin(_ contact: SKPhysicsContact, in scene: OKScene?) {}
+    open func didBegin  (_ contact: SKPhysicsContact, in scene: OKScene?) {}
     
     /// Abstract; to be implemented by a subclass.
-    open func didEnd(_ contact: SKPhysicsContact, in scene: OKScene?) {}
+    open func didEnd    (_ contact: SKPhysicsContact, in scene: OKScene?) {}
     
 }
