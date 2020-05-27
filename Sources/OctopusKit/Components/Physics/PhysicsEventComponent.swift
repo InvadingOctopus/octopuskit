@@ -24,7 +24,7 @@ public final class PhysicsEventComponent: OKComponent, RequiresUpdatesPerFrame {
     public final class ContactEvent: Equatable {
         
         public let contact:  SKPhysicsContact
-        public let scene:    OKScene? // CHECK: Should this be optional?
+        public let scene:    OKScene? // This is optional as the scene may not be an `OKScene`
         
         public init(contact: SKPhysicsContact,
                     scene:   OKScene? = nil)
