@@ -33,6 +33,14 @@ extension GKComponent {
         self.entityNode?.scene as? OKScene
     }
     
+    /// Convenient shorthand for accessing the `SKPhysicsBody` associated the scene.
+    ///
+    /// See the `GKEntity.physicsBody` property to see how the return value is determined.
+    @inlinable
+    public var entityPhysicsBody: SKPhysicsBody? {
+        self.entity?.physicsBody
+    }
+    
     /// Returns the name for the entity associated with this component, if it is an `OKEntity`. A convenience for quickly writing log entries.
     @inlinable
     public var entityName: String? {
