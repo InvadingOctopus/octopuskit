@@ -21,6 +21,8 @@ public final class PhysicsEventComponent: OKComponent, RequiresUpdatesPerFrame {
     
     /// ⚠️ The physics contact delegate methods are called during the physics simulation step. During that time, the physics world can't be modified and the behavior of any changes to the physics bodies in the simulation is undefined. If you need to make such changes, set a flag inside `didBegin(_:)` or `didEnd(_:)` and make changes in response to that flag in the `update(_:for:)` method in a `SKSceneDelegate`.
     
+    // MARK: ContactEvent
+    
     public final class ContactEvent: Equatable {
         
         public let contact:  SKPhysicsContact
@@ -44,10 +46,14 @@ public final class PhysicsEventComponent: OKComponent, RequiresUpdatesPerFrame {
         }
     }
     
+    // MARK: Properties
+    
     public var contactBeginnings = [ContactEvent]()
     public var contactEndings    = [ContactEvent]()
     
     public fileprivate(set) var clearOnNextUpdate: Bool = false
+    
+    // MARK: Life Cycle
     
     public override func didAddToEntity() {
         super.didAddToEntity()
