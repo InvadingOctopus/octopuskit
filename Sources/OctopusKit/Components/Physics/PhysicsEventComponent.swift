@@ -6,23 +6,28 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// TODO: Tests
-// CHECK: Potential 1-frame lag due to `SKScene.update(deltaTime:)` vs `SKPhysicsContactDelegate`?
-
 import GameplayKit
 
 /// Stores events about contacts between physics bodies in a scene. The events may be observed by other components, and are cleared every frame.
 ///
-/// - Note: Unless events are manually forwarded to another entity, this component should be added to an `OKScene.entity` and the `OKScene.physicsWorld.contactDelegate` must be set to the scene. This is automatically done when a `PhysicsWorldComponent` is added to the scene entity.
+/// - NOTE: Unless events are manually forwarded to another entity, this component should be added to an `OKScene.entity` and the `OKScene.physicsWorld.contactDelegate` must be set to the scene. The delegate is set automatically when a `PhysicsWorldComponent` is added to the scene entity.
 public final class PhysicsEventComponent: OKComponent, RequiresUpdatesPerFrame {
+
+    // TODO: Tests
+    /// CHECK: Potential 1-frame lag due to `SKScene.update(deltaTime:)` vs `SKPhysicsContactDelegate`?
+
+    // ℹ️ https://developer.apple.com/documentation/spritekit/skphysicscontactdelegate
+    // ℹ️ https://developer.apple.com/documentation/spritekit/skphysicscontact
+    
+    /// ⚠️ The physics contact delegate methods are called during the physics simulation step. During that time, the physics world can't be modified and the behavior of any changes to the physics bodies in the simulation is undefined. If you need to make such changes, set a flag inside `didBegin(_:)` or `didEnd(_:)` and make changes in response to that flag in the `update(_:for:)` method in a `SKSceneDelegate`.
     
     public final class ContactEvent: Equatable {
         
-        public let contact: SKPhysicsContact
-        public let scene: OKScene? // CHECK: Should this be optional?
+        public let contact:  SKPhysicsContact
+        public let scene:    OKScene? // CHECK: Should this be optional?
         
         public init(contact: SKPhysicsContact,
-                    scene: OKScene? = nil)
+                    scene:   OKScene? = nil)
         {
             self.contact = contact
             self.scene   = scene
@@ -30,12 +35,12 @@ public final class PhysicsEventComponent: OKComponent, RequiresUpdatesPerFrame {
         
         public static func == (left: ContactEvent, right: ContactEvent) -> Bool {
             return (left.contact === right.contact
-                &&  left.scene === right.scene)
+                &&  left.scene   === right.scene)
         }
         
         public static func != (left: ContactEvent, right: ContactEvent) -> Bool {
             return (left.contact !== right.contact
-                &&  left.scene !== right.scene)
+                &&  left.scene   !== right.scene)
         }
     }
     
@@ -65,13 +70,13 @@ public final class PhysicsEventComponent: OKComponent, RequiresUpdatesPerFrame {
 
         // Clear the event arrays while maintaining their storage, as they are likely to grow again on the next frame.
         
-        if clearOnNextUpdate {
+        if  clearOnNextUpdate {
             contactBeginnings.removeAll(keepingCapacity: true)
             contactEndings   .removeAll(keepingCapacity: true)
             clearOnNextUpdate = false
         }
         
-        if contactBeginnings.count > 0 || contactEndings.count > 0 {
+        if  contactBeginnings.count > 0 || contactEndings.count > 0 {
             clearOnNextUpdate = true
         }
     }

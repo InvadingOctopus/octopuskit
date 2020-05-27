@@ -13,6 +13,11 @@ import GameplayKit
 /// **Dependencies:** `PhysicsComponent`, `PhysicsEventComponent`
 open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
     
+    // ℹ️ https://developer.apple.com/documentation/spritekit/skphysicscontactdelegate
+    // ℹ️ https://developer.apple.com/documentation/spritekit/skphysicscontact
+    
+    /// ⚠️ The physics contact delegate methods are called during the physics simulation step. During that time, the physics world can't be modified and the behavior of any changes to the physics bodies in the simulation is undefined. If you need to make such changes, set a flag inside `didBegin(_:)` or `didEnd(_:)` and make changes in response to that flag in the `update(_:for:)` method in a `SKSceneDelegate`.
+    
     open override var requiredComponents: [GKComponent.Type]? {
         [PhysicsComponent.self,
          PhysicsEventComponent.self]
@@ -31,8 +36,11 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
     }
     
     open override func update(deltaTime seconds: TimeInterval) {
+        
+        /// ❕ NOTE: It's very important that we check the `PhysicsComponent.physicsBody`, **not** the entity's `NodeComponent` `node.physicsBody`, because an entity may have multiple child nodes (e.g. a sprite and its shadow), and the `PhysicsComponent` may represent the body of a key child node (e.g. the sprite) instead of the entity's top-level container node.
+        
         guard
-            let physicsComponent        = coComponent(PhysicsComponent.self),
+            let physicsBody             = coComponent(PhysicsComponent.self)?.physicsBody,
             let contactEventComponent   = coComponent(PhysicsEventComponent.self)
             else { return }
         
@@ -42,8 +50,8 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
             
             let contact = event.contact
             
-            if contact.bodyA == physicsComponent.physicsBody
-            || contact.bodyB == physicsComponent.physicsBody {
+            if contact.bodyA == physicsBody
+            || contact.bodyB == physicsBody {
                 
                 #if LOGPHYSICS
                 debugLog("💢 \(contact) BEGAN. A: \"\(contact.bodyA.node?.name ?? "")\", B: \"\(contact.bodyB.node?.name ?? "")\", point: \(contact.contactPoint), impulse: \(contact.collisionImpulse), normal: \(contact.contactNormal)")
@@ -63,8 +71,8 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
             debugLog("💢 \(contact) ENDED. A: \"\(contact.bodyA.node?.name ?? "")\", B: \"\(contact.bodyB.node?.name ?? "")\", point: \(contact.contactPoint), impulse: \(contact.collisionImpulse), normal: \(contact.contactNormal)")
             #endif
             
-            if contact.bodyA == physicsComponent.physicsBody
-            || contact.bodyB == physicsComponent.physicsBody {
+            if contact.bodyA == physicsBody
+            || contact.bodyB == physicsBody {
                 
                 didEnd(contact, in: event.scene)
             }
