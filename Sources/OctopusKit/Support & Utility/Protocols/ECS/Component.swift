@@ -22,6 +22,8 @@ public protocol Component: class, UpdatablePerFrame {
     
     var entityName:         String?             { get }
     var entityNode:         SKNode?             { get }
+    var entityScene:        OKScene?            { get }
+    var entityPhysicsBody:  SKPhysicsBody?      { get }
     var entityDelegate:     OKEntityDelegate?   { get }
     
     var shouldRemoveFromEntityOnDeinit:    Bool { get set }
@@ -79,6 +81,22 @@ public extension Component {
         debugLog("self: \(self)")
         #endif
         return self.entity?.node
+    }
+    
+    /// Convenient shorthand for accessing the OctopusKit scene containing the SpriteKit node that is associated with the `NodeComponent` of this component's entity.
+    ///
+    /// If the entity does not have an `NodeComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
+    @inlinable
+    var entityScene: OKScene? {
+        self.entityNode?.scene as? OKScene
+    }
+    
+    /// Convenient shorthand for accessing the `SKPhysicsBody` associated the scene.
+    ///
+    /// See the `GKEntity.physicsBody` property to see how the return value is determined.
+    @inlinable
+    var entityPhysicsBody: SKPhysicsBody? {
+        self.entity?.physicsBody
     }
     
     /// Returns the delegate for the entity associated with this component, if any.
