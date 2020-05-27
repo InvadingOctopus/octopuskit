@@ -18,7 +18,7 @@ import AppKit
 /// Encapsulates an `OKViewController` to present SpriteKit/SceneKit/Metal content in a SwiftUI view hierarchy.
 public struct OKViewControllerRepresentable <OKGameCoordinatorType, OKViewControllerType> : NSViewControllerRepresentable
     where OKGameCoordinatorType: OKGameCoordinator,
-    OKViewControllerType: OKViewController
+          OKViewControllerType:  OKViewController
 {
     
     // typealias Context = UIViewControllerRepresentableContext<Self> // Defined in UIViewControllerRepresentable
