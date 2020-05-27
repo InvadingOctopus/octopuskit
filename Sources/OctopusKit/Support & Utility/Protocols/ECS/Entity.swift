@@ -21,12 +21,17 @@ public protocol Entity:
     
     init()
     
+    func removeFromDelegate()
 }
 
 public extension Entity {
 
     var delegate: OKEntityDelegate? { nil }
     
+    @inlinable
+    func removeFromDelegate() {
+        // self.delegate?.entityDidRequestRemoval(self) // TODO
+    }
 }
 
 extension Entity where Self: Nameable {

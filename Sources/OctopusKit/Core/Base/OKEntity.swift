@@ -130,6 +130,12 @@ open class OKEntity: GKEntity {
         delegate?.entity(self, didAddComponent: component)
     }
     
+    /// Requests this entity's `OKEntityDelegate` (i.e. the scene) to remove this entity.
+    @inlinable
+    public final func removeFromDelegate() {
+        self.delegate?.entityDidRequestRemoval(self)
+    }
+    
     deinit {
         OctopusKit.logForDeinits("\(self)")
         
