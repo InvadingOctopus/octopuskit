@@ -24,6 +24,8 @@ import SpriteKit
 ///         .categoryBitMask    (.projectile)
 ///         .collisionBitMask   ([.player, .enemy])
 ///         .contactTestBitMask ([.player, .enemy])
+///
+///     PhysicsCategories(projectileBody.categoryBitMask).contains(.projectile)
 public struct PhysicsCategories: OptionSet {
     
     public let rawValue: UInt32
