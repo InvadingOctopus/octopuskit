@@ -1,5 +1,5 @@
 //
-//  OKViewControllerRepresentable-iOS.swift
+//  OKViewControllerRepresentable.swift
 //  OctopusKit
 //
 //  Created by ShinryakuTako@invadingoctopus.io on 2019-10-07
@@ -11,7 +11,7 @@ import SpriteKit
 
 public typealias OctopusViewControllerRepresentable = OKViewControllerRepresentable
 
-#if canImport(AppKit)
+#if canImport(AppKit) // MARK: - macOS
 
 import AppKit
 
@@ -54,7 +54,7 @@ public struct OKViewControllerRepresentable <OKGameCoordinatorType, OKViewContro
     
 }
 
-#elseif canImport(UIKit)
+#elseif canImport(UIKit) // MARK: - iOS/iPadOS/tvOS
 
 /// Encapsulates an `OKViewController` to present SpriteKit/SceneKit/Metal content in a SwiftUI view hierarchy.
 public struct OKViewControllerRepresentable <OKGameCoordinatorType, OKViewControllerType> : UIViewControllerRepresentable
@@ -95,6 +95,8 @@ public struct OKViewControllerRepresentable <OKGameCoordinatorType, OKViewContro
 }
 
 #endif
+
+// MARK: - Universal
 
 public extension OKViewControllerRepresentable { // CHECK: Should this be public?
     
