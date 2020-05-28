@@ -8,7 +8,7 @@
 
 import GameplayKit
 
-/// A base class for components that represent a single value and report its changes for subclasses to act upon.
+/// A base class for components that represent a single value and reports its changes for subclasses to act upon.
 ///
 /// For example, a subclass may call a `BubbleEmitterComponent` to display changes in the value.
 open class ValueComponent <ValueType> : OKComponent

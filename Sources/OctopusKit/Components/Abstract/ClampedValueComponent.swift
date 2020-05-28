@@ -8,7 +8,9 @@
 
 import GameplayKit
 
-/// A base class for components that represent a single numeric value within a specific range.
+/// A base class for components that represent a single numeric value within a specific range, and reports its changes for subclasses to act upon.
+///
+/// For example, a `HealthComponent` may inherit from this component, implement `didChange(from:)` and call a `BubbleEmitterComponent` to display damage or healing values.
 open class ClampedValueComponent <ValueType> : OKComponent
     where ValueType: Numeric & Comparable
 {
@@ -73,7 +75,7 @@ open class ClampedValueComponent <ValueType> : OKComponent
     
     // MARK: - Abstract
 
-    /// Abstract; Subclasses may implement this method to respond to changes. Called by the `value` property's `didSet` observer.
+    /// Abstract; Subclasses may implement this method to respond to changes. Called by the `value` property's `didSet` observer, *only if* there is any difference in the old value and the new value after clamping.
     @inlinable
     open func didChange(from oldValue: ValueType) {}
     
