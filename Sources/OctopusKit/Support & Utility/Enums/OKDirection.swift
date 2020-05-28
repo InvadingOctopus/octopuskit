@@ -13,30 +13,28 @@ public typealias OctopusDirection = OKDirection
 /// Represents all possible directions.
 public enum OKDirection: String, CustomStringConvertible, CaseIterable {
 
-    // TODO: Support for arbitrary angles?
+    // TODO:  Tests
+    // TODO:  Support for arbitrary angles?
     // CHECK: Internationalization for string representations?
 
     case center
     
-    case north
-    case northEast
-    case east
-    case southEast
-    case south
-    case southWest
-    case west
-    case northWest
+    case north,     top
+    case northEast, topRight
+    case east,      right
+    case southEast, bottomRight
+    case south,     bottom
+    case southWest, bottomLeft
+    case west,      left
+    case northWest, topLeft
 
     case up,    down
-    case left,  right
-
-    case top,   bottom
-    
-    case front, forward
-    case back,  backward
     
     case fore,  aft
     case port,  starboard
+    
+    case front, forward
+    case back,  backward
     
     case clockwise, counterClockwise
     
@@ -53,10 +51,13 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
         .south,
         .southEast]
     
+    // MARK: - Properties
+    
     /// Returns the opposite direction.
     public var opposite: OKDirection {
         switch self {
         case .center:           return .center
+        
         case .north:            return .south
         case .northEast:        return .southWest
         case .east:             return .west
@@ -65,22 +66,33 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
         case .southWest:        return .northEast
         case .west:             return .east
         case .northWest:        return .southEast
+        
+        
+        case .top:              return .bottom
+        case .topRight:         return .bottomLeft
+        case .right:            return .left
+        case .bottomRight:      return .topLeft
+        case .bottom:           return .top
+        case .bottomLeft:       return .topRight
+        case .left:             return .right
+        case .topLeft:          return .bottomRight
+            
         case .up:               return .down
         case .down:             return .up
-        case .left:             return .right
-        case .right:            return .left
-        case .top:              return .bottom
-        case .bottom:           return .top
+            
         case .fore:             return .aft
         case .aft:              return .fore
         case .port:             return .starboard
         case .starboard:        return .port
+            
         case .front:            return .back
         case .forward:          return .backward
         case .back:             return .front
         case .backward:         return .forward
+            
         case .clockwise:        return .counterClockwise
         case .counterClockwise: return .clockwise
+            
         case .inside:           return .outside
         case .outside:          return .inside
         }
@@ -89,39 +101,42 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
     /// Returns an angle in radians corresponding to a compass direction, with east being 0 radians and increasing counter-clockwise, and as such is compatible with SpriteKit's rotation notation.
     ///
     /// Returns `nil` if the direction is not a compass direction.
+    @inlinable
     public var angle: CGFloat? {
         // CHECK: Does this need better formulas?
         switch self {
-        case .east:         return 0
-        case .northEast:    return .pi / 4
-        case .north:        return .pi / 2
-        case .northWest:    return .pi - (.pi / 4)
-        case .west:         return .pi
-        case .southWest:    return .pi + (.pi / 4)
-        case .south:        return .pi + (.pi / 2)
-        case .southEast:    return (.pi * 2) - (.pi / 2)
+        case .east,         .right:         return 0
+        case .northEast,    .topRight:      return .pi / 4
+        case .north,        .top:           return .pi / 2
+        case .northWest,    .topLeft:       return .pi - (.pi / 4)
+        case .west,         .left:          return .pi
+        case .southWest,    .bottomLeft:    return .pi + (.pi / 4)
+        case .south,        .bottom:        return .pi + (.pi / 2)
+        case .southEast,    .bottomRight:   return (.pi * 2) - (.pi / 2)
         default:            return nil
         }
     }
     
     /// Returns a unit vector for the direction, anchored at (0,0).
+    @inlinable
     public var vector: CGVector {
         switch self {
-        case .north:        return CGVector(dx:  0.0, dy:  1.0)
-        case .northEast:    return CGVector(dx:  1.0, dy:  1.0)
-        case .east:         return CGVector(dx:  1.0, dy:  0.0)
-        case .southEast:    return CGVector(dx:  1.0, dy: -1.0)
-        case .south:        return CGVector(dx:  0.0, dy: -1.0)
-        case .southWest:    return CGVector(dx: -1.0, dy: -1.0)
-        case .west:         return CGVector(dx: -1.0, dy:  0.0)
-        case .northWest:    return CGVector(dx: -1.0, dy:  1.0)
-        default:            return .zero
+        case .east,         .right:         return CGVector(dx:  1.0, dy:  0.0)
+        case .northEast,    .topRight:      return CGVector(dx:  1.0, dy:  1.0)
+        case .north,        .top:           return CGVector(dx:  0.0, dy:  1.0)
+        case .northWest,    .topLeft:       return CGVector(dx: -1.0, dy:  1.0)
+        case .west,         .left:          return CGVector(dx: -1.0, dy:  0.0)
+        case .southWest,    .bottomLeft:    return CGVector(dx: -1.0, dy: -1.0)
+        case .south,        .bottom:        return CGVector(dx:  0.0, dy: -1.0)
+        case .southEast,    .bottomRight:   return CGVector(dx:  1.0, dy: -1.0)
+        default:                            return .zero
         }
     }
 
     /// Returns an angle in radians representing rotation to a direction, with positive values representing a counter-clockwise rotation, and as such is compatible with SpriteKit's rotation notation.
     ///
     /// Returns `nil` if the direction cannot be represented as a change in a node's `zRotation`.
+    @inlinable
     public var rotation: CGFloat? {
         // CHECK: Does this need better formulas?
         switch self {
@@ -133,10 +148,13 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
         }
     }
     
+    @inlinable
     public var description: String {
         rawValue
     }
 
+    // MARK: - Initializers
+    
     /// Creates a new `FacingDirection` for a given `zRotation` in radians.
     public init(zRotation: CGFloat) {
         // CREDIT: Apple DemoBots Sample. (C) 2016 Apple Inc. All Rights Reserved. TODO: Note the license.
