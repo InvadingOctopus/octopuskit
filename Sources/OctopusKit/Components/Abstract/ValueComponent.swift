@@ -14,15 +14,11 @@ import GameplayKit
 open class ValueComponent <ValueType> : OKComponent
     where ValueType: Comparable
 {
-    /// The value represented by this component. `willChange(to:)` and `didChange(from:)` is called when this property changes to a different value.
+    
+    // CHECK: Should there be a `willChange(to:)` or would that just be unnecessary and reduce performance?
+    
+    /// The value represented by this component. `didChange(from:)` is called when this property changes to a different value.
     open var value: ValueType {
-        
-        willSet {
-            if  newValue != value {
-                self.willChange(to: newValue)
-            }
-        }
-        
         didSet {
             if  value != oldValue {
                 self.didChange(from: oldValue)
@@ -39,10 +35,6 @@ open class ValueComponent <ValueType> : OKComponent
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     // MARK: - Abstract
-    
-    /// Abstract; Subclasses may implement this method to respond to changes. Called by the `value` property's `willSet` observer.
-    @inlinable
-    open func willChange(to newValue: ValueType) {}
     
     /// Abstract; Subclasses may implement this method to respond to changes. Called by the `value` property's `didSet` observer.
     @inlinable
