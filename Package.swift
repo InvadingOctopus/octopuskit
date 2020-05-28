@@ -28,7 +28,7 @@ let package = Package(
         .target(
             name: "OctopusKit",
             dependencies: []
-//            swiftSettings: [
+//          , swiftSettings: [
 //                 .define("DISABLELOGCHANGES"),   // Disable the `@LogChanges` property wrapper. May improve performance.
 //                 .define("LOGECSVERBOSE"),       // Log detailed ECS core events. ⚠️ May decrease performance.
 //                 .define("LOGINPUTEVENTS"),      // Log detailed mouse/touch/pointer input events. ⚠️ May decrease performance.
