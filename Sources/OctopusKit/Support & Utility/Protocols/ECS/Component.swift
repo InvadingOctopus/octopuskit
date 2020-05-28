@@ -28,6 +28,7 @@ public protocol Component: class, UpdatablePerFrame {
     
     var shouldRemoveFromEntityOnDeinit:    Bool { get set }
     var shouldWarnIfDeinitWithoutRemoving: Bool { get set }
+    var disableDependencyChecks:           Bool { get set }
     
     // MARK: Life Cycle
     
@@ -52,6 +53,7 @@ public protocol Component: class, UpdatablePerFrame {
         -> ComponentType? where ComponentType: Component
     
     func checkEntityForRequiredComponents()
+    func disableDependencyChecks(_ newValue: Bool)
 }
 
 // MARK: - Default Implementation
@@ -314,5 +316,12 @@ public extension Component {
         return self
     }
     */
+    
+    /// Sets the `disableDependencyChecks` and returns self.
+    @inlinable @discardableResult
+    func disableDependencyChecks(_ newValue: Bool) -> Self {
+        self.disableDependencyChecks = newValue
+        return self
+    }
     
 }

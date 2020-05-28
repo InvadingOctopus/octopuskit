@@ -10,22 +10,7 @@
 
 import GameplayKit
 
-public typealias OctopusComponent           = OKComponent
-public typealias OctopusUpdatableComponent  = RequiresUpdatesPerFrame
-public typealias OKUpdatableComponent       = RequiresUpdatesPerFrame
-public typealias UpdatedPerFrame            = RequiresUpdatesPerFrame
-
-/// A protocol for components that must be updated every frame to perform their function.
-///
-/// The component must be updated every frame during the scene's `update(_:)` method, by directly calling the component's `update(deltaTime:)` method, updating the component's entity, or updating the component system which this component is registered with.
-///
-/// When a component with this protocol is added to a scene but the scene does not the relevant component system, a warning is logged to help reduce bugs and incorrect behaviors that result from missing systems.
-public protocol RequiresUpdatesPerFrame { // CHECK: Add UpdatablePerFrame?
-    
-    // ℹ️ Swift does not have a means to enforce implementation of methods in subclasses, so this protocol simply serves as documentation and to warn about missing systems. 2018-05-05
-    
-    func update(deltaTime seconds: TimeInterval)
-}
+public typealias OctopusComponent = OKComponent
 
 /// An object which adds a discrete visual or behavioral effect to an entity or scene. The core concept of the OctopusKit.
 ///
@@ -58,15 +43,20 @@ open class OKComponent: GKComponent {
     }
     
     /// Ensures that any necessary cleanup (such as removing child nodes) is performed in case of a forced deinit, which may be caused by GameplayKit if multiple components of the same type are added to the same entity, as that replaces previous components of the same class without letting them call `willRemoveFromEntity()`.
-    public internal(set) var shouldRemoveFromEntityOnDeinit = false
+    public internal(set) var shouldRemoveFromEntityOnDeinit    = false
     
     public internal(set) var shouldWarnIfDeinitWithoutRemoving = false
     
-    // MARK: - Life Cycle
+    /// If `true`, this component will not check for the components it depends on in the entity it is added to, and `checkEntityForRequiredComponents()` will be ignored.
+    ///
+    /// This flag may be useful for suppressing warnings when creating an entity with `RelayComponent(sceneComponentType:)`, because those relays will not be able to find their target components before the entity is added to a scene.
+    open var disableDependencyChecks: Bool = false
     
     // These initializers are for subclasses to implement Xcode Scene Builder support.
     public override init() { super.init() }
     public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+    
+    // MARK: - Adding To Entity
     
     /// - IMPORTANT: If a subclass overrides this method, then `super.didAddToEntity()` *MUST* be called to ensure proper functionality, e.g. to check for dependencies on other components and to set `shouldRemoveFromEntityOnDeinit = true`.
     open override func didAddToEntity() {
@@ -80,7 +70,7 @@ open class OKComponent: GKComponent {
         
         // ⚠️ NOTE: Set flags BEFORE passing to `didAddToEntity(withNode:)`, in case the subclass decides to remove itself from the entity and clears these flags.
         
-        shouldRemoveFromEntityOnDeinit = true
+        shouldRemoveFromEntityOnDeinit    = true
         shouldWarnIfDeinitWithoutRemoving = true
         
         // A convenient delegation method for subclasses to easily access the entity's SpriteKit node, if any.
@@ -89,11 +79,18 @@ open class OKComponent: GKComponent {
         }
     }
     
-    /// Logs a warning if the entity is missing any of the components in `requiredComponents`.
+    /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
+    open func didAddToEntity(withNode node: SKNode) {}
+    
+    // MARK: - Validation
+    
+    /// Logs a warning if the entity is missing any of the components in `requiredComponents`. 
     ///
-    /// - RETURNS: `true` if there are no missing dependencies or no `requiredComponents`
+    /// - Returns: `true` if there are no missing dependencies or no `requiredComponents`, or if the `disableDependencyChecks` flags is set.
     @inlinable @discardableResult
-    public func checkEntityForRequiredComponents() -> Bool {
+    public final func checkEntityForRequiredComponents() -> Bool {
+        
+        guard !disableDependencyChecks else { return true }
         
         // ℹ️ DESIGN: See description of `requiredComponents` for explanation about not halting execution on missing dependencies.
         // FIXED: BUG: 201804029A: See comments for `GKEntity.componentOrRelay(ofType:)`
@@ -128,7 +125,7 @@ open class OKComponent: GKComponent {
             if  match?.componentType != requiredComponentType {
                 
                 OctopusKit.logForWarnings("\(entity) is missing a \(requiredComponentType) (or a RelayComponent linked to it) which is required by \(self)")
-                OctopusKit.logForTips ("Check the order in which components are added. Ignore warning if entity has any substitutable components.")
+                OctopusKit.logForTips("Check the order in which components are added. Ignore warning if entity has a substitutable component, or a RelayComponent(sceneComponentType:) but not yet added to a scene.")
                 
                 hasMissingDependencies = true
                 
@@ -139,16 +136,12 @@ open class OKComponent: GKComponent {
         return !hasMissingDependencies
         
     }
-    
-    /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
-    open func didAddToEntity(withNode node: SKNode) {}
-    
-    /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
-    open func willRemoveFromEntity(withNode node: SKNode) {}
+
+    // MARK: - Removal
     
     /// Tells the entity to remove components of this type, and clears the `shouldRemoveFromEntityOnDeinit` and `shouldWarnIfDeinitWithoutRemoving` flags.
     open func removeFromEntity() {
-        shouldRemoveFromEntityOnDeinit = false
+        shouldRemoveFromEntityOnDeinit    = false
         shouldWarnIfDeinitWithoutRemoving = false
         self.entity?.removeComponent(ofType: type(of: self))
     }
@@ -164,7 +157,7 @@ open class OKComponent: GKComponent {
             willRemoveFromEntity(withNode: spriteKitComponentNode)
         }
         
-        shouldRemoveFromEntityOnDeinit = false
+        shouldRemoveFromEntityOnDeinit    = false
         shouldWarnIfDeinitWithoutRemoving = false
         
         // NOTE: Since removeComponent(ofType:) CANNOT be overridden in a GKEntity subclass (because "Declarations from extensions cannot be overridden yet" and "Overriding non-open instance method outside of its defining module") as of 2017-11-14, use this method to notify the OKEntityDelegate about component removal.
@@ -172,6 +165,9 @@ open class OKComponent: GKComponent {
             entity.delegate?.entity(entity, willRemoveComponent: self)
         }
     }
+    
+    /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
+    open func willRemoveFromEntity(withNode node: SKNode) {}
     
     deinit {
         OctopusKit.logForDeinits("\(self)")
@@ -187,3 +183,14 @@ open class OKComponent: GKComponent {
     }
 }
 
+// MARK: - Modifiers
+
+public extension OKComponent {
+    
+    /// Sets the `disableDependencyChecks` and returns self.
+    @inlinable @discardableResult
+    func disableDependencyChecks(_ newValue: Bool) -> Self {
+        self.disableDependencyChecks = newValue
+        return self
+    }
+}
