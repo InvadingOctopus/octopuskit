@@ -36,14 +36,16 @@ open class BadgeComponent: NodeAttachmentComponent <SKNode> {
         }
     }
     
-    public init(badge:     SKNode,
-                placement: OKDirection = .northEast,
-                zPosition: CGFloat = 1)
+    public init(badge:          SKNode,
+                parentOverride: SKNode?     = nil,
+                placement:      OKDirection = .topRight,
+                zPosition:      CGFloat     = 1)
     {
         self.badge     = badge
         self.placement = placement
         self.zPosition = zPosition
-        super.init()
+        
+        super.init(parentOverride: parentOverride)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -71,16 +73,16 @@ open class BadgeComponent: NodeAttachmentComponent <SKNode> {
         var (x, y)       = (parentFrame.midX, parentFrame.midY)
         
         switch placement { // TODO: Verify
-        case .north:        y = maxY
-        case .northEast:    x = maxX; y = maxY
-        case .east:         x = maxX
-        case .southEast:    x = maxX; y = minY
-        case .south:        y = minY
-        case .southWest:    x = minX; y = minY
-        case .west:         x = minX;
-        case .northWest:    x = minX; y = maxY
+        case .north,        .top:           y = maxY
+        case .northEast,    .topRight:      x = maxX; y = maxY
+        case .east,         .right:         x = maxX
+        case .southEast,    .bottomRight:   x = maxX; y = minY
+        case .south,        .bottom:        y = minY
+        case .southWest,    .bottomLeft:    x = minX; y = minY
+        case .west,         .left:          x = minX;
+        case .northWest,    .topLeft:       x = minX; y = maxY
         case .center:       break
-        default: OctopusKit.logForWarnings("Invalid placement: \(placement)") // CHECK: Should this be a `fatalError()`?
+        default: OctopusKit.logForErrors("Invalid placement: \(placement)") // CHECK: Should this be an error?
         }
         
         // Since the parent's min/max frame values will be in the grandparent's (e.g. scene) coordinate space, try to convert them to the parent's space.
