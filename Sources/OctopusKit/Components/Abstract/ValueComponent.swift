@@ -21,6 +21,11 @@ open class ValueComponent <ValueType> : OKComponent
     open var value: ValueType {
         didSet {
             if  value != oldValue {
+                
+                #if LOGCHANGES
+                debugLog("\(oldValue) → \(value)", topic: "\(self)")
+                #endif
+                
                 self.didChange(from: oldValue)
             }
         }

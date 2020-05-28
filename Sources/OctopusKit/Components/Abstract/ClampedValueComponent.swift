@@ -27,6 +27,10 @@ open class ClampedValueComponent <ValueType> : OKComponent
             
             if  value != oldValue {
                 
+                #if LOGCHANGES
+                debugLog("\(oldValue) → \(value)", topic: "\(self)")
+                #endif
+                
                 // #2: Next, check if the new value be outside the range.
                 
                 /// ❕ NOTE: We perform the checks and clamping inside this observer, as calling out to other functions to perform the clamping may trigger multiple `didSet` and `didChange` events.
@@ -35,6 +39,10 @@ open class ClampedValueComponent <ValueType> : OKComponent
                 
                 if !range.contains(value) {
                     value = min(max(value, range.lowerBound), range.upperBound)
+                    
+                    #if LOGCHANGES
+                    debugLog("\(oldValue) → \(value) after clamping", topic: "\(self)")
+                    #endif
                 }
                 
                 // #3: Finally, let any subclasses handle the change, *if* there has actually been any change after the clamping.
