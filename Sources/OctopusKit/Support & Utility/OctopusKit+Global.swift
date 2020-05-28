@@ -60,6 +60,10 @@ public func debugLog(
     let paddedTopic = topic.paddedWithSpace(toLength: 35)
 
     print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedTopic)\(separator)\(function)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
+    
+    // Update the last frame counter (so that the next entry for the same frame doesn't get highlighted as the first entry and so on).
+    
+    OKLog.lastFrameLogged = OKLog.currentFrame
 }
 
 /// Alias for `NSLog(_:_:)` in debug configurations (when the `DEBUG` compilation flag is set). A blank function in non-debug configurations.
