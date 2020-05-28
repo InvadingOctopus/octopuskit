@@ -79,7 +79,7 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
         }
     }
     
-    // MARK: Subclass Customization
+    // MARK: Abstract
     
     /// Abstract; to be implemented by a subclass.
     open func didBegin  (_ contact: SKPhysicsContact, in scene: OKScene?) {}

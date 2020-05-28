@@ -67,6 +67,8 @@ open class AgentGoalComponent: OKComponent {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
+    // MARK: - Creating & Applying Goal
+    
     open override func didAddToEntity() {
         super.didAddToEntity()
         applyGoalToAgent()
@@ -120,6 +122,8 @@ open class AgentGoalComponent: OKComponent {
         
         agent.behavior?.setWeight(goalWeight, for: goal)
     }
+    
+    // MARK: - Removal
     
     /// Removes the goal from the entity's `AgentComponent` component.
     ///
