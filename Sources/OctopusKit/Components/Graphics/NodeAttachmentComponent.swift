@@ -75,8 +75,8 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // CHECK: Warning necessary?
         
         if  let parentOverride = self.parentOverride,
-            !node.children.contains(parentOverride)
-            && parentOverride != node // Skip warning if the `parentOverride` IS the node. This will be the case in situations like `parentOverride = scene.camera ?? scene` where a child node is added to a scene's camera if there is one, otherwise to the scene itself.
+            !parentOverride.inParentHierarchy(node) /// BUG FIXED: Use `child.inParentHierarchy(parent)` instead of `parent.children.contains(child)` because the latter will check only one layer deep.
+            && parentOverride != node /// Skip warning if the `parentOverride` IS the node. This will be the case in situations like `parentOverride = scene.camera ?? scene` where a child node is added to a scene's camera if there is one, otherwise to the scene itself.
         {
             OctopusKit.logForWarnings("The specified parentOverride \(parentOverride) is not a child of \(entity)'s node: \(node)")
         }
