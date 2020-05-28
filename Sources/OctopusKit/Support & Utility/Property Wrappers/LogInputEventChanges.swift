@@ -14,6 +14,9 @@ import Foundation
 @propertyWrapper
 public struct LogInputEventChanges <ValueType: Equatable> {
     
+    /// CHECK: Should we observe `willSet` instead of `didSet`, for more precise logging i.e. at the exact moment of assignment?
+    //
+    
     #if LOGINPUTEVENTS
     public var wrappedValue: ValueType {
         didSet {
