@@ -10,7 +10,7 @@ import GameplayKit
 
 /// A base class for components that represent a single numeric value within a specific range, and reports its changes for subclasses to act upon.
 ///
-/// For example, a `HealthComponent` may inherit from this component, implement `didChange(from:)` and call a `BubbleEmitterComponent` to display damage or healing values.
+/// For example, a `HealthComponent` may inherit from this component, implement `didChange(from:difference:)` and call a `BubbleEmitterComponent` to display damage or healing values.
 open class ClampedValueComponent <ValueType> : OKComponent
     where ValueType: Numeric & Comparable
 {
@@ -18,10 +18,10 @@ open class ClampedValueComponent <ValueType> : OKComponent
     
     // CHECK: Should there be a `willChange(to:)` or would that just be unnecessary and reduce performance?
     
-    /// The value represented by this component. Setting this property will clamp it to `range`, then `didChange(from:)` will be called *only if* the final result is different from the previous value.
+    /// The value represented by this component. Setting this property will clamp it to `range`, then `didChange(from:difference:)` will be called *only if* the final result is different from the previous value.
     open var value: ValueType {
         didSet {
-            /// ❕ NOTE: `didChange(from:)` must be called **only if** there is no change in the value **after** clamping.
+            /// ❕ NOTE: `didChange` must be called **only if** there is no change in the value **after** clamping.
             
             // #1: First, see if there is any difference at all in the new value assigned to the property.
             
@@ -29,7 +29,7 @@ open class ClampedValueComponent <ValueType> : OKComponent
                 
                 // #2: Next, check if the new value be outside the range.
                 
-                /// ❕ NOTE: We perform the checks and clamping inside this observer, as calling out to other functions to perform the clamping may trigger multiple `didSet` and `didChange(from:)` events.
+                /// ❕ NOTE: We perform the checks and clamping inside this observer, as calling out to other functions to perform the clamping may trigger multiple `didSet` and `didChange` events.
                 
                 // See comments in `clamp()`
                 
@@ -40,7 +40,7 @@ open class ClampedValueComponent <ValueType> : OKComponent
                 // #3: Finally, let any subclasses handle the change, *if* there has actually been any change after the clamping.
                 
                 if  value != oldValue {
-                    self.didChange(from: oldValue)
+                    self.didChange(from: oldValue, difference: value - oldValue)
                 }
             }
         }
@@ -77,7 +77,7 @@ open class ClampedValueComponent <ValueType> : OKComponent
 
     /// Abstract; Subclasses may implement this method to respond to changes. Called by the `value` property's `didSet` observer, *only if* there is any difference in the old value and the new value after clamping.
     @inlinable
-    open func didChange(from oldValue: ValueType) {}
+    open func didChange(from oldValue: ValueType, difference: ValueType) {}
     
 }
 
