@@ -26,7 +26,11 @@ public extension Comparable {
     /// Limits this value to the specified range.
     @inlinable
     mutating func clamp(to range: ClosedRange<Self>) {
-        self = self.clamped(to: range)
+        /// Avoid unnecessary `didSet` observer calls.
+        /// CHECK: PERFORMANCE: This check probably improves performance by avoiding memory modification when unnecessary, and `range.contains(self)` is probably more efficient than multiple `if`s querying range properties.
+        if  !range.contains(self) {
+            self = self.clamped(to: range)
+        }
     }
     
 }
@@ -46,7 +50,11 @@ public extension Comparable where Self: BinaryInteger {
     /// Limits this value to the specified range.
     @inlinable
     mutating func clamp(to range: Range<Self>) {
-        self = self.clamped(to: range)
+        /// Avoid unnecessary `didSet` observer calls.
+        /// CHECK: PERFORMANCE: This check probably improves performance by avoiding memory modification when unnecessary, and `range.contains(self)` is probably more efficient than multiple `if`s querying range properties.
+        if  !range.contains(self) {
+            self = self.clamped(to: range)
+        }
     }
 }
 
