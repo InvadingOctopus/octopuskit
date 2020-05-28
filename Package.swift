@@ -29,11 +29,11 @@ let package = Package(
             name: "OctopusKit",
             dependencies: []
 //          , swiftSettings: [
-//                 .define("DISABLELOGCHANGES"),   // Disable the `@LogChanges` property wrapper. May improve performance.
-//                 .define("LOGECSVERBOSE"),       // Log detailed ECS core events. ⚠️ May decrease performance.
-//                 .define("LOGINPUTEVENTS"),      // Log detailed mouse/touch/pointer input events. ⚠️ May decrease performance.
-//                 .define("LOGPHYSICS")           // Log physics contact/collision events. ⚠️ May decrease performance.
-//                 .define("LOGTURNBASED")      // Log each begin/update/end cycle for turn-based components. ⚠️ May decrease performance.
+//                 .define("LOGCHANGES"),     // Enables the `@LogChanges` property wrapper and other value logging. ⚠️ May decrease performance.
+//                 .define("LOGECSVERBOSE"),  // Log detailed ECS core events. ⚠️ May decrease performance.
+//                 .define("LOGINPUTEVENTS"), // Log detailed mouse/touch/pointer input events. ⚠️ May decrease performance.
+//                 .define("LOGPHYSICS")      // Log physics contact/collision events. ⚠️ May decrease performance.
+//                 .define("LOGTURNBASED")    // Log each begin/update/end cycle for turn-based components. ⚠️ May decrease performance.
 //            ]
         ),
         .testTarget(

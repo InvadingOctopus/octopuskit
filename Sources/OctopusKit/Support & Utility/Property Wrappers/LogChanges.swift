@@ -8,16 +8,14 @@
 
 import Foundation
 
-/// A wrapper which prints a `debugLog` of any changes to the wrapped property.
-///
-/// You may suppress this logging with the `DISABLELOGCHANGES` conditional compilation flag is set.
+/// A wrapper which prints a `debugLog` of any changes to the wrapped property. **Requires** the `LOGCHANGES` conditional compilation flag to be set, otherwise this wrapper will have no useful effect.
 @propertyWrapper
 public struct LogChanges <ValueType: Equatable> {
     
     /// CHECK: Should we observe `willSet` instead of `didSet`, for more precise logging i.e. at the exact moment of assignment?
     //
     
-    #if !DISABLELOGCHANGES
+    #if LOGCHANGES
     public var wrappedValue: ValueType {
         didSet {
             if  wrappedValue != oldValue {
