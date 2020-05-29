@@ -10,7 +10,7 @@ import GameplayKit
 
 public typealias OctopusComponentSystem = OKComponentSystem
 
-/// Manages periodic update messages for all component objects of a specified class. Adds a number of convenience methods for common tasks to `GKComponentSystem`.
+/// Manages component objects of a single specific class. Adds validation and convenience methods for common tasks to `GKComponentSystem`.
 public final class OKComponentSystem: GKComponentSystem <GKComponent> {
 
     public override init(componentClass cls: AnyClass) {
@@ -21,7 +21,7 @@ public final class OKComponentSystem: GKComponentSystem <GKComponent> {
         && !(cls.self is TurnBased.Type)
         {
             OctopusKit.logForWarnings("System created for component that is not marked as RequiresUpdatesPerFrame: \(cls)")
-            OctopusKit.logForTips("Either this system is unnecessary, or you forgot to add `RequiresUpdatesPerFrame` protocol conformance to \(cls)")
+            OctopusKit.logForTips("Either this system is unnecessary, or you forgot to add RequiresUpdatesPerFrame protocol conformance to \(cls)")
         }
         
         super.init(componentClass: cls)
