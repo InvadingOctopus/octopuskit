@@ -43,8 +43,6 @@ permalink: documentation/tips.html
     
 ## Best Practices
 
-- Remember to search the entire source code for `BUG:`, `APPLEBUG:`, `FIXME:` etc. comments for any outstanding bugs and their temporary workarounds, if any.
-
 - In most cases, try to access the object hierarchy from the "bottom up" instead of "top down."
 
 	> TODO: Example
@@ -55,7 +53,7 @@ permalink: documentation/tips.html
     
 ## Pitfalls & Gotchas
 
-- Many methods MUST be overridden in a subclass and/or chained to the superclass implementation, by calling `super.method()`. Some methods should call `super` at different points (i.e. beginning or end) in the subclass' implementation. Unfortunately, there is no language-level support for enforcing that, so your best bet is to read the source and comments of the method you're overriding.
+- Some methods MUST be overridden in a subclass and/or chained to the superclass implementation, by calling `super.method()`. Some methods should call `super` at different points (i.e. beginning or end) in the subclass' implementation. Unfortunately, there is no language-level support for enforcing that, so your best bet is to read the source and comments of the method you're overriding.
     > 💡 When in doubt, always call `super`, and call it at the top of your overriding method.  
     > TODO: make this chaining automatic/enforced when/if Swift supports it
     
@@ -101,7 +99,13 @@ If an entity needs multiple components of the same type but with different param
 
 ⚠️ Setting any of the logging flags may reduce engine performance.
 
+- Set `OctopusKit.logForWarnings.breakpointOnNewEntry = true` to trigger a breakpoint whenever a new entry is added to the `logForWarnings`, allowing you to review the application state and call stack to catch causes of unexpected behavior.
+
+    > `breakpointOnNewEntry` requires the `DEBUG` conditional compilation flag (automatically set by Xcode for debug builds).
+
 ## Bugs
+
+- Search the entire source code for `BUG:`, `APPLEBUG:`, `FIXME:`, `WORKAROUND:` etc. comments for any outstanding bugs and their temporary workarounds, if any.
 
 There seem to be some bugs in Apple's own APIs and frameworks that we cannot do much about:
 
