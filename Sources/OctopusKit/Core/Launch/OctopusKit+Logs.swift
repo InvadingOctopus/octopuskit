@@ -30,8 +30,10 @@ public extension OctopusKit {
     /// A log for deinitializations; when an object is freed from memory.
     static var logForDeinits    = OKLog(title: "Deinits",   prefix: "💀", suffix: "💀")
     
-    /// A log for events that may cause unexpected behavior but *do not* prevent continued execution. Adding an entry to this log will trigger a breakpoint if the `DEBUG` conditional compilation flag is set, allowing you to review the state of the application and resume execution if running within Xcode.
-    static var logForWarnings   = OKLog(title: "Warnings",  prefix: "⚠️", suffix: "⚠️", breakpointOnNewEntry: true)
+    /// A log for events that may cause unexpected behavior but *do not* prevent continued execution.
+    ///
+    /// Enabling the `breakpointOnNewEntry` flag will trigger a breakpoint after each new entry, if the `DEBUG` conditional compilation flag is set, allowing you to review the state of the application and resume execution if running within Xcode.
+    static var logForWarnings   = OKLog(title: "Warnings",  prefix: "⚠️", suffix: "⚠️", breakpointOnNewEntry: false)
     
     /// A log for severe errors that may prevent continued execution. Adding an entry to this log will raise a `fatalError` and terminate the application.
     static var logForErrors     = OKLog(title: "Errors",    prefix: "🚫", suffix: "🚫", haltApplicationOnNewEntry: true)
