@@ -10,16 +10,16 @@ import GameplayKit
 
 public typealias SpriteKitAttachmentComponent = NodeAttachmentComponent
 
-/// The base class for components that create and add a child node to their entity's primary `NodeComponent` node.
+/// A base class for components which create and add a child node to their entity's primary `NodeComponent` node.
 ///
-/// For example, a UI overlay on a base sprite or even sound effects. When this component is removed from an entity, it also removes the attached node(s) from the parent. To add multiple nodes, use the `SKNode(children:)` construction, as adding multiple components of the same type to an entity is not supported by GameplayKit.
+/// For example, a UI overlay on a base sprite or even sound effects. When this component is removed from an entity, it also removes the attached node(s) from the parent. To attach multiple nodes, use the `SKNode(children:)` construction, as adding multiple components of the same type to an entity is not supported by GameplayKit.
 ///
 /// **Dependencies:** `NodeComponent`
 open class NodeAttachmentComponent <AttachmentType> : OKComponent
     where AttachmentType: SKNode
 {
     
-    // 💡 To use, simply subclass with the appropriate generic type, and implement (override) `createAttachment(for:)`.
+    /// 💡 To use, simply subclass with the appropriate generic type (e.g. `NodeAttachmentComponent<SKSpriteNode>`) and implement (override) `createAttachment(for:)`.
     
     open override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]
@@ -83,7 +83,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         
         // Allow the subclass to conveniently create an attachment by simply overriding `createAttachment(for:)`.
         
-        // ⚠️ NOTE: By writing `?? self.attachment` we take care not to let an unimplemented `createAttachment(for:)` method destroy an existing `attachment` by returning `nil`. The subclass may set `attachment` by other means, such as direct assignment.
+        /// ⚠️ NOTE: By writing `?? self.attachment` we take care not to let an unimplemented `createAttachment(for:)` method destroy an existing `attachment` by returning `nil`. The subclass may set `attachment` by other means, such as direct assignment in its initializer.
         
         self.attachment = createAttachment(for: self.parentOverride ?? node) ?? self.attachment
         
@@ -102,14 +102,14 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
     
     /// Recreates the `attachment` for its current parent, if any.
     ///
-    /// Sets `attachment` to `nil` then calls `createAttachment(for:)` with the previous parent of `attachment`.
+    /// Removes the current `attachment` if any from its parent, sets it to `nil`, then calls `createAttachment(for:)` with the previous parent of `attachment`.
     @inlinable
     open func recreateAttachmentForCurrentParent() {
         
         // Make sure we have a parent to begin with.
         
         guard let currentParent = self.attachment?.parent else {
-            OctopusKit.logForErrors("\(String(describing: self.attachment)) has no current parent")
+            OctopusKit.logForWarnings("\(String(describing: self.attachment)) has no current parent") // CHECK: Should this be an error?
             return
         }
         
@@ -121,7 +121,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // Regenerate new contents for our current parent.
         
         guard let newAttachment = createAttachment(for: currentParent) else {
-            OctopusKit.logForErrors("Could not create attachment for \(currentParent)")
+            OctopusKit.logForWarnings("Could not create attachment for \(currentParent)") // CHECK: Should this be an error?
             return
         }
         
@@ -129,6 +129,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         self.attachment = newAttachment
     }
 
+    /// Adds the `attachment` to the specified parent, after validating the parent, and applying the `positionOffset` and `zPositionOverride`.
     @inlinable
     open func addAttachment(to targetParent: SKNode) {
         
@@ -140,7 +141,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // Nothing to do if the attachment is already with the target parent.
         
         guard attachment.parent != targetParent else {
-            // CHECK: Apply `positionOffset` even if `attachment` is already in `targetParent`?
+            /// CHECK: Apply `positionOffset` even if `attachment` is already in `targetParent`?
             OctopusKit.logForDebug("\(attachment) already a child of \(targetParent)")
             return
         }
@@ -158,6 +159,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // Apply the position offset and z-position override, if specified.
         
         if  let positionOffset = self.positionOffset {
+            // ❕ NOTE: This may cause "drift" if called multiple times on the same attachment, because its position is not being reset before adding the offset.
             attachment.position += positionOffset
         }
         
@@ -166,7 +168,6 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         }
         
         targetParent.addChild(attachment)
-        
     }
     
     // MARK: - Removal
