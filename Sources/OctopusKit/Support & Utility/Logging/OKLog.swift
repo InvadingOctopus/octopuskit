@@ -181,9 +181,14 @@ public struct OKLog {
         entries.last?.text
     }
     
-    /// If `true` then a `fatalError` is raised when a new entry is added.
+    /// If `true` then a breakpoint is triggered after a new entry is added. Ignored if the `DEBUG` conditional compilation flag is not set.
     ///
-    /// Useful for logs that display critical errors.
+    /// Calls `raise(SIGINT)`. Useful for logs that display warnings or other events which may cause incorrect or undesired behavior. Application execution may be resumed if running within Xcode.
+    public var breakpointOnNewEntry: Bool = false
+    
+    /// If `true` then a `fatalError` is raised after a new entry is added.
+    ///
+    /// Useful for logs which display critical errors.
     public var haltApplicationOnNewEntry: Bool = false
     
     /// A unique identifier for compatibility with SwiftUI lists.
@@ -199,18 +204,22 @@ public struct OKLog {
     ///   - prefix:     A prefix appended to the beginning of printed entries, to distinguish entries from different logs. May be emojis or symbols.
     ///   - suffix:     The text to add at the end of each entry's text **when printing only**; not stored in the actual `OKLogEntry`.
     ///   - useNSLog:   If `true`, `NSLog(_:)` is used instead of `print(_:)`. Default: `false`.
-    ///   - haltApplicationOnNewEntry: If `true`, a `fatalError()` exception is raised when a new entry is added. This may be useful for logs that report critical errors.
+    ///   - breakpointOnNewEntry: If `true` and if the `DEBUG` conditional compilation flag is set, a breakpoint is triggered after a new entry is added. Application execution may be resumed if running within Xcode.
+    ///   - haltApplicationOnNewEntry: If `true`, a `fatalError()` exception is raised after a new entry is added. This may be useful for logs that report critical errors.
     public init(
         title:                      String  = "Log",
         prefix:                     String  = "•",
         suffix:                     String? = nil,
         useNSLog:                   Bool    = false,
+        breakpointOnNewEntry:       Bool    = false,
         haltApplicationOnNewEntry:  Bool    = false)
     {
         self.title                      = title
         self.prefix                     = prefix
         self.suffix                     = suffix
+        
         self.useNSLog                   = useNSLog
+        self.breakpointOnNewEntry       = breakpointOnNewEntry
         self.haltApplicationOnNewEntry  = haltApplicationOnNewEntry
     }
     
@@ -262,15 +271,24 @@ public struct OKLog {
         
         OctopusKit.unifiedLog.entries.append(newEntry)
         
+        /// Remember the last frame we logged, so that we can highlight the first entries logged during a frame, and insert an empty line between future frames if `printEmptyLineBetweenFrames` is set.
+        
+        OKLog.lastFrameLogged = OKLog.currentFrame
+        
+        /// If the `breakpointOnNewEntry` flag is set and we're running in `DEBUG` mode, create a breakpoint programmatically.
+        
+        #if DEBUG
+        if  breakpointOnNewEntry {
+            raise(SIGINT)
+        }
+        #endif
+        
         // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
         
         if  haltApplicationOnNewEntry {
             fatalError(consoleText)
         }
         
-        /// Remember the last frame we logged, so that we can highlight the first entries logged during a frame, and insert an empty line between future frames if `printEmptyLineBetweenFrames` is set.
-        
-        OKLog.lastFrameLogged = OKLog.currentFrame
     }
     
     // MARK: Print Entry
