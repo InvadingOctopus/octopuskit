@@ -283,7 +283,7 @@ public struct OKLog {
         }
         #endif
         
-        // If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
+        /// If this is a log that displays critical errors, halt the program execution by raising a `fatalError`.
         
         if  haltApplicationOnNewEntry {
             fatalError(consoleText)
