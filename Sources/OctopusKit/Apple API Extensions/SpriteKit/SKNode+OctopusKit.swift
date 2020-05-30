@@ -193,6 +193,81 @@ public extension SKNode {
         }
     }
     
+    /// Returns the point at the specified edge or corner *in this node's coordinate space*. If this node is of a type that has a zero-sized frame, such as `SKNode`, then `calculateAccumulatedFrame()` is used to determine its extents, including all its children. If an invalid direction is specified then `(0,0)` will be returned.
+    @inlinable
+    final func point(at direction: OKDirection) -> CGPoint {
+        
+        // CHECK: with scaling
+        
+        let size: CGSize
+        
+        if  let nodeWithSize = self as? SKNodeWithDimensions {
+            size = nodeWithSize.size
+        } else if !self.frame.isEmpty {
+            size = self.frame.size
+        } else {
+            size = self.calculateAccumulatedFrame().size
+        }
+        
+        // Account for the anchor point.
+        // An anchor of (0.5, 0.5) means child nodes with a position of (0,0) will be placed at this node's center, and children at (width, height) would be outside this node, so the actual maxX/maxY would be half the width/height, and minX/minY would be negative, and so on.
+        
+        let maxX, maxY,
+            midX, midY,
+            minX, minY: CGFloat
+        
+        if  let nodeWithAnchor  = self as? SKNodeWithAnchor {
+            
+            let anchor          = nodeWithAnchor.anchorPoint
+            let anchorWidth     = (size.width  * anchor.x)
+            let anchorHeight    = (size.height * anchor.y)
+                
+            maxX = size.width   - anchorWidth
+            maxY = size.height  - anchorHeight
+            
+            midX = anchor.x
+            midY = anchor.y
+            
+            minX = 0            - anchorWidth
+            minY = 0            - anchorHeight
+            
+        } else {
+            (maxX, maxY) = (size.width, size.height)
+            (midX, midY) = (maxX / 2,   maxY / 2)
+            (minX, minY) = (0, 0)
+        }
+        
+        // Set and return the point
+        
+        var (x, y) = (midX, midY) // Default to the center.
+        
+        switch direction {
+        // TODO: Verify, especially in iOS vs. macOS coordinate spaces where Y is the inverse of each other.
+        case .north,        .top:           y = maxY
+        case .northEast,    .topRight:      x = maxX; y = maxY
+        case .east,         .right:         x = maxX
+        case .southEast,    .bottomRight:   x = maxX; y = minY
+        case .south,        .bottom:        y = minY
+        case .southWest,    .bottomLeft:    x = minX; y = minY
+        case .west,         .left:          x = minX;
+        case .northWest,    .topLeft:       x = minX; y = maxY
+        case .center:       break
+        default:
+            OctopusKit.logForErrors("Invalid direction: \(direction)") // CHECK: Should this be an error?
+            x = 0; y = 0
+        }
+        
+        let point = CGPoint(x: x, y: y)
+        
+        #if DEBUG // TODO: Replace this check with tests.
+        // if !self.contains(point) {
+            // fatalError("\(self) does not contain \(point) — Check the calculations for \(direction)")
+        // }
+        #endif
+        
+        return point
+    }
+    
     /// Offsets the `position` by the `safeAreaInsets` of the parent scene's view. May be necessary for correct placement of visual elements on iPhone X and other devices where the edges of the display are not uniformly visible.
     ///
     /// - Important: This method should generally be called after this node is added to a scene, as it uses the scene's `view` property. If a node needs to be offset before it's added to a scene, then provide the optional `forView` argument. It may be convenient to use `OctopusKit.shared.gameCoordinatorView`.
