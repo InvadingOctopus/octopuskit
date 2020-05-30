@@ -14,14 +14,14 @@ import GameplayKit
 
 /// Overlays a child node on an edge or corner of the entity's `NodeComponent` node.
 ///
-/// To change the badge, create a new `BadgeComponent`
+/// To change the badge, create a new `BadgeComponent`. May be subclassed to add more features, such as in `BubbleEmitterComponent`.
 ///
 /// **Dependencies:** `NodeComponent`
 open class BadgeComponent: NodeAttachmentComponent <SKNode> {
     
     public let badge: SKNode
     
-    /// The edge or corner to display the badge in. Only compass directions are valid for this component.
+    /// The edge or corner of the parent node to display the badge on. Only compass directions (`north`, `bottomRight`, etc.)  are accepted.
     public var placement: OKDirection {
         didSet {
             if  placement != oldValue { // Avoid redundancy.
@@ -30,22 +30,18 @@ open class BadgeComponent: NodeAttachmentComponent <SKNode> {
         }
     }
     
-    public var zPosition: CGFloat {
-        didSet {
-            badge.zPosition = zPosition
-        }
-    }
+    // MARK: - Initialization
     
     public init(badge:          SKNode,
                 parentOverride: SKNode?     = nil,
                 placement:      OKDirection = .topRight,
-                zPosition:      CGFloat     = 1)
+                zPositionOverride: CGFloat? = nil)
     {
         self.badge     = badge
         self.placement = placement
-        self.zPosition = zPosition
         
-        super.init(parentOverride: parentOverride)
+        super.init(parentOverride:      parentOverride,
+                   zPositionOverride:   zPositionOverride)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -63,77 +59,9 @@ open class BadgeComponent: NodeAttachmentComponent <SKNode> {
     {
         guard let parent = parentOverride ?? self.entityNode else { return }
         
-        let placement    = placementOverride ?? self.placement
-        let parentFrame  = parent.calculateAccumulatedFrame()
-        
-        // TODO: Accommodate for different `anchorPoint` values?
-        
-        let (maxX, maxY) = (parentFrame.maxX, parentFrame.maxY)
-        let (minX, minY) = (parentFrame.minX, parentFrame.minY)
-        var (x, y)       = (parentFrame.midX, parentFrame.midY)
-        
-        switch placement { // TODO: Verify
-        case .north,        .top:           y = maxY
-        case .northEast,    .topRight:      x = maxX; y = maxY
-        case .east,         .right:         x = maxX
-        case .southEast,    .bottomRight:   x = maxX; y = minY
-        case .south,        .bottom:        y = minY
-        case .southWest,    .bottomLeft:    x = minX; y = minY
-        case .west,         .left:          x = minX;
-        case .northWest,    .topLeft:       x = minX; y = maxY
-        case .center:       break
-        default: OctopusKit.logForErrors("Invalid placement: \(placement)") // CHECK: Should this be an error?
-        }
-        
-        // Since the parent's min/max frame values will be in the grandparent's (e.g. scene) coordinate space, try to convert them to the parent's space.
-        // TODO: Verify
-        
-        let position    = CGPoint(x: x, y: y)
-        let grandParent = parent.parent
-        
-        badge.position  = grandParent?.convert(position, to: parent) ?? position
-        badge.zPosition = zPosition // CHECK: Necessary?
+        let placement  = placementOverride ?? self.placement
+        badge.position = parent.point(at: placement)
     }
-    
-    // MARK: -
-    
-    /// Creates a text-based badge with the specified background and border.
-    public class func createLabelBadge(
-        text:                   String,
-        background:             SKColor! = nil,
-        backgroundSizeOffset:   CGFloat  = 5.0,
-        border:                 SKColor! = nil,
-        borderSizeOffset:       CGFloat  = 3.0)
-        -> SKLabelNode
-    {
-        // TODO: Improve parameter names and descriptions.
-        // CHECK: Move to `OKUtility` or some other type?
-        
-        let label = SKLabelNode(text: text,
-                                font: OKFont.spriteBubbleFontDefault,
-                                horizontalAlignment: .center,
-                                verticalAlignment: .center)
-        
-        let backgroundSize = label.frame.size + backgroundSizeOffset
-        
-        if  let background = background {
-            let labelBackground = SKSpriteNode(color: background, size: backgroundSize)
-            labelBackground.zPosition = -1
-            label.addChild(labelBackground)
-        }
-        
-        // The label border will just be a solid rectangle, obscured by the smaller background rectangle to create an outline.
-        // CHECK: Use `SKShapeNode` for border?
-        
-        let borderSize = backgroundSize + borderSizeOffset
-        
-        if  let border = border {
-            let labelBorder = SKSpriteNode(color: border, size: borderSize)
-            labelBorder.zPosition = -2
-            label.addChild(labelBorder)
-        }
-        
-        return label
-    }
+
 }
 

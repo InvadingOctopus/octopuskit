@@ -10,6 +10,8 @@ import SpriteKit
 
 extension SKLabelNode {
     
+    // MARK: Initializers
+    
     /// Creates an `SKLabelNode` and sets its properties to match the `OKFont`.
     public convenience init(font: OKFont) {
         // In case initializing the font is an expensive process, try to init with the font if name is provided.
@@ -80,6 +82,45 @@ extension SKLabelNode {
         self.verticalAlignmentMode   = verticalAlignment
         self.text = text
     }
+    
+    /// Creates a label inside a colored rectangle.
+    public convenience init(
+        text:               String,
+        font:               OKFont   = OKFont.spriteBubbleFontDefault,
+        backgroundColor:    SKColor? = nil,
+        backgroundPadding:  CGFloat  = 5.0,
+        borderColor:        SKColor? = nil,
+        borderPadding:      CGFloat  = 3.0)
+    {
+        /// TODO: Use `SKShapeNode` and rounded rectangles.
+        
+        self.init(text: text,
+                  font: font,
+                  horizontalAlignment: .center,
+                  verticalAlignment:   .center)
+        
+        let backgroundSize = self.frame.size + backgroundPadding
+        
+        if  let backgroundColor = backgroundColor {
+            let background = SKSpriteNode(color: backgroundColor, size: backgroundSize)
+            background.zPosition = -1
+            self.addChild(background)
+        }
+        
+        // The label border will just be a solid rectangle, obscured by the smaller background rectangle to create an outline.
+        // CHECK: Use `SKShapeNode` for border?
+        
+        let borderSize = backgroundSize + borderPadding
+        
+        if  let borderColor = borderColor {
+            let border = SKSpriteNode(color: borderColor, size: borderSize)
+            border.zPosition = -2
+            self.addChild(border)
+        }
+        
+    }
+    
+    // MARK: - Properties
     
     /// Encapsulates the label's font-related properties in an `OKFont`.
     @inlinable
