@@ -204,7 +204,7 @@ public final class BubbleEmitterComponent: BadgeComponent {
     ///   - debug:          If `true`, the bubble emitter node is changed to a visible rectangle and its placement is randomized after every emission, to assist with tracking bugs involving parents and placements etc.
     public init(initialBubble:  NodeBubble? = nil,
                 parentOverride: SKNode?     = nil,
-                placement:      OKDirection = .bottomLeft,
+                placement:      OKDirection = .top,
                 zPosition:      CGFloat     = 1,
                 debug:          Bool        = false)
     {
