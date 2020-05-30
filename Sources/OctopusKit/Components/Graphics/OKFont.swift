@@ -47,15 +47,15 @@ public struct OKFont {
     
     // MARK: - Predefined Fonts
     
-    public static let debugFont = OKFont(name: "Menlo-Bold",
-                                              size: 12,
-                                              color: .gray)
+    public static let debugFont = OKFont(name:  "Menlo-Bold",
+                                         size:  12,
+                                         color: .gray)
     
-    public static let buttonFontDefault = OKFont(name: "Menlo-Bold",
-                                                      size: 20,
-                                                      color: .white)
+    public static let buttonFontDefault = OKFont(name:  "Menlo-Bold",
+                                                 size:  20,
+                                                 color: .white)
     
-    public static let spriteBubbleFontDefault = OKFont(name: "Menlo-Bold",
-                                                            size: 10,
-                                                            color: .white)
+    public static let bubbleFontDefault = OKFont(name:  "Menlo-Bold",
+                                                 size:  10,
+                                                 color: .white)
 }
