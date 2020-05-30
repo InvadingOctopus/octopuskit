@@ -37,17 +37,13 @@ public extension SKAction {
         return self
     }
     
-    /// Creates an action that idles for a specified period of time then executes the supplied closure.
+    /// Creates an action which repeats this action for the specified number of times.
     ///
-    /// - Important: Take care to use capture lists to avoid strong reference cycles in closures.
+    /// Useful for chaining calls to an `SKAction` initializer.
     @inlinable
-    final func waitForDurationAndRunClosure(interval: TimeInterval,
-                                            closure:  @escaping Closure) -> SKAction
-    {
-        SKAction.sequence([
-            .wait(forDuration: interval),
-            .run (closure)
-        ])
+    final func `repeat`(count: Int) -> SKAction {
+        /// CHECK: Should it be `times`, which makes more sense, instead of `count` which matches the original API?
+        SKAction.repeat(self, count: count)
     }
     
     // MARK: - Custom Animations
@@ -216,6 +212,19 @@ public extension SKAction {
         
         return SKAction.sequence([setInitialAlpha,
                                   SKAction.repeatForever(pulse)])
+    }
+    
+    /// Creates an action that idles for a specified period of time then executes the supplied closure.
+    ///
+    /// - Important: Take care to use capture lists to avoid strong reference cycles in closures.
+    @inlinable
+    final class func waitAndRun(interval: TimeInterval,
+                                closure:  @escaping Closure) -> SKAction
+    {
+        SKAction.sequence([
+            .wait(forDuration: interval),
+            .run (closure)
+        ])
     }
     
 }
