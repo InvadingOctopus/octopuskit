@@ -202,7 +202,7 @@ public extension SKNode {
         
         let size: CGSize
         
-        if  let nodeWithSize = self as? SKNodeWithDimensions {
+        if  let nodeWithSize = self as? SKNodeWithSize {
             size = nodeWithSize.size
         } else if !self.frame.isEmpty {
             size = self.frame.size

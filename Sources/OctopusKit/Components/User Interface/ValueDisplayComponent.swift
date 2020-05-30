@@ -66,7 +66,7 @@ public final class ValueDisplayComponent: NodeAttachmentComponent<SKLabelNode>, 
     
     public override func createAttachment(for parent: SKNode) -> SKLabelNode? {
         
-        let parentSize = (parent as? SKNodeWithDimensions)?.size ?? parent.frame.size
+        let parentSize = (parent as? SKNodeWithSize)?.size ?? parent.frame.size
         
         if parentSize.width < 1 || parentSize.height < 1 {
             OctopusKit.logForWarnings("\(parent) is too small: \(parent.frame)")

@@ -75,7 +75,7 @@ public final class MessageStackerComponent: NodeAttachmentComponent<SKNode> {
     public override func createAttachment(for parent: SKNode) -> SKNode? {
         
         guard
-            let parentSize = (parent as? SKNodeWithDimensions)?.size,
+            let parentSize = (parent as? SKNodeWithSize)?.size,
             parentSize.width > 1
                 && parentSize.height > 1
             else {

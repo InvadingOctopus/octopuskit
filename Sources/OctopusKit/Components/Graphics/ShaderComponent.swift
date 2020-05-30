@@ -151,7 +151,7 @@ open class ShaderComponent: OKComponent {
         guard
             let shader   = self.shader,
             let node     = entityNode as? SKNodeWithShader,
-            let nodeSize = (entityNode as? SKTileMapNode)?.tileSize ?? (entityNode as? SKNodeWithDimensions)?.size // For tile maps, use the tile size instead of the map node's entire frame.
+            let nodeSize = (entityNode as? SKTileMapNode)?.tileSize ?? (entityNode as? SKNodeWithSize)?.size // For tile maps, use the tile size instead of the map node's entire frame.
             else { return }
         
         // Add attributes that are not already present.
