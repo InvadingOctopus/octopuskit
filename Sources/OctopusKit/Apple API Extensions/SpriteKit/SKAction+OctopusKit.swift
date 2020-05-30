@@ -46,6 +46,14 @@ public extension SKAction {
         SKAction.repeat(self, count: count)
     }
     
+    /// Creates an action which attempts to repeat this action forever.
+    ///
+    /// Useful for chaining calls to an `SKAction` initializer.
+    @inlinable
+    final func repeatForever() -> SKAction {
+        SKAction.repeatForever(self)
+    }
+    
     // MARK: - Custom Animations
     
     /// Creates an action that moves the node in the specified direction.
