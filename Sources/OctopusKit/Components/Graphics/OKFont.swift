@@ -12,37 +12,63 @@ public typealias OctopusFont = OKFont
 
 public struct OKFont {
     
-    public var name: String?
-    public var size: CGFloat?
-    public var color: SKColor?
+    public var name:    String?
+    public var size:    CGFloat?
+    public var color:   SKColor?
     
-    public init(name: String? = nil,
-                size: CGFloat? = nil,
-                color: SKColor? = nil)
+    public init(name:   String?  = nil,
+                size:   CGFloat? = nil,
+                color:  SKColor? = nil)
     {
-        assert(name != nil || size != nil || color != nil, "OKFont initialized with all values nil!")
-        self.name = name
-        self.size = size
+        guard name != nil || size != nil || color != nil else {
+            OctopusKit.logForErrors("OKFont initialized with all values nil")
+            fatalError()
+        }
+        
+        self.name  = name
+        self.size  = size
         self.color = color
     }
     
-    /// - Returns: An `SKLabelNode` with the specified text and its font properties sent to this `OKFont`.
-    public func createLabel(text: String) -> SKLabelNode {
-        return SKLabelNode(text: text, font: self)
+    // MARK: Modifiers
+    
+    /// Returns a new copy of this font with the specified color.
+    @inlinable
+    public func color(_ newColor: SKColor) -> OKFont {
+        OKFont(name:  self.name,
+               size:  self.size,
+               color: newColor)
     }
     
-    /// - Returns: An `SKLabelNode` with the specified text and alignment, and its font properties sent to this `OKFont`.
+    /// Returns a new copy of this font with the specified size.
+    @inlinable
+    public func size(_ newSize: CGFloat) -> OKFont {
+        OKFont(name:  self.name,
+               size:  newSize,
+               color: self.color)
+    }
+    
+    // MARK: Label Construction
+    
+    /// Returns a new `SKLabelNode` with the specified text and its font properties sent to this `OKFont`.
+    @inlinable
+    public func createLabel(text: String) -> SKLabelNode {
+        SKLabelNode(text: text, font: self)
+    }
+    
+    /// Returns a new `SKLabelNode` with the specified text and alignment, and its font properties sent to this `OKFont`.
+    @inlinable
     public func createLabel(
-        text: String,
+        text:                String,
         horizontalAlignment: SKLabelHorizontalAlignmentMode,
-        verticalAlignment: SKLabelVerticalAlignmentMode)
+        verticalAlignment:   SKLabelVerticalAlignmentMode)
         -> SKLabelNode
     {
-        return SKLabelNode(
+        SKLabelNode(
             text: text,
             font: self,
             horizontalAlignment: horizontalAlignment,
-            verticalAlignment: verticalAlignment)
+            verticalAlignment:   verticalAlignment)
     }
     
     // MARK: - Predefined Fonts
