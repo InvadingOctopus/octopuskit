@@ -86,8 +86,7 @@ extension SKLabelNode {
     /// Creates a label centered inside an optional colored rectangle and border.
     public convenience init(
         text:               String,
-        font:               OKFont   = OKFont.bubbleFontDefault,
-        color:              SKColor  = .white,
+        font:               OKFont   = OKFont.bubbleFontDefault.color(.white),
         backgroundColor:    SKColor? = nil,
         backgroundPadding:  CGFloat  = 10.0,
         borderColor:        SKColor? = nil,
@@ -99,8 +98,6 @@ extension SKLabelNode {
                   font: font,
                   horizontalAlignment: .center,
                   verticalAlignment:   .center)
-        
-        self.fontColor = color
         
         let backgroundSize          = self.frame.size + backgroundPadding
         
