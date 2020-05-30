@@ -18,15 +18,15 @@ public extension SKAction {
     ///
     /// Useful for searching for and stopping repeating actions, and to override actions that modify the same properties of a node.
     ///
-    /// - Note: These keys must be manually specified when calling `run(_:withKey:)` on a node.
-    struct OKAnimationKeys {
+    /// - Note: These keys must be *manually specified* when calling `run(_:withKey:)` on a node.
+    enum OKAnimationKeys {
         public static let alpha = "OctopusKit.Animation.Alpha"
         public static let blink = "OctopusKit.Animation.Blink"
         public static let color = "OctopusKit.Animation.Color"
         public static let scale = "OctopusKit.Animation.Scale"
     }
     
-    // MARK: - Convenience Methods
+    // MARK: - Modifiers
     
     /// Sets the `timingMode` and returns this action.
     ///
@@ -42,50 +42,68 @@ public extension SKAction {
     /// - Important: Take care to use capture lists to avoid strong reference cycles in closures.
     @inlinable
     final func waitForDurationAndRunClosure(interval: TimeInterval,
-                                            closure: @escaping () -> Void)
-        -> SKAction
+                                            closure:  @escaping Closure) -> SKAction
     {
-        return SKAction.sequence([
-            SKAction.wait(forDuration: interval),
-            SKAction.run(closure)
+        SKAction.sequence([
+            .wait(forDuration: interval),
+            .run (closure)
         ])
     }
     
     // MARK: - Custom Animations
+    
+    /// Creates an action that moves the node in the specified direction.
+    @inlinable
+    final class func move(_ direction:  OKDirection,
+                          distance:     CGFloat,
+                          duration:     TimeInterval       = 1.0,
+                          timingMode:   SKActionTimingMode = .linear) -> SKAction
+    {
+        let direction = direction.vector
+        
+        return SKAction.moveBy(x: direction.dx * distance,
+                               y: direction.dy * distance,
+                               duration: duration)
+                   .timingMode(timingMode)
+    }
     
     /// Creates an action that cycles a node's hidden state between `true` and `false` with the specified delay in between.
     ///
     /// Makes the node visible before blinking it.
     @inlinable
     final class func blink(withDelay delay: TimeInterval = 0.1) -> SKAction {
+        
         let blinkOut = SKAction.hide()
         let blinkIn  = SKAction.unhide()
         
         let blinkOutIn = SKAction.sequence([
             blinkOut,
-            SKAction.wait(forDuration: delay),
+            .wait(forDuration: delay),
             blinkIn,
-            SKAction.wait(forDuration: delay)])
+            .wait(forDuration: delay)])
         
         return SKAction.sequence([
-            blinkIn, // In case the node is hidden before this action begins.
+            blinkIn, // In case the node is hidden before this action begins. CHECK: Does this affect timing?
             blinkOutIn])
     }
     
     /// Creates an action that scales the node's size to the specified values then reverts it to `1.0`.
     @inlinable
     final class func bulge(
-        xScale: CGFloat,
-        yScale: CGFloat,
-        scalingDuration:    TimeInterval = 0.35,
-        scalingTimingMode:  SKActionTimingMode = .easeOut,
-        revertDuration:     TimeInterval = 0.15,
-        revertTimingMode:   SKActionTimingMode = .easeOut)
+        xScale:             CGFloat,
+        yScale:             CGFloat,
+        scalingDuration:    TimeInterval        = 0.35,
+        scalingTimingMode:  SKActionTimingMode  = .easeOut,
+        revertDuration:     TimeInterval        = 0.15,
+        revertTimingMode:   SKActionTimingMode  = .easeOut)
         -> SKAction
     {
-        return SKAction.sequence([
-            SKAction.scaleX(by: xScale, y: yScale, duration: scalingDuration).timingMode(scalingTimingMode),
-            SKAction.scale(to: 1.0, duration: revertDuration).timingMode(revertTimingMode)])
+        SKAction.sequence([
+            SKAction.scaleX(by: xScale, y: yScale, duration: scalingDuration)
+                .timingMode(scalingTimingMode),
+            
+            SKAction.scale(to: 1.0, duration: revertDuration)
+                .timingMode(revertTimingMode)])
     }
     
     /// Creates an action that animates a sprite's blend factor to `1.0`.
@@ -93,7 +111,7 @@ public extension SKAction {
     /// This action can only be executed by an `SKSpriteNode` object.
     @inlinable
     final class func colorizeIn(withDuration duration: TimeInterval = 0.25) -> SKAction {
-        return SKAction.colorize(withColorBlendFactor: 1.0, duration: duration)
+        SKAction.colorize(withColorBlendFactor: 1.0, duration: duration)
     }
     
     /// Creates an action that animates a sprite's blend factor to `0.0`.
@@ -101,7 +119,7 @@ public extension SKAction {
     /// This action can only be executed by an `SKSpriteNode` object.
     @inlinable
     final class func colorizeOut(withDuration duration: TimeInterval = 0.25) -> SKAction {
-        return SKAction.colorize(withColorBlendFactor: 0.0, duration: duration)
+        SKAction.colorize(withColorBlendFactor: 0.0, duration: duration)
     }
     
     /// Creates an action that immediately changes the colorization of a sprite to the `initialColor` and `blendFactor`, then cycles the colorization once between the specified target color then back to the initial color.
@@ -109,13 +127,13 @@ public extension SKAction {
     /// This action can only be executed by an `SKSpriteNode` object.
     @inlinable
     final class func cycleColor(
-        from initialColor:          SKColor = .clear,
+        from initialColor:          SKColor             = .clear,
         to targetColor:             SKColor,
-        blendFactor:                CGFloat = 1.0,
-        initialToTargetDuration:    TimeInterval = 0.25,
-        targetToInitialDuration:    TimeInterval = 0.25,
-        initialToTargetTimingMode:  SKActionTimingMode = .linear,
-        targetToInitialTimingMode:  SKActionTimingMode = .linear)
+        blendFactor:                CGFloat             = 1.0,
+        initialToTargetDuration:    TimeInterval        = 0.25,
+        targetToInitialDuration:    TimeInterval        = 0.25,
+        initialToTargetTimingMode:  SKActionTimingMode  = .linear,
+        targetToInitialTimingMode:  SKActionTimingMode  = .linear)
         -> SKAction
     {
         let setInitialColor = SKAction.colorize(with: initialColor, colorBlendFactor: blendFactor, duration: 0)
