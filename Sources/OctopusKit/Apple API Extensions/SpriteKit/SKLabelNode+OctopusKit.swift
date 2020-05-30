@@ -162,4 +162,43 @@ extension SKLabelNode {
         }
     }
 
+    /// Converts an anchor point to or from the `horizontalAlignmentMode` and `verticalAlignmentMode`.
+    public final var anchorPoint: CGPoint {
+        
+        get {
+            let x, y: CGFloat
+            
+            switch horizontalAlignmentMode {
+            case .left:     x = 0
+            case .center:   x = 0.5
+            case .right:    x = 1
+            @unknown default: fatalError("Invalid \(horizontalAlignmentMode)")
+            }
+            
+            switch verticalAlignmentMode {
+            case .bottom, .baseline:    y = 0
+            case .center:               y = 0.5
+            case .top:                  y = 1
+            @unknown default: fatalError("Invalid \(verticalAlignmentMode)")
+            }
+            
+            return CGPoint(x: x, y: y)
+        }
+        
+        set {
+            switch newValue.x {
+            case ..<0.5:    horizontalAlignmentMode = .left
+            case 0.5:       horizontalAlignmentMode = .center
+            case 0.5...:    horizontalAlignmentMode = .right
+            default:        horizontalAlignmentMode = .left /// CHECK: Should this be `center`?
+            }
+            
+            switch newValue.y {
+            case ..<0.5:    verticalAlignmentMode = .bottom /// DESIGN: This should not be `.baseline` as the expected behavior of setting an anchor of `0` would be to align the absolute bottom pixel at `y: 0`.
+            case 0.5:       verticalAlignmentMode = .center
+            case 0.5...:    verticalAlignmentMode = .top
+            default:        verticalAlignmentMode = .baseline /// CHECK: Should this be `center`?
+            }
+        }
+    }
 }

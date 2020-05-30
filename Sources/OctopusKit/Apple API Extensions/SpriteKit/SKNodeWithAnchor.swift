@@ -23,3 +23,5 @@ extension SKScene:       SKNodeWithAnchor {}
 extension SKSpriteNode:  SKNodeWithAnchor {}
 extension SKVideoNode:   SKNodeWithAnchor {}
 extension SKTileMapNode: SKNodeWithAnchor {}
+
+extension SKLabelNode:   SKNodeWithAnchor {} // Conformance added via SKLabelNode+OctopusKit extensions
