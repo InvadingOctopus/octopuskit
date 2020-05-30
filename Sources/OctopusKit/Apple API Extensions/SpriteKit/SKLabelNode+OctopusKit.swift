@@ -83,14 +83,15 @@ extension SKLabelNode {
         self.text = text
     }
     
-    /// Creates a label inside a colored rectangle.
+    /// Creates a label centered inside an optional colored rectangle and border.
     public convenience init(
         text:               String,
-        font:               OKFont   = OKFont.spriteBubbleFontDefault,
+        font:               OKFont   = OKFont.bubbleFontDefault,
+        color:              SKColor  = .white,
         backgroundColor:    SKColor? = nil,
-        backgroundPadding:  CGFloat  = 5.0,
+        backgroundPadding:  CGFloat  = 10.0,
         borderColor:        SKColor? = nil,
-        borderPadding:      CGFloat  = 3.0)
+        borderPadding:      CGFloat  = 5.0)
     {
         /// TODO: Use `SKShapeNode` and rounded rectangles.
         
@@ -99,22 +100,23 @@ extension SKLabelNode {
                   horizontalAlignment: .center,
                   verticalAlignment:   .center)
         
-        let backgroundSize = self.frame.size + backgroundPadding
+        self.fontColor = color
         
-        if  let backgroundColor = backgroundColor {
-            let background = SKSpriteNode(color: backgroundColor, size: backgroundSize)
-            background.zPosition = -1
+        let backgroundSize          = self.frame.size + backgroundPadding
+        
+        if  let backgroundColor     = backgroundColor {
+            let background          = SKSpriteNode(color: backgroundColor, size: backgroundSize)
+            background.zPosition    = -1
             self.addChild(background)
         }
         
         // The label border will just be a solid rectangle, obscured by the smaller background rectangle to create an outline.
         // CHECK: Use `SKShapeNode` for border?
         
-        let borderSize = backgroundSize + borderPadding
-        
-        if  let borderColor = borderColor {
-            let border = SKSpriteNode(color: borderColor, size: borderSize)
-            border.zPosition = -2
+        if  let borderColor     = borderColor {
+            let borderSize      = backgroundSize + borderPadding
+            let border          = SKSpriteNode(color: borderColor, size: borderSize)
+            border.zPosition    = -2
             self.addChild(border)
         }
         
