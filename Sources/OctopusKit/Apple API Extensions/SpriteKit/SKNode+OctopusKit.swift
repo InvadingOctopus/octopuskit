@@ -197,6 +197,7 @@ public extension SKNode {
     @inlinable
     final func point(at direction: OKDirection) -> CGPoint {
         
+        // TODO:  Tests
         // CHECK: with scaling
         
         let size: CGSize
@@ -209,6 +210,10 @@ public extension SKNode {
             size = self.calculateAccumulatedFrame().size
         }
         
+        // Extracting the size reduces clutter and might improves performance.
+        let width  = size.width
+        let height = size.height
+        
         // Account for the anchor point.
         // An anchor of (0.5, 0.5) means child nodes with a position of (0,0) will be placed at this node's center, and children at (width, height) would be outside this node, so the actual maxX/maxY would be half the width/height, and minX/minY would be negative, and so on.
         
@@ -219,22 +224,22 @@ public extension SKNode {
         if  let nodeWithAnchor  = self as? SKNodeWithAnchor {
             
             let anchor          = nodeWithAnchor.anchorPoint
-            let anchorWidth     = (size.width  * anchor.x)
-            let anchorHeight    = (size.height * anchor.y)
+            let anchorWidth     = (width  * anchor.x)
+            let anchorHeight    = (height * anchor.y)
                 
-            maxX = size.width   - anchorWidth
-            maxY = size.height  - anchorHeight
-            
-            midX = anchor.x
-            midY = anchor.y
+            maxX = width        - anchorWidth
+            maxY = height       - anchorHeight
             
             minX = 0            - anchorWidth
             minY = 0            - anchorHeight
             
+            midX = (width  / 2) - anchorWidth
+            midY = (height / 2) - anchorHeight
+            
         } else {
-            (maxX, maxY) = (size.width, size.height)
-            (midX, midY) = (maxX / 2,   maxY / 2)
-            (minX, minY) = (0, 0)
+            (maxX, maxY) = (width,      height)
+            (midX, midY) = (width / 2,  height / 2)
+            (minX, minY) = (0,          0)
         }
         
         // Set and return the point
@@ -257,15 +262,7 @@ public extension SKNode {
             x = 0; y = 0
         }
         
-        let point = CGPoint(x: x, y: y)
-        
-        #if DEBUG // TODO: Replace this check with tests.
-        // if !self.contains(point) {
-            // fatalError("\(self) does not contain \(point) — Check the calculations for \(direction)")
-        // }
-        #endif
-        
-        return point
+        return CGPoint(x: x, y: y)
     }
     
     /// Offsets the `position` by the `safeAreaInsets` of the parent scene's view. May be necessary for correct placement of visual elements on iPhone X and other devices where the edges of the display are not uniformly visible.
