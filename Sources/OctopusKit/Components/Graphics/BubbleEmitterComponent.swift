@@ -11,44 +11,87 @@ import GameplayKit
 
 // MARK: - Bubble
 
-/// Represents a temporary node that "bubbles" up from a parent node, such as a number showing the damage received by a character.
+/// Represents a temporary node that "bubbles" out from a parent node, such as a number showing the damage or healing received by a character, usually animated as "floating" upwards.
 public struct NodeBubble {
     
     public let node:            SKNode
 
-    public let offset:          CGPoint
-    public let spawnAtBottom:   Bool
+    public let initialPosition: CGPoint
+    public let initialAlpha:    CGFloat?
     
-    public let alphaOnEmit:     CGFloat?
-    public let blink:           Bool
+    public let animation:       SKAction
+    public let removalDelay:    TimeInterval
     
-    public let duration:        TimeInterval
-    public let completion:      Closure?
+    // REMOVED: public let completion: Closure?
+    
+    public static let bubbleKey = "OctopusKit.NodeBubble"
+    
+    // MARK: Animations
+    
+    /// The default disappearance animation for bubbles; float up while fading out. Fade-out begins after 20% of the `duration`.
+    public static func floatAndFade(
+        direction:  OKDirection  = .top,
+        distance:   CGFloat      = 50,
+        duration:   TimeInterval = 1.0)
+        -> SKAction
+    {
+        
+        let fadeDelay   = duration * 0.1
+        let fadeOut     = SKAction.sequence([.wait(forDuration: fadeDelay),
+                                             .fadeAlpha(to: 0.1, duration: duration)])
+                         .timingMode(.easeOut)
+        
+        let floatAway   = SKAction.move(direction,
+                                      distance: distance,
+                                      duration: duration,
+                                      timingMode: .easeOut)
+        
+        return SKAction.group([fadeOut, floatAway])
+    }
+    
+    /// Blinks the bubble for the specified number of times then runs the default float and fade animation.
+    public static func blinkThenFloatAndFade(
+        blinkCount:     Int          = 3,
+        floatDirection: OKDirection  = .top,
+        floatDistance:  CGFloat      = 50,
+        floatDuration:  TimeInterval = 1.0)
+        -> SKAction
+    {
+        SKAction.sequence([
+            SKAction.blink(withDelay: 0.1).repeat(count: blinkCount),
+            floatAndFade(direction: floatDirection,
+                         distance:  floatDistance,
+                         duration:  floatDuration)
+        ])
+    }
     
     // MARK: Initializers
     
+    /// Creates a bubble.
+    /// - Parameters:
+    ///   - node:               The graphic which will bubble out from a parent.
+    ///   - initialPosition:    The position to reset `node` to before emitting it. Default: `(0,0)`
+    ///   - initialAlpha:       The value to reset the `node.alpha` to before emitting it. If `nil` then the node's current `alpha` will be used, which may be `0` if the node was previously emitted. Default: `1`
+    ///   - animation:          The `SKAction` to run on the node when emitting it. If `nil` then `NodeBubble.floatAndFade` is used with parameters depending on `removalDelay`. Default: `nil`
+    ///   - removalDelay:       The duration after which to remove the emitted `node` from its parent.
     public init(
         node:               SKNode,
-        offset:             CGPoint     = .zero,
-        spawnAtBottom:      Bool        = false,
-        alphaOnEmit:        CGFloat?    = nil,
-        blink:              Bool        = false,
-        duration:           TimeInterval = 0.5,
-        completion:         Closure?    = nil)
+        initialPosition:    CGPoint     = .zero,
+        initialAlpha:       CGFloat?    = 1,
+        animation:          SKAction?   = nil,
+        removalDelay:       TimeInterval = 1.0)
     {
         self.node           = node
-
-        self.offset         = offset
-        self.spawnAtBottom  = spawnAtBottom
         
-        self.alphaOnEmit    = alphaOnEmit
-        self.blink          = blink
+        self.initialPosition = initialPosition
+        self.initialAlpha   = initialAlpha
         
-        self.duration       = duration
-        self.completion     = completion
+        self.animation      = animation ?? NodeBubble.floatAndFade(duration: removalDelay)
+        
+        self.removalDelay   = removalDelay
         
         if  node.name == nil
-            ||  node.name!.isEmpty
+        ||  node.name!.isEmpty
         {
             node.name = "Bubble"
         }
@@ -57,34 +100,24 @@ public struct NodeBubble {
     /// Creates a text bubble, with the proper horizontal and vertical alignment for the `SKLabelNode`, depending on the `spawnAtBottom` flag.
     public init(
         text:               String,
-        font:               OKFont      = OKFont.spriteBubbleFontDefault,
+        font:               OKFont      = OKFont.bubbleFontDefault,
         color:              SKColor     = .white,
-        offset:             CGPoint     = .zero,
-        spawnAtBottom:      Bool        = false,
-        alphaOnEmit:        CGFloat?    = nil,
-        blink:              Bool        = false,
-        duration:           TimeInterval = 0.5,
-        completion:         Closure?    = nil)
+        animation:          SKAction?   = nil,
+        removalDelay:       TimeInterval = 1.0)
     {
-        let label = SKLabelNode(text: text,
-                                font: font,
+        let label = SKLabelNode(text:  text,
+                                font:  font.color(color),
                                 horizontalAlignment: .center,
-                                verticalAlignment: spawnAtBottom ? .top : .bottom)
-                    
-        label.fontColor = color
+                                verticalAlignment:   .bottom)
+        
         label.name = "Bubble: \(text)"
         
         self.init(node:             label,
-                  offset:           offset,
-                  spawnAtBottom:    spawnAtBottom,
-                  alphaOnEmit:      alphaOnEmit,
-                  blink:            blink,
-                  duration:         duration,
-                  completion:       completion)
+                  animation:        animation,
+                  removalDelay:     removalDelay)
     }
     
     // MARK: Emission
-    
     
     /// Adds the bubble `node` to the specified parent, resets its position and alpha, animates it, then removes the bubble from the parent at the end of its animation.
     /// - Parameters:
@@ -95,75 +128,40 @@ public struct NodeBubble {
     public func emit(from parent:   SKNode,
                      zPosition:     CGFloat? = nil) -> SKNode
     {
-        // TODO: Validate parent size and account for `anchorPoint`
-     
-        /// ❕ If we use `calculateAccumulatedFrame()` then subsequent bubbles may incorrectly start at increasing positions because the frame will be larger.
-        
-        let parentFrame = parent.frame
-        let bubble      = self.node
-        
-        // Initialize position and alpha
+        // MARK: Setup
+
+        let bubble = self.node
         
         bubble.removeAllActions()
-        
-        bubble.position.x = parentFrame.midX + offset.x // Reset the position in case the bubble is re-emitted.
-        bubble.position.y = spawnAtBottom ? parentFrame.minY + offset.y : parentFrame.maxY + offset.y
+        bubble.position = self.initialPosition
+        bubble.isHidden = false
         
         if  let zPosition = zPosition {
             bubble.zPosition = zPosition
         }
         
-        if  let alphaOnEmit = self.alphaOnEmit {
-            bubble.alpha = alphaOnEmit
-        }
-        
-        if  let grandparent = parent.parent {
-            bubble.position = grandparent.convert(bubble.position, to: parent)
+        if  let initialAlpha = self.initialAlpha {
+            bubble.alpha = initialAlpha
         }
         
         // Add to parent
         
         bubble.removeFromParent() // Make sure
-        
         parent.addChild(bubble)
         
-        // Animate
+        // MARK: Animate
         
-        let fadeOut = SKAction.fadeAlpha(to: 0.1, duration: duration)
-            .timingMode(.easeOut)
+        let delayedRemoval = SKAction.sequence([
+            .wait(forDuration: removalDelay),
+            .removeFromParent()])
         
-        let floatAway = SKAction.moveBy(x: 0, y: parentFrame.size.height / 2, duration: duration)
-            .timingMode(.easeOut)
+        // REMOVED: let completion = self.completion ?? {} /// Just use an empty closure for the completion callback if the `completion` property is `nil`, to avoid duplicating code below for different `run()` calls (one with the `completion:` parameter and one without.)
         
-        let completion = self.completion ?? {} // Just use an empty closure for the completion callback if the `completion` property is `nil`, to avoid duplicating code below for different `run()` calls (one with the `completion:` parameter and one without.)
+        /// Start the removal countdown together with the animation (`group` not `sequence`).
         
-        if blink {
-            
-            let hide    = SKAction.hide()
-            let unhide  = SKAction.unhide()
-            
-            let blink   = SKAction.sequence([
-                hide,
-                .wait(forDuration: 0.1),
-                unhide])
-            
-            bubble.run(.sequence([
-                .wait(forDuration: 0.1),
-                blink,
-                .wait(forDuration: 0.1),
-                blink,
-                .wait(forDuration: 0.1),
-                .group([fadeOut, floatAway]),
-                .removeFromParent()]),
-                       completion: completion)
-            
-        } else {
-            
-            bubble.run(.sequence([
-                .group([fadeOut, floatAway]),
-                .removeFromParent()]),
-                       completion: completion)
-        }
+        bubble.run(.group([animation,
+                           delayedRemoval]),
+                   withKey: NodeBubble.bubbleKey)
         
         // Return the emitted node
         
@@ -178,22 +176,21 @@ public struct NodeBubble {
 /// Useful for displaying status updates or damage values over a character etc.
 ///
 /// **Dependencies:** `NodeComponent`
-public final class BubbleEmitterComponent: OKComponent {
+public final class BubbleEmitterComponent: BadgeComponent {
     
     // TODO: Tests
-    // TODO: Fully customizable direction.
     
     public override var requiredComponents: [GKComponent.Type]? {
         [NodeComponent.self]
     }
+        
+    /// The bubble to emit when this component is added to an entity with a `NodeComponent`.
+    public var initialBubble: NodeBubble?
     
-    public var parentOverride:  SKNode?
-    public var zPosition:       CGFloat = 1
+    /// If `true`, various visual debugging aids are applied to assist with tracking bugs involving parents and placements etc.
+    public let debug: Bool
     
-    /// To emit when this component is added to an entity with a `NodeComponent`.
-    public var initialBubble:   NodeBubble?
-    
-    // MARK: Initializers
+    // MARK: Initialization
     
     /// Creates a `BubbleEmitterComponent` with an optional bubble to emit.
     ///
@@ -203,14 +200,32 @@ public final class BubbleEmitterComponent: OKComponent {
     ///   - initialBubble:  The bubble to emit once when this component is added to an entity with a `NodeComponent`.
     ///   - parentOverride: By default, bubbles are added to the entity's `NodeComponent` node. If the entity node does not have a non-zero `frame`, such as an `SKNode` which contains other nodes, then the bubbles will not be positioned or animated correctly. Use this parameter to specify a parent with a non-zero `frame`.
     ///   - zPosition:      The zPosition of all bubbles. This should be a high enough value to ensure that bubbles are not obscured by other content. Default: `1`
+    ///   - placement:      The edge or corner of the parent from which all bubbles should be emitted. Default: `top`
+    ///   - debug:          If `true`, the bubble emitter node is changed to a visible rectangle and its placement is randomized after every emission, to assist with tracking bugs involving parents and placements etc.
     public init(initialBubble:  NodeBubble? = nil,
-                parentOverride: SKNode? = nil,
-                zPosition:      CGFloat = 1)
+                parentOverride: SKNode?     = nil,
+                placement:      OKDirection = .bottomLeft,
+                zPosition:      CGFloat     = 1,
+                debug:          Bool        = false)
     {
         self.initialBubble  = initialBubble
-        self.parentOverride = parentOverride
-        self.zPosition      = zPosition
-        super.init()
+        self.debug          = debug
+        
+        // The "badge" will be our emitter, the parent node of all bubbles, so they can be spawned from a fixed position in relation to the entity.
+        
+        let badge: SKNode
+        
+        if !debug {
+            badge = SKNode()
+        } else {
+            badge = SKSpriteNode(color: .magenta, size: CGSize(widthAndHeight: 10))
+                .blendMode(.screen)
+        }
+        
+        super.init(badge:               badge,
+                   parentOverride:      parentOverride,
+                   placement:           placement,
+                   zPositionOverride:   zPosition)
     }
             
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -218,19 +233,28 @@ public final class BubbleEmitterComponent: OKComponent {
     // MARK: Emission
     
     public override func didAddToEntity(withNode node: SKNode) {
-       // Emit the first bubble if any.
+        super.didAddToEntity(withNode: node)
+       
+        // Emit the first bubble if any.
         guard let initialBubble = self.initialBubble else { return }
         self.emit(bubble: initialBubble)
     }
     
     /// Emits the specified bubble from this component's `parentOverride` or the entity's node.
     @inlinable @discardableResult
-    public func emit(bubble: NodeBubble,
+    public func emit(bubble:            NodeBubble,
                      zPositionOverride: CGFloat? = nil) -> SKNode?
     {
-        guard let parent = self.parentOverride ?? self.entityNode else { return nil }
-    
-        return bubble.emit(from: parent, zPosition: zPositionOverride ?? self.zPosition)
+        if  debug {
+            // Randomize the emitter placement if debugging.
+            super.placement = OKDirection.compassDirections.randomElement()!
+            debugLog("badge placement: \(super.placement) — position: \(badge.position)", topic: "\(self)")
+        }
+        
+        // Emit the bubbles from our "badge" (which is just the fixed SKNode used for positioning).
+        
+        return bubble.emit(from:        self.badge,
+                           zPosition:   zPositionOverride ?? super.zPositionOverride)
     }
     
     public override func willRemoveFromEntity(withNode node: SKNode) {
