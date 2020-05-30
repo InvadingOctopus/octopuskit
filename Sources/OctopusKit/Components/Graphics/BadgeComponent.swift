@@ -57,7 +57,11 @@ open class BadgeComponent: NodeAttachmentComponent <SKNode> {
     public func positionBadge(placementOverride: OKDirection? = nil,
                               parentOverride:    SKNode?      = nil)
     {
-        guard let parent = parentOverride ?? self.entityNode else { return }
+        guard let parent = parentOverride // CHECK: Is are these fallbacks correct or even necessary?
+                        ?? badge.parent
+                        ?? super.parentOverride
+                        ?? self.entityNode
+        else { return }
         
         let placement  = placementOverride ?? self.placement
         badge.position = parent.point(at: placement)
