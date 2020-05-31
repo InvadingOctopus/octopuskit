@@ -29,7 +29,7 @@ open class EntitySpawnerComponent: OKComponent {
     
     // TODO: CHECK: Mention whether it's the parent's center or anchorPoint.
     
-    /// The position difference in relation to the parent entity's node for a newly spawned entity.
+    /// The position difference in relation to the parent entity's node for an spawned entity.
     ///
     /// For example, this may be used to spawn bullets from the tip of a gun's muzzle.
     open var positionOffset:    CGPoint
@@ -44,38 +44,51 @@ open class EntitySpawnerComponent: OKComponent {
     /// For example, this may be used to spawn flames farther from a flaming object.
     open var distanceOffset:    CGFloat
 
-    /// The initial impulse to apply to a newly spawned entity's `PhysicsComponent` body.
-    open var initialImpulse:    CGFloat?
+    /// The impulse to apply to an spawned entity's `PhysicsComponent` body, in Newton-seconds, over the course of `impulseDuration`.
+    open var impulse:           CGFloat?
+    
+    /// The duration over which to apply the `impulse` to an spawned entity. For example, if the `impulse` is 1 Newton-second and the duration is 10 seconds, then a force of 0.1 Newtons is applied to the physics body every second.
+    open var impulseDuration:   TimeInterval // DESIGN: This is not optional so that we just have to unwrap `impulse`.
     
     /// The reverse impulse to apply to the **spawner (parent) entity's** `PhysicsComponent` body.
     ///
     /// This may be used to simulate recoil on characters firing weapons.
     open var recoilImpulse:     CGFloat?
     
-    /// The `SKAction` to run on every newly spawned entity.
+    /// The `SKAction` to run on every spawned entity.
     open var actionOnSpawn:     SKAction?
     
     /// Logs debugging information if `true`.
     public var logSpawns:       Bool
     
+    /// The `SKAction` key to identify the `actionOnSpawn`, if any.
+    public static let spawnKey   = "OctopusKit.EntitySpawnerComponent.Spawn"
+    
+    /// The `SKAction` key to identify the `impulse` action, if any. Call `removeAction(forKey:)` on the spawned entity's node to stop this momentum when needed.
+    public static let impulseKey = "OctopusKit.EntitySpawnerComponent.Impulse"
+    
+    // MARK: Initializer
+    
     /// Creates an `EntitySpawnerComponent` that may add new entities to the entity's scene when `spawn()` is called. The default settings provided to this initializer may be optionally overridden for each individual `spawn()` call.
     /// - Parameters:
     ///   - spawnTemplate:  The entity to create copies of for every new spawn. Default: `nil`
-    ///   - positionOffset: The position difference in relation to the parent entity's node for a newly spawned entity. Default: `(0,0)`
+    ///   - positionOffset: The position difference in relation to the parent entity's node for an spawned entity. Default: `(0,0)`
     ///   - angleOffset:    The difference from the parent entity node's `zRotation` angle, in radians, for the new spawned entity's initial direction. Default: `0`
-    ///   - distanceOffset: The distance from the parent entity's node for a newly spawned entity's initial position. Default: `0`
-    ///   - initialImpulse: The initial impulse to apply to a newly spawned entity's `PhysicsComponent` body. Default: `nil`
+    ///   - distanceOffset: The distance from the parent entity's node for an spawned entity's initial position. Default: `0`
+    ///   - impulse:        The impulse to apply to an spawned entity's `PhysicsComponent` body, over the course of `impulseDuration`. Default: `nil`
+    ///   - impulseDuration: The duration over which to apply the `impulse` to an spawned entity. Default: `1 second`
     ///   - recoilImpulse:  The reverse impulse to apply to the **spawner (parent) entity's** `PhysicsComponent` body. Default: `nil`
-    ///   - actionOnSpawn:  The `SKAction` to run on every newly spawned entity. Default: `nil`
+    ///   - actionOnSpawn:  The `SKAction` to run on every spawned entity. e.g. an `applyImpulse` action to create an ease-in speeding-up effect on the physics body. Default: `nil`
     ///   - logSpawns:      If `true`, debugging information is logged.
-    public init(spawnTemplate:  OKEntity?   = nil,
-                positionOffset: CGPoint     = .zero,
-                angleOffset:    CGFloat     = 0,
-                distanceOffset: CGFloat     = 0,
-                initialImpulse: CGFloat?    = nil,
-                recoilImpulse:  CGFloat?    = nil,
-                actionOnSpawn:  SKAction?   = nil,
-                logSpawns:      Bool        = false)
+    public init(spawnTemplate:      OKEntity?   = nil,
+                positionOffset:     CGPoint     = .zero,
+                angleOffset:        CGFloat     = 0,
+                distanceOffset:     CGFloat     = 0,
+                impulse:            CGFloat?    = nil,
+                impulseDuration:    TimeInterval = 1,
+                recoilImpulse:      CGFloat?    = nil,
+                actionOnSpawn:      SKAction?   = nil,
+                logSpawns:          Bool        = false)
     {
         self.spawnTemplate  = spawnTemplate
         
@@ -83,7 +96,8 @@ open class EntitySpawnerComponent: OKComponent {
         self.angleOffset    = angleOffset
         self.distanceOffset = distanceOffset
         
-        self.initialImpulse = initialImpulse
+        self.impulse        = impulse
+        self.impulseDuration = impulseDuration
         self.recoilImpulse  = recoilImpulse
         
         self.actionOnSpawn  = actionOnSpawn
@@ -106,7 +120,8 @@ open class EntitySpawnerComponent: OKComponent {
         positionOffsetOverride:     CGPoint?    = nil,
         angleOffsetOverride:        CGFloat?    = nil,
         distanceOffsetOverride:     CGFloat?    = nil,
-        initialImpulseOverride:     CGFloat?    = nil,
+        impulseOverride:            CGFloat?    = nil,
+        impulseDurationOverride:    TimeInterval? = nil,
         recoilImpulseOverride:      CGFloat?    = nil,
         actionOnSpawnOverride:      SKAction?   = nil)
         -> Bool
@@ -157,7 +172,8 @@ open class EntitySpawnerComponent: OKComponent {
         let positionOffset      = positionOffsetOverride    ?? self.positionOffset
         let angleOffset         = angleOffsetOverride       ?? self.angleOffset
         let distanceOffset      = distanceOffsetOverride    ?? self.distanceOffset
-        let initialImpulse      = initialImpulseOverride    ?? self.initialImpulse
+        let impulse             = impulseOverride           ?? self.impulse
+        let impulseDuration     = impulseDurationOverride   ?? self.impulseDuration
         let recoilImpulse       = recoilImpulseOverride     ?? self.recoilImpulse
         let actionOnSpawn       = actionOnSpawnOverride     ?? self.actionOnSpawn
         
@@ -185,23 +201,27 @@ open class EntitySpawnerComponent: OKComponent {
         // MARK: Action
         
         if  let action = actionOnSpawn {
-            nodeToSpawn.run(action)
+            nodeToSpawn.run(action, withKey: EntitySpawnerComponent.spawnKey)
         }
         
         // MARK: Impulse
         
-        if  let initialImpulse = initialImpulse {
+        if  let impulse = impulse {
             
             guard let physicsBody = entityToSpawn.componentOrRelay(ofType: PhysicsComponent.self)?.physicsBody else {
                 OctopusKit.logForWarnings("\(entityToSpawn) has no PhysicsComponent with a physicsBody — Cannot apply impulse.")
                 return didSpawnEntity
             }
             
-            let spawnAngle  = Float(spawnAngle)
-            let impulse     = CGVector(dx: initialImpulse * CGFloat(cosf(spawnAngle)),
-                                       dy: initialImpulse * CGFloat(sinf(spawnAngle)))
+            let spawnAngle      = Float(spawnAngle)
+            let impulseVector   = CGVector(dx: impulse * CGFloat(cosf(spawnAngle)),
+                                           dy: impulse * CGFloat(sinf(spawnAngle)))
             
-            physicsBody.applyImpulse(impulse)
+            /// 💡 TIP: Applying an impulse over time may be used for a gradual "ease-in" speeding-up effect, that may feel more realistic or fluid in some cases (e.g. a vehicle revving up), compared to just `physicsBody.applyImpulse(impulse)`
+            
+            physicsBody.node?.run(.applyImpulse(impulseVector,
+                                                duration: impulseDuration),
+                                  withKey: EntitySpawnerComponent.impulseKey)
         }
         
         // MARK: Recoil
