@@ -10,7 +10,9 @@ import Foundation
 
 public extension Equatable {
     
-    /// - Returns: `true` if the provided list of items contains this object or value.
+    /// Returns `true` if the provided list of items contains this object or value.
+    ///
+    /// - IMPORTANT: Passing an array is **not** equivalent to a variadic argument; `isAny(of: [1, 2, 3]) != isAny(of: 1, 2, 3)`.
     @inlinable
     func isAny(of candidates: Self...) -> Bool {
         // CREDIT: https://twitter.com/johnsundell/status/943510426586959873
