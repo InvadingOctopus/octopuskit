@@ -42,7 +42,7 @@ open class OKComponent: GKComponent {
         (self.entity as? OKEntity)?.delegate
     }
     
-    /// Ensures that any necessary cleanup (such as removing child nodes) is performed in case of a forced deinit, which may be caused by GameplayKit if multiple components of the same type are added to the same entity, as that replaces previous components of the same class without letting them call `willRemoveFromEntity()`.
+    /// Ensures that any necessary cleanup (such as removing child nodes) is performed in case of a forced deinit, which may be caused by GameplayKit if multiple components of the same type are added to the same entity, as that replaces previous components of the same class **without** letting them call `willRemoveFromEntity()`.
     public internal(set) var shouldRemoveFromEntityOnDeinit    = false
     
     public internal(set) var shouldWarnIfDeinitWithoutRemoving = false
