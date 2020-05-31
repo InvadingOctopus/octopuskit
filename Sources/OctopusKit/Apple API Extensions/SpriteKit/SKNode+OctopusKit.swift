@@ -65,6 +65,13 @@ public extension SKNode {
         return self
     }
     
+    /// Returns this node after setting its name.
+    @inlinable
+    final func name(_ newName: String) -> Self {
+        self.name = newName
+        return self
+    }
+    
     /// Returns this node after setting its position.
     @inlinable
     final func position(_ newPosition: CGPoint) -> Self {
