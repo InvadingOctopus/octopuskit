@@ -25,77 +25,90 @@ open class EntitySpawnerComponent: OKComponent {
     // TODO: Fix template copying.
     
     /// The entity to create copies of for every new spawn.
-    open var spawnTemplate:             OKEntity?
+    open var spawnTemplate:     OKEntity?
     
     // TODO: CHECK: Mention whether it's the parent's center or anchorPoint.
-    /// The distance from the parent entity's node for a newly spawned entity's initial position.
-    open var offsetFromParent:          CGFloat
+    
+    /// The position difference in relation to the parent entity's node for a newly spawned entity.
+    ///
+    /// For example, this may be used to spawn bullets from the tip of a gun's muzzle.
+    open var positionOffset:    CGPoint
     
     /// The difference from the parent entity node's `zRotation` angle, in radians, for the new spawned entity's initial direction.
-    open var angleOffsetFromParent:     CGFloat
+    ///
+    /// For example, this may be used to simulate sparks flying in different directions.
+    open var angleOffset:       CGFloat
     
+    /// The distance from the spawning `position` in the direction of the `angleOffset`.
+    ///
+    /// For example, this may be used to spawn flames farther from a flaming object.
+    open var distanceOffset:    CGFloat
+
     /// The initial impulse to apply to a newly spawned entity's `PhysicsComponent` body.
-    open var initialImpulse:            CGFloat?
+    open var initialImpulse:    CGFloat?
     
     /// The reverse impulse to apply to the **spawner (parent) entity's** `PhysicsComponent` body.
     ///
     /// This may be used to simulate recoil on characters firing weapons.
-    open var recoilImpulse:             CGFloat?
+    open var recoilImpulse:     CGFloat?
     
     /// The `SKAction` to run on every newly spawned entity.
-    open var actionOnSpawn:             SKAction?
+    open var actionOnSpawn:     SKAction?
     
     /// Logs debugging information if `true`.
-    public var logSpawns:               Bool
+    public var logSpawns:       Bool
     
-    /// Initializes an `EntitySpawnerComponent` to add new entities to the entity's scene when `spawn()` is called. The default settings provided to the initializer may be optionally overridden for every `spawn()` call.
+    /// Creates an `EntitySpawnerComponent` that may add new entities to the entity's scene when `spawn()` is called. The default settings provided to this initializer may be optionally overridden for each individual `spawn()` call.
     /// - Parameters:
-    ///   - spawnTemplate: The entity to create copies of for every new spawn. Default: `nil`
-    ///   - offsetFromParent: The distance from the parent entity's node for a newly spawned entity's initial position. Default: `0`
-    ///   - angleOffsetFromParent: The difference from the parent entity node's `zRotation` angle, in radians, for the new spawned entity's initial direction. Default: `0`
+    ///   - spawnTemplate:  The entity to create copies of for every new spawn. Default: `nil`
+    ///   - positionOffset: The position difference in relation to the parent entity's node for a newly spawned entity. Default: `(0,0)`
+    ///   - angleOffset:    The difference from the parent entity node's `zRotation` angle, in radians, for the new spawned entity's initial direction. Default: `0`
+    ///   - distanceOffset: The distance from the parent entity's node for a newly spawned entity's initial position. Default: `0`
     ///   - initialImpulse: The initial impulse to apply to a newly spawned entity's `PhysicsComponent` body. Default: `nil`
-    ///   - recoilImpulse: The reverse impulse to apply to the **spawner (parent) entity's** `PhysicsComponent` body. Default: `nil`
-    ///   - actionOnSpawn: The `SKAction` to run on every newly spawned entity. Default: `nil`
-    ///   - logSpawns: Logs debugging information if `true`.
-    public init(spawnTemplate:          OKEntity?   = nil,
-                offsetFromParent:       CGFloat     = 0,
-                angleOffsetFromParent:  CGFloat     = 0,
-                initialImpulse:         CGFloat?    = nil,
-                recoilImpulse:          CGFloat?    = nil,
-                actionOnSpawn:          SKAction?   = nil,
-                logSpawns:              Bool        = false)
+    ///   - recoilImpulse:  The reverse impulse to apply to the **spawner (parent) entity's** `PhysicsComponent` body. Default: `nil`
+    ///   - actionOnSpawn:  The `SKAction` to run on every newly spawned entity. Default: `nil`
+    ///   - logSpawns:      If `true`, debugging information is logged.
+    public init(spawnTemplate:  OKEntity?   = nil,
+                positionOffset: CGPoint     = .zero,
+                angleOffset:    CGFloat     = 0,
+                distanceOffset: CGFloat     = 0,
+                initialImpulse: CGFloat?    = nil,
+                recoilImpulse:  CGFloat?    = nil,
+                actionOnSpawn:  SKAction?   = nil,
+                logSpawns:      Bool        = false)
     {
-        self.spawnTemplate          = spawnTemplate
-        self.offsetFromParent       = offsetFromParent
-        self.angleOffsetFromParent  = angleOffsetFromParent
-        self.initialImpulse         = initialImpulse
-        self.recoilImpulse          = recoilImpulse
-        self.actionOnSpawn          = actionOnSpawn
-        self.logSpawns              = logSpawns
+        self.spawnTemplate  = spawnTemplate
+        
+        self.positionOffset = positionOffset
+        self.angleOffset    = angleOffset
+        self.distanceOffset = distanceOffset
+        
+        self.initialImpulse = initialImpulse
+        self.recoilImpulse  = recoilImpulse
+        
+        self.actionOnSpawn  = actionOnSpawn
+        self.logSpawns      = logSpawns
+        
         super.init()
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    /// Requests this component's entity's delegate (i.e. the scene) to spawn a new entity.
+    /// Requests this component's entity's delegate (i.e. the scene) to spawn a new entity. You may selectively override this component's properties for this specific spawn.
     /// - Parameters:
-    ///   - entityToSpawnOverride: Overrides the `spawnTemplate` property.
-    ///   - parentOverride: Specifies a different parent node other than this component's entity's `NodeComponent` node.
-    ///   - offsetFromParentOverride: Overrides the `offsetFromParent` property.
-    ///   - angleOffsetFromParentOverride: Overrides the `angleOffsetFromParent` property.
-    ///   - initialImpulseOverride: Overrides the `initialImpulse` property.
-    ///   - recoilImpulseOverride: Overrides the `recoilImpulse` property.
-    ///   - actionOnSpawnOverride: Overrides the `actionOnSpawn` property.
+    ///   - entityToSpawnOverride:  Overrides the `spawnTemplate` property for this call.
+    ///   - parentOverride:         Specifies a different parent node for this call. Default: This component's entity's `NodeComponent` node.
     /// - Returns: `true` if the requested entity was successfully spawned by this component's entity's delegate (i.e. the scene).
     @discardableResult @inlinable
     open func spawn(
-        _ entityToSpawnOverride:        OKEntity?   = nil,
-        parentOverride:                 SKNode?     = nil,
-        offsetFromParentOverride:       CGFloat?    = nil,
-        angleOffsetFromParentOverride:  CGFloat?    = nil,
-        initialImpulseOverride:         CGFloat?    = nil,
-        recoilImpulseOverride:          CGFloat?    = nil,
-        actionOnSpawnOverride:          SKAction?   = nil)
+        _ entityToSpawnOverride:    OKEntity?   = nil,
+        parentOverride:             SKNode?     = nil,
+        positionOffsetOverride:     CGPoint?    = nil,
+        angleOffsetOverride:        CGFloat?    = nil,
+        distanceOffsetOverride:     CGFloat?    = nil,
+        initialImpulseOverride:     CGFloat?    = nil,
+        recoilImpulseOverride:      CGFloat?    = nil,
+        actionOnSpawnOverride:      SKAction?   = nil)
         -> Bool
     {
         // MARK: Environment Verification
@@ -141,18 +154,20 @@ open class EntitySpawnerComponent: OKComponent {
         
         // Replace default parameters with overrides, if any.
         
-        let offset          = offsetFromParentOverride      ?? self.offsetFromParent
-        let angleOffset     = angleOffsetFromParentOverride ?? self.angleOffsetFromParent
-        let initialImpulse  = initialImpulseOverride        ?? self.initialImpulse
-        let recoilImpulse   = recoilImpulseOverride         ?? self.recoilImpulse
-        let actionOnSpawn   = actionOnSpawnOverride         ?? self.actionOnSpawn
+        let positionOffset      = positionOffsetOverride    ?? self.positionOffset
+        let angleOffset         = angleOffsetOverride       ?? self.angleOffset
+        let distanceOffset      = distanceOffsetOverride    ?? self.distanceOffset
+        let initialImpulse      = initialImpulseOverride    ?? self.initialImpulse
+        let recoilImpulse       = recoilImpulseOverride     ?? self.recoilImpulse
+        let actionOnSpawn       = actionOnSpawnOverride     ?? self.actionOnSpawn
         
         // Set the position and direction.
 
         let parent              = parentOverride ?? spawnerNodeParent
         let spawnAngle          = spawnerNode.zRotation + angleOffset
-        let spawnPosition       = spawnerNode.position.point(atAngle:  spawnAngle,
-                                                             distance: offset)
+        let spawnPosition       = (spawnerNode.position + positionOffset)
+                                  .point(atAngle:  spawnAngle,
+                                         distance: distanceOffset)
         
         // Convert the offset of the new spawn to the coordinate space of the spawner's parent node.
         nodeToSpawn.position    = parent.convert(spawnPosition, from: spawnerNodeParent)
@@ -182,11 +197,9 @@ open class EntitySpawnerComponent: OKComponent {
                 return didSpawnEntity
             }
             
-            let spawnAngle = Float(spawnAngle)
-            
-            let impulse = CGVector(
-                dx: initialImpulse * CGFloat(cosf(spawnAngle)),
-                dy: initialImpulse * CGFloat(sinf(spawnAngle)))
+            let spawnAngle  = Float(spawnAngle)
+            let impulse     = CGVector(dx: initialImpulse * CGFloat(cosf(spawnAngle)),
+                                       dy: initialImpulse * CGFloat(sinf(spawnAngle)))
             
             physicsBody.applyImpulse(impulse)
         }
