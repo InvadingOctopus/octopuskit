@@ -10,9 +10,9 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         super.init(name: "___FILEBASENAME___")
         
-        // For more granular control of state-specific components, modify the `___FILEBASENAMEASIDENTIFIER___InactiveState` and `___FILEBASENAMEASIDENTIFIER___ActiveState` code.
+        /// For more granular control of states, modify the `___FILEBASENAMEASIDENTIFIER___InactiveState` and `___FILEBASENAMEASIDENTIFIER___ActiveState` code.
         
-        // Inactive State
+        // MARK: Inactive State
         // Customize
         
         let inactiveState = ___FILEBASENAMEASIDENTIFIER___InactiveState(entity: self)
@@ -21,7 +21,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         inactiveState.syncComponentArrays()
         
-        // Active State
+        // MARK: Active State
         // Customize
         
         let activeState = ___FILEBASENAMEASIDENTIFIER___ActiveState(entity: self)
@@ -30,14 +30,14 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         activeState.syncComponentArrays()
         
-        // State Machine (after init because it references self)
+        // MARK: State Machine
         
         let stateMachine = GKStateMachine(states: [
             inactiveState,
             activeState
             ])
         
-        // Components common to every state
+        // MARK: Components common to every state
         
         // Add components in the order of dependency; e.g., the states of the `StateMachineComponent` may depend on other components, so add it last.
         
