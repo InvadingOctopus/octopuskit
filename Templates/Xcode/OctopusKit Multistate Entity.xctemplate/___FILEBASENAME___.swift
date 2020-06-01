@@ -52,7 +52,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
 
 // MARK: - ___FILEBASENAMEASIDENTIFIER___InactiveState
 
-// This class may be moved out to a separate file and customized.
+// This class may be moved out to a separate file. If no customization is required beyond the component arrays initialized by the entity, this body may be deleted, leaving only the type declaration.
 
 final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OKEntityState {
     
@@ -77,7 +77,7 @@ final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OKEntityState {
 
 // MARK: - ___FILEBASENAMEASIDENTIFIER___ActiveState
 
-// This class may be moved out to a separate file and customized.
+// This class may be moved out to a separate file. If no customization is required beyond the component arrays initialized by the entity, this body may be deleted, leaving only the type declaration.
 
 final class ___FILEBASENAMEASIDENTIFIER___ActiveState: OKEntityState {
     
