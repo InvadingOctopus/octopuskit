@@ -43,7 +43,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         self.addComponents([
             StateMachineComponent(stateMachine: stateMachine,
-                                  stateClassWhenAddingToEntity: ___FILEBASENAMEASIDENTIFIER___InactiveState.self),
+                                  stateOnAddingToEntity: ___FILEBASENAMEASIDENTIFIER___InactiveState.self),
             ])
         
     }
