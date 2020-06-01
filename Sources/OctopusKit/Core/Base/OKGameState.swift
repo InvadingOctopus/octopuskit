@@ -20,22 +20,13 @@ public protocol OKGameStateDelegate: class {
 }
 
 /// Abstract base class for game states.
-open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
+open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
     
     // ℹ️ DESIGN: Not including a `gameCoordinator: OKGameCoordinator` property in `OKGameState`, so that subclasses may provide their own `gameCoordinator` property with their custom subclass of `OKGameCoordinator` if needed.
     
     // ℹ️ Even though there is a `OKGameStateDelegate` protocol, `OKGameState` only exposes a `delegate` for formality but it does not use it. The reason is that in certain situations, an `OKGameState` may have more than one "delegate" that it needs to send notifications to, e.g. both an outgoing scene and an incoming scene in the case of visual scene transition effects with a long duration. The `delegate` property may be opened as a future customization point.
     
     // MARK: - Properties
-    
-    /// Specifies the possible states that this state may transition to. If this array is empty, then all states are allowed (the default.)
-    ///
-    /// Checked by `isValidNextState(_:)`.
-    ///
-    /// - Important: This property should describe the **static** relationships between state classes that determine the set of edges in a state machine’s state graph; Do **not** perform conditional logic in this property to conditionally control state transitions. Check conditions before attempting to transition to a different state.
-    open var validNextStates: [OKGameState.Type] {
-        []
-    }
     
     /// The scene that will be presented when the `OKGameCoordinator` (or your custom subclass) enters this state.
     ///
@@ -168,17 +159,6 @@ open class OKGameState: GKState, OKSceneDelegate, ObservableObject {
         self.delegate = incomingScene ?? currentScene // Stay with `currentScene` if there is no new scene to be presented.
         
         self.delegate?.gameCoordinatorDidEnterState(self, from: previousState)
-    }
-
-    /// Returns `true` if the `validNextStates` property contains `stateClass` or is an empty array (which means all states are allowed.)
-    ///
-    /// - Important: Do not override this method to conditionally control state transitions. Instead, perform such conditional logic before transitioning to a different state.
-    open override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        // NOTE: Apple documentation for `isValidNextState(_:)`:
-        // Your implementation of this method should describe the static relationships between state classes that determine the set of edges in a state machine’s state graph.
-        // ⚠️ Do not use this method to conditionally control state transitions—instead, perform such conditional logic before calling a state machine’s `enter(_:)` method.
-        // By restricting the set of valid state transitions, you can use a state machine to enforce invariant conditions in your code. For example, if one state class can be entered only after a state machine has passed through a series of other states, code in that state class can safely assume that any actions performed by those other states have already occurred.
-        validNextStates.isEmpty || validNextStates.contains { stateClass == $0 }
     }
     
     /// - Important: When overriding in a subclass, take care of when you call `super.willExit(to:)` as that affects when the current `OKScene` is notified via `currentScene.gameCoordinatorWillExitState(_,to:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.

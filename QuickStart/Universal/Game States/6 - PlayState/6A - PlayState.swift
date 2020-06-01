@@ -45,7 +45,7 @@ final class PlayState: OKGameState {
         return stateMachine?.enter(PausedState.self) ?? false
     }
     
-    override var validNextStates: [OKGameState.Type] {
+    override var validNextStates: [OKState.Type] {
         
         // 🔶 STEP 6A.4: This property lists all the valid states which this state is allowed to transition to.
         //

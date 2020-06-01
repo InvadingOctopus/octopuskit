@@ -11,7 +11,7 @@ import GameplayKit
 public typealias OctopusEntityState = OKEntityState
 
 /// A logical state which may be associated with an entity's `StateMachineComponent`. Dictates the validity of state transitions and applies modifications to the entity, such as adding or removing components, upon entering from or exiting to specific states.
-open class OKEntityState: GKState {
+open class OKEntityState: OKState {
     
     // NOTE: The component lists are `Array`s instead of `Set`s so the order can be preserved.
     
@@ -45,6 +45,7 @@ open class OKEntityState: GKState {
     /// Sets `componentTypesToRemoveOnExit` to the types of all the components in `componentsToAddOnEntry`.
     ///
     /// If `componentsToAddOnEntry` is `nil` then `componentTypesToRemoveOnExit` is set to `nil` as well.
+    @inlinable
     open func syncComponentArrays() {
         componentTypesToRemoveOnExit = componentsToAddOnEntry?.map { type(of: $0) } ?? nil
     }

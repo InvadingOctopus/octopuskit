@@ -33,7 +33,7 @@ final class TitleState: OKGameState {
         return stateMachine?.enter(PlayState.self) ?? false
     }
 
-    override var validNextStates: [OKGameState.Type] {
+    override var validNextStates: [OKState.Type] {
         
         // 🔶 STEP 5A.3: This property lists all the valid states which this state is allowed to transition to.
         

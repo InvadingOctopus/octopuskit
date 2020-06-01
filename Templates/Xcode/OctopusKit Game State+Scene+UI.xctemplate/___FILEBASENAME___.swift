@@ -15,9 +15,9 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKGameState {
                    associatedSwiftUIView: ___FILEBASENAMEASIDENTIFIER___UI())
     }
         
-    override var validNextStates: [OKGameState.Type] {
+    override var validNextStates: [OKState.Type] {
         // Customize: Specify the valid states that this state can transition to.
-        // NOTE: Do not perform any logic to conditionally control state transitions here. See `OKGameState` documentation.
+        // NOTE: Do not perform any logic to conditionally control state transitions here. See `OKState` documentation.
         []  // Default: allow all states.
     }
     

@@ -10,7 +10,7 @@ import OctopusKit
 
 final class PlayableState: OKGameState {
     
-    open var validNextStates: [OKGameState.Type] {
+    open var validNextStates: [OKState.Type] {
         [PausedState.self]
     }
     
@@ -26,7 +26,7 @@ final class PlayableState: OKGameState {
 
 final class PausedState: OKGameState {
     
-    open var validNextStates: [OKGameState.Type] {
+    open var validNextStates: [OKState.Type] {
         [PlayableState.self]
     }
     
