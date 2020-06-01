@@ -70,8 +70,7 @@ final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OKEntityState {
             // entity.addComponents([])
             break
             
-        default:
-            break
+        default: break
         }
     }
 }
@@ -96,8 +95,7 @@ final class ___FILEBASENAMEASIDENTIFIER___ActiveState: OKEntityState {
             // entity.addComponents([])
             break
             
-        default:
-            break
+        default: break
         }
     }
 }
