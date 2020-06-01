@@ -20,7 +20,7 @@ extension SKColor {
     /// Shorthand for `withAlphaComponent(_:)`
     ///
     /// Useful for chaining calls to `SKColor` initializers.
-    open func withAlpha(_ alpha: CGFloat) -> SKColor {
+    open func alpha(_ alpha: CGFloat) -> SKColor {
         self.withAlphaComponent(alpha)
     }
     
