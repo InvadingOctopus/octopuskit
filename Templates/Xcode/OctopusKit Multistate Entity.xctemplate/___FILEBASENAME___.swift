@@ -16,17 +16,13 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         let inactiveState = ___FILEBASENAMEASIDENTIFIER___InactiveState(entity: self)
         
-        inactiveState.componentsToAddOnEntry = [] // Customize
-        
-        inactiveState.syncComponentArrays()
+        inactiveState.setComponents([]) // Customize
         
         // MARK: Active State
         
         let activeState = ___FILEBASENAMEASIDENTIFIER___ActiveState(entity: self)
         
-        activeState.componentsToAddOnEntry = [] // Customize
-        
-        activeState.syncComponentArrays()
+        activeState.setComponents([]) // Customize
         
         // MARK: State Machine
         

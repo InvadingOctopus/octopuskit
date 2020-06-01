@@ -70,6 +70,13 @@ open class OKEntityState: OKState {
     
     // MARK: - Common Tasks
     
+    /// Sets `componentsToAddOnEntry` to the specified array, then sets `componentTypesToRemoveOnExit` to match their types.
+    @inlinable
+    open func setComponents(_ components: [GKComponent]?) { // `nil` must be explicit.
+        self.componentsToAddOnEntry = components
+        syncComponentArrays()
+    }
+    
     /// Sets `componentTypesToRemoveOnExit` to the types of all the components in `componentsToAddOnEntry`.
     ///
     /// If `componentsToAddOnEntry` is `nil` then `componentTypesToRemoveOnExit` is set to `nil` as well.
