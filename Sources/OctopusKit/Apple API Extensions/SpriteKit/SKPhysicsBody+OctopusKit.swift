@@ -12,6 +12,8 @@ import SpriteKit
 
 public extension SKPhysicsBody {
 
+    // https://developer.apple.com/documentation/spritekit/skphysicsbody/configuring_a_physics_body
+    
     /// Creates a physics body from the texture of the specified sprite, capturing only the texels that exceed a specified transparency value.
     ///
     /// The size of the physics body will be the same as the sprite's size.
@@ -52,11 +54,11 @@ public extension SKPhysicsBody {
         self.allowsRotation = newValue
         return self
     }
-    
-    /// Sets whether this physics body is moved by the physics simulation, then returns the body.
+        
+    /// Sets the reduction of the body’s rotational velocity, and returns the body. Range: `0.0` to `1.0`. Default: `0.1`.
     @inlinable @discardableResult
-    final func isDynamic(_ newValue: Bool) -> Self {
-        self.affectedByGravity = newValue
+    final func angularDamping(_ newValue: CGFloat) -> Self {
+        self.angularDamping = newValue.clamped(to: 0.0...1.0)
         return self
     }
     
@@ -87,6 +89,48 @@ public extension SKPhysicsBody {
     final func contactTestBitMask(_ mask: PhysicsCategories) -> Self {
         // https://developer.apple.com/documentation/spritekit/skphysicsbody/1519781-contacttestbitmask
         self.contactTestBitMask = mask.rawValue
+        return self
+    }
+    
+    /// Sets the body's density, in kilograms per square meter, and returns the body. Causes `mass` to be recalculated. Default: `1.0`.
+    @inlinable @discardableResult
+    final func density(_ newValue: CGFloat) -> Self {
+        self.density = newValue
+        return self
+    }
+    
+    /// Sets the roughness of the body’s surface and returns the body. Range: `0.0` to `1.0`. Default: `0.2`.
+    @inlinable @discardableResult
+    final func friction(_ newValue: CGFloat) -> Self {
+        self.friction = newValue.clamped(to: 0.0...1.0)
+        return self
+    }
+    
+    /// Sets whether this physics body is moved by the physics simulation, then returns the body.
+    @inlinable @discardableResult
+    final func isDynamic(_ newValue: Bool) -> Self {
+        self.affectedByGravity = newValue
+        return self
+    }
+    
+    /// Sets the reduction of the body’s linear velocity, and returns the body. Range: `0.0` to `1.0`. Default: `0.1`.
+    @inlinable @discardableResult
+    final func linearDamping(_ newValue: CGFloat) -> Self {
+        self.linearDamping = newValue.clamped(to: 0.0...1.0)
+        return self
+    }
+    
+    /// Sets the body's mass in kilograms and returns the body. Causes `density` to be recalculated. Default: Based on `area` and the default `density`.
+    @inlinable @discardableResult
+    final func mass(_ newValue: CGFloat) -> Self {
+        self.mass = newValue
+        return self
+    }
+    
+    /// Sets the bounciness of the body and returns the body. Range: `0.0` to `1.0`. Default: `0.2`.
+    @inlinable @discardableResult
+    final func restitution(_ newValue: CGFloat) -> Self {
+        self.restitution = newValue.clamped(to: 0.0...1.0)
         return self
     }
     
