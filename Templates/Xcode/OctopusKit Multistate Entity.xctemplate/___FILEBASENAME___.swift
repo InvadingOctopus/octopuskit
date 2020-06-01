@@ -19,7 +19,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         inactiveState.componentsToAddOnEntry = [] // Customize
         
-        inactiveState.syncComponentTypesToRemoveOnExitWithComponentsToAddOnEntry()
+        inactiveState.syncComponentArrays()
         
         // Active State
         // Customize
@@ -28,7 +28,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         activeState.componentsToAddOnEntry = [] // Customize
         
-        activeState.syncComponentTypesToRemoveOnExitWithComponentsToAddOnEntry()
+        activeState.syncComponentArrays()
         
         // State Machine (after init because it references self)
         
