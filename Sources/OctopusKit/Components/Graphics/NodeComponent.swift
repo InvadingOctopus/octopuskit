@@ -32,7 +32,7 @@ public final class NodeComponent: GKSKNodeComponent {
     
     public var shouldNotifyCoComponentsWhenAddedToEntity: Bool = true
     
-    // MARK: - Life Cycle
+    // MARK: - Initializers
     
     /// Creates a `NodeComponent` with a new, empty `SKNode`.
     public convenience override init() {
@@ -59,7 +59,9 @@ public final class NodeComponent: GKSKNodeComponent {
         self.shouldNotifyCoComponentsWhenAddedToEntity = shouldNotifyCoComponentsWhenAddedToEntity
     }
     
-    public override func didAddToEntity() {
+    // MARK: Adding to Entity
+    
+    public final override func didAddToEntity() {
         OctopusKit.logForComponents("\(entity) ← \(self) \(super.node)")
         
         // Does our node already has a different entity? Check this before calling `super` which may set the node's `entity` property to ours.
@@ -107,7 +109,7 @@ public final class NodeComponent: GKSKNodeComponent {
     ///
     /// This is useful for the case when other components that depend on a `NodeComponent` were added to an entity before this component.
     @inlinable
-    public func notifyCoComponents() {
+    public final func notifyCoComponents() {
         // CHECK: Should this be `[file]private`?
         guard let entity = self.entity else { return }
         
@@ -118,7 +120,9 @@ public final class NodeComponent: GKSKNodeComponent {
         }
     }
     
-    public override func willRemoveFromEntity() {
+    // MARK: Removal
+    
+    public final override func willRemoveFromEntity() {
         OctopusKit.logForComponents("\(entity) ~ \(self) \(super.node)")
         
         // Warn if our node somehow ended up in a different entity by now. Check this before calling `super` which may set the node's `entity` property to `nil`.
