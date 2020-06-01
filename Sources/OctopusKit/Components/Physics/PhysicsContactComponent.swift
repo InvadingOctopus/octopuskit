@@ -10,7 +10,7 @@ import GameplayKit
 
 /// A base class for components which act upon a physics contact event if it involves the entity's `NodeComponent` node. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.
 ///
-/// - NOTE: ❕ Multiple subclasses of this component may receive the same event, such as a `MonsterContactComponent` and a `BulletContactComponent`, to handle the collision between a monster and a bullet. A contact-processing component should only be concerned with the properties which involve its own entity, and not modify the opposing body or any other entity.
+/// - NOTE: ❕ Multiple subclasses of this component may receive the same event, such as a `MonsterContactComponent` and a `BulletContactComponent`, to handle the collision between a monster and a bullet. Generally, a contact-processing component should only be concerned with the properties which involve its own entity, and not modify the opposing body or any other entity.
 ///
 /// **Dependencies:** `PhysicsComponent`, `PhysicsEventComponent`
 open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
