@@ -18,7 +18,7 @@ public final class StateMachineComponent <StateMachineClass>: OKComponent, Requi
     /// The class of the state to enter after `didAddToEntity()` is called. Repeated whenever this component is added to a new entity.
     public var stateOnAddingToEntity:       GKState.Type?
     
-    /// The class of the state to enter after `update(deltaTime:)` is first called. This property is ignored on subsequent updates, until this component is added to a new entity.
+    /// The class of the state to enter after `update(deltaTime:)` is first called, *before* `stateMachine.update(deltaTime:)` is called. This property is ignored on subsequent updates, until this component is added to a new entity.
     public var stateOnFirstUpdate:          GKState.Type?
     
     /// The class of the state to enter after `willRemoveFromEntity()` is called. Repeated whenever this component is removed from an entity.
