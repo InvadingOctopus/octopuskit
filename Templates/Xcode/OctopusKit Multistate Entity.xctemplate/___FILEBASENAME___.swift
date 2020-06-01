@@ -56,6 +56,10 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
 
 final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OKEntityState {
     
+    override var validNextStates: [OKState.Type] {
+        [___FILEBASENAMEASIDENTIFIER___ActiveState.self]
+    }
+    
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
         
@@ -70,10 +74,6 @@ final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OKEntityState {
             break
         }
     }
-    
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass is ___FILEBASENAMEASIDENTIFIER___ActiveState.Type
-    }
 }
 
 // MARK: - ___FILEBASENAMEASIDENTIFIER___ActiveState
@@ -81,6 +81,10 @@ final class ___FILEBASENAMEASIDENTIFIER___InactiveState: OKEntityState {
 // This class may be moved out to a separate file and customized.
 
 final class ___FILEBASENAMEASIDENTIFIER___ActiveState: OKEntityState {
+    
+    override var validNextStates: [OKState.Type] {
+        [___FILEBASENAMEASIDENTIFIER___InactiveState.self]
+    }
     
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
@@ -95,9 +99,5 @@ final class ___FILEBASENAMEASIDENTIFIER___ActiveState: OKEntityState {
         default:
             break
         }
-    }
-    
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass is ___FILEBASENAMEASIDENTIFIER___InactiveState.Type
     }
 }
