@@ -8,7 +8,9 @@
 
 import GameplayKit
 
-/// A base class for components that act upon a physics contact event if it involves the entity's `NodeComponent` node. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.
+/// A base class for components which act upon a physics contact event if it involves the entity's `NodeComponent` node. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.
+///
+/// - NOTE: ❕ Multiple subclasses of this component may receive the same event, such as a `MonsterContactComponent` and a `BulletContactComponent`, to handle the collision between a monster and a bullet. A contact-processing component should only be concerned with the properties which involve its own entity, and not modify the opposing body or any other entity.
 ///
 /// **Dependencies:** `PhysicsComponent`, `PhysicsEventComponent`
 open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
@@ -44,47 +46,71 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
             let contactEventComponent   = coComponent(PhysicsEventComponent.self)
             else { return }
         
+        // CHECK: Find a way to reduce code duplication?
+        
+        // MARK: Contact Beginnings
         // Handle the beginning of new contacts.
         
         for event in contactEventComponent.contactBeginnings {
             
-            let contact = event.contact
+            let contact = event.contact // Reduces clutter and may improve performance.
+            var opposingBody: SKPhysicsBody?
             
-            if contact.bodyA == physicsBody
-            || contact.bodyB == physicsBody {
+            if  contact.bodyA == physicsBody {
+                opposingBody = contact.bodyB
+            } else if contact.bodyB == physicsBody {
+                opposingBody = contact.bodyA
+            }
+            
+            if  let opposingBody = opposingBody {
                 
                 #if LOGPHYSICS
-                debugLog("💢 \(contact) BEGAN. A: \"\(contact.bodyA.node?.name ?? "")\", B: \"\(contact.bodyB.node?.name ?? "")\", point: \(contact.contactPoint), impulse: \(contact.collisionImpulse), normal: \(contact.contactNormal)")
+                debugLog("💢 \(contact) BEGAN. 🅰: \"\(contact.bodyA.node?.name ?? "")\", 🅱: \"\(contact.bodyB.node?.name ?? "")\", @\(contact.contactPoint), impulse: \(contact.collisionImpulse), normal: \(contact.contactNormal)",
+                    topic: "\(self)")
                 #endif
                 
-                didBegin(contact, in: event.scene)
+                didBegin(contact, entityBody: physicsBody, opposingBody: opposingBody, scene: event.scene)
             }
         }
         
+        // MARK: Contact Endings
         // Handle contacts that have just ended.
         
         for event in contactEventComponent.contactEndings {
             
-            let contact = event.contact // PERFORMANCE? Does this help? CHECK: Better way to write this?
+            let contact = event.contact // Reduces clutter and may improve performance.
+            var opposingBody: SKPhysicsBody?
             
-            #if LOGPHYSICS
-            debugLog("💢 \(contact) ENDED. A: \"\(contact.bodyA.node?.name ?? "")\", B: \"\(contact.bodyB.node?.name ?? "")\", point: \(contact.contactPoint), impulse: \(contact.collisionImpulse), normal: \(contact.contactNormal)")
-            #endif
+            if  contact.bodyA == physicsBody {
+                opposingBody = contact.bodyB
+            } else if contact.bodyB == physicsBody {
+                opposingBody = contact.bodyA
+            }
             
-            if contact.bodyA == physicsBody
-            || contact.bodyB == physicsBody {
+            if  let opposingBody = opposingBody {
                 
-                didEnd(contact, in: event.scene)
+                #if LOGPHYSICS
+                debugLog("💢 \(contact) ENDED. 🅐: \"\(contact.bodyA.node?.name ?? "")\", 🅑: \"\(contact.bodyB.node?.name ?? "")\", @\(contact.contactPoint), impulse: \(contact.collisionImpulse), normal: \(contact.contactNormal)",
+                    topic: "\(self)")
+                #endif
+                
+                didEnd(contact, entityBody: physicsBody, opposingBody: opposingBody, scene: event.scene)
             }
         }
     }
     
     // MARK: Abstract
     
-    /// Abstract; to be implemented by a subclass.
-    open func didBegin  (_ contact: SKPhysicsContact, in scene: OKScene?) {}
+    /// Abstract; to be handled by a subclass. The beginning of a contact between the `PhysicsComponent` body of this component's entity and another body.
+    open func didBegin  (_ contact:     SKPhysicsContact,
+                         entityBody:    SKPhysicsBody,
+                         opposingBody:  SKPhysicsBody,
+                         scene:         OKScene?) {}
     
-    /// Abstract; to be implemented by a subclass.
-    open func didEnd    (_ contact: SKPhysicsContact, in scene: OKScene?) {}
+    /// Abstract; to be handled by a subclass. The end of a contact between the `PhysicsComponent` body of this component's entity and another body.
+    open func didEnd    (_ contact:     SKPhysicsContact,
+                         entityBody:    SKPhysicsBody,
+                         opposingBody:  SKPhysicsBody,
+                         scene:         OKScene?) {}
     
 }
