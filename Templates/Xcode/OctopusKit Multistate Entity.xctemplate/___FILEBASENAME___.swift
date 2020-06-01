@@ -13,7 +13,6 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         /// For more granular control of states, modify the `___FILEBASENAMEASIDENTIFIER___InactiveState` and `___FILEBASENAMEASIDENTIFIER___ActiveState` code.
         
         // MARK: Inactive State
-        // Customize
         
         let inactiveState = ___FILEBASENAMEASIDENTIFIER___InactiveState(entity: self)
         
@@ -22,7 +21,6 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         inactiveState.syncComponentArrays()
         
         // MARK: Active State
-        // Customize
         
         let activeState = ___FILEBASENAMEASIDENTIFIER___ActiveState(entity: self)
         
