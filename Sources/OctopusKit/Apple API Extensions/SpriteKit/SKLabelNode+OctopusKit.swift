@@ -123,7 +123,7 @@ extension SKLabelNode {
     
     /// Encapsulates the label's font-related properties in an `OKFont`.
     @inlinable
-    public var font: OKFont {
+    public final var font: OKFont {
         get { OKFont(name: self.fontName, size: self.fontSize, color: self.fontColor) }
         set {
             if  newValue.name  != nil {
@@ -138,17 +138,9 @@ extension SKLabelNode {
         }
     }
     
-    @inlinable
-    open func setAlignment(horizontal: SKLabelHorizontalAlignmentMode,
-                           vertical:   SKLabelVerticalAlignmentMode)
-    {
-        self.horizontalAlignmentMode = horizontal
-        self.verticalAlignmentMode   = vertical
-    }
-    
     /// Encapsulates the `horizontalAlignmentMode` and `verticalAlignmentMode` in a tuple.
     @inlinable
-    public var alignment: (horizontal: SKLabelHorizontalAlignmentMode,
+    public final var alignment: (horizontal: SKLabelHorizontalAlignmentMode,
                            vertical:   SKLabelVerticalAlignmentMode)
         {
         // CHECK: Is assigning multiple properties via tuples a good "idiomatic" idea?
@@ -200,5 +192,39 @@ extension SKLabelNode {
             default:        verticalAlignmentMode = .baseline /// CHECK: Should this be `center`?
             }
         }
+    }
+    
+    // MARK: - Modifiers
+    // As in SwiftUI
+    
+    /// Sets the alignment(s) and returns the node.
+    @inlinable @discardableResult
+    final func alignment(horizontal: SKLabelHorizontalAlignmentMode,
+                         vertical:   SKLabelVerticalAlignmentMode) -> SKLabelNode
+    {
+        self.horizontalAlignmentMode = horizontal
+        self.verticalAlignmentMode   = vertical
+        return self
+    }
+    
+    /// Sets the font name and returns the node.
+    @inlinable @discardableResult
+    final func fontName(_ newValue: String?) -> SKLabelNode {
+        self.fontName = newValue
+        return self
+    }
+    
+    /// Sets the font size and returns the node.
+    @inlinable @discardableResult
+    final func fontSize(_ newValue: CGFloat) -> SKLabelNode {
+        self.fontSize = newValue
+        return self
+    }
+    
+    /// Sets the font color and returns the node.
+    @inlinable @discardableResult
+    final func fontColor(_ newValue: SKColor?) -> SKLabelNode {
+        self.fontColor = newValue
+        return self
     }
 }
