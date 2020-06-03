@@ -9,6 +9,7 @@
 import GameplayKit
 
 /// Encapsulates a `GKStateMachine` and updates its current state on every frame.
+@dynamicMemberLookup
 public final class StateMachineComponent <StateMachineClass>: OKComponent, RequiresUpdatesPerFrame
     where StateMachineClass: GKStateMachine
 {
@@ -26,6 +27,12 @@ public final class StateMachineComponent <StateMachineClass>: OKComponent, Requi
     
     /// If `true` then `stateOnFirstUpdate` is ignored. Set to `false` after `willRemoveFromEntity()` is called.
     public fileprivate(set) var didSetStateOnFirstUpdate = false
+    
+    /// Lets `StateMachineComponent` be a proxy for the properties and methods of its `stateMachine: GKStateMachine`, e.g. allowing code like `component.currentState` to be used instead of `component.stateMachine.currentState`.
+    subscript <T> (dynamicMember keyPath: KeyPath <GKStateMachine, T> ) -> T {
+        // CHECK: Does this decreases performance?
+        self.stateMachine[keyPath: keyPath]
+    }
     
     // MARK: - Initialization
     
