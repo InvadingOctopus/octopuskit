@@ -27,14 +27,19 @@ public final class CameraZoomComponent: OKComponent, RequiresUpdatesPerFrame {
     
     public var isPaused: Bool = false
     
-    /// A flag that indicates whether there is a gesture to process in the `update(deltaTime:)` method.
+    /// The most recent state of the gesture recognizer as received by this component.
     ///
-    /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle.
+    /// This prevents the component from responding to asynchronous events (such as player input) outside of the frame update cycle, and also lets the component react to the ending of a gesture, because without storing it in a property, the state would revert back to `possible` by the time this component receives a frame update.
     @LogInputEventChanges(propertyName: "CameraZoomComponent.haveGestureToProcess")
-    private var haveGestureToProcess:   Bool = false
+    private var pinchGestureState:      UIGestureRecognizer.State = .possible
     
     private var initialCameraScale:     CGFloat?
     private var initialGestureScale:    CGFloat?
+    
+    /// If `true`, then the `boundsConstraint` of the `CameraComponent` is recalculated every time the zoom scale changes, ensuring that the camera remains within bounds throughout the zoom.
+    ///
+    /// - WARNING: May reduce performance.
+    public var resetBoundsConstraintOnEveryChange = true
     
     // MARK: - Life Cycle
     
@@ -52,24 +57,25 @@ public final class CameraZoomComponent: OKComponent, RequiresUpdatesPerFrame {
         
         // ℹ️ DESIGN: Do not confirm if the `pinchGestureRecognizer` that sent this event is the same `PinchGestureRecognizerComponent` that is associated with this entity, in case this component may have been explicitly made the target of some other gesture recognizer, and that is allowed in the name of flexible customizability.
         
-        haveGestureToProcess = true
+        pinchGestureState = pinchGestureRecognizer.state
     }
     
     public override func update(deltaTime seconds: TimeInterval) {
         
         // Start by checking if we have a gesture to process, then clear the `haveGestureToProcess` flag regardless of any other conditions, so that the flag does not hold an stale state for future frames.
         
-        guard haveGestureToProcess else { return }
-        
-        haveGestureToProcess = false
-        
         guard
             !isPaused,
-            let camera = coComponent(CameraComponent.self)?.camera,
+            pinchGestureState  != .possible,
+            let cameraComponent = coComponent(CameraComponent.self),
             let pinchGestureRecognizer = coComponent(PinchGestureRecognizerComponent.self)?.gestureRecognizer
             else { return }
         
-        switch pinchGestureRecognizer.state {
+        let camera              = cameraComponent.camera
+        
+        /// ❕ NOTE: LESSON: BUG FIXED: Use the stored `pinchGestureState`, because when a gesture ends, the delay between the `gestureEvent(pinchGestureRecognizer:)` callback above and this `update(deltaTime:)` method, will cause the gesture state to return `possible` instead of `ended`.
+        
+        switch pinchGestureState {
             
         case .began:
             self.initialCameraScale  = CGFloat.maximum(camera.xScale, camera.yScale)
@@ -81,13 +87,20 @@ public final class CameraZoomComponent: OKComponent, RequiresUpdatesPerFrame {
             {
                 let gestureScaleDelta   = pinchGestureRecognizer.scale - initialGestureScale
                 
-                // ⚠️ NOTE: Have to invert `gestureScaleDelta` for correct/conventional/expected behavior (moving fingers closer = zoom out, moving fingers apart = zoom in.)
+                /// ⚠️ NOTE: Have to invert `gestureScaleDelta` for correct/conventional/expected behavior (moving fingers closer = zoom out, moving fingers apart = zoom in.)
                 
                 camera.setScale(initialCameraScale + (-gestureScaleDelta))
+                
+                if  resetBoundsConstraintOnEveryChange {
+                    // PERFORMANCE: may be reduced.
+                    cameraComponent.resetBoundsConstraint()
+                }
             }
             
         case .cancelled, .failed, .ended:
-            coComponent(CameraComponent.self)?.resetBoundsConstraint()
+            if !resetBoundsConstraintOnEveryChange {
+                cameraComponent.resetBoundsConstraint()
+            }
             
         default: break
         }
@@ -100,7 +113,7 @@ public final class CameraZoomComponent: OKComponent, RequiresUpdatesPerFrame {
         
         guard let pinchGestureRecognizer = coComponent(PinchGestureRecognizerComponent.self)?.gestureRecognizer else { return }
         
-        pinchGestureRecognizer.removeTarget(self, action: #selector(gestureEvent)) // CHECK: Should `action` be `nil`?
+        pinchGestureRecognizer.removeTarget(self, action: #selector(gestureEvent)) /// CHECK: Should `action` be `nil`?
     }
 }
 
