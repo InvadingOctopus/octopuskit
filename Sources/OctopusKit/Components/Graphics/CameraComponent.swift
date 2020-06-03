@@ -156,7 +156,7 @@ public final class CameraComponent: NodeAttachmentComponent <SKCameraNode> {
         
         if  let nodeToTrack = self.nodeToTrack {
             // Constrain the camera to stay a constant distance of 0 points from the player node.
-            self.trackingConstraint = SKConstraint.distance(SKRange.zero, to: nodeToTrack)
+            self.trackingConstraint = SKConstraint.distance(.zero, to: nodeToTrack)
         }
         
         if  let trackingConstraint = self.trackingConstraint {
@@ -217,10 +217,10 @@ public final class CameraComponent: NodeAttachmentComponent <SKCameraNode> {
             
             // Constrain the camera to avoid it moving to the very edges of the scene.
             // First, work out the scaled size of the screen and camera.
-            let scaledScreenSize = CGSize(width: screenSize.width * camera.xScale,
+            let scaledScreenSize = CGSize(width:  screenSize.width  * camera.xScale,
                                           height: screenSize.height * camera.yScale)
             
-            let xInset = min(scaledScreenSize.width / 2, bounds.width / 2)
+            let xInset = min(scaledScreenSize.width  / 2, bounds.width / 2)
             let yInset = min(scaledScreenSize.height / 2, bounds.height / 2)
             
             // Use these insets to create a smaller inset rectangle within which the camera must stay.
