@@ -144,6 +144,8 @@ open class OKEntity: GKEntity {
         delegate?.entity(self, didAddComponent: component)
     }
     
+    // MARK: - Removal
+    
     /// Requests this entity's `OKEntityDelegate` (i.e. the scene) to remove this entity.
     @inlinable
     public final func removeFromDelegate() {

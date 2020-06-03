@@ -13,7 +13,7 @@ import GameplayKit
 /// To allow the player to move the camera, use `CameraPanComponent` and `CameraZoomComponent`.
 ///
 /// **Dependencies:** `SceneComponent`
-public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
+public final class CameraComponent: NodeAttachmentComponent <SKCameraNode> {
 
     // TODO: Tests
     
@@ -60,6 +60,8 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
     
     public fileprivate(set) var trackingConstraint: SKConstraint?
     public fileprivate(set) var boundsConstraint:   SKConstraint?
+    
+    // MARK: - Life Cycle
     
     public init(cameraNode:                 SKCameraNode? = nil,
                 nodeToTrack:                SKNode?       = nil,
@@ -121,7 +123,10 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
     
     // MARK: - Constraints
     
+    /// Recreates the tracking and bounds constraints and reapplies them to the camera.
     public func resetConstraints() {
+        // NOTE: Apply the bounds constraint last (to override tracking), because constraints are processed in array order.
+        
         if  self.nodeToTrack != nil {
             resetTrackingConstraint()
         }
@@ -130,6 +135,8 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
             resetBoundsConstraint()
         }
     }
+    
+    // MARK: Tracking
     
     public func resetTrackingConstraint() {
         
@@ -160,6 +167,8 @@ public final class CameraComponent: NodeAttachmentComponent<SKCameraNode> {
             camera.constraints?.append(trackingConstraint)
         }
     }
+    
+    // MARK: Bounds
     
     /// - Important: If `bounds` are specified, this method must be called again if the camera's scale is later changed.
     public func resetBoundsConstraint() {
