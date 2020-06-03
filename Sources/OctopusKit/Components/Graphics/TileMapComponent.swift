@@ -62,7 +62,7 @@ open class TileMapComponent: OKComponent {
     public let containerNode = SKNode()
     
     /// The difference in the `zPosition` of each tile map layer, starting from `0` for the first layer.
-    public var zPositionSpacing: CGFloat = 10
+    public var zPositionSpacing: CGFloat = 1
     
     public init?(tileSet:    SKTileSet,
                  tileSize:   CGSize? = nil,
