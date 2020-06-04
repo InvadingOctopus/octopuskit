@@ -16,11 +16,11 @@ public typealias SpriteKitComponent = NodeComponent
 ///
 /// - IMPORTANT: As a temporary fix for APPLEBUG 20180515a, the `isPaused` property of the node is set to `false` when this component is added to an entity.
 ///
-/// - WARNING: Some core OctopusKit functionality (such as accessing the onscreen node of an entity at runtime) specifically requires `GKSKNodeComponent` or `NodeComponent` and may **not** work with their subclasses! Components that represent visuals, such as a `TileMapComponent`, must include a node that must be added to an entity via `NodeComponent(node:)`.
+/// - WARNING: Some core OctopusKit functionality (such as accessing the onscreen node of an entity at runtime) *specifically requires* `GKSKNodeComponent` or `NodeComponent` and may **not** work with their subclasses! Components which represent visuals, such as a `TileMapComponent`, must include a node property that must be added to an entity via `NodeComponent(node:)`.
 public final class NodeComponent: GKSKNodeComponent {
   
-    // ⚠️ NOTE: DO NOT subclass `NodeComponent`. See the warning in the documentation above.
-    
+    /// ⚠️ NOTE: **DO NOT subclass** `NodeComponent`. See the warning in the documentation above.
+        
     public override var description: String {
         // NOTE: To reduce log clutter, only include the node's name here; full node description should only be in `didAddToEntity()`.
         if  let name = super.node.name {
@@ -34,9 +34,43 @@ public final class NodeComponent: GKSKNodeComponent {
     
     // MARK: - Initializers
     
+    /// Creates a `GKSKNodeComponent` or `NodeComponent` to represent the specified node, and optionally adds the node to a parent node if specified.
+    public init(node: SKNode,
+                addToNode newParent: SKNode?)
+    {
+        // Warn if the node is already a part of another entity.
+        
+        if  let existingNodeEntity = node.entity {
+            OctopusKit.logForWarnings("\(node) is already associated with \(existingNodeEntity)")
+        }
+        
+        super.init(node: node)
+        
+        // CHECK: Should it be !== or !=
+        
+        // If `newParent` is specified and our node isn't already its child, try adding our node to that parent.
+        
+        if  let newParent = newParent,
+            node.parent !== newParent
+        {
+            
+            // If the node already has a different parent, remove it from there, because that would be the expected behavior of explicitly associating it with this component and specifying a new parent.
+            
+            if  let existingParent = node.parent {
+                
+                OctopusKit.logForWarnings("\(node.name ?? String(describing: node)) already has a parent: \(existingParent) — Moving to \(newParent.name ?? String(optional: newParent))")
+                
+                node.removeFromParent()
+            }
+            
+            newParent.addChild(node)
+        }
+        
+    }
+    
     /// Creates a `NodeComponent` with a new, empty `SKNode`.
     public convenience override init() {
-        // CHECK: Should there be an empty `init()`? We may want the `node` parameter to be explicit at every `NodeComponent` creation point, because the use of `NodeComponent()` might imply that this component should adopt the `entity.node` (though a `GKSKNodeComponent` must be initialized with an `SKNode`)
+        /// CHECK: Should there be an empty `init()`? We may want the `node` parameter to be explicit at every `NodeComponent` creation point, because the use of `NodeComponent()` might imply that this component should adopt the `entity.node` (whereas a `GKSKNodeComponent` **must** be initialized with an `SKNode`)
         self.init(node: SKNode(), addToNode: nil)
     }
     
@@ -48,15 +82,23 @@ public final class NodeComponent: GKSKNodeComponent {
         self.shouldNotifyCoComponentsWhenAddedToEntity = shouldNotifyCoComponentsWhenAddedToEntity
     }
     
+    /// Creates a `NodeComponent` to represent a new `SKNode` and adds it to the specified parent node at the specified position and z axis.
     public convenience init(createNewNodeIn parent: SKNode,
-                            position:  CGPoint = .zero,
-                            zPosition: CGFloat = 0,
+                            position:               CGPoint = .zero,
+                            zPosition:              CGFloat = 0,
                             shouldNotifyCoComponentsWhenAddedToEntity: Bool = true)
     {
-        self.init(createNewNodeIn:  parent,
-                  position:         position,
-                  zPosition:        zPosition)
+        let newNode       = SKNode()
+        newNode.position  = position
+        newNode.zPosition = zPosition
+        
+        self.init(node: newNode, addToNode: parent)
+        
         self.shouldNotifyCoComponentsWhenAddedToEntity = shouldNotifyCoComponentsWhenAddedToEntity
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
     // MARK: Adding to Entity
