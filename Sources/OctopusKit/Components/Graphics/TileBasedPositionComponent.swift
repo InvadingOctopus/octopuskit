@@ -20,6 +20,8 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
         ]
     }
     
+    // MARK: - Properties
+    
     /// Specifies a `TileMapComponent` or its subclass which may be in another entity, e.g. a map entity. If `nil` then this component's entity's `TileMapComponent` (but not a subclass) is used, if any.
     ///
     /// A `RelayComponent` in this component's entity may also be used to connect to a `TileMapComponent` in another entity by leaving this property `nil`.
@@ -27,7 +29,7 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
     
     /// The index of the `TileMapComponent` layer to use, i.e. the `SKTileMapNode` to query for the tile coordinates.
     public var tileMapLayer: Int = 0
-    
+        
     /// Applies an offset to the entity's node position from the center of a map tile.
     public var offsetFromTileCenter: CGPoint = .zero
     
@@ -58,6 +60,25 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
     public var animationTimingMode: SKActionTimingMode
     
     public var animationActionKey   = "OctopusKit.Animation.TileBasedPositionComponent"
+    
+     // MARK: - Computed Properties
+    
+    /// The `SKTileMapNode` at the `tileMapLayer` of the entity's `TileMapComponent`. Returns `nil` if the entity has no `TileMapComponent` or if the index is out of bounds.
+    @inlinable
+    public var tileMapNode: SKTileMapNode? {
+        
+        guard let tileMapComponent = self.tileMapComponentOverride ?? coComponent(TileMapComponent.self)
+            else { return nil }
+        
+        guard tileMapComponent.layers.isValidIndex(self.tileMapLayer) else {
+            OctopusKit.logForWarnings("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)")
+            return nil
+        }
+        
+        return tileMapComponent.layers[tileMapLayer]
+    }
+    
+    // MARK: - Life Cycle
     
     /// - Parameters:
     ///   - tileMapComponentOverride: Specify `nil` to use this component's entity's `TileMapComponent`, or specify a `TileMapComponent` (or its subclass) in another entity, e.g. a map entity.
@@ -109,22 +130,16 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
         }
     }
     
-    /// Sets the position of this entity's `NodeComponent` node to the center of the tile in the `tileMapComponent`'s `SKTileMapNode`.
+    // MARK: - Positioning
+    
+    /// The position of the tile at `coordinates` in the `tileMapLayer` of the entity's `TileMapComponent`, after adding `offsetFromTileCenter`. Returns `nil` if the entity has no `TileMapComponent`, or if the `tileMapLayer` index or `coordinates` are out of bounds.
     @inlinable
-    public func alignNodePositionToTile() {
-        guard
-            let node = self.entityNode,
-            let tileMapComponent = self.tileMapComponentOverride ?? coComponent(TileMapComponent.self)
-            else { return }
+    public var position: CGPoint? {
         
-        guard tileMapComponent.layers.isValidIndex(self.tileMapLayer) else {
-            OctopusKit.logForWarnings("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)")
-            return
-        }
+        guard let tileMapNode = self.tileMapNode else { return nil }
         
-        let tileMapNode = tileMapComponent.layers[tileMapLayer]
-        let column      = self.coordinates.x
-        let row         = self.coordinates.y
+        let column  = self.coordinates.x
+        let row     = self.coordinates.y
         
         guard // SKTileMapNode is 0-indexed
             column  >= 0,
@@ -134,11 +149,22 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
         else {
             // CHECK: PERFORMANCE: Is this check necessary? or would it be handled by the SKTileMapNode?
             // TODO: Warp-around option.
-            OctopusKit.logForWarnings("\(self.coordinates) out of bounds for the \(tileMapNode.numberOfColumns) x \(tileMapNode.numberOfRows) tiles in \(tileMapComponent)")
-            return
+            OctopusKit.logForWarnings("\(self.coordinates) out of bounds for the \(tileMapNode.numberOfColumns) x \(tileMapNode.numberOfRows) tiles in \(tileMapNode)")
+            return nil
         }
         
-        let tiledPosition = tileMapNode.centerOfTile(atColumn: column, row: row) + offsetFromTileCenter
+        return tileMapNode.centerOfTile(atColumn: column, row: row)
+            + self.offsetFromTileCenter
+    }
+    
+    /// Sets the position of this entity's `NodeComponent` node to the center of the tile in the `tileMapComponent`'s `SKTileMapNode`.
+    @inlinable
+    public func alignNodePositionToTile() {
+        guard
+            let node            = self.entityNode,
+            let tiledPosition   = self.position,
+            let tileMapNode     = self.tileMapNode
+            else { return }
         
         // Set the position inside the appropriate coordinate space.
         
@@ -156,8 +182,9 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
         // The bottom-most row (0) should have the highest z height (equal to the number of rows).
         
         if  setZPosition {
-            let rows = tileMapNode.numberOfRows
-            node.zPosition = CGFloat(rows - row) + zPositionModifier
+            let rows        = tileMapNode.numberOfRows
+            let row         = self.coordinates.y
+            node.zPosition  = CGFloat(rows - row) + zPositionModifier
         }
         
         // Finally! Move the node to new position, animating the movement if needed.
