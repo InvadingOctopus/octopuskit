@@ -199,7 +199,7 @@ open class OKScene: SKScene,
         return "\"\(name == nil ? "" : name!)\" frame = \(frame) size = \(size) anchor = \(anchorPoint) view.frame.size = \(view?.frame.size)"
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Initialization
     
     public required override init(size: CGSize) {
         // Required so that it may be constructed by metatype values, e.g. `sceneClass.init(size:)`
@@ -217,89 +217,35 @@ open class OKScene: SKScene,
     /// Abstract; override in subclass. Called by the initializers to set the scene's name at the earliest point for logging purposes.
     open func setName() -> String? { nil }
     
+    // MARK: - Load
+    
     open override func sceneDidLoad() {
         OctopusKit.logForFramework("\(self)")
         super.sceneDidLoad()
         
+        // Create the initial set of component systems. This is also a convenient customization point for subclasses, so each scene can have a standard method for setting up its systems.
+        
+        componentSystems.createSystems(forClasses: createComponentSystems())
+        
         // Create and add the entity that represents the scene itself.
         
         if  self.entity == nil {
+            
             createSceneEntity()
+            
+            /// Remember to add components from the scene's root entity!
+            /// This takes care of including any additional components that were added during a subclass's override of `createSceneEntity()`, such as `OKTurnBasedScene` adding a `TurnCounterComponent`.
+            
+            componentSystems.addComponents(foundIn: self.entity!)
         }
         
         // CHECK: Should this be moved to `didMove(to:)`?
         self.lastUpdateTime = 0 // CHECK: nil?
     }
     
-    /// An abstract method called by `OKViewController` before the scene is presented in a view. Override this in a subclass to set up scaling etc. before the scene displays any content.
-    ///
-    /// - Important: This method has to be called manually (e.g. from the `SKView`'s view controller) before presenting the scene. It is not invoked by the system and is *not* guaranteed to be called.
-    open func willMove(to view: SKView) {}
+    // MARK: Component Systems
     
-    /// Calls `createContents()` which may be used by a subclass to create the scene's contents, then adds all components from each entity in the `entities` set to the relevant systems in the `componentSystems` array. If overridden then `super` must be called for proper initialization of the scene.
-    open override func didMove(to: SKView) {
-        // CHECK: Should this be moved to `sceneDidLoad()`?
-        OctopusKit.logForFramework("name = \"\(name ?? "")\", size = \(size), view.frame.size = \(to.frame.size), scaleMode = \(scaleMode.rawValue)")
-        
-        secondsElapsedSinceMovedToView = 0
-        
-        if !didCreateContents {
-            
-            // Convenient customization point for subclasses, so they can have a standard method for setting up the initial list of component systems.
-            componentSystems.createSystems(forClasses: createComponentSystems())
-            
-            // Remember to add components from the scene's root entity!
-            /// This takes care of including any additional components that were added during a subclass's override of `createSceneEntity()`, such as `OKTurnBasedScene` adding a `TurnCounterComponent`.
-            componentSystems.addComponents(foundIn: self.entity!)
-            
-            OctopusKit.logForFramework("Calling createContents() for \(self)")
-            createContents()
-            
-            // addAllComponentsFromAllEntities(to: self.componentSystems) // CHECK: Necessary? Should we just rely on OKEntityDelegate?
-            
-            didCreateContents = true // Take care of this flag here so that subclass does not have to do so in `createContents()`.
-        }
-        
-        currentFrameNumber = 1 // Set the frame counter to 1 here because it is incremented in `didFinishUpdate()`, so that logs correctly say the first frame number during the first `update(_:)` method. ⚠️ NOTE: There is still a call to `OKViewController-Universal.viewWillLayoutSubviews()` after this, before the first `update(_:)`. CHECK: Fix?
-        
-        // Steal the focus on macOS so the player doesn't have to click on the view before using the keyboard.
-        // CHECK: Conflicts with SwiftUI etc.
-        
-        #if os(macOS)
-        to.window?.makeFirstResponder(self)
-        #endif
-    }
-    
-    /// Creates an entity to represent the scene itself (the root node.)
-    ///
-    /// This entity may incorporate components to display top-level visual content, such as the user interface or head-up display (HUD), and manage scene-wide subsystems such as input or game turns.
-    open func createSceneEntity() {
-        // BUG: Setting an `SKScene`'s entity directly with `GKEntity()` causes the scene's entity to remain `nil`, as of 2017/10/13.
-        
-        // Warn if the scene already has an entity representing it.
-        
-        if  let existingEntity = self.entity {
-            OctopusKit.logForErrors("\(self) already has an entity: \(existingEntity)")
-            // CHECK: Remove the existing entity here, or exit the method here?
-        }
-        
-        /// Let a subclass provide the scene's name in case we got here without setting it (which may happen because `super.init(...)` calls `sceneDidLoad` which then calls this method, before `OKScene.init(...)` has a chance to call any `self.` methods.
-        
-        if self.name == nil { self.name = setName() }
-        
-        // Create an entity to represent the scene itself, with an `NodeComponent` and `SceneComponent`.
-        
-        let sceneEntity = OKEntity(name: self.name, node: self) // NOTE: `node: self` adds a `NodeComponent`.
-        
-        sceneEntity.addComponent(SceneComponent(scene: self))
-        
-        self.entity = sceneEntity
-        addEntity(sceneEntity)
-        
-        assert(self.entity === sceneEntity, "Could not set scene's entity")
-    }
-    
-    /// Returns an array that specifies the order of execution for components used by this scene. Called after the scene is presented in a view, before `createContents()` is called.
+    /// Returns an array that specifies the order of execution for components used by this scene. Called after the scene is first loaded, from `sceneDidLoad()`, before `createSceneEntity()` is called.
     ///
     /// Override in subclass. The default implementation returns an array of commonly-used systems.
     ///
@@ -367,9 +313,77 @@ open class OKScene: SKScene,
         return timeAndState + playerInput + movementAndPhysics + miscellaneous
     }
     
-    /// Abstract; override in subclass. Creates the scene's contents and sets up entities and components. Called after the scene is presented in a view, after `createComponentSystems()`.
+    // MARK: Scene Root Entity
+    
+    /// Creates an entity to represent the scene itself (the root node.)
     ///
-    ///  Called from `didMove(to:)`.
+    /// This entity may incorporate components to display top-level visual content, such as the user interface or head-up display (HUD), and manage scene-wide subsystems such as input or game turns.
+    open func createSceneEntity() {
+        // BUG: Setting an `SKScene`'s entity directly with `GKEntity()` causes the scene's entity to remain `nil`, as of 2017/10/13.
+        
+        // Warn if the scene already has an entity representing it.
+        
+        if  let existingEntity = self.entity {
+            OctopusKit.logForErrors("\(self) already has an entity: \(existingEntity)")
+            // CHECK: Remove the existing entity here, or exit the method here?
+        }
+        
+        /// Let a subclass provide the scene's name in case we got here without setting it (which may happen because `super.init(...)` calls `sceneDidLoad` which then calls this method, before `OKScene.init(...)` has a chance to call any `self.` methods.
+        
+        if self.name == nil { self.name = setName() }
+        
+        // Create an entity to represent the scene itself, with an `NodeComponent` and `SceneComponent`.
+        
+        let sceneEntity = OKEntity(name: self.name, node: self) // NOTE: `node: self` adds a `NodeComponent`.
+        
+        sceneEntity.addComponent(SceneComponent(scene: self))
+        
+        self.entity = sceneEntity
+        addEntity(sceneEntity)
+        
+        assert(self.entity === sceneEntity, "Could not set scene's entity")
+    }
+    
+    // MARK: - View
+    
+    /// An abstract method called by `OKViewController` before the scene is presented in a view. Override this in a subclass to set up scaling etc. before the scene displays any content.
+    ///
+    /// - Important: This method has to be called manually (e.g. from the `SKView`'s view controller) before presenting the scene. It is not invoked by the system and is *not* guaranteed to be called.
+    open func willMove(to view: SKView) {}
+    
+    /// Calls `createContents()` which may be used by a subclass to create the scene's contents, then adds all components from each entity in the `entities` set to the relevant systems in the `componentSystems` array. If overridden then `super` must be called for proper initialization of the scene.
+    open override func didMove(to: SKView) {
+        // CHECK: Should this be moved to `sceneDidLoad()`?
+        OctopusKit.logForFramework("name = \"\(name ?? "")\", size = \(size), view.frame.size = \(to.frame.size), scaleMode = \(scaleMode.rawValue)")
+        
+        secondsElapsedSinceMovedToView = 0
+        
+        // Let the subclass build the scene.
+        
+        if !didCreateContents {
+            
+            OctopusKit.logForFramework("Calling createContents() for \(self)")
+            createContents()
+            
+            // addAllComponentsFromAllEntities(to: self.componentSystems) // CHECK: Necessary? Should we just rely on OKEntityDelegate?
+            
+            didCreateContents = true // Take care of this flag here so that subclass does not have to do so in `createContents()`.
+        }
+        
+        /// Set the frame counter to 1 here because it is incremented in `didFinishUpdate()`, so that logs correctly say the first frame number during the first `update(_:)` method.
+        /// ⚠️ NOTE: There is still a call to `OKViewController-Universal.viewWillLayoutSubviews()` after this, before the first `update(_:)`. CHECK: Fix?
+        
+        currentFrameNumber = 1
+        
+        // Steal the focus on macOS so the player doesn't have to click on the view before using the keyboard.
+        // CHECK: Conflicts with SwiftUI etc.
+        
+        #if os(macOS)
+        to.window?.makeFirstResponder(self)
+        #endif
+    }
+    
+    /// Abstract; override in subclass. Creates the scene's contents and sets up entities and components. Called after the scene is presented in a view, from `didMove(to:)`.
     ///
     /// - NOTE: If the scene requires the global `OctopusKit.shared.gameCoordinator.entity`, add it manually after setting up the component systems, so that the global components may be registered with this scene's systems.
     ///
@@ -380,7 +394,7 @@ open class OKScene: SKScene,
     }
     
     open override func didChangeSize(_ oldSize: CGSize) {
-        // CHECK: This is seemingly always called after `init`, before `sceneDidLoad()`, even when the `oldSize` and current `size` are the same.
+        /// CHECK: This is seemingly always called after `init`, before `sceneDidLoad()`, even when the `oldSize` and current `size` are the same.
         super.didChangeSize(oldSize)
         OctopusKit.logForFramework("\(self) — oldSize = \(oldSize) → \(self.size)")
     }
@@ -400,14 +414,10 @@ open class OKScene: SKScene,
             removeEntity(entity)
         }
         
-        // CHECKED: The shared component properties (`sharedTouchEventComponent` etc.) do not seem to prevent the scene from deinit'ing if they're not set to `nil` here.
+        /// CHECKED: The shared component properties (`sharedTouchEventComponent` etc.) do not seem to prevent the scene from deinit'ing if they're not set to `nil` here.
     }
     
-    deinit {
-        OctopusKit.logForDeinits("\"\(self.name)\" secondsElapsedSinceMovedToView = \(secondsElapsedSinceMovedToView), lastUpdateTime = \(lastUpdateTime)")
-    }
-    
-    // MARK: - Game State
+    // MARK: - Game State (OKGameStateDelegate)
     
     /// Called by `OKGameState`. To be overridden by a subclass if this same scene is used for different game states, e.g. to present different visual overlays for the paused or "game over" states.
     ///
@@ -878,6 +888,12 @@ open class OKScene: SKScene,
             debugLog("⚙️ \(componentSystem) componentClass = \(componentSystem.componentClass)")
             debugLog("components = \(componentSystem.components)")
         }
+    }
+    
+    // MARK: - Deinitialization
+    
+    deinit {
+        OctopusKit.logForDeinits("\"\(self.name)\" secondsElapsedSinceMovedToView = \(secondsElapsedSinceMovedToView), lastUpdateTime = \(lastUpdateTime)")
     }
     
 }

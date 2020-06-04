@@ -30,7 +30,7 @@ final class PlayScene: OKScene {
     // MARK: 🔶 STEP 6B.2
     override func createComponentSystems() -> [GKComponent.Type] {
         
-        // This method is called by the OKScene superclass, after the scene has been presented in a view, to create a list of systems for each component type that must be updated in every frame of this scene.
+        // This method is called by the OKScene superclass, after the scene has been loaded, to create a list of systems for each component type that must be updated in every frame of this scene.
         //
         // ❗️ The order of components is important, as the functionality of some components depends on the output of other components.
         //
