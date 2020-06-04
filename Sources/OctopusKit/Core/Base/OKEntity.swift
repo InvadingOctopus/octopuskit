@@ -50,6 +50,8 @@ open class OKEntity: GKEntity {
         "\(self.description)\(components.count > 0 ? " \(components.count) components = \(components)" : "")"
     }
     
+    // MARK: - Initializers
+    
     // ℹ️ NOTE: These inits are not marked with the `convenience` modifier because we want to set `self.name = name` BEFORE calling `GKEntity` inits, in order to ensure that the log entries for `addComponent` will include the `OKEntity`'s name if it's supplied.
     // However, if these were convenience initializers, we would get the error: "'self' used in property access 'name' before 'self.init' call"
     
@@ -96,17 +98,19 @@ open class OKEntity: GKEntity {
     
     public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
     
+    // MARK: - Components
+    
     /// Adds a component to the entity and notifies the delegate, logging a warning if the entity already has another component of the same class, as the new component will replace the existing component.
     open override func addComponent(_ component: GKComponent) {
         
-        // NOTE: BUG? GameplayKit's default implementation does NOT remove a component from its current entity before adding it to a different entity.
-        // So we do that here, because otherwise it may cause unexpected behavior. A component's `entity` property can only point to one entity anyway; the latest.
+        /// 🐛 NOTE: BUG? GameplayKit's default implementation does NOT remove a component from its current entity before adding it to a different entity.
+        /// So we do that here, because otherwise it may cause unexpected behavior. A component's `entity` property can only point to one entity anyway; the latest.
         
-        // ℹ️ DESIGN: DECIDED: When adding a `RelayComponent<TargetComponentType>`, we should NOT remove any existing component of the same type as the RelayComponent's target.
-        // REASON: Components need to operate on their entity; adding a RelayComponent to an entity does NOT and SHOULD NOT set the target component's `entity` property to that entity. So we cannot and SHOULD NOT replace a direct component with a RelayComponent.
-        // NOTE: This design decision means that an entity might find 2 components of the same type when checking for them with `GKEntity.componentOrRelay(ofType:)`, e.g. a NodePointerStateComponent and a RelayComponent<NodePointerStateComponent>, so `GKEntity.componentOrRelay(ofType:)` must always return the direct component first.
+        /// ℹ️ DESIGN: DECIDED: When adding a `RelayComponent<TargetComponentType>`, we should NOT remove any existing component of the same type as the RelayComponent's target.
+        /// REASON: Components need to operate on their entity; adding a RelayComponent to an entity does NOT and SHOULD NOT set the target component's `entity` property to that entity. So we cannot and SHOULD NOT replace a direct component with a RelayComponent.
+        /// NOTE: This design decision means that an entity might find 2 components of the same type when checking for them with `GKEntity.componentOrRelay(ofType:)`, e.g. a NodePointerStateComponent and a RelayComponent<NodePointerStateComponent>, so `GKEntity.componentOrRelay(ofType:)` must always return the direct component first.
         
-        // NOTE: Checking the `component.componentType` of a `RelayComponent` will return its `target?.componentType`, so we will use `type(of: component)` instead, to avoid deleting a direct component when a relay to the same component type is added.
+        /// NOTE: Checking the `component.componentType` of a `RelayComponent` will return its `target?.componentType`, so we will use `type(of: component)` instead, to avoid deleting a direct component when a relay to the same component type is added.
         
         #if LOGECSVERBOSE
         debugLog("component: \(component), self: \(self)")
