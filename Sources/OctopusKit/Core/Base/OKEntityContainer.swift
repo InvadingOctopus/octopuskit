@@ -29,6 +29,11 @@ public protocol OKEntityContainer: class {
     func addEntity  (_ entity:    GKEntity)
     func addEntities(_ entities: [GKEntity])
     
+    @inlinable @discardableResult
+    func checkSystemAvailability <ComponentType> (for componentClass: ComponentType.Type,
+                                                  in entity: GKEntity) -> Bool
+        where ComponentType: GKComponent
+    
     func checkSystemsAvailability        (for entity: GKEntity)
     func addAllComponentsFromAllEntities (to systemsCollection: [OKComponentSystem]?)
     func renameUnnamedEntitiesToNodeNames()
@@ -249,30 +254,48 @@ public extension OKEntityContainer {
 
     // MARK: Validating Entities
     
-    /// Checks whether the entity container (e.g. scene) has the relevant component systems for all the entity's components that must be updated every frame or turn, and warns about any missing systems.
+    /// Checks whether this entity container (e.g. scene) has the relevant component systems for all the entity's components that are marked as `RequiresUpdatesPerFrame` or `TurnBased`, and warns about any missing systems.
     ///
     /// Components without a system will not have their per-frame or per-turn logic executed automatically, resulting in incorrect or unexpected game behavior.
     @inlinable
     func checkSystemsAvailability(for entity: GKEntity) {
-        
-        // CHECK: PERFORMANCE
-        
+                
         for component in entity.components
             where component is RequiresUpdatesPerFrame
                || component is TurnBased
         {
-            let found = self.componentSystems.contains {
-                $0.componentClass == type(of: component)
+            self.checkSystemAvailability(for: type(of: component), in: entity)
+        }
+    }
+    
+    /// Checks whether this entity container (e.g. scene) has a component system for the specified component class, and warns if the system is missing for a component that is marked as `RequiresUpdatesPerFrame` or `TurnBased`.
+    ///
+    /// Components without a system will not have their per-frame or per-turn logic executed automatically, resulting in incorrect or unexpected game behavior.
+    ///
+    /// - Note: This method should be called only for components that conform to `RequiresUpdatesPerFrame` or `TurnBased`, as it does not make sense to have systems for components which do not need to be updated.
+    @inlinable @discardableResult
+    func checkSystemAvailability <ComponentType> (for componentClass: ComponentType.Type,
+                                                  in entity: GKEntity) -> Bool
+        where ComponentType: GKComponent
+    {
+        // CHECK: PERFORMANCE: Should this be generic?
+        
+        let found = self.componentSystems.contains {
+            $0.componentClass == componentClass
+        }
+        
+        if  found {
+            return true
+        } else {
+            
+            if componentClass is RequiresUpdatesPerFrame.Type
+            || componentClass is TurnBased.Type
+            {
+                OctopusKit.logForWarnings("\(self) missing component system for \(componentClass) in \(entity)")
             }
             
-            if  found {
-                continue
-            } else {
-                OctopusKit.logForWarnings("\(self) missing component system for \(component) in \(entity)")
-            }
-
+            return false
         }
-
     }
     
     // MARK: - Frame Update
@@ -389,7 +412,19 @@ extension OKEntityDelegate where Self: OKEntityContainer {
             return
         }
         
-        /// Register the component into our systems.
+        /// Warn about missing systems if the component is `RequiresUpdatesPerFrame` or `TurnBased`
+        
+        if component is RequiresUpdatesPerFrame
+        || component is TurnBased
+        {
+            let octopusEntity = entity as? OKEntity
+            
+            if !(octopusEntity?.suppressSystemsAvailabilityCheck ?? false) { // A flag for improving performance by skipping this check for frequently-added entities.
+                self.checkSystemAvailability(for: type(of: component), in: entity)
+            }
+        }
+        
+        // Register the new component into our systems.
         
         for componentSystem in self.componentSystems {
             if  componentSystem.componentClass == type(of: component) {
@@ -397,12 +432,11 @@ extension OKEntityDelegate where Self: OKEntityContainer {
             }
         }
         
-        // If the component was a `NodeComponent` or `GKSKNodeComponent` with an orphan node, adopt that node into this scene.
+        /// If the component was a `NodeComponent` or `GKSKNodeComponent` with an orphan node, adopt that node into this scene.
         
         if component is NodeComponent || component is GKSKNodeComponent {
            (self as? OKEntityContainerNode)?.addChildFromOrphanNodeComponent(in: entity) // CHECK: PERFORMANCE: Any impact from casting?
         }
-        
     }
     
     @inlinable
