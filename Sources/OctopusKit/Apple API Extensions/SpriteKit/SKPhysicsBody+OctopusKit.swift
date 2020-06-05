@@ -109,7 +109,7 @@ public extension SKPhysicsBody {
     /// Sets whether this physics body is moved by the physics simulation, then returns the body.
     @inlinable @discardableResult
     final func isDynamic(_ newValue: Bool) -> Self {
-        self.affectedByGravity = newValue
+        self.isDynamic = newValue
         return self
     }
     
