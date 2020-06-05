@@ -10,7 +10,6 @@ import GameplayKit
 
 public typealias OctopusUpdatableComponent  = RequiresUpdatesPerFrame
 public typealias OKUpdatableComponent       = RequiresUpdatesPerFrame
-public typealias UpdatedPerFrame            = RequiresUpdatesPerFrame
 
 /// A protocol for components that must be updated every frame to correctly perform their functions.
 ///
