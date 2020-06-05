@@ -15,9 +15,9 @@ import SpriteKit
 /// **Example**
 ///
 ///     extension LightCategories {
-///         static let droid    = LightCategories(1 << 0)
-///         static let laser    = LightCategories(1 << 1)
-///         static let terrain  = LightCategories(1 << 2)
+///         static let droid    = LightCategories(1 << 1)
+///         static let laser    = LightCategories(1 << 2)
+///         static let terrain  = LightCategories(1 << 3)
 ///     }
 ///
 ///     laserLight.categoryBitMask(.laser)
@@ -41,6 +41,9 @@ public struct LightCategories: OptionSet {
     }
     
     /// Indicates that this node is not included in the lighting system.
-    public static let none = LightingCategories([])
+    public static let none      = LightCategories([])
+    
+    /// The default category for a new `SKLightNode`.
+    public static let `default` = LightCategories(1 << 0)
     
 }
