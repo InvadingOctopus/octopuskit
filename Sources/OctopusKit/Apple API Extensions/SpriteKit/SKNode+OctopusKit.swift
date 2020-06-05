@@ -201,11 +201,16 @@ public extension SKNode {
     }
     
     /// Returns the point at the specified edge or corner *in this node's coordinate space*. If this node is of a type that has a zero-sized frame, such as `SKNode`, then `calculateAccumulatedFrame()` is used to determine its extents, including all its children. If an invalid direction is specified then `(0,0)` will be returned.
+    ///
+    /// - NOTE: ❕ If this node is an `SKNode` containing children nodes, then its `calculateAccumulatedFrame()` will be used to include all its children. If it's a zero-sized `SKSpriteNode` containing children nodes, then the points for all directions will be at the same position, i.e. the center of the zero-sized sprite. This is by design.
     @inlinable
     final func point(at direction: OKDirection) -> CGPoint {
         
         // TODO:  Tests
         // CHECK: with scaling
+        
+        // Calculate the size
+        // DESIGN: See method documentation above.
         
         let size: CGSize
         
@@ -228,26 +233,28 @@ public extension SKNode {
             midX, midY,
             minX, minY: CGFloat
         
-        if  let nodeWithAnchor  = self as? SKNodeWithAnchor {
+//        if  let nodeWithAnchor  = self as? SKNodeWithAnchor {
             
-            let anchor          = nodeWithAnchor.anchorPoint
-            let anchorWidth     = (width  * anchor.x)
-            let anchorHeight    = (height * anchor.y)
-                
-            maxX = width        - anchorWidth
-            maxY = height       - anchorHeight
+        /// If this node does not have an `anchorPoint`, such as an `SKNode` which contains other children, then assume it's "half" i.e. (0,0) is at the center.
+        
+        let anchor          = (self as? SKNodeWithAnchor)?.anchorPoint ?? CGPoint.half
+        let anchorWidth     = (width  * anchor.x)
+        let anchorHeight    = (height * anchor.y)
+        
+        maxX = width        - anchorWidth
+        maxY = height       - anchorHeight
+        
+        minX = 0            - anchorWidth
+        minY = 0            - anchorHeight
+        
+        midX = (width  / 2) - anchorWidth
+        midY = (height / 2) - anchorHeight
             
-            minX = 0            - anchorWidth
-            minY = 0            - anchorHeight
-            
-            midX = (width  / 2) - anchorWidth
-            midY = (height / 2) - anchorHeight
-            
-        } else {
-            (maxX, maxY) = (width,      height)
-            (midX, midY) = (width / 2,  height / 2)
-            (minX, minY) = (0,          0)
-        }
+//        } else {
+//            (maxX, maxY) = (width,      height)
+//            (midX, midY) = (width / 2,  height / 2)
+//            (minX, minY) = (0,          0)
+//        }
         
         // Set and return the point
         
