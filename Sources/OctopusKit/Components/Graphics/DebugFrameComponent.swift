@@ -9,7 +9,7 @@
 import SpriteKit
 
 /// Adds markers outlining the accumulated frame of the entity's `NodeComponent` node.
-public final class DebugFrameComponent: NodeAttachmentComponent <SKSpriteNode> {
+public final class DebugFrameComponent: NodeAttachmentComponent <SKNode> {
     
     public let midColor:        SKColor
     public let markerColor:     SKColor
@@ -20,11 +20,11 @@ public final class DebugFrameComponent: NodeAttachmentComponent <SKSpriteNode> {
     public let alpha:           CGFloat
     public let blendMode:       SKBlendMode
     
-    public private(set) var debugFrame: SKSpriteNode?
+    public private(set) var debugFrame: SKNode?
     
-    public init(midColor:       SKColor = .yellow,
-                markerColor:    SKColor = .cyan,
-                lineColor:      SKColor = .magenta,
+    public init(midColor:       SKColor = .cyan,
+                markerColor:    SKColor = .magenta,
+                lineColor:      SKColor = .yellow,
                 markerSize:     CGSize  = .init(widthAndHeight: 10),
                 alpha:          CGFloat = 0.75,
                 blendMode:      SKBlendMode = .screen,
@@ -42,12 +42,16 @@ public final class DebugFrameComponent: NodeAttachmentComponent <SKSpriteNode> {
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    public override func createAttachment(for parent: SKNode) -> SKSpriteNode? {
+    public override func createAttachment(for parent: SKNode) -> SKNode? {
+        
+        let debugFrame = SKNode()
         
         let center = SKSpriteNode(color: midColor, size: markerSize)
             .position(parent.point(at: .center))
             .alpha(alpha)
             .blendMode(blendMode)
+        
+        debugFrame.addChild(center)
         
         // Edge markers
         
@@ -61,12 +65,12 @@ public final class DebugFrameComponent: NodeAttachmentComponent <SKSpriteNode> {
                 .position(parent.point(at: direction))
                 .blendMode(blendMode)
             
-            center.addChild(marker)
+            debugFrame.addChild(marker)
         }
         
         // TODO: Lines
 
-        self.debugFrame = center
+        self.debugFrame = debugFrame
         
         return self.debugFrame
     }
