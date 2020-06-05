@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-/// A convenient alternative to specifying the categories of an `SKPhysicsBody` with an `OptionSet` instead of a direct `UInt32` value. T
+/// A convenient alternative to specifying the categories of an `SKPhysicsBody` with an `OptionSet` instead of a direct `UInt32` value.
 ///
 /// To use this in your game, create an extension for this structure and add static properties to it, then use with the `categoryBitMask(_:)` etc. extension methods on `SKPhysicsBody` which accept a `PhysicsCategories` argument.
 ///
