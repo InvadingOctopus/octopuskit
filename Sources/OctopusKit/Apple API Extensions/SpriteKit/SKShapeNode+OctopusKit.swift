@@ -12,6 +12,7 @@ public extension SKShapeNode {
     
     // MARK: - Modifiers
     // As in SwiftUI.
+    // DESIGN: No `@discardableResult` because they *should* raise a warning when used in place of more-efficient direct properties (i.e. most modifiers should only be used when creating an object as an argument for another initializer).
     
     /// Returns this shape after setting the color of its fill.
     @inlinable

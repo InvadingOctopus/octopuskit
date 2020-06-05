@@ -41,7 +41,8 @@ public extension SKNode {
     }
     
     // MARK: - Modifiers
-    // As in SwiftUI. NOTE: No `@discardableResult` because they *should* raise a warning when used in place of more-efficient direct properties (i.e. most modifiers should only be used when creating an object as an argument for another initializer).
+    // As in SwiftUI.
+    // DESIGN: No `@discardableResult` because they *should* raise a warning when used in place of more-efficient direct properties (i.e. most modifiers should only be used when creating an object as an argument for another initializer).
     
     /// Returns this node after setting its transparency.
     @inlinable
