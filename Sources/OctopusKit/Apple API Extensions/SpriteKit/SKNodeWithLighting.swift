@@ -21,9 +21,6 @@ public protocol SKNodeWithLighting: class { // where Self: SKNode { // ⚠️ Cr
     func lightingBitMask(_ mask: LightCategories) -> Self
 }
 
-extension SKSpriteNode:     SKNodeWithLighting {}
-extension SKTileMapNode:    SKNodeWithLighting {}
-
 public extension SKNodeWithLighting {
     
     // MARK: - Modifiers
@@ -39,3 +36,28 @@ public extension SKNodeWithLighting {
     }
 }
 
+extension SKTileMapNode:    SKNodeWithLighting {}
+
+extension SKSpriteNode:     SKNodeWithLighting {
+    
+    /// Defines which lights add shadows to the sprite, then returns the sprite.
+    ///
+    /// A convenient alternative to setting the `shadowedBitMask` property, using an `OptionSet` instead of a `UInt32` value. See the documentation for `LightCategories`.
+    @inlinable @discardableResult
+    func shadowedBitMask(_ mask: LightCategories) -> Self {
+        // https://developer.apple.com/documentation/spritekit/skspritenode/1519974-shadowedbitmask
+        self.shadowedBitMask = mask.rawValue
+        return self
+    }
+    
+    /// Defines which lights are occluded by this sprite, then returns the sprite.
+    ///
+    /// A convenient alternative to setting the `shadowCastBitMask` property, using an `OptionSet` instead of a `UInt32` value. See the documentation for `LightCategories`.
+    @inlinable @discardableResult
+    func shadowCastBitMask(_ mask: LightCategories) -> Self {
+        // https://developer.apple.com/documentation/spritekit/skspritenode/1520325-shadowcastbitmask
+        self.shadowCastBitMask = mask.rawValue
+        return self
+    }
+    
+}
