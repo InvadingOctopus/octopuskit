@@ -6,8 +6,6 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-// CHECK: Should these `init`s be `convenience`? If not, then we get "'required' initializer 'init(coder:)' must be provided by subclass of 'GKSKNodeComponent'"
-
 import GameplayKit
 
 public typealias SpriteKitComponent = NodeComponent
@@ -20,7 +18,9 @@ public typealias SpriteKitComponent = NodeComponent
 public final class NodeComponent: GKSKNodeComponent {
   
     /// ⚠️ NOTE: **DO NOT subclass** `NodeComponent`. See the warning in the documentation above.
-        
+  
+    // 💡 https://developer.apple.com/documentation/spritekit/sknode/searching_the_node_tree
+    
     public override var description: String {
         // NOTE: To reduce log clutter, only include the node's name here; full node description should only be in `didAddToEntity()`.
         if  let name = super.node.name {
@@ -33,6 +33,8 @@ public final class NodeComponent: GKSKNodeComponent {
     public var shouldNotifyCoComponentsWhenAddedToEntity: Bool = true
     
     // MARK: - Initializers
+    
+    /// CHECK: Should these `init`s be `convenience`? If not, then we get "'required' initializer 'init(coder:)' must be provided by subclass of 'GKSKNodeComponent'"
     
     /// Creates a `GKSKNodeComponent` or `NodeComponent` to represent the specified node, and optionally adds the node to a parent node if specified.
     public init(node: SKNode,
