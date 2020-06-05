@@ -21,6 +21,20 @@ public extension SKShapeNode {
         return self
     }
     
+    /// Returns this shape after setting the width of its glow.
+    @inlinable
+    final func glowWidth(_ width: CGFloat) -> Self {
+        self.glowWidth = width
+        return self
+    }
+    
+    /// Returns this shape after setting the width of its stroke. A width larger than `2.0` may cause rendering artifacts. Default: `1.0`
+    @inlinable
+    final func lineWidth(_ width: CGFloat) -> Self {
+        self.lineWidth = width
+        return self
+    }
+    
     /// Returns this shape after setting the color of its stroke.
     @inlinable
     final func strokeColor(_ color: SKColor) -> Self {
