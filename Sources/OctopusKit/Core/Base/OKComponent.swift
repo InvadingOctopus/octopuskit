@@ -80,6 +80,8 @@ open class OKComponent: GKComponent {
     }
     
     /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
+    ///
+    /// - NOTE: ❕ This method may not be called if the entity does not have a node at the time of adding this component. Therefore, this method should only be used for adding effects related to the node. Override `didAddToEntity()` for any code that *must* be guaranteed upon adding this component to an entity.
     open func didAddToEntity(withNode node: SKNode) {}
     
     // MARK: - Validation
@@ -167,6 +169,8 @@ open class OKComponent: GKComponent {
     }
     
     /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
+    ///
+    /// - NOTE: ❕ This method may not be called if the entity does not have a node at the time of removal. Therefore, this method should only be used for removing effects related to the node. Override `willRemoveFromEntity()` for any cleanup that *must* be guaranteed on removal.
     open func willRemoveFromEntity(withNode node: SKNode) {}
     
     deinit {
