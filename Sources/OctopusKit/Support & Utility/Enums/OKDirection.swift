@@ -158,7 +158,8 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
     
     /// Creates a new `OKDirection` representing one of the 8 compass directions closest to the given vector, where `dx > 0` means east, `dx < 0` means west, `dy > 0` means north, `dy < 0` means south, and the combined direction is returned.
     public init(vector: CGVector) {
-        switch (sign(vector.dx), sign(vector.dy)) {
+        // CHECK: Any better way to write this?
+        switch (sign(Float(vector.dx)), sign(Float(vector.dy))) {
         case (+1,  0):  self = .east
         case (+1, +1):  self = .northEast
         case ( 0, +1):  self = .north
