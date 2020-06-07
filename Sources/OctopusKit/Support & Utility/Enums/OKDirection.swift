@@ -156,6 +156,21 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
 
     // MARK: - Initializers
     
+    /// Creates a new `OKDirection` representing one of the 8 compass directions closest to the given vector, where `dx > 0` means east, `dx < 0` means west, `dy > 0` means north, `dy < 0` means south, and the combined direction is returned.
+    public init(vector: CGVector) {
+        switch (sign(vector.dx), sign(vector.dy)) {
+        case (+1,  0):  self = .east
+        case (+1, +1):  self = .northEast
+        case ( 0, +1):  self = .north
+        case (-1, +1):  self = .northWest
+        case (-1,  0):  self = .west
+        case (-1, -1):  self = .southWest
+        case ( 0, -1):  self = .south
+        case (+1, -1):  self = .southEast
+        default:        self = .center
+        }
+    }
+    
     /// Creates a new `OKDirection` for a given angle in radians, where `0` is East or facing to the right, as per the `zRotation` property of SpriteKit nodes.
     public init(radians: CGFloat) {
         // CREDIT: Apple DemoBots Sample. (C) 2016 Apple Inc. All Rights Reserved. TODO: Note the license.
