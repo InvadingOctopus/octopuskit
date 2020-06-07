@@ -124,6 +124,28 @@ public extension SKNode {
         node.position = position
     }
     
+    /// Removes the specified node if it is a child of this node.
+    @inlinable
+    final func removeChild(_ child: SKNode) {
+        // CHECK: Add a Bool return value?
+        // 🤔 No idea why SpriteKit doesn't have this method.
+        if  child.parent == self {
+            child.removeFromParent()
+        }
+    }
+    
+    /// Removes all children of the specified node type. Example: `SKLightNode` to remove any attached lighting from a sprite.
+    @inlinable
+    final func removeChildren <NodeType> (ofType type: NodeType.Type)
+        where NodeType: SKNode
+    {
+        for child in self.children
+            where child is NodeType
+        {
+            child.removeFromParent()
+        }
+    }
+    
     /// Returns this node's position in the coordinate system of another node in the node tree.
     @inlinable
     final func position(in node: SKNode) -> CGPoint {
