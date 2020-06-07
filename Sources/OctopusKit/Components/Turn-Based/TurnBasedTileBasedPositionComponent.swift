@@ -33,6 +33,8 @@ open class TurnBasedTileBasedPositionComponent: OKTurnBasedComponent {
             let tileBasedPositionComponent = coComponent(TileBasedPositionComponent.self)
             else { return }
         
+        // CHECK: Validate coordinates here or is that the TileBasedPositionComponent's job?
+        
         self.previousCoordinates = tileBasedPositionComponent.coordinates
         
         tileBasedPositionComponent.coordinates = pendingCoordinates
