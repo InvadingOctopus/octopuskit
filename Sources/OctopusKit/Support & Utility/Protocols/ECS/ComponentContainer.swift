@@ -21,6 +21,7 @@ public protocol ComponentContainer: class {
     var sprite:     SKSpriteNode?   { get }
     var scene:      SKScene?        { get }
     var physicsBody: SKPhysicsBody? { get }
+    var state:      OKEntityState?  { get }
     
     subscript <ComponentType> (componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: Component { get }

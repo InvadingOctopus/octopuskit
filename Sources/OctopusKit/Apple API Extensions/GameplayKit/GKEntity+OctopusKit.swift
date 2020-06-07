@@ -77,6 +77,14 @@ public extension GKEntity {
         self[PhysicsComponent.self]?.physicsBody ?? self.node?.physicsBody
     }
     
+    /// Convenient shorthand for accessing the current `OKEntityState` associated with this entity's `StateMachineComponent`, if any.
+    ///
+    /// A `RelayComponent` may be used in place of that component.
+    @inlinable
+    var state: OKEntityState? {
+        self[StateMachineComponent.self]?.stateMachine.currentState as? OKEntityState
+    }
+    
     /// Returns the component matching `componentClass` or a `RelayComponent` linked to that type, if present in the entity.
     ///
     /// This subscript is a shortcut for the `componentOrRelay(ofType:)` method.
