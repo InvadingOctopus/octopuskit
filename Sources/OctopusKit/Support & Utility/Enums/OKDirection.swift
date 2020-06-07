@@ -42,6 +42,7 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
     
     /// An array of directions moving counter-clockwise from east to southeast, compatible with SpriteKit's rotation notation (where 0 radians is east.)
     public static let compassDirections: [OKDirection] = [
+        /// DESIGN: ❕ The order **must** be counter-clockwise from east to southeast, as this is what the `init(radians:)` initializer will assume.
         .east,
         .northEast,
         .north,
@@ -155,23 +156,23 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
 
     // MARK: - Initializers
     
-    /// Creates a new `FacingDirection` for a given `zRotation` in radians.
-    public init(zRotation: CGFloat) {
+    /// Creates a new `OKDirection` for a given angle in radians, where `0` is East or facing to the right, as per the `zRotation` property of SpriteKit nodes.
+    public init(radians: CGFloat) {
         // CREDIT: Apple DemoBots Sample. (C) 2016 Apple Inc. All Rights Reserved. TODO: Note the license.
         // TODO: Test
         
-        let twoPi = Double.pi * 2
+        let twoPi           = Double.pi * 2
         
         // Normalize the node's rotation.
-        let rotation = (Double(zRotation) + twoPi).truncatingRemainder(dividingBy: twoPi)
+        let rotation        = (Double(radians) + twoPi).truncatingRemainder(dividingBy: twoPi)
         
         // Convert the rotation of the node to a percentage of a circle.
-        let orientation = rotation / twoPi
+        let orientation     = rotation / twoPi
         
-        // Scale the percentage to a value between 0 and 7 (the count of elements in the `compassDirection` array.)
-        let rawFacingValue = round(orientation * 8.0).truncatingRemainder(dividingBy: 8.0)
+        // Scale the percentage to a value between 0 and 7 (the count of elements in the `compassDirections` array.)
+        let rawFacingValue  = round(orientation * 8.0).truncatingRemainder(dividingBy: 8.0)
         
-        // Select the appropriate `OKDirection` from the `compassDirection` member at the index equal to `rawFacingValue`.
+        // Select the appropriate `OKDirection` from the `compassDirections` member at the index equal to `rawFacingValue`.
         self = OKDirection.compassDirections[Int(rawFacingValue)]
     }
 }
