@@ -114,7 +114,7 @@ public enum OKDirection: String, CustomStringConvertible, CaseIterable {
         case .southWest,    .bottomLeft:    return .pi + (.pi / 4)
         case .south,        .bottom:        return .pi + (.pi / 2)
         case .southEast,    .bottomRight:   return (.pi * 2) - (.pi / 2)
-        default:            return nil
+        default:                            return nil
         }
     }
     
