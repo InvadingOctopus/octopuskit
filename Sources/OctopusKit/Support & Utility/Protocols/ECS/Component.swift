@@ -24,6 +24,7 @@ public protocol Component: class, UpdatablePerFrame {
     var entityNode:         SKNode?             { get }
     var entityScene:        OKScene?            { get }
     var entityPhysicsBody:  SKPhysicsBody?      { get }
+    var entityState:        OKEntityState?      { get }
     var entityDelegate:     OKEntityDelegate?   { get }
     
     var shouldRemoveFromEntityOnDeinit:    Bool { get set }
