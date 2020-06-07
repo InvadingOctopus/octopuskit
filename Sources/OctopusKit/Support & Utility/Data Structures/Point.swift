@@ -133,6 +133,25 @@ public extension Point {
               y: self.y + Int(sin(radians) * distance))
     }
     
+    /// Returns a point in the specified compass direction immediately adjacent to this point. Returns `nil` if an invalid direction is specified.
+    @inlinable
+    func point(at direction: OKDirection) -> Point?
+    {
+        // CHECK: Return self for invalid direction?
+        let (x, y) = (self.x, self.y) // CHECK: Performance
+        switch direction {
+        case .east,         .right:         return Point(x: x + 1,  y: y)
+        case .northEast,    .topRight:      return Point(x: x + 1,  y: y + 1)
+        case .north,        .top:           return Point(x: x,      y: y + 1)
+        case .northWest,    .topLeft:       return Point(x: x - 1,  y: y + 1)
+        case .west,         .left:          return Point(x: x - 1,  y: y)
+        case .southWest,    .bottomLeft:    return Point(x: x - 1,  y: y - 1)
+        case .south,        .bottom:        return Point(x: x,      y: y - 1)
+        case .southEast,    .bottomRight:   return Point(x: x + 1,  y: y - 1)
+        default:                            return nil
+        }
+    }
+    
     /// Moves this point in the specified direction for the specified distance.
     @inlinable
     mutating func move(inAngle radians: CGFloat, distance: CGFloat) {
