@@ -16,7 +16,7 @@ final class EntityContainerTests: XCTestCase {
     
     // MARK: - Tests
     
-    static var allTests = [
+    // static var allTests = [
         // ("Test entity search",          testEntitySearch)
-    ]
+    // ]
 }
