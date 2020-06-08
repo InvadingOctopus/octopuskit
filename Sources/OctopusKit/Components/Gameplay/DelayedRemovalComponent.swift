@@ -29,15 +29,11 @@ public final class DelayedRemovalComponent: OKComponent, RequiresUpdatesPerFrame
         
         secondsElapsed += seconds
         
-        if
-            let entity = self.entity,
+        if  let entity = self.entity,
             secondsElapsed >= removalDelay
         {
-            entity.component(ofType: NodeComponent.self)?.node.removeFromParent()
-            
-            if let entityDelegate = (self.entity as? OKEntity)?.delegate {
-                entityDelegate.entityDidRequestRemoval(entity)
-            }
+            entityNode?.removeFromParent()
+            entityDelegate?.entityDidRequestRemoval(entity)
         }
     }
 }
