@@ -15,14 +15,15 @@ public protocol ComponentContainer: class {
     
     // MARK: Properties
     
-    var components: [Component]     { get }
+    var components: [Component]   { get }
     
+    var state:      OKEntityState?  { get }
     var node:       SKNode?         { get }
     var sprite:     SKSpriteNode?   { get }
     var scene:      SKScene?        { get }
     var physicsBody: SKPhysicsBody? { get }
-    var state:      OKEntityState?  { get }
     
+    @inlinable
     subscript <ComponentType> (componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: Component { get }
 
@@ -34,15 +35,15 @@ public protocol ComponentContainer: class {
     
     init(components: [Component])
     
-    init(name: String?,
-         components: [Component])
+//    init(name: String?,
+//         components: [Component])
     
     init(node: SKNode,
          addToNode parentNode: SKNode?)
    
-    init(name: String?,
-         node: SKNode,
-         addToNode parentNode: SKNode?)
+//    init(name: String?,
+//         node: SKNode,
+//         addToNode parentNode: SKNode?)
     
     // MARK: Component Management
     
@@ -68,43 +69,6 @@ public protocol ComponentContainer: class {
     
 }
 
-public extension ComponentContainer {
+// public extension ComponentContainer {
     /// TODO: Move code from `GKEntity` and `OKEntity`
-}
-
-public extension ComponentContainer {
-    
-    // MARK: - Operators
-    
-    /// Adds a component to the entity.
-    @inlinable
-    static func += (container: Self, component: Component?) {
-        container.addComponent(component)
-    }
- 
-    /// Adds an array of components to the entity.
-    @inlinable
-    static func += (container: Self, components: [Component]) {
-        container.addComponents(components)
-    }
-    
-    /// Adds an array of components to the entity.
-    @inlinable
-    static func += (container: Self, components: [Component?]) {
-        container.addComponents(components)
-    }
-    
-    /// Removes the component of the specified type from the entity.
-    @inlinable
-    static func -= <ComponentType> (container: Self, componentClass: ComponentType.Type)
-        where ComponentType: Component
-    {
-        container.removeComponent(ofType: componentClass)
-    }
-    
-    /// Removes components of the specified types from the entity.
-    @inlinable
-    static func -= (container: Self, componentClasses: [Component.Type]) {
-        container.removeComponents(ofTypes: componentClasses)
-    }
-}
+// }
