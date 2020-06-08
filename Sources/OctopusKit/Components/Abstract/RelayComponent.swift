@@ -31,13 +31,13 @@ public final class RelayComponent <MasterComponentType> : OKComponent
     @inlinable
     public var target: MasterComponentType? {
         
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("self: \(self)")
         #endif
         
         if  let directlyReferencedComponent = self.directlyReferencedComponent {
             
-            #if LOGECSVERBOSE
+            #if LOGECSDEBUG
             debugLog("directlyReferencedComponent: \(directlyReferencedComponent)")
             #endif
             
@@ -45,7 +45,7 @@ public final class RelayComponent <MasterComponentType> : OKComponent
         
         }   else if let sceneComponentType = self.sceneComponentType {
             
-            #if LOGECSVERBOSE
+            #if LOGECSDEBUG
             debugLog("Accessing self.entityNode?.scene?.entity?.component(ofType: \(sceneComponentType))")
             #endif
             
@@ -75,7 +75,7 @@ public final class RelayComponent <MasterComponentType> : OKComponent
     @inlinable
     public override var componentType: GKComponent.Type {
         
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("self: \(self), \(type(of: self)), target?.componentType: \(target?.componentType)")
         #endif
         

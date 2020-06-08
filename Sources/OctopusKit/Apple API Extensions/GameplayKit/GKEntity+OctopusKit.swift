@@ -20,7 +20,7 @@ public extension GKEntity {
     @inlinable
     var scene: SKScene? {
         
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("self: \(self)")
         #endif
         
@@ -37,7 +37,7 @@ public extension GKEntity {
     @inlinable
     var node: SKNode? {
         
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("self: \(self)")
         #endif
         
@@ -52,7 +52,7 @@ public extension GKEntity {
             ?? self.component(ofType: RelayComponent<NodeComponent>.self)?.directlyReferencedComponent
             ?? self.component(ofType: RelayComponent<GKSKNodeComponent>.self)?.directlyReferencedComponent
         
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("nodeComponent: \(nodeComponent), .node: \(nodeComponent?.node)")
         #endif
         
@@ -163,7 +163,7 @@ public extension GKEntity {
     func componentOrRelay <ComponentType> (ofType componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: GKComponent
     {
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("ComponentType: \(ComponentType.self), componentClass: \(componentClass), self: \(self)")
         #endif
         

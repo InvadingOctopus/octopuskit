@@ -19,7 +19,7 @@ extension GKComponent {
     /// If the entity does not have an `NodeComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
     @inlinable
     public var entityNode: SKNode? {
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("self: \(self)")
         #endif
         return self.entity?.node
@@ -64,7 +64,7 @@ extension GKComponent {
         ignoreRelayComponents: Bool = false) -> ComponentType?
         where ComponentType:   GKComponent
     {
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("ComponentType: \(ComponentType.self), componentClass: \(componentClass), ignoreRelayComponents: \(ignoreRelayComponents), self: \(self)")
         #endif
         
@@ -72,7 +72,7 @@ extension GKComponent {
             
             /// Return `nil` if this component is looking for its own class. See reason in method documentation.
             
-            #if LOGECSVERBOSE
+            #if LOGECSDEBUG
             debugLog("componentClass == type(of: self) — Returning `nil`")
             #endif
             
@@ -82,7 +82,7 @@ extension GKComponent {
             
             let match = self.entity?.component(ofType: componentClass)
             
-            #if LOGECSVERBOSE
+            #if LOGECSDEBUG
             debugLog("self.entity?.component(ofType: componentClass) == \(match)")
             #endif
             
@@ -92,7 +92,7 @@ extension GKComponent {
             
             let match = self.entity?.componentOrRelay(ofType: componentClass)
             
-            #if LOGECSVERBOSE
+            #if LOGECSDEBUG
             debugLog("self.entity?.componentOrRelay(ofType: componentClass) == \(match)")
             #endif
             
@@ -122,7 +122,7 @@ extension GKComponent {
         // THANKS: https://forums.swift.org/u/TellowKrinkle
         // https://forums.swift.org/t/type-information-loss-when-comparing-generic-variables-with-an-array-of-metatypes/30650
         
-        #if LOGECSVERBOSE
+        #if LOGECSDEBUG
         debugLog("self: \(self), \(type(of: self))")
         #endif
         

@@ -92,10 +92,11 @@ If an entity needs multiple components of the same type but with different param
 >
 
 * `LOGECSVERBOSE` - Logs detailed Entity-Component-System actions.
+* `LOGECSDEBUG` - Logs Entity-Component-System debugging information.
+* `LOGCHANGES` - Enables the `@LogChanges` property modifier and other types of verbose value logging.
 * `LOGINPUTEVENTS` - Logs all input events and related information via the `@LogInputEvents` property modifier.
 * `LOGPHYSICS` - Logs all physics contact/collision events.
 * `LOGTURNBASED` - Logs each begin/update/end cycle for turn-based components.
-* `LOGCHANGES` - Enables the `@LogChanges` property modifier and other types of verbose value logging.
 
 ⚠️ Setting any of the logging flags may reduce engine performance.
 
