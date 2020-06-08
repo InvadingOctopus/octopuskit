@@ -6,6 +6,10 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+
+#if EnableIfImportingOctopusUI
+// TODO: Move to separate app.
+
 import SwiftUI
 import OctopusUI
 
@@ -50,7 +54,7 @@ public struct OKLogBinder: View {
             buttons
                 .padding()
         }
-        .accentColor(.purple)
+        // .accentColor(.purple) // Not on macOS 😡
     }
     
     var logChooser: some View {
@@ -260,3 +264,5 @@ struct OKLogBinder_Previews: PreviewProvider {
     }
 }
 */
+
+#endif

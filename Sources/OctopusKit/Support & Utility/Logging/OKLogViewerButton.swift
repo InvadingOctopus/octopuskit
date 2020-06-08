@@ -7,6 +7,8 @@
 //
 
 
+#if EnableIfImportingOctopusUI
+
 import SwiftUI
 
 /// A viewer for `OctopusKit.unifiedLog`.
@@ -48,3 +50,5 @@ struct LogViewerButton_Previews: PreviewProvider {
        OKLogViewerButton()
     }
 }
+
+#endif
