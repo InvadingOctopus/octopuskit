@@ -190,6 +190,8 @@ public extension OKEntityContainer {
     ///
     /// - IMPORTANT: ⚠️ Attempting to modify the list of entities during a frame update will cause an exception/crash, because of mutating a collection while it is being enumerated. To ensure safe removal, use `removeEntityOnNextUpdate(_:)`.
     ///
+    /// - NOTE: ❕ Removing an entity from a scene **does not** remove all components from the entity. i.e. the entity is **not** explicitly destroyed and its components may not receive the `willRemoveFromEntity()` call.
+    ///
     /// - Returns: `true` if the entry was in the `entities` set and removed.
     @inlinable @discardableResult
     func removeEntity(_ entityToRemove: GKEntity) -> Bool {
@@ -448,6 +450,9 @@ extension OKEntityDelegate where Self: OKEntityContainer {
         
         for componentSystem in self.componentSystems {
             if  componentSystem.componentClass == type(of: component) {
+                #if LOGECSVERBOSE
+                OctopusKit.logForComponents("Removing \(component) from \(componentSystem)")
+                #endif
                 componentSystem.removeComponent(component)
             }
         }
