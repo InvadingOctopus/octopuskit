@@ -45,8 +45,12 @@ public extension SKLightNode {
     }
     
     /// Sets the diffuse and specular color of the light source, then returns this node. Default: `white`
+    ///
+    /// - WARNING: ❗️ Setting this to a color with an alpha of `0` may cause a runtime crash.
     @inlinable @discardableResult
     func lightColor(_ newValue: SKColor) -> Self {
+        /// BUG? APPLEBUG? 2020-06-09: If any `SKLightNode` has a `lightColor` with an alpha of 0, then removing or disabling *any* other node causes a runtime crash:
+        /// validateFunctionArguments:3476: failed assertion `Fragment Function(PointLight_FragFunc): missing buffer binding at index 2 for u_light_position[0].'
         self.lightColor = newValue
         return self
     }
