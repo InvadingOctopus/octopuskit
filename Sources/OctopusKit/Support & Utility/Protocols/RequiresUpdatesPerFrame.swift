@@ -11,6 +11,11 @@ import GameplayKit
 public typealias OctopusUpdatableComponent  = RequiresUpdatesPerFrame
 public typealias OKUpdatableComponent       = RequiresUpdatesPerFrame
 
+/// A protocol for objects that can be updated every frame.
+public protocol UpdatablePerFrame {
+    func update(deltaTime seconds: TimeInterval)
+}
+
 /// A protocol for components that must be updated every frame to correctly perform their functions.
 ///
 /// The component must be updated every frame during the scene's `update(_:)` method, by directly calling the component's `update(deltaTime:)` method, updating the component's entity, or updating the component system which this component is registered with.
