@@ -7,7 +7,7 @@
 //
 
 
-#if EnableIfImportingOctopusUI
+#if UseLogViewer // Enable if the OctopusUI package has been included in your project.
 // TODO: Move to separate app.
 
 import SwiftUI
