@@ -14,6 +14,26 @@ extension GKComponent {
     // "The component system will then forward any component-specific messages it receives to all registered instances of its component class." — https://developer.apple.com/documentation/gameplaykit/gkcomponentsystem
     // TODO: Tests
     
+    /// Returns the name for the entity associated with this component, if it is an `OKEntity`. A convenience for quickly writing log entries.
+    @inlinable
+    public var entityName: String? {
+        (self.entity as? OKEntity)?.name
+    }
+    
+    /// Returns the current state of the entity associated with this component, if it is an `OKEntity` and has a `StateMachineComponent`.
+    @inlinable
+    public var entityState: OKEntityState? {
+        self.entity?.state
+    }
+    
+    /// Convenient shorthand for accessing the OctopusKit scene containing the SpriteKit node that is associated with the `NodeComponent` of this component's entity.
+    ///
+    /// If the entity does not have an `NodeComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
+    @inlinable
+    public var entityScene: OKScene? {
+        self.entityNode?.scene as? OKScene
+    }
+    
     /// Convenient shorthand for accessing the SpriteKit node that is associated with the `NodeComponent` of this component's entity.
     ///
     /// If the entity does not have an `NodeComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
@@ -25,32 +45,12 @@ extension GKComponent {
         return self.entity?.node
     }
     
-    /// Convenient shorthand for accessing the OctopusKit scene containing the SpriteKit node that is associated with the `NodeComponent` of this component's entity.
-    ///
-    /// If the entity does not have an `NodeComponent` or `GKSKNodeComponent` (in that order) or a `RelayComponent` linked to one of those component types, then this property will be `nil`.
-    @inlinable
-    public var entityScene: OKScene? {
-        self.entityNode?.scene as? OKScene
-    }
-    
     /// Convenient shorthand for accessing the `SKPhysicsBody` associated the scene.
     ///
     /// See the `GKEntity.physicsBody` property to see how the return value is determined.
     @inlinable
     public var entityPhysicsBody: SKPhysicsBody? {
         self.entity?.physicsBody
-    }
-    
-    /// Returns the name for the entity associated with this component, if it is an `OKEntity`. A convenience for quickly writing log entries.
-    @inlinable
-    public var entityName: String? {
-        (self.entity as? OKEntity)?.name
-    }
-    
-    /// Returns the current state of the entity associated with this component, if it is an `OKEntity` and has a `StateMachineComponent`.
-    @inlinable
-    public var entityState: OKEntityState? {
-        self.entity?.state
     }
     
     /// Returns the component of type `componentClass`, or a `RelayComponent` linked to a component of that type, if it's present in the entity that is associated with this component.
