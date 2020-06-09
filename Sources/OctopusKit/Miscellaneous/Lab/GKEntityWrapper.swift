@@ -121,7 +121,7 @@ open class GKEntityWrapper: Entity, UpdatablePerFrame {
     public subscript <ComponentType> (componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: Component
     {
-        nil // TODO: self.componentOrRelay(ofType: componentClass)
+        self.componentOrRelay(ofType: componentClass)
     }
     
     // MARK: - Initializers
