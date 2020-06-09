@@ -72,3 +72,40 @@ public protocol ComponentContainer: class {
 // public extension ComponentContainer {
     /// TODO: Move code from `GKEntity` and `OKEntity`
 // }
+
+public extension ComponentContainer {
+    
+    // MARK: - Operators
+    
+    /// Adds a component to the entity.
+    @inlinable
+    static func += (container: Self, component: Component?) {
+        container.addComponent(component)
+    }
+ 
+    /// Adds an array of components to the entity.
+    @inlinable
+    static func += (container: Self, components: [Component]) {
+        container.addComponents(components)
+    }
+    
+    /// Adds an array of components to the entity.
+    @inlinable
+    static func += (container: Self, components: [Component?]) {
+        container.addComponents(components)
+    }
+    
+    /// Removes the component of the specified type from the entity.
+    @inlinable
+    static func -= <ComponentType> (container: Self, componentClass: ComponentType.Type)
+        where ComponentType: Component
+    {
+        container.removeComponent(ofType: componentClass)
+    }
+    
+    /// Removes components of the specified types from the entity.
+    @inlinable
+    static func -= (container: Self, componentClasses: [Component.Type]) {
+        container.removeComponents(ofTypes: componentClasses)
+    }
+}
