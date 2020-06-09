@@ -124,6 +124,17 @@ public extension SKNode {
         node.position = position
     }
     
+    /// Returns all children of the specified node type, or an empty array if none are found.
+    @inlinable
+    final func children <NodeType> (ofType type: NodeType.Type) -> [NodeType]
+        where NodeType: SKNode
+    {
+        return self.children.compactMap {
+            $0 as? NodeType
+            /// CHECK: Should this be a `filter` and `is NodeType`?
+        }
+    }
+    
     /// Removes the specified node if it is a child of this node.
     @inlinable
     final func removeChild(_ child: SKNode) {
