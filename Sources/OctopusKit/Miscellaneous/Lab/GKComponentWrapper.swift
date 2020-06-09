@@ -69,9 +69,10 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
         shouldWarnIfDeinitWithoutRemoving = true
 
         // A convenient delegation method for subclasses to easily access the entity's SpriteKit node, if any.
-        if  let node = self.entity?.node {
-            didAddToEntity(withNode: node)
-        }
+        // TODO: 
+//        if  let node = self.entity?.node {
+//            didAddToEntity(withNode: node)
+//        }
     }
     
     /// Abstract; To be implemented by subclass. Provides convenient access to the `NodeComponent` node that the entity is associated with.
@@ -141,7 +142,7 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
     open func removeFromEntity() {
         shouldRemoveFromEntityOnDeinit    = false
         shouldWarnIfDeinitWithoutRemoving = false
-        self.entity?.removeComponent(ofType: type(of: self))
+        // TODO: self.entity?.removeComponent(ofType: type(of: self))
     }
     
     /// - IMPORTANT: If a subclass overrides this method, then `super.willRemoveFromEntity()` MUST be called to ensure proper functionality, including clearing `shouldRemoveFromEntityOnDeinit`.
@@ -153,9 +154,10 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
         
         guard self.entity != nil else { return }
 
-        if  let spriteKitComponentNode = self.entity?.node {
-            willRemoveFromEntity(withNode: spriteKitComponentNode)
-        }
+        // TODO:
+//        if  let spriteKitComponentNode = self.entity?.node {
+//            willRemoveFromEntity(withNode: spriteKitComponentNode)
+//        }
 
         shouldRemoveFromEntityOnDeinit    = false
         shouldWarnIfDeinitWithoutRemoving = false
@@ -197,41 +199,41 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
         ignoreRelayComponents: Bool = false) -> ComponentType?
         where ComponentType:   Component
     {
-
-        #if LOGECSDEBUG
-        debugLog("ComponentType: \(ComponentType.self), componentClass: \(componentClass), ignoreRelayComponents: \(ignoreRelayComponents), self: \(self)")
-        #endif
-        
-        if  componentClass == type(of: self) {
-            
-            /// Return `nil` if this component is looking for its own class. See reason in method documentation.
-            
-            #if LOGECSDEBUG
-            debugLog("componentClass == type(of: self) — Returning `nil`")
-            #endif
-            
-            return nil
-            
-        } else if ignoreRelayComponents {
-            
-            let match = self.entity?.component(ofType: componentClass)
-            
-            #if LOGECSDEBUG
-            debugLog("self.entity?.component(ofType: componentClass) == \(match)")
-            #endif
-            
-            return match
-            
-        } else {
-            
-            let match = self.entity?.componentOrRelay(ofType: componentClass)
-            
-            #if LOGECSDEBUG
-            debugLog("self.entity?.componentOrRelay(ofType: componentClass) == \(match)")
-            #endif
-            
-            return match
-        }
+        return nil // TODO:
+//        #if LOGECSDEBUG
+//        debugLog("ComponentType: \(ComponentType.self), componentClass: \(componentClass), ignoreRelayComponents: \(ignoreRelayComponents), self: \(self)")
+//        #endif
+//
+//        if  componentClass == type(of: self) {
+//
+//            /// Return `nil` if this component is looking for its own class. See reason in method documentation.
+//
+//            #if LOGECSDEBUG
+//            debugLog("componentClass == type(of: self) — Returning `nil`")
+//            #endif
+//
+//            return nil
+//
+//        } else if ignoreRelayComponents {
+//
+//            let match = self.entity?.component(ofType: componentClass)
+//
+//            #if LOGECSDEBUG
+//            debugLog("self.entity?.component(ofType: componentClass) == \(match)")
+//            #endif
+//
+//            return match
+//
+//        } else {
+//
+//            let match = self.entity?.componentOrRelay(ofType: componentClass)
+//
+//            #if LOGECSDEBUG
+//            debugLog("self.entity?.componentOrRelay(ofType: componentClass) == \(match)")
+//            #endif
+//
+//            return match
+//        }
     }
     
     /// A shortcut for `coComponent(ofType:)` without a parameter name to reduce text clutter.
