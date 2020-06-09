@@ -17,52 +17,21 @@ public protocol Entity:
 {
     // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
     
-    var delegate: OKEntityDelegate? { get }
+    var delegate: EntityDelegate? { get }
     
-    init()
+    // init()
     
     func removeFromDelegate()
 }
 
-public extension Entity {
-
-    var delegate: OKEntityDelegate? { nil }
+/// A protocol for types that manage entities, such as `OKScene`.
+public protocol EntityDelegate: class {
     
-    @inlinable
-    func removeFromDelegate() {
-        // self.delegate?.entityDidRequestRemoval(self) // TODO
-    }
+    func entity(_ entity: Entity, didAddComponent component:     Component)
+    func entity(_ entity: Entity, willRemoveComponent component: Component)
+    
+    @discardableResult
+    func entity(_ entity: Entity, didSpawn spawnedEntity: Entity) -> Bool
+    
+    func entityDidRequestRemoval(_ entity: Entity)
 }
-
-extension Entity where Self: Nameable {
-    public var name: String? { nil }
-}
-
-/*
-extension GKEntity: Entity {
-    
-    @inlinable
-    public var components: [Component] {
-        self.components as [Component]
-    }
-    
-    @inlinable
-    public func addComponent(_ component: Component) {
-        self.addComponent(component)
-    }
-    
-    @inlinable
-    public func component<ComponentType>(ofType componentClass: ComponentType.Type) -> ComponentType?
-        where ComponentType : Component
-    {
-        self.component(ofType: componentClass)
-    }
-    
-    @inlinable
-    public func removeComponent<ComponentType>(ofType componentClass: ComponentType.Type)
-        where ComponentType : Component
-    {
-        self.removeComponent(ofType: componentClass)
-    }
-}
-*/
