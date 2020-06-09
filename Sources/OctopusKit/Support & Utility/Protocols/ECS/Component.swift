@@ -20,28 +20,22 @@ public protocol Component: class, UpdatablePerFrame {
     
     var componentType:      Component.Type      { get }
     
-//    var entityName:         String?             { get }
-//    var entityNode:         SKNode?             { get }
-//    var entityScene:        OKScene?            { get }
-//    var entityPhysicsBody:  SKPhysicsBody?      { get }
-//    var entityState:        OKEntityState?      { get }
-//    var entityDelegate:     OKEntityDelegate?   { get }
-    
-    var shouldRemoveFromEntityOnDeinit:    Bool { get set }
-    var shouldWarnIfDeinitWithoutRemoving: Bool { get set }
+    var shouldRemoveFromEntityOnDeinit:    Bool { get }
+    var shouldWarnIfDeinitWithoutRemoving: Bool { get }
     var disableDependencyChecks:           Bool { get set }
     
     // MARK: Life Cycle
     
-    init()
+    // init()
     
-    func disableDependencyChecks(_ newValue: Bool)
-    
+    @discardableResult
+    func disableDependencyChecks(_ newValue: Bool) -> Self
+
     func didAddToEntity()
     func didAddToEntity(withNode node: SKNode)
-    
+
     func removeFromEntity()
-    
+
     func willRemoveFromEntity()
     func willRemoveFromEntity(withNode node: SKNode)
     
@@ -51,11 +45,12 @@ public protocol Component: class, UpdatablePerFrame {
         ofType componentClass: ComponentType.Type,
         ignoreRelayComponents: Bool)
         -> ComponentType? where ComponentType: Component
-    
+
     func coComponent <ComponentType> (
         _ componentClass: ComponentType.Type,
         ignoreRelayComponents: Bool)
         -> ComponentType? where ComponentType: Component
-    
-    func checkEntityForRequiredComponents()
+
+    @discardableResult
+    func checkEntityForRequiredComponents() -> Bool
 }
