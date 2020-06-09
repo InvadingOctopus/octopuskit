@@ -15,7 +15,7 @@ open class OKEntityState: OKState {
     
     // NOTE: The component lists are `Array`s instead of `Set`s so the order can be preserved.
     
-    public let entity: OKEntity
+    public unowned let entity: OKEntity // CHECK: Should this be `unowned`?
     
     /// ❕ NOTE: Component arrays should be of type `GKComponent` instead of the more specific `OKComponent`, so that `GKAgent` and `AgentComponent` etc. can be added.
     
