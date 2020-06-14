@@ -11,10 +11,10 @@ import Foundation
 extension OctopusKit {
     
     /// Encapsulates global constants that may be used by various parts of the OctopusKit.
-    public struct Constants {
+    public enum Constants {
         
         /// A collection of strings for the names of entities etc., to avoid hard-coding text and prevent typos during searches or comparisons etc.
-        public struct Strings {
+        public enum Strings {
             static let gameCoordinatorEntityName = "Game Coordinator Entity"
         }
         
