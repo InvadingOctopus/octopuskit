@@ -10,16 +10,18 @@ import GameplayKit
 
 /// Creates an `SKAudioNode` from the specified filename and plays it when this component is added to an entity, adding the music node to the entity's `NodeComponent` node.
 ///
+/// - WARNING: ⚠️ SpriteKit seems to have a bug where the `SKAudioNode`'s `isPositional` property has no effect. Music may get panned and decrease in volume, unless this component is added to the same entity whose node is the `listener` for the `OKScene`, i.e. the player's entity.
+///
 /// **Dependencies:** `NodeComponent`
 public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
     
-    // TODO: Use `AVAudioPlayer`, as it is more suitable for music according to Apple documentation.
+    /// TODO: Use `AVAudioPlayer`, as it is more suitable for music according to Apple documentation.
     
-    // CHECK: A way to add multiple `AudioComponent`s to an entity, as GameplayKit replaces older components of the same type? We may only want a single `MusicComponent` but multiple `AudioComponents`.
+    /// CHECK: A way to add multiple `AudioComponent`s to an entity, as GameplayKit replaces older components of the same type? We may only want a single `MusicComponent` but multiple `AudioComponents`.
     
-    // BUG: `isPositional = false` does not seem to be working.
+    /// BUG: `isPositional = false` does not seem to be working.
     
-    // ℹ️ DESIGN: As we have to setup the music in our initialization, and play it after it has been added to a parent node, we do not use `createAttachment(for:)` and just set `self.attachment` directly.
+    /// ℹ️ DESIGN: As we have to setup the music in our initialization, and play it after it has been added to a parent node, we do not use `createAttachment(for:)` and just set `self.attachment` directly.
     
     public let masterNode: SKAudioNode
     
@@ -35,9 +37,10 @@ public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
         let firstMusicNode              = SKAudioNode(fileNamed: fileName)
         
         firstMusicNode.autoplayLooped   = true
-        firstMusicNode.isPositional     = false // BUG: Not effective.
+        firstMusicNode.isPositional     = true // BUG: APPLEBUG 20200614A: Not effective.
         
         self.masterNode                 = SKAudioNode(children: [firstMusicNode])
+        self.masterNode.isPositional    = true
         self.latestFileName             = fileName
         
         super.init()
@@ -80,7 +83,7 @@ public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
         let newMusic = SKAudioNode(fileNamed: newFileName)
         
         newMusic.autoplayLooped = true
-        newMusic.isPositional   = false // BUG: Not effective.
+        newMusic.isPositional   = false // BUG: APPLEBUG 20200614A: Not effective.
         
         self.masterNode.addChild(newMusic)
         
