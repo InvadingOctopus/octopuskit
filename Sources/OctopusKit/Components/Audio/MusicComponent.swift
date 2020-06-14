@@ -32,6 +32,7 @@ public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
     public let fadeOutKey = "OctopusKit.MusicComponent.FadeOut"
     
     public init(fileNamed fileName: String,
+                volume:             Float?  = nil,
                 parentOverride:     SKNode? = nil)
     {
         // TODO: Error-handling for missing files.
@@ -41,13 +42,16 @@ public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
         firstMusicNode.autoplayLooped   = true
         firstMusicNode.isPositional     = true // BUG: APPLEBUG 20200614A: Not effective.
         
+        if  let volume = volume {
+            firstMusicNode.run(.changeVolume(to: volume, duration: 0))
+        }
+        
         self.masterNode                 = SKAudioNode(children: [firstMusicNode])
         self.masterNode.isPositional    = true
         self.latestFileName             = fileName
         
-        super.init(parentOverride: parentOverride)
-        
-        self.attachment = self.masterNode
+        super.init(self.masterNode,
+                   parentOverride: parentOverride)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }

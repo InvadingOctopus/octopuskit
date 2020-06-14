@@ -21,13 +21,19 @@ public final class AudioComponent: NodeAttachmentComponent<SKAudioNode> {
     
     public let audioNode: SKAudioNode
     
-    public init(fileNamed fileName: String) {
+    public init(fileNamed fileName: String,
+                volume:             Float?  = nil)
+    {
         // TODO: Error-handling for missing files.
-        self.audioNode = SKAudioNode(fileNamed: fileName)
-        audioNode.autoplayLooped = false
-        audioNode.isPositional = true
-        super.init()
-        self.attachment = self.audioNode
+        self.audioNode              = SKAudioNode(fileNamed: fileName)
+        audioNode.autoplayLooped    = false
+        audioNode.isPositional      = true
+        
+        if  let volume = volume {
+            audioNode.run(.changeVolume(to: volume, duration: 0))
+        }
+        
+        super.init(self.audioNode)
     }
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
