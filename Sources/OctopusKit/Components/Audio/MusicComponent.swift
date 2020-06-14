@@ -31,7 +31,9 @@ public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
     public let fadeInKey  = "OctopusKit.MusicComponent.FadeIn"
     public let fadeOutKey = "OctopusKit.MusicComponent.FadeOut"
     
-    public init(fileNamed fileName: String) {
+    public init(fileNamed fileName: String,
+                parentOverride:     SKNode? = nil)
+    {
         // TODO: Error-handling for missing files.
         
         let firstMusicNode              = SKAudioNode(fileNamed: fileName)
@@ -43,7 +45,7 @@ public final class MusicComponent: NodeAttachmentComponent <SKAudioNode> {
         self.masterNode.isPositional    = true
         self.latestFileName             = fileName
         
-        super.init()
+        super.init(parentOverride: parentOverride)
         
         self.attachment = self.masterNode
     }
