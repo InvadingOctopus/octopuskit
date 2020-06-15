@@ -374,11 +374,13 @@ public struct OKLog {
         _ text:     String  = "",
         topic:      String  = #file,
         function:   String  = #function,
+        object:     String  = "",
         useNSLog:   Bool?   = nil)
     {
         self.add(text,
                  topic:     topic,
                  function:  function,
+                 object:    object,
                  useNSLog:  useNSLog)
     }
 }
