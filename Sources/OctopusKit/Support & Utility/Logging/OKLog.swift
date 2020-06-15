@@ -345,7 +345,7 @@ public struct OKLog {
                 // TODO: Truncate filenames with "…"
                 
                 let paddedTitle = prefix.paddedWithSpace(toLength: 8)
-                let paddedTopic = topic.paddedWithSpace(toLength: 35)
+                let paddedTopic = topic .paddedWithSpace(toLength: 35)
                  
                 if  OKLog.printTextOnSecondLine {
                     consoleText = """
