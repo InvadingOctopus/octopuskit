@@ -228,14 +228,16 @@ public struct OKLog {
     /// Prints a new entry and adds it to the log.
     /// - Parameters:
     ///   - text:       The content of the entry.
-    ///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
+    ///   - topic:      The file name, type name, or subsystem from which this entry is logged. Default: The file name.
     ///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
+    ///   - object:     The runtime object *from which* this entry is logged, which may not necessarily be the object for which this entry is *about* (that would go in the `text`). Default: empty.
     ///   - useNSLog:   If `true`, `NSLog(_:)` is used instead of `print(_:)`. Default: `nil`; this log's `useNSLog` property is used.
     @inlinable
-    public mutating func add(_ text:     String  = "",
-                             topic:      String  = #file,
-                             function:   String  = #function,
-                             useNSLog:   Bool?   = nil)
+    public mutating func add(_ text:    String  = "",
+                             topic:     String  = #file,
+                             function:  String  = #function,
+                             object:    String  = "",
+                             useNSLog:  Bool?   = nil)
     {
         // CHECK: Cocoa Notifications for log observers etc.?
         
@@ -255,6 +257,7 @@ public struct OKLog {
         let consoleText = printEntry(text,
                                      topic:     topic,
                                      function:  function,
+                                     object:    object,
                                      useNSLog:  useNSLog)
         
         // Add the entry to the log.
@@ -263,7 +266,8 @@ public struct OKLog {
                                   time:     time,
                                   text:     text,
                                   topic:    topic,
-                                  function: function)
+                                  function: function,
+                                  object:   object)
         
         entries.append(newEntry)
         
@@ -295,12 +299,15 @@ public struct OKLog {
     
     /// Formats and prints the entry to the runtime debug console or `NSLog`, and returns the formatted string.
     @inlinable @discardableResult
-    public func printEntry(_ text:     String  = "",
-                           topic:      String  = #file,
-                           function:   String  = #function,
-                           useNSLog:   Bool    = false)
+    public func printEntry(_ text:      String  = "",
+                           topic:       String  = #file,
+                           function:    String  = #function,
+                           object:      String  = "",
+                           useNSLog:    Bool    = false)
                         -> String
     {
+        // TODO: Print `object`
+        
         // If there is any text to log, insert a space between the log prefix and the text.
         
         var textWithSpacePrefixIfNeeded = text

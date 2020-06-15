@@ -24,11 +24,14 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     /// Specifies whether this entry was logged at the beginning of a new frame of a scene, if any. Used for highlighting new frames in a list of entries.
     public let isNewFrame:  Bool /// CHECK: Rename to `isHighlighted` or `isFirstEntryOfNewFrame`? :p
     
-    /// The file name, type name, runtime object, or subsystem from which this entry was logged.
+    /// The file name, type name, or subsystem from which this entry was logged.
     public let topic:       String
     
     /// The specific function or task inside the topic from which this entry is logged.
     public let function:    String
+    
+    /// The runtime object *from which* this entry was logged (not necessarily the object for which this entry is about, which may be mentioned in the `text`).
+    public let object:      String
     
     /// The actual event or message that was logged.
     public let text:        String
@@ -43,8 +46,9 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     ///   - frame:      The current frame count of the current scene, if any, otherwise `0`.
     ///   - isNewFrame: `true` if the entry is logged at the beginning of a new frame in the current scene, if any. Used for highlighting new frames.
     ///   - text:       The content of the entry.
-    ///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
+    ///   - topic:      The file name, type name, or subsystem from which this entry is logged. Default: The file name.
     ///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
+    ///   - object:     The runtime object from which this entry is logged. Default: empty.
     public init(
         prefix:     String  = "",
         time:       Date    = Date(),
@@ -52,7 +56,8 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
         isNewFrame: Bool    = OKLog.isNewFrame,
         text:       String  = "",
         topic:      String  = #file,
-        function:   String  = #function)
+        function:   String  = #function,
+        object:     String  = "")
     {
         self.prefix     = prefix
         self.time       = time
@@ -62,6 +67,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
         self.text       = text
         self.topic      = topic
         self.function   = function
+        self.object     = object
     }
     
     @inlinable
@@ -76,6 +82,6 @@ extension OKLogEntry: Codable {
     enum CodingKeys: String, CodingKey {
         /// ℹ️ Exclude the long and unnecessary `id` strings.
         case prefix, time, frame, isNewFrame
-        case topic, function, text
+        case topic, function, object, text
     }
 }
