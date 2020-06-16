@@ -48,11 +48,10 @@ public func 💩 <ReturnValue> (_ closure: () -> ReturnValue?) -> ReturnValue? {
 ///   - function:   The specific function or task inside the topic from which this entry is logged. Default: The function signature.
 ///   - separator:  The separator to place between time, topic, function and entry. Default: A single space.
 @inlinable
-public func debugLog(
-    _ entry:    String? = nil,
-    topic:      String  = #file,
-    function:   String  = #function,
-    separator:  String  = " ")
+public func debugLog(_ entry:   String? = nil,
+                     topic:     String  = #file,
+                     function:  String  = #function,
+                     separator: String  = " ")
 {
     // Trim and pad the calling file's name.
     
@@ -61,6 +60,8 @@ public func debugLog(
     let paddedTopic  = topic.paddedWithSpace    (toLength: OKLog.topicLength)
 
     print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)\(separator)\(function)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
+    
+    if OKLog.printEmptyLineBetweenEntries { print() }
     
     // Update the last frame counter (so that the next entry for the same frame doesn't get highlighted as the first entry and so on).
     
