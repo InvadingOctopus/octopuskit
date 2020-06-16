@@ -471,7 +471,7 @@ open class OKScene: SKScene,
             removeEntity(entityToRemove)
         }
         
-        entitiesToRemoveOnNextUpdate.removeAll()
+        entitiesToRemoveOnNextUpdate.removeAll() // Clear the array so we don't try to remove then again. :)
         
         // MARK: Timekeeping
         
