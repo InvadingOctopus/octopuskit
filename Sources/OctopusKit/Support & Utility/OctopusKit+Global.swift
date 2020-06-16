@@ -56,10 +56,11 @@ public func debugLog(
 {
     // Trim and pad the calling file's name.
     
-    let topic       = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
-    let paddedTopic = topic.paddedWithSpace(toLength: OKLog.topicLength)
+    let paddedPrefix = "◾️".paddedWithSpace     (toLength: OKLog.prefixLength)
+    let topic        = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
+    let paddedTopic  = topic.paddedWithSpace    (toLength: OKLog.topicLength)
 
-    print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedTopic)\(separator)\(function)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
+    print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)\(separator)\(function)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
     
     // Update the last frame counter (so that the next entry for the same frame doesn't get highlighted as the first entry and so on).
     
