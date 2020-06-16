@@ -8,6 +8,8 @@
 
 import GameplayKit
 
+#if UseNewProtocols // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
+
 /// Experimental prototype for protocol-based components.
 open class GKComponentWrapper: Component, UpdatablePerFrame {
     
@@ -284,3 +286,5 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
     }
     
 }
+
+#endif

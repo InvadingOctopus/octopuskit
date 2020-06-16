@@ -9,9 +9,9 @@
 import Foundation
 import GameplayKit
 
+#if UseNewProtocols // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
+
 public protocol ComponentContainer: class {
-    
-    // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
     
     // MARK: Properties
     
@@ -105,3 +105,5 @@ public extension ComponentContainer {
         container.removeComponents(ofTypes: componentClasses)
     }
 }
+
+#endif

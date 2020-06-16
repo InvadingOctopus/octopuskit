@@ -9,9 +9,9 @@
 import Foundation
 import GameplayKit
 
+#if UseNewProtocols // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
+
 public protocol Component: class, UpdatablePerFrame {
-    
-    // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
     
     // MARK: Properties
     
@@ -54,3 +54,5 @@ public protocol Component: class, UpdatablePerFrame {
     @discardableResult
     func checkEntityForRequiredComponents() -> Bool
 }
+
+#endif

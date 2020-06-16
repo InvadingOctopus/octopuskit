@@ -9,14 +9,14 @@
 import Foundation
 import GameplayKit
 
+#if UseNewProtocols // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
+
 public protocol Entity:
     /// class, // Already on `ComponentContainer`
     Nameable,
     ComponentContainer,
     UpdatablePerFrame
 {
-    // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
-    
     var delegate: EntityDelegate? { get }
     
     // init()
@@ -35,3 +35,5 @@ public protocol EntityDelegate: class {
     
     func entityDidRequestRemoval(_ entity: Entity)
 }
+
+#endif

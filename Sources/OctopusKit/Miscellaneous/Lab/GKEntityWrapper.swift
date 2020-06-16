@@ -9,6 +9,8 @@
 import GameplayKit
 import SpriteKit
 
+#if UseNewProtocols // ℹ️ Not currently in use; This is mostly preparation for future independence from GameplayKit, if needed.
+
 /// Experimental prototype for protocol-based components.
 open class GKEntityWrapper: Entity, UpdatablePerFrame {
 
@@ -401,3 +403,4 @@ open class GKEntityWrapper: Entity, UpdatablePerFrame {
     
 }
 
+#endif
