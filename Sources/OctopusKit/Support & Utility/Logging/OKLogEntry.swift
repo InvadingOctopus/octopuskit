@@ -59,7 +59,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     /// Returns a string with the number of the frame for which this entry was recorded, with an optional marker if this was the first entry for that frame.
     @inlinable
     public var frameString: String {
-        "F" + "\(frame)".paddedWithSpace(toLength: OKLog.framePaddingLength) + "\(isNewFrame ? "•" : " ")"
+        "F" + "\(frame)".paddedWithSpace(toLength: OKLog.framePadding) + "\(isNewFrame ? "•" : " ")"
     }
     
     /// Returns a concatenation of `timeString` and `frameString`.
@@ -168,17 +168,17 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
                     Swift.print("")
                 }
                 
-                let paddedTitle = prefix.paddedWithSpace(toLength: 8)
-                let paddedTopic = topic .paddedWithSpace(toLength: 35)
+                let paddedPrefix = prefix.paddedWithSpace(toLength: OKLog.prefixPadding)
+                let paddedTopic  = topic .paddedWithSpace(toLength: OKLog.topicPadding)
                  
                 if  OKLog.printTextOnSecondLine {
                     printedText = """
-                    \(self.timeAndFrameString) \(paddedTitle) \(topic)
-                    \(String(repeating: " ", count: 35))\(function)\(text)\(suffix)
+                    \(self.timeAndFrameString) \(paddedPrefix) \(topic)
+                    \(function)\(text)\(suffix)
                     """
                     
                 } else {
-                    printedText = "\(self.timeAndFrameString) \(paddedTitle) \(paddedTopic) \(function)\(text)\(suffix)"
+                    printedText = "\(self.timeAndFrameString) \(paddedPrefix) \(paddedTopic) \(function)\(text)\(suffix)"
                 }
             }
         
