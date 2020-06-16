@@ -31,7 +31,7 @@ public struct OKLog {
     // CHECK: Adopt `os_signpost`?
     // CHECK: PERFORMANCE: Does padding etc. reduce app performance, i.e. during frequent logging?
 
-    // MARK: Global/Static settings, properties & methods 
+    // MARK: Global/Static settings, properties & methods
         
     /// If `true` then an empty line is printed between each entry in the debug console.
     public static var printEmptyLineBetweenEntries: Bool = false
@@ -42,13 +42,12 @@ public struct OKLog {
     /// If `true` then an entry is printed on at least 2 lines in the debug console, where the time and calling file is on the first line and the text is on the second line.
     public static var printTextOnSecondLine: Bool = false
     
-    /// If `true` then debug console output is printed in tab-delimited CSV format, that may then be copied into a spreadsheet table such as Numbers etc.
+    /// If `true` then debug console output is printed in CSV format, that may then be copied into a spreadsheet table such as Numbers etc.
     ///
-    /// The values are: currentTime, currentFrameNumber, prefix, topic, function, text, suffix.
+    /// The values are, in order: time, frame, prefix, topic, function, object, text. Separated by `csvDelimiter`.
     public static var printAsCSV: Bool = false
     
-    /// The separator to print between values when `printAsCSV` is `true`.
-    /// Default is `tab`.
+    /// The separator to print between values when `printAsCSV` is `true`. Default: `tab`
     public static var csvDelimiter: String = "\t"
     
     /// Stores the frame number during the most recent log entry, so we can mark the beginning of a new frame to make logs easier to read.
@@ -140,16 +139,13 @@ public struct OKLog {
     
     /// If `true`, uses `NSLog` to print new entries to the debug console when they are added.
     /// If `false`, prints new entries in a custom format. This is the default.
-    public var useNSLog: Bool = false
+    public var useNSLog:    Bool = false
     
-    /// A string to add at the end of all entries. Not printed if using `NSLog`.
-    public let suffix: String?
-    
-    /// If `true` and `useNSLog` is `false`, the log appends the `suffix` string to the end of all printed lines, but not to the saved entry.
-    public var printsSuffix: Bool = true
+    /// A string to append to the end of an entry's text when printing. **Not** added to saved entries. Not printed when using `NSLog`.
+    public let suffix:      String?
     
     /// If `true` then new entries are ignored and the `add(...)` method is skipped.
-    public var isDisabled: Bool = false
+    public var isDisabled:  Bool = false
     
     /// Returns the `OKLogEntry` at `index`.
     @inlinable
@@ -252,14 +248,6 @@ public struct OKLog {
         // Trim the path from topic to only include the file name.
         let topic = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
         
-        /// Print the entry to the debug console or `NSLog`.
-        
-        let consoleText = printEntry(text,
-                                     topic:     topic,
-                                     function:  function,
-                                     object:    object,
-                                     useNSLog:  useNSLog)
-        
         // Add the entry to the log.
         
         let newEntry = OKLogEntry(prefix:   self.prefix,
@@ -270,6 +258,12 @@ public struct OKLog {
                                   object:   object)
         
         entries.append(newEntry)
+        
+        /// Print the entry to the debug console or `NSLog`. Save the printed output to repeat in case of a `fatalError` ahead.
+        
+        let consoleText = newEntry.print(suffix:    self.suffix,
+                                         asCSV:     OKLog.printAsCSV,
+                                         useNSLog:  useNSLog)
         
         // Also append the entry to the global unified log. Useful for a log viewer.
         
@@ -295,79 +289,6 @@ public struct OKLog {
         
     }
     
-    // MARK: Print Entry
-    
-    /// Formats and prints the entry to the runtime debug console or `NSLog`, and returns the formatted string.
-    @inlinable @discardableResult
-    public func printEntry(_ text:      String  = "",
-                           topic:       String  = #file,
-                           function:    String  = #function,
-                           object:      String  = "",
-                           useNSLog:    Bool    = false)
-                        -> String
-    {
-        // TODO: Print `object`
-        
-        // If there is any text to log, insert a space between the log prefix and the text.
-        
-        var textWithSpacePrefixIfNeeded = text
-        
-        if !textWithSpacePrefixIfNeeded.isEmpty {
-            textWithSpacePrefixIfNeeded = " \(textWithSpacePrefixIfNeeded)"
-        }
-        
-        // Include the suffix, if any, after a space.
-        
-        let suffix = printsSuffix && self.suffix != nil ? " \(self.suffix!)" : ""
-        
-        // Duplicate the entry to `NSLog()` if specified, otherwise just `print()` it to the console in our custom format.
-        
-        var consoleText: String = ""
-        
-        if  useNSLog {
-            NSLog("\(prefix) \(topic) \(function)\(textWithSpacePrefixIfNeeded)")
-            
-        } else {
-          
-            if  OKLog.printAsCSV {
-                
-                consoleText = [
-                    OKLog.currentTimeString(),
-                    "\(OctopusKit.shared.currentScene?.currentFrameNumber ?? 0)",
-                    #""\#(prefix)""#,
-                    #""\#(topic)""#,
-                    #""\#(function)""#,
-                    #""\#(text)""#,
-                    #""\#(suffix)""#
-                ].joined(separator: OKLog.csvDelimiter)
-                
-            } else {
-                // TODO: Truncate filenames with "…"
-                
-                let paddedTitle = prefix.paddedWithSpace(toLength: 8)
-                let paddedTopic = topic .paddedWithSpace(toLength: 35)
-                 
-                if  OKLog.printTextOnSecondLine {
-                    consoleText = """
-                        \(OKLog.currentTimeAndFrame()) \(paddedTitle) \(topic)
-                        \(String(repeating: " ", count: 35))\(function)\(textWithSpacePrefixIfNeeded)\(suffix)
-                        """
-                    
-                } else {
-                    consoleText = "\(OKLog.currentTimeAndFrame()) \(paddedTitle) \(paddedTopic) \(function)\(textWithSpacePrefixIfNeeded)\(suffix)"
-                }
-            }
-            
-            print(consoleText)
-            
-            // NOTE: We cannot rely on the count of entries to determine whether to print an empty line, as there may be multiple logs printing to the debug console, so just add an empty line after all entries. :)
-            
-            if OKLog.printEmptyLineBetweenEntries { print() }
-        }
-        
-        return consoleText
-    }
-    
     /// A convenience for adding entries by simply writing `logName(...)` instead of calling the `.add(...)` method.
     @inlinable
     public mutating func callAsFunction(
@@ -388,9 +309,8 @@ public struct OKLog {
 extension OKLog: Codable {
     enum CodingKeys: String, CodingKey {
         /// ℹ️ Exclude the long and unnecessary `id` strings.
-        case title, prefix
+        case title, prefix, suffix
         case useNSLog, isDisabled
-        case suffix, printsSuffix
         case entries
     }
 }
