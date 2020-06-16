@@ -165,7 +165,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
                 // TODO: Truncate filenames with "…"
                 
                 if  OKLog.printEmptyLineBetweenFrames && isNewFrame {
-                    Swift.print("")
+                    Swift.print()
                 }
                 
                 let paddedPrefix = prefix.paddedWithSpace(toLength: OKLog.prefixLength)
