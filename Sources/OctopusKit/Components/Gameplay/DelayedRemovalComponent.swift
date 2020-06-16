@@ -17,6 +17,8 @@ public final class DelayedRemovalComponent: OKComponent, RequiresUpdatesPerFrame
     public var removalDelay:        TimeInterval
    
     /// If `true`, the entity is told to remove all its components, after it is removed from the scene.
+    ///
+    /// - WARNING: ⚠️ Setting this to `true` may cause a runtime crash related to modifying the components array in a component system.
     public var removeComponents:    Bool = false
     
     public fileprivate(set) var secondsElapsed: TimeInterval = 0
