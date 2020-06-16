@@ -13,6 +13,8 @@ public typealias OctopusLogEntry = OKLogEntry
 /// An entry in an `OKLog`.
 public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     
+    // MARK: - Properties
+    
     /// The prefix of the log, if any, in which this entry was logged. Used for distinguishing entries from different logs. May be emojis or symbols.
     public let prefix:      String
     
@@ -38,6 +40,51 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     
     /// A unique identifier for compatibility with SwiftUI lists.
     public let id         = UUID()
+    
+    // MARK: - Computed Properties
+    
+    @inlinable
+    public var description: String {
+        let text = self.text // CHECK: Trim whitespace?
+        
+        return ("\(OKLog.formattedTimeString(time: self.time))\(text.isEmpty ? "" : " ")\(text)")
+    }
+    
+    /// Returns a string with the entry's recorded time as formatted by the global `OKLog.timeFormatter`.
+    @inlinable
+    public var timeString: String {
+        OKLog.formattedTimeString(time: self.time)
+    }
+    
+    /// Returns a string with the number of the frame for which this entry was recorded, with an optional marker if this was the first entry for that frame.
+    @inlinable
+    public var frameString: String {
+        "F" + "\(frame)".paddedWithSpace(toLength: OKLog.framePaddingLength) + "\(isNewFrame ? "•" : " ")"
+    }
+    
+    /// Returns a concatenation of `timeString` and `frameString`.
+    @inlinable
+    public var timeAndFrameString: String {
+        timeString + " " + frameString
+    }
+
+    /// Returns this entry as a row of CSV-formatted values, that may then be copied into a spreadsheet table such as Numbers. The values are, in order: time, frame, prefix, topic, function, object, text. Separated by `OKLog.csvDelimiter`.
+    @inlinable
+    public var csv: String {
+        let csv = [
+            timeString,
+            String(frame), // DESIGN: Use a more compact string instead of the formatted `frameString`
+            #""\#(prefix    )""#,
+            #""\#(topic     )""#,
+            #""\#(function  )""#,
+            #""\#(object    )""#,
+            #""\#(text      )""#,
+        ].joined(separator: OKLog.csvDelimiter)
+        
+        return csv
+    }
+    
+    // MARK: - Initializer
     
     /// Creates a new log entry.
     /// - Parameters:
@@ -70,12 +117,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
         self.object     = object
     }
     
-    @inlinable
-    public var description: String {
-        let text = self.text // CHECK: Trim whitespace?
-        
-        return ("\(OKLog.timeFormatter.string(from: self.time))\(text.isEmpty ? "" : " ")\(text)")
-    }
+    // MARK: - Methods
     
     /// Formats and prints the entry to the runtime debug console or `NSLog`, and returns the formatted string.
     ///
@@ -85,9 +127,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     ///
     ///   - asCSV: If `true` then the entry is printed as a CSV row.
     ///
-    ///     The values are, in order: time, frame, prefix, topic, function, object, text. The text qualifier is 2 double-quotes: `""`.
-    ///
-    ///     Uses `OKLog.csvDelimiter`. Does not apply if `useNSLog` is `true`. Default: `false`
+    ///   See the `OKEntry.csv` property for a list of the values i.e. columns. Does not apply if `useNSLog` is `true`. Default: `false`
     ///
     ///   - useNSLog: If `true`, `NSLog(_:)` is used instead of `print(_:)`. Default: `false`
     ///
@@ -98,60 +138,51 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
                       useNSLog: Bool    = false) -> String
     {
         // TODO: Print `object`
+     
+        /// NOTE: Have to disambiguate `Swift.print(...)` in this method. :)
         
         // If there is any text to log, insert a space between the log prefix and the text.
         
-        var textWithSpacePrefixIfNeeded = text
-        
-        if !textWithSpacePrefixIfNeeded.isEmpty {
-            textWithSpacePrefixIfNeeded = " \(textWithSpacePrefixIfNeeded)"
-        }
+        let text: String = self.text.isEmpty ? "" : " \(self.text)"
         
         // Include the suffix, if any, after a space.
         
-        let suffix = suffix != nil ? " \(suffix!)" : ""
+        let suffix = (suffix != nil) ? " \(suffix!)" : ""
         
         // Duplicate the entry to `NSLog()` if specified, otherwise just `print()` it to the console in our custom format.
         
         var printedText: String = ""
         
         if  useNSLog {
-            NSLog("\(prefix) \(topic) \(function)\(textWithSpacePrefixIfNeeded)")
+            NSLog("\(prefix) \(topic) \(function)\(text)")
             
         } else {
           
             if  asCSV {
-                
-                let textQualifier = "\"\"" // 2 double-quotes: ""text""
-                
-                printedText = [
-                    OKLog.currentTimeString(),
-                    String(OKLog.currentFrame),
-                    #""\#(prefix    )""#,
-                    #""\#(topic     )""#,
-                    #""\#(function  )""#,
-                    #""\#(object    )""#,
-                    #""\#(text      )""#,
-                ].joined(separator: OKLog.csvDelimiter)
+                printedText = self.csv
                 
             } else {
                 // TODO: Truncate filenames with "…"
+                
+                if  OKLog.printEmptyLineBetweenFrames && isNewFrame {
+                    Swift.print("")
+                }
                 
                 let paddedTitle = prefix.paddedWithSpace(toLength: 8)
                 let paddedTopic = topic .paddedWithSpace(toLength: 35)
                  
                 if  OKLog.printTextOnSecondLine {
                     printedText = """
-                        \(OKLog.currentTimeAndFrame()) \(paddedTitle) \(topic)
-                        \(String(repeating: " ", count: 35))\(function)\(textWithSpacePrefixIfNeeded)\(suffix)
-                        """
+                    \(self.timeAndFrameString) \(paddedTitle) \(topic)
+                    \(String(repeating: " ", count: 35))\(function)\(text)\(suffix)
+                    """
                     
                 } else {
-                    printedText = "\(OKLog.currentTimeAndFrame()) \(paddedTitle) \(paddedTopic) \(function)\(textWithSpacePrefixIfNeeded)\(suffix)"
+                    printedText = "\(self.timeAndFrameString) \(paddedTitle) \(paddedTopic) \(function)\(text)\(suffix)"
                 }
             }
         
-            Swift.print(printedText) // Have to disambiguate :)
+            Swift.print(printedText)
             
             // NOTE: We cannot rely on the count of entries to determine whether to print an empty line, as there may be multiple logs printing to the debug console, so just add an empty line after all entries. :)
             
@@ -161,6 +192,8 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
         return printedText
     }
 }
+
+// MARK: - Codable
 
 extension OKLogEntry: Codable {
     enum CodingKeys: String, CodingKey {

@@ -44,7 +44,7 @@ public struct OKLog {
     
     /// If `true` then debug console output is printed in CSV format, that may then be copied into a spreadsheet table such as Numbers etc.
     ///
-    /// The values are, in order: time, frame, prefix, topic, function, object, text. Separated by `csvDelimiter`.
+    /// See the `OKEntry.csv` property for a list of the values i.e. columns.
     public static var printAsCSV: Bool = false
     
     /// The separator to print between values when `printAsCSV` is `true`. Default: `tab`
@@ -52,6 +52,9 @@ public struct OKLog {
     
     /// Stores the frame number during the most recent log entry, so we can mark the beginning of a new frame to make logs easier to read.
     public static var lastFrameLogged: UInt64 = 0 // Not fileprivate(set) so functions can be @inlinable
+    
+    /// The number of characters to pad the frame counter to when printing entries.
+    public static let framePaddingLength: Int = 7
     
     /// The global time formatter for all OctopusKit logging functions.
     ///
@@ -63,18 +66,23 @@ public struct OKLog {
         return timeFormatter
     }()
     
-    /// Returns a string with the current time formatted by the global `OKLog.timeFormatter`.
+    /// Returns a string with the specified time as formatted by the global `OKLog.timeFormatter`.
     @inlinable
-    public static func currentTimeString() -> String {
+    public static func formattedTimeString(time: Date) -> String {
         // TODO: A better way to get nanoseconds like `NSLog`
         
-        let now         = Date()
-        let nanoseconds = "\(Calendar.current.component(.nanosecond, from: now))".prefix(6)
-        let time        = OKLog.timeFormatter.string(from: now)
+        let nanoseconds = "\(Calendar.current.component(.nanosecond, from: time))".prefix(6)
+        let time        = OKLog.timeFormatter.string(from: time)
         
         let timeWithNanoseconds = "\(time).\(nanoseconds)"
         
         return timeWithNanoseconds
+    }
+    
+    /// Returns a string with the current time as formatted by the global `OKLog.timeFormatter`.
+    @inlinable
+    public static func currentTimeString() -> String {
+        formattedTimeString(time: Date())
     }
     
     /// Returns the `currentFrameNumber` of `OctopusKit.shared.currentScene`, if available, otherwise `0`.
@@ -114,7 +122,7 @@ public struct OKLog {
             print("")
         }
         
-        let currentFrameNumberString = " F" + "\(currentFrame)".paddedWithSpace(toLength: 7) + "\(isNewFrame ? "•" : " ")"
+        let currentFrameNumberString = " F" + "\(currentFrame)".paddedWithSpace(toLength: framePaddingLength) + "\(isNewFrame ? "•" : " ")"
         
         /// BUG FIXED: Set `lastFrameLogged` in `OKLog.add(...)` instead of here, so that `OKLogEntry.init(...)` has a chance to check `isNewFrame` correctly.
         
@@ -303,6 +311,25 @@ public struct OKLog {
                  function:  function,
                  object:    object,
                  useNSLog:  useNSLog)
+    }
+    
+    /// Returns a string containing all entries, e.g. for exporting.
+    @inlinable
+    public func dumpAllEntries(asCSV: Bool = OKLog.printAsCSV) -> String
+    {
+        var dump: String = ""
+        
+        if  asCSV { // PERFORMANCE: Check once; not in every iteration.
+            for entry in self.entries {
+                dump.append("\(entry.description)\n")
+            }
+        } else {
+            for entry in self.entries {
+                dump.append("\(entry.csv)\n")
+            }
+        }
+        
+        return dump
     }
 }
 
