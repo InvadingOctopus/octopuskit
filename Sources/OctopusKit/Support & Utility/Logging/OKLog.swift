@@ -273,12 +273,14 @@ public struct OKLog {
         
         // Add the entry to the log.
         
-        let newEntry = OKLogEntry(prefix:   self.prefix,
-                                  time:     time,
-                                  text:     text,
-                                  topic:    topic,
-                                  function: function,
-                                  object:   object)
+        let newEntry = OKLogEntry(prefix:       self.prefix,
+                                  time:         time,
+                                  frame:        OKLog.currentFrame,
+                                  isNewFrame:   OKLog.isNewFrame,
+                                  text:         text,
+                                  topic:        topic,
+                                  function:     function,
+                                  object:       object)
         
         entries.append(newEntry)
         
