@@ -31,7 +31,7 @@ public struct OKLog {
     // CHECK: Adopt `os_signpost`?
     // CHECK: PERFORMANCE: Does padding etc. reduce app performance, i.e. during frequent logging?
 
-    // MARK: Static properties, methods & global options
+    // MARK: Global/Static settings, properties & methods 
         
     /// If `true` then an empty line is printed between each entry in the debug console.
     public static var printEmptyLineBetweenEntries: Bool = false
