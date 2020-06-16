@@ -51,13 +51,16 @@ public struct OKLog {
     public static var csvDelimiter: String = "\t"
     
     // MARK: Padding
-    
-    // The number of characters to pad values to when printing entries.
     // DESIGN: PERFORMANCE: Making them `let` instead of `var` may be faster.
     
-    public static let framePadding:     Int = 8
-    public static let prefixPadding:    Int = 8
-    public static let topicPadding:     Int = 35
+    // The number of characters to trim or pad the frame number to when printing entries.
+    public static let frameLength:  Int = 8
+    
+    // The number of characters to trim or pad the prefix to when printing entries.
+    public static let prefixLength: Int = 8
+    
+    // The number of characters to trim or pad the topic to when printing entries.
+    public static let topicLength:  Int = 35
     
     // MARK: Static Properties
     
@@ -132,7 +135,7 @@ public struct OKLog {
             print("")
         }
         
-        let currentFrameNumberString = " F" + "\(currentFrame)".paddedWithSpace(toLength: framePadding) + "\(isNewFrame ? "•" : " ")"
+        let currentFrameNumberString = " F" + "\(currentFrame)".paddedWithSpace(toLength: frameLength) + "\(isNewFrame ? "•" : " ")"
         
         /// BUG FIXED: Set `lastFrameLogged` in `OKLog.add(...)` instead of here, so that `OKLogEntry.init(...)` has a chance to check `isNewFrame` correctly.
         
