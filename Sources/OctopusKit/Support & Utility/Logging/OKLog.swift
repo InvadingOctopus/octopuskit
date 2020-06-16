@@ -31,8 +31,8 @@ public struct OKLog {
     // CHECK: Adopt `os_signpost`?
     // CHECK: PERFORMANCE: Does padding etc. reduce app performance, i.e. during frequent logging?
 
-    // MARK: Global/Static settings, properties & methods
-        
+    // MARK: - Global Settings
+    
     /// If `true` then an empty line is printed between each entry in the debug console.
     public static var printEmptyLineBetweenEntries: Bool = false
     
@@ -50,11 +50,33 @@ public struct OKLog {
     /// The separator to print between values when `printAsCSV` is `true`. Default: `tab`
     public static var csvDelimiter: String = "\t"
     
+    /// The number of characters to pad the frame counter to when printing entries.
+    public static let framePaddingLength: Int = 7
+    
+    // MARK: Static Properties
+    
     /// Stores the frame number during the most recent log entry, so we can mark the beginning of a new frame to make logs easier to read.
     public static var lastFrameLogged: UInt64 = 0 // Not fileprivate(set) so functions can be @inlinable
     
-    /// The number of characters to pad the frame counter to when printing entries.
-    public static let framePaddingLength: Int = 7
+    /// Returns the `currentFrameNumber` of `OctopusKit.shared.currentScene`, if available, otherwise `0`.
+    @inlinable
+    public static var currentFrame: UInt64 {
+        // ⚠️ Trying to access `OctopusKit.shared.currentScene` at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so we delay it by checking something like `gameCoordinator.didEnterInitialState`
+        
+        if  OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false {
+            return OctopusKit.shared.currentScene?.currentFrameNumber ?? 0
+        } else {
+            return 0
+        }
+    }
+    
+    /// Returns `true` if the `currentFrame` count is higher than `lastFrameLogged`.
+    @inlinable
+    public static var isNewFrame: Bool {
+        self.currentFrame > self.lastFrameLogged
+    }
+    
+    // MARK: - Formatting
     
     /// The global time formatter for all OctopusKit logging functions.
     ///
@@ -83,24 +105,6 @@ public struct OKLog {
     @inlinable
     public static func currentTimeString() -> String {
         formattedTimeString(time: Date())
-    }
-    
-    /// Returns the `currentFrameNumber` of `OctopusKit.shared.currentScene`, if available, otherwise `0`.
-    @inlinable
-    public static var currentFrame: UInt64 {
-        // ⚠️ Trying to access `OctopusKit.shared.currentScene` at the very beginning of the application results in an exception like "Simultaneous accesses to 0x100e8f748, but modification requires exclusive access", so we delay it by checking something like `gameCoordinator.didEnterInitialState`
-        
-        if  OctopusKit.shared?.gameCoordinator.didEnterInitialState ?? false {
-            return OctopusKit.shared.currentScene?.currentFrameNumber ?? 0
-        } else {
-            return 0
-        }
-    }
-    
-    /// Returns `true` if the `currentFrame` count is higher than `lastFrameLogged`.
-    @inlinable
-    public static var isNewFrame: Bool {
-        self.currentFrame > self.lastFrameLogged
     }
     
     /// Returns a string with the number of the frame being rendered by the current scene, if any.
@@ -135,7 +139,7 @@ public struct OKLog {
         currentTimeString() + currentFrameString()
     }
     
-    // MARK: Instance properties and methods
+    // MARK: - Instance Properties
     
     /// The descriptive title of the log. Not printed or saved in entries.
     public let title:  String
@@ -198,7 +202,7 @@ public struct OKLog {
     /// A unique identifier for compatibility with SwiftUI lists.
     public let id = UUID()
     
-    // MARK: Initializer
+    // MARK: - Initializer
     
     /// Creates a new log for grouping related entries.
     ///
@@ -226,6 +230,8 @@ public struct OKLog {
         self.breakpointOnNewEntry       = breakpointOnNewEntry
         self.haltApplicationOnNewEntry  = haltApplicationOnNewEntry
     }
+    
+    // MARK: - Methods
     
     // MARK: Add Entry
     
@@ -332,6 +338,8 @@ public struct OKLog {
         return dump
     }
 }
+
+// MARK: - Codable
 
 extension OKLog: Codable {
     enum CodingKeys: String, CodingKey {
