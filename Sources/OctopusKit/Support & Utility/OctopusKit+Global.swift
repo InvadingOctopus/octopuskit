@@ -57,7 +57,7 @@ public func debugLog(
     // Trim and pad the calling file's name.
     
     let topic       = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
-    let paddedTopic = topic.paddedWithSpace(toLength: 35)
+    let paddedTopic = topic.paddedWithSpace(toLength: OKLog.topicLength)
 
     print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedTopic)\(separator)\(function)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
     
