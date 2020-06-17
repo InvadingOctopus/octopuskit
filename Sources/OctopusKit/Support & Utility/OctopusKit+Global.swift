@@ -70,9 +70,9 @@ public func debugLog(_ entry:   String? = nil,
             OKLog.currentTimeString(),
             String(OKLog.currentFrame), // DESIGN: Use a more compact string instead of the formatted `frameString`
             #""DEBUG""#,                // The prefix for CSV.
-            "",                         // No object.
             #""\#(topic     )""#,
             #""\#(function  )""#,
+            "",                         // No object.
             #""\#(entry     )""#
         ].joined(separator: OKLog.csvDelimiter)
         
