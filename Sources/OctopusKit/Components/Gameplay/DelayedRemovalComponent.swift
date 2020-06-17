@@ -19,19 +19,19 @@ public final class DelayedRemovalComponent: OKComponent, RequiresUpdatesPerFrame
     /// If `true`, the entity is told to remove all its components, after it is removed from the scene.
     ///
     /// - WARNING: ⚠️ Setting this to `true` may cause a runtime crash related to modifying the components array in a component system.
-    public var removeComponents:    Bool = false
+    public var removeAllComponents: Bool = false
     
     public fileprivate(set) var secondsElapsed: TimeInterval = 0
     
     /// Initializes a component which removes its entity from the scene.
     /// - Parameters:
-    ///   - removalDelay:       The duration to wait before initiating the removal.
-    ///   - removeComponents:   If `true`, the entity is told to remove all its components as well, after it's removed from the scene. This may be necessary in some cases for objects to be freed from memory and `deinit`. Default: `false`
-    public init(removalDelay:       TimeInterval,
-                removeComponents:   Bool = false)
+    ///   - removalDelay:           The duration to wait before initiating the removal.
+    ///   - removeAllComponents:    If `true`, the entity is told to remove all its components as well, after it's removed from the scene. This may be necessary in some cases for objects to be freed from memory and `deinit`. Default: `false`
+    public init(removalDelay:           TimeInterval,
+                removeAllComponents:    Bool = false)
     {
-        self.removalDelay       = removalDelay
-        self.removeComponents   = removeComponents
+        self.removalDelay           = removalDelay
+        self.removeAllComponents    = removeAllComponents
         super.init()
     }
     
@@ -51,7 +51,7 @@ public final class DelayedRemovalComponent: OKComponent, RequiresUpdatesPerFrame
             entityNode?.removeFromParent()
             entityDelegate?.entityDidRequestRemoval(entity)
             
-            if  removeComponents {
+            if  removeAllComponents {
                 entity.removeAllComponents()
             }
         }
