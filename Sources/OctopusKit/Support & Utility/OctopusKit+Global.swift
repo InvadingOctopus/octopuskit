@@ -55,11 +55,23 @@ public func debugLog(_ entry:   String? = nil,
 {
     // Trim and pad the calling file's name.
     
-    let paddedPrefix = "◾️".paddedWithSpace     (toLength: OKLog.prefixLength)
+    let paddedPrefix = "◾️".paddedWithSpace(toLength: OKLog.prefixLength)
     let topic        = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
-    let paddedTopic  = topic.paddedWithSpace    (toLength: OKLog.topicLength)
-
-    print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)\(separator)\(function)\(entry == nil || entry!.isEmpty ? "" : "\(separator)\(entry!)")")
+    let paddedTopic  = topic.paddedWithSpace(toLength: OKLog.topicLength)
+    let entry        = entry ?? ""
+    let entryWithSeparatorIfNeeded = entry.isEmpty ? "" : "\(separator)\(entry)"
+    
+    if  OKLog.printTextOnSecondLine {
+        
+        print("""
+            \(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)
+            \(function)\(entryWithSeparatorIfNeeded)
+            """)
+        
+    } else {
+        
+        print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)\(separator)\(function)\(entryWithSeparatorIfNeeded)")
+    }
     
     if OKLog.printEmptyLineBetweenEntries { print() }
     
