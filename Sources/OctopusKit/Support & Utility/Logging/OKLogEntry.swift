@@ -123,7 +123,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
     ///
     /// - Parameters:
     ///
-    ///   - suffix: The `String` to append to the end of the printed `text`. Omitted if `useNSLog` or `asCSV` is `true`. Default: `nil`
+    ///   - suffix: The `String` to append to the end of the printed `text`. Omitted if `useNSLog`, `asCSV` or `OKLog.printTextOnSecondLine` is `true`. Default: `nil`
     ///
     ///   - asCSV: If `true` then the entry is printed as a CSV row.
     ///
@@ -173,8 +173,8 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
                  
                 if  OKLog.printTextOnSecondLine {
                     printedText = """
-                    \(self.timeAndFrameString) \(paddedPrefix) \(topic)
-                    \(function)\(text)\(suffix)
+                    \(self.timeAndFrameString) \(paddedPrefix) \(topic) \(object)
+                    \(function)\(text)
                     """
                     
                 } else {
