@@ -65,7 +65,7 @@ public func debugLog(_ entry:   String? = nil,
         
         let csv = [
             OKLog.currentTimeString(),
-            OKLog.currentFrameString(),
+            String(OKLog.currentFrame), // DESIGN: Use a more compact string instead of the formatted `frameString`
             #""\#(topic     )""#,
             #""\#(function  )""#,
             #""\#(entry     )""#
@@ -73,19 +73,22 @@ public func debugLog(_ entry:   String? = nil,
         
         print(csv)
         
-    } else if OKLog.printTextOnSecondLine {
-        
-        print("""
-            \(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)
-            \(function)\(entryWithSeparatorIfNeeded)
-            """)
-        
     } else {
         
-        print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)\(separator)\(function)\(entryWithSeparatorIfNeeded)")
+        if OKLog.printTextOnSecondLine {
+            
+            print("""
+                \(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)
+                \(function)\(entryWithSeparatorIfNeeded)
+                """)
+            
+        } else {
+            
+            print("\(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)\(separator)\(function)\(entryWithSeparatorIfNeeded)")
+        }
+        
+        if OKLog.printEmptyLineBetweenEntries { print() } // Only print empty lines if not CSV.
     }
-    
-    if OKLog.printEmptyLineBetweenEntries { print() }
     
     // Update the last frame counter (so that the next entry for the same frame doesn't get highlighted as the first entry and so on).
     

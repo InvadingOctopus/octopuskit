@@ -186,7 +186,7 @@ public struct OKLogEntry: Identifiable, Hashable, CustomStringConvertible {
             
             // NOTE: We cannot rely on the count of entries to determine whether to print an empty line, as there may be multiple logs printing to the debug console, so just add an empty line after all entries. :)
             
-            if OKLog.printEmptyLineBetweenEntries { Swift.print() }
+            if !asCSV, OKLog.printEmptyLineBetweenEntries { Swift.print() }
         }
         
         return printedText
