@@ -42,6 +42,8 @@ public func 💩 <ReturnValue> (_ closure: () -> ReturnValue?) -> ReturnValue? {
 ///
 /// Available in debug configurations (when the `DEBUG` compilation flag is set). A blank function in non-debug configurations.
 ///
+/// Affected by `OKLog` global settings: `printAsCSV`, `printTextOnSecondLine`, `printEmptyLineBetweenEntries`
+///
 /// - Parameters:
 ///   - entry:      The text of the entry.
 ///   - topic:      The file name, type name, runtime object, or subsystem from which this entry is logged. Default: The file name.
@@ -55,7 +57,8 @@ public func debugLog(_ entry:   String? = nil,
 {
     // Trim and pad the calling file's name.
     
-    let paddedPrefix = "◾️".paddedWithSpace(toLength: OKLog.prefixLength)
+    let prefix       = "◾️"
+    let paddedPrefix = prefix.paddedWithSpace(toLength: OKLog.prefixLength)
     let topic        = ((topic as NSString).lastPathComponent as NSString).deletingPathExtension
     let paddedTopic  = topic.paddedWithSpace(toLength: OKLog.topicLength)
     let entry        = entry ?? ""
@@ -66,6 +69,8 @@ public func debugLog(_ entry:   String? = nil,
         let csv = [
             OKLog.currentTimeString(),
             String(OKLog.currentFrame), // DESIGN: Use a more compact string instead of the formatted `frameString`
+            #""DEBUG""#,                // The prefix for CSV.
+            "",                         // No object.
             #""\#(topic     )""#,
             #""\#(function  )""#,
             #""\#(entry     )""#
