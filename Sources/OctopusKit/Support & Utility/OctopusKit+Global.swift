@@ -61,7 +61,19 @@ public func debugLog(_ entry:   String? = nil,
     let entry        = entry ?? ""
     let entryWithSeparatorIfNeeded = entry.isEmpty ? "" : "\(separator)\(entry)"
     
-    if  OKLog.printTextOnSecondLine {
+    if  OKLog.printAsCSV {
+        
+        let csv = [
+            OKLog.currentTimeString(),
+            OKLog.currentFrameString(),
+            #""\#(topic     )""#,
+            #""\#(function  )""#,
+            #""\#(entry     )""#
+        ].joined(separator: OKLog.csvDelimiter)
+        
+        print(csv)
+        
+    } else if OKLog.printTextOnSecondLine {
         
         print("""
             \(OKLog.currentTimeAndFrame())\(separator)\(paddedPrefix)\(separator)\(paddedTopic)
