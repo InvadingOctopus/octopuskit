@@ -47,7 +47,7 @@ permalink: documentation/tips.html
 
     > Set the formatting to your preference:
 
-    > ```swift
+    ```swift
     OKLog.printEmptyLineBetweenFrames
     OKLog.printTextOnSecondLine
     OKLog.printEmptyLineBetweenEntries
@@ -57,7 +57,7 @@ permalink: documentation/tips.html
     
     > Disable unwanted logs to reduce clutter and improve performance:
 
-    > ```swift
+    ```swift
     OctopusKit.logForDebug.isDisabled = true
     OctopusKit.logForTips.isDisabled  = true
     ```
