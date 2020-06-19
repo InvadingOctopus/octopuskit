@@ -5,8 +5,8 @@ permalink: documentation/tips.html
 # OctopusKit Tips & Troubleshooting
 
 1. [Common Mistakes](#common-mistakes)
-2. [Best Practices](#best-practices)
-3. [Tips & Tricks](#tips--tricks)
+2. [Tips & Tricks](#tips--tricks)
+3. [Best Practices](#best-practices)
 4. [Pitfalls & Gotchas](#pitfalls--gotchas)
 5. [Conditional Compilation Flags & Debugging Aids](#conditional-compilation-flags--debugging-aids)
 6. [Bugs](#bug)
@@ -40,16 +40,39 @@ permalink: documentation/tips.html
 
 #### Scene, subscene or node not receiving input events?
 - Check its `isUserInteractionEnabled` property.
+
+## Tips & Tricks
+
+- Customize the logging system at the earliest point during application launch, e.g. in the `AppDelegate`'s `application(_:didFinishLaunchingWithOptions:)` method.
+
+    > Set the formatting to your preference:
+
+    > ```swift
+    OKLog.printEmptyLineBetweenFrames
+    OKLog.printTextOnSecondLine
+    OKLog.printEmptyLineBetweenEntries
+    OKLog.printAsCSV
+    OKLog.csvDelimiter
+    ```
     
+    > Disable unwanted logs to reduce clutter and improve performance:
+
+    > ```swift
+    OctopusKit.logForDebug.isDisabled = true
+    OctopusKit.logForTips.isDisabled  = true
+    ```
+
+    > Set [Conditional Compilation Flags](#conditional-compilation-flags--debugging-aids) to enable extra logging, such as player input events and physics collisions.
+    
+    > Advanced: You may modify the `OKLog` and `OKLogEntry` code to emit entries for a different system, such as Apple's [Unified Logging (`os_log`)](https://developer.apple.com/documentation/os/logging) or [SwiftLog](https://github.com/apple/swift-log/).
+
+* Advanced: Including the OctopusKit code in your main project (instead of as a package dependency) *may* provide the benefits of [Whole Module Optimization.](https://swift.org/blog/whole-module-optimizations/)
+
 ## Best Practices
 
 - In most cases, try to access the object hierarchy from the "bottom up" instead of "top down."
 
 	> TODO: Example
-
-## Tips & Tricks
-
-* Advanced: Including the OctopusKit code in your main project (instead of as a package dependency) *may* provide the benefits of [Whole Module Optimization.](https://swift.org/blog/whole-module-optimizations/)
     
 ## Pitfalls & Gotchas
 
