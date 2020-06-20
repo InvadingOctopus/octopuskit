@@ -2,7 +2,7 @@
 //  Tests.swift
 //  OctopusKitTests
 //
-//  Created by ShinryakuTako@invadingoctopus.io on 2019/12/DD.
+//  Created by ShinryakuTako@invadingoctopus.io on 2020/MM/DD.
 //
 
 import XCTest
