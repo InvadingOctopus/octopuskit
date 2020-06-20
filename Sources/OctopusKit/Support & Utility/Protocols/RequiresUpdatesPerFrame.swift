@@ -21,6 +21,6 @@ public protocol UpdatablePerFrame {
 /// The component must be updated every frame during the scene's `update(_:)` method, by directly calling the component's `update(deltaTime:)` method, updating the component's entity, or updating the component system which this component is registered with.
 ///
 /// When a component with this protocol is added to a scene but the scene does not the relevant component system, a warning is logged to help reduce bugs and incorrect behaviors that result from missing systems.
-public protocol RequiresUpdatesPerFrame { // CHECK: Add UpdatablePerFrame?
-    func update(deltaTime seconds: TimeInterval)
+public protocol RequiresUpdatesPerFrame: UpdatablePerFrame {
+    // func update(deltaTime seconds: TimeInterval)
 }
