@@ -38,13 +38,18 @@ open class OKEntity: GKEntity {
     
     public weak var delegate: OKEntityDelegate? // CHECK: Should this be `weak`?
     
+    /// If `true`, the `OKEntityDelegate` (i.e. the scene) will also call `removeAllComponents()` when this entity is removed. This may be required to allow the entity and all its components to be deinitialized and freed from memory when no longer needed. Default: `false`
+    ///
+    /// - IMPORTANT: ❕ This flag should *not* be set on the `OKGameCoordinator`'s entity, as it should not be destroyed when removing from a scene, i.e. upon changing scenes.
+    public var removeAllComponentsWhenRemovedFromScene: Bool = false
+    
+    /// Indicates whether a scene should check whether it has systems for each of this entity's components that must be updated every frame or turn. Setting `true` may improve performance for entities that are added frequently. Setting `false` may help reduce bugs that result from missing systems.
+    open var suppressSystemsAvailabilityCheck: Bool = false
+    
     open override var description: String {
         // CHECK: Improve?
         "\(super.description) \"\(self.name ?? "")\""
     }
-    
-    /// Indicates whether a scene should check whether it has systems for each of this entity's components that must be updated every frame or turn. Setting `true` may improve performance for entities that are added frequently. Setting `false` may help reduce bugs that result from missing systems.
-    open var suppressSystemsAvailabilityCheck: Bool = false
     
     open override var debugDescription: String {
         "\(self.description)\(components.count > 0 ? " \(components.count) components = \(components)" : "")"

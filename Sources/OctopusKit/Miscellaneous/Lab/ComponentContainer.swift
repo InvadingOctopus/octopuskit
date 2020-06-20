@@ -27,7 +27,8 @@ public protocol ComponentContainer: class {
     subscript <ComponentType> (componentClass: ComponentType.Type) -> ComponentType?
         where ComponentType: Component { get }
 
-    var suppressSystemsAvailabilityCheck: Bool { get }
+    var removeAllComponentsWhenRemovedFromScene: Bool { get }
+    var suppressSystemsAvailabilityCheck:        Bool { get }
     
     // MARK: Life Cycle
         

@@ -16,9 +16,9 @@ public final class DelayedRemovalComponent: OKComponent, RequiresUpdatesPerFrame
     /// The duration in seconds to wait before removing the node.
     public var removalDelay:        TimeInterval
    
-    /// If `true`, the entity is told to remove all its components, after it is removed from the scene.
+    /// If `true`, the entity's `removeAllComponentsWhenRemovedFromScene` is set before it is removed from the scene.
     ///
-    /// - WARNING: ⚠️ Setting this to `true` may cause a runtime crash related to modifying the components array in a component system.
+    /// - WARNING: ⚠️ Setting this to `true` for `GKEntity` may cause a runtime crash related to modifying the components array in a component system.
     public var removeAllComponents: Bool = false
     
     public fileprivate(set) var secondsElapsed: TimeInterval = 0
@@ -26,7 +26,7 @@ public final class DelayedRemovalComponent: OKComponent, RequiresUpdatesPerFrame
     /// Initializes a component which removes its entity from the scene.
     /// - Parameters:
     ///   - removalDelay:           The duration to wait before initiating the removal.
-    ///   - removeAllComponents:    If `true`, the entity is told to remove all its components as well, after it's removed from the scene. This may be necessary in some cases for objects to be freed from memory and `deinit`. Default: `false`
+    ///   - removeAllComponents:    If `true`, the entity is told to remove all its components as well, when it's removed from the scene. This may be necessary in some cases for objects to be freed from memory and `deinit`. Default: `false`
     public init(removalDelay:           TimeInterval,
                 removeAllComponents:    Bool = false)
     {
@@ -52,7 +52,15 @@ public final class DelayedRemovalComponent: OKComponent, RequiresUpdatesPerFrame
             entityDelegate?.entityDidRequestRemoval(entity)
             
             if  removeAllComponents {
-                entity.removeAllComponents()
+                
+                if  let entity = entity as? OKEntity {
+                    // ℹ️ Setting this flag defers the component removal to ensure that the entity is modified only when it's not being updated.
+                    entity.removeAllComponentsWhenRemovedFromScene = true
+                    
+                } else {
+                    // ⚠️ WARNING: May cause a runtime crash, because of mutating an entity's components array while the entity is still being updated for a given frame: "Collection <__NSArrayM: ...> was mutated while being enumerated.'"
+                    entity.removeAllComponents()
+                }
             }
         }
     }

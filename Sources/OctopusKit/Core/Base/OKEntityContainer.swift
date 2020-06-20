@@ -23,7 +23,7 @@ public protocol OKEntityContainer: class {
     var componentSystems:       [OKComponentSystem] { get set }
     
     // MARK: Entities & Components
-
+    
     func entities(withName name: String) -> [OKEntity]
     
     func addEntity  (_ entity:    GKEntity)
@@ -215,14 +215,19 @@ public extension OKEntityContainer {
             nodeToRemove.removeFromParent()
         }
         
-        // CHECK: Should we remove all components from the entity so they can properly dispose of their behavior? e.g. removing a SpriteKit node from the scene.
-        // CHECKED: Not removing all components from every entity does NOT prevent the scene from deinit'ing.
-        // ⚠️ NOTE: Do not remove components from entities that are not owned by this scene! e.g., the global GameCoordinator entity.
-        // entityToRemove.removeAllComponents()
-        
-        // Clear the entity's delegate.
-        // CHECK: Should this step be skipped if this scene is not the delegate?
-        (entityToRemove as? OKEntity)?.delegate = nil
+        if  let entityToRemove = entityToRemove as? OKEntity { // Perform the tasks that only apply to `OKEntity`.
+            
+            // Remove all components from the entity if needed, so they can properly dispose of their behavior, e.g. removing a SpriteKit node from the scene, or terminating background processing.
+            // CHECKED: Not removing all components from every entity does NOT prevent the scene from deinit'ing.
+            /// ⚠️ NOTE: Do *not* remove components from entities that are not owned by this scene! e.g., the global `OKGameCoordinator` entity.
+            if  entityToRemove.removeAllComponentsWhenRemovedFromScene {
+                entityToRemove.removeAllComponents()
+            }
+            
+            // Clear the entity's delegate.
+            // CHECK: Should this step be skipped if this scene is not the delegate?
+            entityToRemove.delegate = nil
+        }
         
         // NOTE: Remove the entity after components have been removed, to avoid the "entity is not registered with scene" warnings and reduce the potential for other unexpected behavior.
         
@@ -232,9 +237,8 @@ public extension OKEntityContainer {
         } else {
             return false
         }
-        
     }
-
+    
     /// Removes all entries that match the specified name.
     /// - Returns: The number of entities that were removed.
     @inlinable @discardableResult
@@ -253,7 +257,7 @@ public extension OKEntityContainer {
         
         return removalCount
     }
-
+    
     // MARK: Validating Entities
     
     /// Checks whether this entity container (e.g. scene) has the relevant component systems for all the entity's components that are marked as `RequiresUpdatesPerFrame` or `TurnBased`, and warns about any missing systems.
@@ -261,7 +265,7 @@ public extension OKEntityContainer {
     /// Components without a system will not have their per-frame or per-turn logic executed automatically, resulting in incorrect or unexpected game behavior.
     @inlinable
     func checkSystemsAvailability(for entity: GKEntity) {
-                
+        
         for component in entity.components
             where component is RequiresUpdatesPerFrame
                || component is TurnBased
@@ -310,12 +314,12 @@ public extension OKEntityContainer {
                        deltaTime seconds:    TimeInterval)
     {
         let systemsCollection = systemsCollection ?? self.componentSystems
-
+        
         for componentSystem in systemsCollection {
             componentSystem.update(deltaTime: seconds)
         }
     }
-
+    
 }
 
 // MARK: - Node-based Container
@@ -436,8 +440,8 @@ extension OKEntityDelegate where Self: OKEntityContainer {
         
         /// If the component was a `NodeComponent` or `GKSKNodeComponent` with an orphan node, adopt that node into this scene.
         
-        if component is NodeComponent || component is GKSKNodeComponent {
-           (self as? OKEntityContainerNode)?.addChildFromOrphanNodeComponent(in: entity) // CHECK: PERFORMANCE: Any impact from casting?
+        if  component is NodeComponent || component is GKSKNodeComponent {
+            (self as? OKEntityContainerNode)?.addChildFromOrphanNodeComponent(in: entity) // CHECK: PERFORMANCE: Any impact from casting?
         }
     }
     
