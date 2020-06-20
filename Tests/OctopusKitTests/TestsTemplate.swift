@@ -8,7 +8,7 @@
 import XCTest
 @testable import OctopusKit
 
-class Tests: XCTestCase {
+final class Tests: XCTestCase {
 
     func test() {
         
