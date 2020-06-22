@@ -16,6 +16,8 @@ import GameplayKit
 /// - NOTE: Implementing turn cycles may be best handled by different `OKGameState`s, e.g. `BeginTurnState`, `UpdateTurnState` and `EndTurnState`, each of which call the relevant methods (`beginTurn(delta:)`, `updateTurn(delta:)`, `endTurn(delta:)`) on the scene, to ensure a correct turn cycle for all components.
 open class OKTurnBasedScene: OKScene, TurnBased {
     
+    /// ℹ️ The turns logging system uses the `TurnCounterComponent.currentTurn` of the `OKScene.entity`, so the first log entry at the start of a new turn cycle will have a lower turn number, e.g.: "T0, PlayScene, <OctopusKit.TurnCounterComponent>"
+    
     // See GKComponentSystem+TurnBased.swift for notes on why the turn-based methods are not implemented as GKComponentSystem extensions.
     
     // CHECK: PERFORMANCE
