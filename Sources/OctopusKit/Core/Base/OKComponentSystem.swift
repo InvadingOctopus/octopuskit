@@ -35,7 +35,7 @@ public final class OKComponentSystem: GKComponentSystem <GKComponent> {
             return
         }
         
-        OctopusKit.logForComponents("\(self) ← \(component)")
+        OctopusKit.logForComponents("\(component)", object: "\(self)")
 
         super.addComponent(component)
     }
