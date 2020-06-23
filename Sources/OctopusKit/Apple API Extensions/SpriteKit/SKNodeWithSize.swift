@@ -33,12 +33,13 @@ extension SKCameraNode: SKNodeWithSize {
     }
 }
 
-extension SKEffectNode: SKNodeWithSize { // Includes SKScene
-    public var size: CGSize {
-        // CHECK: PERFORMANCE: Is this efficient? Necessary?
-        self.calculateAccumulatedFrame().size
-    }
-}
+//extension SKEffectNode: SKNodeWithSize { // Includes SKScene
+    /// TODO: Causing conflict with `SKScene.size` in Swift 5.3 2020-06-24
+//    public var size: CGSize {
+//        // CHECK: PERFORMANCE: Is this efficient? Necessary?
+//        self.calculateAccumulatedFrame().size
+//    }
+//}
 
 // extension SKScene:          SKNodeWithSize {} // Included in SKEffectNode
 
