@@ -41,7 +41,8 @@ final class PlayScene: OKScene {
             
             OSMouseOrTouchEventComponent.self,
             PointerEventComponent.self, // This component translates touch or mouse input into an OS-agnostic "pointer" format, which is used by other input-processing components that work on iOS as well as macOS.
-            
+            PhysicsComponent.self,
+
             // Custom components which are specific to this QuickStart project.
             
             GlobalDataComponent.self,
