@@ -43,30 +43,13 @@ permalink: documentation/tips.html
 
 ## Tips & Tricks
 
-- Customize the logging system at the earliest point during application launch, e.g. in the `AppDelegate`'s `application(_:didFinishLaunchingWithOptions:)` method.
-
-    > Set the formatting to your preference:
-
-    ```swift
-    OKLog.printEmptyLineBetweenFrames
-    OKLog.printTextOnSecondLine
-    OKLog.printEmptyLineBetweenEntries
-    OKLog.printAsCSV
-    OKLog.csvDelimiter
-    ```
+- Review the logs in the debug console. 
     
-    > Disable unwanted logs to reduce clutter and improve performance:
+    > Look for log entries beginning with ⚠️ or 💡 to see warnings and tips.
 
-    ```swift
-    OctopusKit.logForDebug.isDisabled = true
-    OctopusKit.logForTips.isDisabled  = true
-    ```
+    > Customize the `OKLog` logging system and review the default logs in `OctopusKit+Logs.swift`. See the [Usage Guide][guide] for more details.
 
-    > Set [Conditional Compilation Flags](#conditional-compilation-flags--debugging-aids) to enable extra logging, such as player input events and physics collisions.
-    
-    > Advanced: You may modify the `OKLog` and `OKLogEntry` code to emit entries for a different system, such as Apple's [Unified Logging (`os_log`)](https://developer.apple.com/documentation/os/logging) or [SwiftLog](https://github.com/apple/swift-log/).
-
-* Advanced: Including the OctopusKit code in your main project (instead of as a package dependency) *may* provide the benefits of [Whole Module Optimization.](https://swift.org/blog/whole-module-optimizations/)
+- Advanced: Including the OctopusKit code in your main project (instead of as a package dependency) *may* provide the benefits of [Whole Module Optimization.](https://swift.org/blog/whole-module-optimizations/)
 
 ## Best Practices
 

@@ -10,10 +10,11 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 1. [Adding OctopusKit to your project](#adding-octopuskit-to-your-project)
 2. [Xcode File Templates](#xcode-file-templates)
 3. [Player Input](#player-input)
-4. [Sharing Data](#sharing-data)
-5. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
-6. [Physics Collisions & Contact Detection](#physics-collisions)
-7. [Advanced Stuff](#advanced-stuff)
+4. [Logs](#logs)
+5. [Sharing Data](#sharing-data)
+6. [Accessing Game State from SwiftUI Views](#accessing-game-state-from-swiftui-views)
+7. [Physics Collisions & Contact Detection](#physics-collisions)
+8. [Advanced Stuff](#advanced-stuff)
 
 ##### Related Documentation
 
@@ -122,6 +123,33 @@ To save yourself from writing a lot of the same code for every new state, scene,
 This offers a section of templates for OctopusKit when you create a ⌘N New File in Xcode, including a very convenient template for creating a new game state class + its scene + UI in a single file, with just one click.
 
 💡 You may create a symbolic link (with the `ln` Terminal command) to keep the templates folders in sync whenever they're updated.
+
+## Logs
+
+OctopusKit uses the Xcode debug console to `print` many kinds of events and status messages. Reading the logs can be very helpful in understanding the control flow and debugging your game. Pay special attention to warnings about incorrect usage of APIs that may cause unexpected behavior. 
+
+💡 Customize the logging system at the earliest point during application launch, e.g. in the `AppDelegate`'s `application(_:didFinishLaunchingWithOptions:)` method.
+
+> Set the formatting to your preferences:
+
+```swift
+OKLog.printEmptyLineBetweenFrames
+OKLog.printTextOnSecondLine
+OKLog.printEmptyLineBetweenEntries
+OKLog.printAsCSV
+OKLog.csvDelimiter
+```
+
+Check `OctopusKit+Logs.swift` in `Sources/Core/Launch` to see the list of default logs. You may disable unwanted logs to reduce clutter and improve performance:
+
+```swift
+OctopusKit.logForDebug.isDisabled = true
+OctopusKit.logForTips.isDisabled  = true
+```
+
+💡 Set [Conditional Compilation Flags](tips#conditional-compilation-flags--debugging-aids) in [Tips & Troubleshooting][tips] to enable extra levels of verbose logging, such as player input events and physics collisions.
+
+⚙️ Advanced: You may modify the `OKLog` and `OKLogEntry` code to emit entries for a different system, such as Apple's [Unified Logging (`os_log`)](https://developer.apple.com/documentation/os/logging) or [SwiftLog](https://github.com/apple/swift-log/).
 
 ## Player Input
 
