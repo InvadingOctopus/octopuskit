@@ -28,7 +28,7 @@ final class NodeSpawnerComponent: OKComponent, RequiresUpdatesPerFrame {
     
     override func didAddToEntity(withNode node: SKNode) {
         
-        guard let parentSize = (node as? SKNodeWithDimensions)?.size else { return }
+        let parentSize = node.calculateAccumulatedFrame().size
         
         // Create an initial spinny here that will be copied later, because we can conveniently access the parent node's dimensions in this method.
         
@@ -65,8 +65,7 @@ final class NodeSpawnerComponent: OKComponent, RequiresUpdatesPerFrame {
             let pointerLocation = pointerEventComponent.latestEventForCurrentFrame?.location(in: node)
             else { return }
         
-        if let spinny = self.spinnyNode?.copy() as? SKShapeNode
-        {
+        if  let spinny = self.spinnyNode?.copy() as? SKShapeNode {
             spinny.position = pointerLocation
             spinny.zPosition = -20 // + CGFloat(Int.random(in: 1...10))
             spinny.strokeColor = SKColor.brightColors.randomElement()!
@@ -75,7 +74,7 @@ final class NodeSpawnerComponent: OKComponent, RequiresUpdatesPerFrame {
         }
         
         if  touchedFramesCount == 0
-            || touchedFramesCount.isMultiple(of: 2)
+        ||  touchedFramesCount.isMultiple(of: 2)
         {
             let emojiNode = createRandomEmojiNode(position: pointerLocation)
             node.addChild(emojiNode)
