@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 /// A demonstration component that creates random effects for the title/main menu scene.
-final class TitleEffectsComponent: OKComponent, UpdatedPerFrame {
+final class TitleEffectsComponent: OKComponent, RequiresUpdatesPerFrame {
     
     override func update(deltaTime seconds: TimeInterval) {
         

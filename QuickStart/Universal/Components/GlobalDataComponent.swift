@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 /// A custom component for the QuickStart project that holds some simple data to be shared across multiple game states and scenes.
-final class GlobalDataComponent: OKComponent, UpdatedPerFrame, ObservableObject {
+final class GlobalDataComponent: OKComponent, RequiresUpdatesPerFrame, ObservableObject {
     
     public var secondsElapsed: TimeInterval = 0
     
