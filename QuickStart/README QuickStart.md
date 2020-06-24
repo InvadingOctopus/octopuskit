@@ -2,11 +2,11 @@
 
 **Template and tutorial for the [OctopusKit][repository] game engine.**
 
-1. 🆕 In Xcode 11 or later, create a new **Single View App** project, and choose **User Interface: SwiftUI.**
+1. 🆕 In Xcode 12 or later, create a new **App** project, and choose **Interface: SwiftUI**.
 	
 	> ❗️ **Do NOT** create a "Game" project, because that template does not use SwiftUI.
 
-	> Running OctopusKit games on-device requires iOS/iPadOS/tvOS 13 and macOS Catalina or later.
+	> OctopusKit targets iOS/iPadOS/tvOS 14 and macOS Big Sur, but you may be able to get it to run with Xcode 11, iOS 13 and Catalina.
 	
 2. 📦 Add OctopusKit as a **Swift Package Manager** Dependency.
     
@@ -18,7 +18,7 @@
     
 3. 📥 **Copy and include** the `QuickStart/Universal/` folder (which supports iOS, macOS and tvOS) in your project. 
 
-    > In the Xcode Project Navigator, menu-click on the `OctopusKit/QuickStart/` folder and select "Show in Finder" then drag the Universal subfolder into your project folder in the Xcode navigator. 
+    > In the Xcode Project Navigator, select the `OctopusKit/QuickStart/` folder, then in the File Inspector, click the arrow next to "Full Path", then drag the `Universal` subfolder into your project folder in the Xcode navigator. 
 
 4. 🖼 Add the `OKQuickStartView` to the `ContentView.swift` file:
 
