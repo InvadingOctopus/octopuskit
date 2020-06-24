@@ -579,9 +579,10 @@ open class OKScene: SKScene,
     ///
     /// - IMPORTANT: To update the *components* of the game coordinator's *entity*, the entity **must be added** to the scene and the scene must have the relevant component systems.
     ///
-    /// - RETURNS: The default implementation calls `shouldUpdateSystems` and forwards its result.
+    /// - RETURNS: The default implementation returns `true` if **none** of the paused flags are set: `!isPaused && !isPausedBySystem && isPausedByPlayer && !isPausedBySubscene`
     open func shouldUpdateGameCoordinator(deltaTime: TimeInterval) -> Bool {
-        return shouldUpdateSystems(deltaTime: deltaTime)
+        /// BUG FIXED: Forwarding this call to `shouldUpdateSystems(deltaTime:)` by default was causing the subclass' implementation of `shouldUpdateSystems(deltaTime:)` to be called *twice!* 2020-06-24
+        return (!isPaused && !isPausedBySystem && !isPausedByPlayer && !isPausedBySubscene)
     }
     
     /// This method is called at the end of `OKScene.update()` on every frame to determine whether to update all systems in the `componentSystems` array.
