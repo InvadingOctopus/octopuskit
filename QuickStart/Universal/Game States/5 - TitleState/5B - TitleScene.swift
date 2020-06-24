@@ -70,7 +70,7 @@ final class TitleScene: OKScene {
                                                   size: 40,
                                                   color: .white))
         
-        title.setAlignment(horizontal: .center, vertical: .top)
+        title.alignment(horizontal: .center, vertical: .top)
         
         title.position = CGPoint(x: 0,
                                  y: self.frame.size.halved.height - title.frame.size.halved.height)
