@@ -34,13 +34,14 @@ If you've tried making a game in Swift while sticking to the official APIs, this
 import SwiftUI
 import OctopusKit
 
-// The coordinator object manages your game's scenes and global state.
-let gameCoordinator = OKGameCoordinator(states: [
-    MainMenu(),
-    Lobby(),
-    Gameplay() ])
-
 struct ContentView: View {
+
+    // The coordinator object manages your game's scenes and global state.
+    @StateObject var gameCoordinator = OKGameCoordinator(states: [
+        MainMenu(),
+        Lobby(),
+        Gameplay() ])
+    
     var body: some View {
 
         // The container view combines SpriteKit with SwiftUI,
@@ -253,7 +254,7 @@ Set the custom class of the scene as `OKScene` or a subclass of it. Load the sce
 
 ## Getting Started
 
-1. **Read the [QuickStart][quickstart] and [Usage Guide.][guide]** You will need Xcode 11, iOS 13 and macOS Catalina (though OK may work on older versions with some manual modifications.)
+1. **Read the [QuickStart][quickstart] and [Usage Guide.][guide]** You will need Xcode 12, iOS 14 and macOS Big Sur (though OK may work on older versions with some manual modifications.)
 
     > **Skill Level: Intermediate**: Although OK is not presented in a form designed for absolute beginners, mostly because I'm too lazy to write documentation from step zero, it's not "advanced" level stuff either; if you've read the [Swift Language Book][swift-book] and have attempted to make a SpriteKit game in Xcode, you are ready to use OK! 
      
