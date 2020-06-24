@@ -130,22 +130,21 @@ OctopusKit uses the Xcode debug console to `print` many kinds of events and stat
 
 💡 Customize the logging system at the earliest point during application launch, e.g. in the `AppDelegate`'s `application(_:didFinishLaunchingWithOptions:)` method.
 
-> Set the formatting to your preferences:
+    > Set the formatting to your preferences:
 
-```swift
-OKLog.printEmptyLineBetweenFrames
-OKLog.printTextOnSecondLine
-OKLog.printEmptyLineBetweenEntries
-OKLog.printAsCSV
-OKLog.csvDelimiter
-```
+    ```swift
+    OKLog.printEmptyLineBetweenFrames
+    OKLog.printTextOnSecondLine
+    OKLog.printEmptyLineBetweenEntries
+    OKLog.printAsCSV
+    ```
 
-Check `OctopusKit+Logs.swift` in `Sources/Core/Launch` to see the list of default logs. You may disable unwanted logs to reduce clutter and improve performance:
+    > Check `OctopusKit+Logs.swift` in `Sources/Core/Launch` to see the list of default logs. Disable unwanted logs to reduce clutter and improve performance:
 
-```swift
-OctopusKit.logForDebug.isDisabled = true
-OctopusKit.logForTips.isDisabled  = true
-```
+    ```swift
+    OctopusKit.logForDebug.isDisabled = true
+    OctopusKit.logForTips.isDisabled  = true
+    ```
 
 💡 Set [Conditional Compilation Flags](tips#conditional-compilation-flags--debugging-aids) in [Tips & Troubleshooting][tips] to enable extra levels of verbose logging, such as player input events and physics collisions.
 
