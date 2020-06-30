@@ -14,6 +14,7 @@ public typealias OctopusCache = OKCache
 
 /// Used to store any kind of resource. If the resource for a requested identifier is not available, it calls a user-provided closure to load the resource and cache it for future retrieval.
 public final class OKCache <AssetKeyType: Hashable, AssetType> {
+
     /* USAGE EXAMPLE:
 
     var textureCache = AssetManager<String, SKTexture> () {
@@ -21,7 +22,8 @@ public final class OKCache <AssetKeyType: Hashable, AssetType> {
     }
     
     sprite.texture = textureCache["Goblin"]
-    */
+
+     */
     
     // TODO: Implement deletion of oldest assets to conserve memory.
     
