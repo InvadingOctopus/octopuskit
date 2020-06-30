@@ -15,13 +15,6 @@ import CoreData
 public typealias OctopusHighScore = OKHighScore
 public typealias OctopusHighScoreChart = OKHighScoreChart
 
-/// TODO: Replace placeholder.
-open class HighScore: NSManagedObject {
-    var name: String? = ""
-    var score: Int64 = 0
-    var date: Date? = Date()
-}
-
 public struct OKHighScore: Equatable, Comparable {
     
     public let name: String
