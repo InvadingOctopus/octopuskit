@@ -27,7 +27,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "OctopusKit",
-            dependencies: []
+            dependencies: [],
+            exclude: [
+                "Apple API Extensions/SwiftUI/OctopusUI.md"],
+            resources: [
+                .copy("Assets/Shaders/ShaderKit/LICENSE")]
 //          , swiftSettings: [                // MARK: - Conditional Compilation Flags
 //                .define("LOGECSVERBOSE"),   // Log detailed ECS core events. ⚠️ May decrease performance.
 //                .define("LOGECSDEBUG"),     // Log ECS debugging info. ⚠️ Will decrease performance.
