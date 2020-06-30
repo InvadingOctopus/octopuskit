@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 //  https://github.com/InvadingOctopus/octopuskit
@@ -8,9 +8,9 @@ import PackageDescription
 let package = Package(
     name: "OctopusKit",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v10_15),
-        .tvOS(.v13)
+        .iOS(.v14),
+        .macOS(.v10_16),
+        .tvOS(.v14)
     ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
