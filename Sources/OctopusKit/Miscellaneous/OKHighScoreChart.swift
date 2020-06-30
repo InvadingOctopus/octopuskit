@@ -10,13 +10,15 @@
 // TODO: Improve
 // TODO: Complete support for more than 10 entries.
 
+#if UseHighScore // TODO: Re-enable after sorting out Core Data support.
+
 import CoreData
 
 public typealias OctopusHighScore = OKHighScore
 public typealias OctopusHighScoreChart = OKHighScoreChart
 
 public struct OKHighScore: Equatable, Comparable {
-    
+
     public let name: String
     public let score: Int
     
@@ -209,3 +211,5 @@ public final class OKHighScoreChart {
         }
     }
 }
+
+#endif
