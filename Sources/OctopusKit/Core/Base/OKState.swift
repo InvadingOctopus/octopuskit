@@ -10,7 +10,7 @@ import GameplayKit
 
 /// Represents a state in a state machine.
 ///
-/// Adds convenience features to `GKState`. The base class for `OKGameState` and `OKEntityState`.
+/// Adds convenience features to `GKState`, such as an array of states it can transition to. The base class for `OKGameState` and `OKEntityState`.
 open class OKState: GKState {
     
     /// Specifies the possible states that this state may transition to. If this array is empty, then all states are allowed (the default.)
