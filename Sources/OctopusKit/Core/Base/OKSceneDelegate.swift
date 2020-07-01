@@ -32,18 +32,21 @@ public protocol OKSceneDelegate {
     /// Notifies the current `OKGameState` of the `OKGameCoordinator` state machine. The state's logic should decide which state should be the "next" state and whether to transition.
     ///
     /// - Returns: `true` if the `OKGameCoordinator` did change its state, or `false` if the state could not be changed or if there was no "next" state.
-    @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool
+    @discardableResult
+    func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool
     
     /// Notifies the current `OKGameState` of the `OKGameCoordinator` state machine. The state's logic should decide which state should be the "previous" state and whether to transition.
     ///
     /// - Returns: `true` if the `OKGameCoordinator` did change its state, or `false` if the state could not be changed or if there was no "previous" state.
-    @discardableResult func octopusSceneDidChoosePreviousGameState(_ scene: OKScene) -> Bool
+    @discardableResult
+    func octopusSceneDidChoosePreviousGameState(_ scene: OKScene) -> Bool
     
     /// Notifies the current `OKGameState` of the `OKGameCoordinator` state machine. The state's logic should decide whether the requested transition is valid.
     ///
     /// - Returns: `true` if the `OKGameCoordinator` did change its state, or `false` if the state could not be changed.
-    @discardableResult func octopusScene(_ scene: OKScene,
-                                         didRequestGameState stateClass: OKGameState.Type) -> Bool
+    @discardableResult
+    func octopusScene(_ scene: OKScene,
+                      didRequestGameState stateClass: OKGameState.Type) -> Bool
     
     /// Requests the OKScenePresenter to present the scene with the specified filename, without changing the current game state.
     func octopusScene(_ outgoingScene: OKScene,
@@ -80,14 +83,16 @@ public extension OKSceneDelegate {
         // CHECK: Should this be the default behavior? It may be helpful in showing a series of credits or intros/cutscenes etc.
         self.octopusSceneDidChooseNextGameState(scene)
     }
-    
+
     /// Abstract; To be implemented by subclass.
-    @discardableResult func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
+    @discardableResult
+    func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
         return false
     }
-    
+
     /// Abstract; To be implemented by subclass.
-    @discardableResult func octopusSceneDidChoosePreviousGameState(_ scene: OKScene) -> Bool {
+    @discardableResult
+    func octopusSceneDidChoosePreviousGameState(_ scene: OKScene) -> Bool {
         return false
     }
     
