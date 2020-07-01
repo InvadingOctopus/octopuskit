@@ -14,7 +14,16 @@ import GameplayKit
 open class OKStateMachine: GKStateMachine {
 
     /// The previous state, if any. Set upon a successful state transition when `enter(_:)` is called.
-    public private(set) var previousState: GKState?
+    public private(set) weak var previousState: GKState? // CHECK: Should this be `weak`?
+
+    @inlinable
+    public var previousStateClass: GKState.Type? {
+        if  let previousState = self.previousState {
+            return type(of: previousState)
+        } else {
+            return nil
+        }
+    }
 
     /// Attempts to transition the state machine from its current state to a state of the specified class, and sets the `previousState` property if the transition was successful.
     open override func enter(_ stateClass: AnyClass) -> Bool {
