@@ -103,10 +103,10 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKScene {
     }
     
     // MARK: - Pausing/Unpausing
-    
+
     override func didPauseBySystem() {
-        if  let currentState = OctopusKit.shared.gameCoordinator.currentState,
-            type(of: currentState) is PlayableState.Type
+        if  let currentState = OctopusKit.shared?.gameCoordinator.currentState,
+            !(type(of: currentState) is PausedState.Type)
         {
             self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PausedState.self)
         }
@@ -121,6 +121,8 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKScene {
             // Since we are still in the paused state, keep the action paused, preventing `super.applicationDidBecomeActive()` from resuming it.
             physicsWorld.speed = 0
         }
+
+        self.octopusSceneDelegate?.octopusSceneDidChoosePreviousGameState(self)
     }
     
     override func didPauseByPlayer() {
@@ -130,7 +132,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKScene {
     
     override func didUnpauseByPlayer() {
         // This transition should be subject to the validation logic in the relevant `OKGameState` classes.
-        self.octopusSceneDelegate?.octopusScene(self, didRequestGameState: PlayableState.self)
+        self.octopusSceneDelegate?.octopusSceneDidChoosePreviousGameState(self)
     }
     
 }
