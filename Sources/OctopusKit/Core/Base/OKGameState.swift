@@ -190,22 +190,29 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
     }
     
     /// Abstract; To be implemented by subclass.
-    @discardableResult open func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
+    @discardableResult
+    open func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
         return false
     }
-    
-    /// Abstract; To be implemented by subclass.
-    @discardableResult open func octopusSceneDidChoosePreviousGameState(_ scene: OKScene) -> Bool {
-        return false
+
+    /// Signals the `gameCoordinator` to enter its `previousGameState`, if any. May be overriden in subclass to choose a different previous state according to game-specific semantics.
+    @discardableResult
+    open func octopusSceneDidChoosePreviousGameState(_ scene: OKScene) -> Bool {
+        if  let previousStateClass = self.gameCoordinator?.previousStateClass {
+            return self.gameCoordinator?.enter(previousStateClass) ?? false
+        } else {
+            return false
+        }
     }
-    
+
     // NOTE: This section should not be in an extension because "Declarations from extensions cannot be overridden yet."
         
     /// Signals the `OKGameCoordinator` or its subclass to enter the requested state.
     ///
     /// May be overridden in subclass to provide transition validation.
-    @discardableResult open func octopusScene(_ scene: OKScene,
-                                              didRequestGameState stateClass: OKGameState.Type) -> Bool
+    @discardableResult
+    open func octopusScene(_ scene: OKScene,
+                           didRequestGameState stateClass: OKGameState.Type) -> Bool
     {
         return stateMachine?.enter(stateClass) ?? false
     }
