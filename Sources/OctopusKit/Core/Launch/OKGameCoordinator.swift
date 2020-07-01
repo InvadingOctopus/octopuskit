@@ -45,7 +45,7 @@ public typealias OctopusGameCoordinator = OKGameCoordinator
 /// 3. Use an `OKViewController` in your UI hierarchy to present the game coordinator's scenes.
 ///
 /// - NOTE: The recommended way to setup and present an OctopusKit game is to use the `OKContainerView` for **SwiftUI**.
-open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject {
+open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject {
     
     /// Invoked by the `OKSpriteKitViewController` to start the game after the system/application presents the view.
     ///
@@ -59,7 +59,19 @@ open class OKGameCoordinator: GKStateMachine, OKScenePresenter, ObservableObject
             OctopusKit.logForFramework("\(oldValue) → \(currentGameState)")
         }
     }
-        
+
+    /// Returns the `previousState` as an `OKGameState`, if applicable.
+    @inlinable
+    public var previousGameState: OKGameState? {
+        self.previousState as? OKGameState
+    }
+
+    /// Returns the `previousStateClass` as an `OKGameState.Type`, if applicable.
+    @inlinable
+    public var previousGameStateClass: OKGameState.Type? {
+        self.previousStateClass as? OKGameState.Type
+    }
+
     public weak var viewController: OKViewController? {
         didSet {
             // Can't use @LogChanges because "Property with a wrapper cannot also be weak"
