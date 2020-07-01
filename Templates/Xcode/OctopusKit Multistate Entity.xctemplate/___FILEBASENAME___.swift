@@ -16,21 +16,25 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         let inactiveState = ___FILEBASENAMEASIDENTIFIER___InactiveState(entity: self)
         
-        inactiveState.componentsToAddOnEntry = [] // Customize
-        
-        inactiveState.syncComponentArrays() // Delete this line if you do not want the above components to be removed.
+        inactiveState.componentsToAddOnEntry =
+            // Customize
+        ]
+
+        inactiveState.syncComponentArrays() // Delete this if you do not want the above components to be removed when this state exits.
         
         // MARK: Active State
         
         let activeState = ___FILEBASENAMEASIDENTIFIER___ActiveState(entity: self)
         
-        activeState.componentsToAddOnEntry = [] // Customize
+        activeState.componentsToAddOnEntry = [
+            // Customize
+        ]
         
-        activeState.syncComponentArrays() // Delete this line if you do not want the above components to be removed.
+        activeState.syncComponentArrays() // Delete this if you do not want the above components to be removed when this state exits.
         
         // MARK: State Machine
         
-        let stateMachine = GKStateMachine(states: [
+        let stateMachine = OKStateMachine(states: [
             inactiveState,
             activeState
             ])
