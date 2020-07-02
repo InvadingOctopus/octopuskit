@@ -261,6 +261,7 @@ open class OKScene: SKScene,
         let timeAndState = [
             TimeComponent.self,
             StateMachineComponent.self,
+            StateMachineComponent<OKStateMachine>.self, // ❕ This has to be explicitly added, or multi-state entities that use `OKStateMachine` may not be updated!
             DelayedRemovalComponent.self]
         
         // 2: Player input
