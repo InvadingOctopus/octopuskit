@@ -48,7 +48,6 @@ struct ContentView: View {
         // and presents the coordinator's current scene.
         OKContainerView()
             .environmentObject(gameCoordinator)
-            .edgesIgnoringSafeArea(.all)
             .statusBar(hidden: true)
     }
 }

@@ -34,6 +34,7 @@ public struct OKContainerView <OKGameCoordinatorType, OKViewControllerType> : Vi
         ZStack { // CHECK: Group or ZStack?
             
             OKViewControllerRepresentable<OKGameCoordinatorType, OKViewControllerType>()
+                .edgesIgnoringSafeArea(.all)
 
             if  gameCoordinator.currentGameState != nil {
                 gameCoordinator.currentGameState!.associatedSwiftUIView
