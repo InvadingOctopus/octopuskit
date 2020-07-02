@@ -134,6 +134,12 @@ public final class RelayComponent <MasterComponentType> : OKComponent
         }
     }
 
+    // MARK: Debugging
+
+    public override func update(deltaTime seconds: TimeInterval) {
+        OctopusKit.logForWarnings("RelayComponent.update(deltaTime:) should not be called — Update the target component: \(self.target)", object: "\(self)")
+    }
+
     /*
     public override var baseComponent: GKComponent? {
         // CHECK: Include? Will it improve correctness and performance in GKEntity.componentOrRelay(ofType:) or is it unnecessary?
@@ -142,7 +148,6 @@ public final class RelayComponent <MasterComponentType> : OKComponent
         target?.baseComponent // ?? self
     }
     */
-    
 }
 
 // MARK: Convenience
