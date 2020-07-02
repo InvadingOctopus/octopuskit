@@ -16,7 +16,7 @@ final class ___FILEBASENAMEASIDENTIFIER___: OKEntity {
         
         let inactiveState = ___FILEBASENAMEASIDENTIFIER___InactiveState(entity: self)
         
-        inactiveState.componentsToAddOnEntry =
+        inactiveState.componentsToAddOnEntry = [
             // Customize
         ]
 
