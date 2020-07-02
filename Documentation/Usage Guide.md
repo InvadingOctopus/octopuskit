@@ -35,7 +35,11 @@ redirect_from: "/Documentation/Usage%2Guide.html"
 
 ### 🍰 **To begin from a template**:
 
-1. See the [**README QuickStart.md**][quickstart] file in the QuickStart folder of the OctopusKit package/repository.
+1. See one of the following files in the OctopusKit package/repository:
+
+    * [**README QuickStart.md**][quickstart] in the `QuickStart` folder.
+
+    * [**README Template.md**][template] in the `Templates/Game` folder.
 
 ### 🛠 **To import OctopusKit into a new or existing project:**
 
@@ -333,6 +337,7 @@ If all these components are thread-safe, you could update those systems in paral
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html
 
 [quickstart]: https://github.com/InvadingOctopus/octopuskit/blob/master/QuickStart/README%20QuickStart.md
+[template]: https://github.com/InvadingOctopus/octopuskit/blob/master/Templates/Game/README%20Template.md
 [architecture]: https://invadingoctopus.io/octopuskit/documentation/architecture.html
 [tutorials]: https://invadingoctopus.io/octopuskit/documentation/tutorials.html
 [tips]: https://invadingoctopus.io/octopuskit/documentation/tips.html
