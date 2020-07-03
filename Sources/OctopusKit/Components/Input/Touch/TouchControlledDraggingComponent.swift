@@ -69,7 +69,7 @@ public final class TouchControlledDraggingComponent: OKComponent, RequiresUpdate
         // #1: Make sure we have a node, that has a parent, and a touch is being tracked.
         
         guard
-            let node = self.entityNode,
+            let node   = self.entity?.node,
             let parent = node.parent,
             let nodeTouchStateComponent = coComponent(NodeTouchStateComponent.self),
             let trackedTouch = nodeTouchStateComponent.trackedTouch

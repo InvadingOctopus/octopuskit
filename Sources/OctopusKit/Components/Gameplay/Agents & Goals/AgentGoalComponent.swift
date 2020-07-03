@@ -33,8 +33,8 @@ open class AgentGoalComponent: OKComponent {
     public var goalWeight: Float {
         didSet {
             if  let behavior = self.agent?.behavior,
-                let goal = self.goal,
-                goalWeight != oldValue // Avoid redundancy.
+                let goal     = self.goal,
+                goalWeight  != oldValue // Avoid redundancy.
             {
                 behavior.setWeight(goalWeight, for: goal)
             }
