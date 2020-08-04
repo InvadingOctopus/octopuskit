@@ -287,7 +287,7 @@ open class OKScene: SKScene,
             DirectionControlledRotationComponent.self,
             DirectionControlledTorqueComponent.self,
             DirectionControlledThrustComponent.self,
-            DirectionControlledForceComponent.self,
+            DirectionControlledPhysicsComponent.self,
             
             PointerControlledForceComponent.self,
             PointerControlledPositioningComponent.self,
