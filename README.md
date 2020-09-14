@@ -20,7 +20,7 @@ If you've tried making a game in Swift while sticking to the official APIs, this
 
 > OctopusKit is a constant **work in progress** and I'm still learning as I go, so it may change rapidly without maintaining backwards compatibility or updating the documentation.
 
-> This project is a result of trying to make games in pure Swift. I fell in love with the language but couldn't find any engines that supported it or had the kind of architecture that I wanted to work with, so I started making my own.
+> This project is the result of my attempts to make games in pure Swift. I fell in love with the language but couldn't find any engines that supported it or had the kind of architecture that I found intuitive, so I started making my own.
 
 > Feedback welcome! *– ShinryakuTako*
  
