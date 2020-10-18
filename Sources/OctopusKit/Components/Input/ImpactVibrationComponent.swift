@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 #if os(iOS)
-    
+
 public final class ImpactVibrationComponent: VibrationComponent<UIImpactFeedbackGenerator> {
     
     public var style: UIImpactFeedbackGenerator.FeedbackStyle
