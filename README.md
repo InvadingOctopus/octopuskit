@@ -105,7 +105,7 @@ character.addComponents([
     
     RelayComponent(for: sharedKeyboardEventComponent),
     
-    // Apply a force to the sprite's body based on keyboard input in every frame.
+    // Apply a force to the body based on keyboard input in each frame.
     KeyboardControlledForceComponent() ])
 ```
 
