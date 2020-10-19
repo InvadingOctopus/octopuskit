@@ -112,7 +112,7 @@ character.addComponents([
 🧩 *A custom game-specific component*
 
 ```swift
-class AngryEnemyComponent: OKComponent {
+class AngryEnemyComponent: OKComponent, RequiresUpdatesPerFrame {
     
     override func didAddToEntity(withNode node: SKNode) {
         node.colorTint = .angryMonster
