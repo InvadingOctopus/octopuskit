@@ -281,7 +281,7 @@ Set the custom class of the scene as `OKScene` or a subclass of it. Load the sce
 
 - Incorporates shaders from [**ShaderKit**](https://github.com/twostraws/ShaderKit) © Paul Hudson, licensed under MIT License (see headers in relevant files).
 
-- **Tell** me how awesome or terrible everything is: [Discord][discord], [Twitter][twitter] or 🆂hinryaku🆃ako@🅘nvading🅞ctopus.ⓘⓞ
+- **Tell** me how awesome or terrible everything is: [Discord][discord], [Twitter][twitter] or 🅾ctopus🅺it@🅘nvading🅞ctopus.ⓘⓞ
 
     > I rarely check these though, so the best way to ask a question may be via opening an issue on the GitHub repository.
 
