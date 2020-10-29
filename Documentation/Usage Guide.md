@@ -61,6 +61,8 @@ redirect_from: "/Documentation/Usage%2Guide.html"
     
     > If your game needs to share complex logic or data across multiple scenes, you may create a subclass of `OKGameCoordinator`.
 
+    > **SwiftUI (iOS/iPadOS, macOS, tvOS):** You may use `@StateObject var gameCoordinator` as an instance variable of `ContentView` if you do not require it to be a global value. The `@StateObject` property wrapper ensures that the coordinator is not recreated whenever the view hierarchy is updated.
+ 
 3. Presenting OctopusKit content in your view hierarchy requires different steps depending on whether you use SwiftUI or AppKit/UIKit:
 
     * **SwiftUI (iOS/iPadOS, macOS, tvOS):** Add a `OKContainerView` and pass the game coordinator as an `environmentObject` to it:
