@@ -6,9 +6,14 @@ permalink: documentation/todo.html
 
 > If you'd like to help with the development of the OK project, these are some of the areas that need to be implemented.
 
-1. [Major Missing Features](#major-missing-features)
-2. [To Do](#to-do)
-3. [To Decide](#to-decide)
+1. [Currently Working On](#currently-working-on)
+2. [Major Missing Features](#major-missing-features)
+3. [To Do](#to-do)
+4. [To Decide](#to-decide)
+
+## Currently Working On
+
+- [Swift Logging API](https://github.com/apple/swift-log)
 
 ## Major Missing Features
 
@@ -22,10 +27,8 @@ permalink: documentation/todo.html
 - Declarative syntax like SwiftUI for describing scenes and entities. 🤫
 - Custom Scene Editor & Live Previews?
 
-
 ## To Do
 
-- [Swift Logging API](https://github.com/apple/swift-log)
 - More Tests. Too lazy.
 - Decide upon a coding style and conventions.
 - More tutorials for common tasks.
