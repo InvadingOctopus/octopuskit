@@ -271,6 +271,8 @@ Set the custom class of the scene as `OKScene` or a subclass of it. Load the sce
 
 ## Etcetera
 
+- [Contributors & Supporters][thanks] ❤︎
+
 - This project may be referred to as OctopusKit, "OK" or "OKIO" (for "OctopusKit by Invading Octopus") but "IOOK" sounds weird.
 
 - The naming is a combination of inspiration from companies like Rogue Amoeba, the .io domain, and the anime *Shinryaku! Ika Musume*.
@@ -307,6 +309,7 @@ Set the custom class of the scene as `OKScene` or a subclass of it. Load the sce
 [tips]: https://invadingoctopus.io/octopuskit/documentation/tips.html
 [conventions-&-design]: https://invadingoctopus.io/octopuskit/documentation/conventions.html
 [todo]: https://invadingoctopus.io/octopuskit/documentation/todo.html
+[thanks]: https://invadingoctopus.io/octopuskit/THANKS.html
 
 [swift-book]: https://docs.swift.org/swift-book/GuidedTour/GuidedTour.html
 [swift-api-guidelines]: https://swift.org/documentation/api-design-guidelines/
