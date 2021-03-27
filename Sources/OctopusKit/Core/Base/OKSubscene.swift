@@ -12,7 +12,7 @@ import SpriteKit
 import GameplayKit
 
 /// A protocol for types that display an `OKSubscene`.
-public protocol OKSubsceneDelegate: class {
+public protocol OKSubsceneDelegate: AnyObject {
     func subsceneWillAppear (_ subscene: OKSubscene, on parentNode: SKNode)
     func subsceneDidFinish  (_ subscene: OKSubscene, withResult result: OKSubsceneResultType?)
 }

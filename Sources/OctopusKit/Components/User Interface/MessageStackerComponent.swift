@@ -12,7 +12,7 @@
 import SpriteKit
 import GameplayKit
 
-public protocol MessageStackerDelegate: class {
+public protocol MessageStackerDelegate: AnyObject {
     func messageStacker(_ stacker: MessageStackerComponent, willBeginDisplayingFirstMessage: String)
     func messageStacker(_ stacker: MessageStackerComponent, didFinishDisplayingLastMessage: String)
 }

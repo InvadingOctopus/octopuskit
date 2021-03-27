@@ -11,7 +11,7 @@ import SpriteKit
 /// A protocol for nodes that have a `blendMode` property.
 ///
 /// This allows different `SKNode` subclasses to be handled together when processing blending modes.
-public protocol SKNodeWithBlendMode: class { // where Self: SKNode { // ⚠️ Crashes.
+public protocol SKNodeWithBlendMode: AnyObject { // where Self: SKNode { // ⚠️ Crashes.
     // TODO: Change name to an adjective?
     
     // Blending a Sprite with Different Interpretations of Alpha: https://developer.apple.com/documentation/spritekit/skspritenode/blending_a_sprite_with_different_interpretations_of_alpha

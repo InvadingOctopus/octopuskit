@@ -11,7 +11,7 @@ import SpriteKit
 /// A protocol for nodes that have `color` and `colorBlendFactor` properties.
 ///
 /// This allows different `SKNode` subclasses to be handled together when processing color and tint.
-public protocol SKNodeWithColor: class { // where Self: SKNode { // ⚠️ Crashes.
+public protocol SKNodeWithColor: AnyObject { // where Self: SKNode { // ⚠️ Crashes.
     // TODO: Change name to an adjective?
     
     // Tinting a Sprite: https://developer.apple.com/documentation/spritekit/skspritenode/tinting_a_sprite

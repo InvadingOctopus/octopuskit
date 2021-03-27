@@ -12,7 +12,7 @@ public typealias OctopusEntityDelegate = OKEntityDelegate
 public typealias OctopusEntity = OKEntity
 
 /// A protocol for types that manage entities, such as `OKScene`.
-public protocol OKEntityDelegate: class {
+public protocol OKEntityDelegate: AnyObject {
     func entity(_ entity: GKEntity, didAddComponent component:     GKComponent)
     func entity(_ entity: GKEntity, willRemoveComponent component: GKComponent)
     

@@ -12,7 +12,7 @@
 import SpriteKit
 import GameplayKit
 
-public protocol MessageTickerDelegate: class {
+public protocol MessageTickerDelegate: AnyObject {
     func messageTicker(_ ticker: MessageTickerComponent, willBeginScrollingFirstMessage: String)
     func messageTicker(_ ticker: MessageTickerComponent, didFinishScrollingLastMessage: String)
 }

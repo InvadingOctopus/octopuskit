@@ -11,7 +11,7 @@ import SpriteKit
 /// A protocol for nodes that have a `lightingBitMask` property..
 ///
 /// This allows different `SKNode` subclasses to be handled together when processing lighting.
-public protocol SKNodeWithLighting: class { // where Self: SKNode { // ⚠️ Crashes.
+public protocol SKNodeWithLighting: AnyObject { // where Self: SKNode { // ⚠️ Crashes.
     // TODO: Change name to an adjective?
     
     // Lighting a Sprite with Light Nodes: https://developer.apple.com/documentation/spritekit/sklightnode/lighting_a_sprite_with_light_nodes

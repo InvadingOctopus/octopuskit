@@ -12,7 +12,7 @@ import GameplayKit
 public typealias OctopusEntityContainer = OKEntityContainer
 
 /// A protocol for sharing common code between `OKScene` and `OKSubscene` (or other types which manage entities) via Default Implementation Extensions.
-public protocol OKEntityContainer: class {
+public protocol OKEntityContainer: AnyObject {
     
     // CHECK: Replace `GKEntity` with `OKEntity`?
     

@@ -14,7 +14,7 @@ public typealias OctopusGameStateDelegate = OKGameStateDelegate
 public typealias OctopusGameState = OKGameState
 
 /// A protocol for types that will receive notifications about state transitions, and can provide visual effects for scene transitions.
-public protocol OKGameStateDelegate: class {
+public protocol OKGameStateDelegate: AnyObject {
     func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?)
     func gameCoordinatorWillExitState(_ exitingState: GKState, to nextState: GKState)
 }
