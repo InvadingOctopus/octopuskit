@@ -12,7 +12,7 @@ extension SKView {
     
     /// Sets the visibility of all debugging-related information and overlays.
     @inlinable
-    open func setAllDebugStatsVisibility(to visibility: Bool) {
+    public func setAllDebugStatsVisibility(to visibility: Bool) {
         self.showsFPS = visibility
         self.showsDrawCount = visibility
         self.showsFields = visibility

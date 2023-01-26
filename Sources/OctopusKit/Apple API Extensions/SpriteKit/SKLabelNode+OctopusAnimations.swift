@@ -14,7 +14,7 @@ extension SKLabelNode {
     
     /// Changes the font color to the specified value, then cycles it between the original color and the specified alternate color for the specified number of times.
     @inlinable
-    open func cycleColor(with alternateColor: SKColor = .clear,
+    public func cycleColor(with alternateColor: SKColor = .clear,
                          durationPerCycle duration: TimeInterval = 0.075,
                          repeat count: Int = 1)
     {
@@ -41,7 +41,7 @@ extension SKLabelNode {
     ///
     /// - Returns: The ghost label, or `nil` if this label has no parent or text.
     @inlinable
-    open func animateGhost(xScale: CGFloat = 1.25,
+    public func animateGhost(xScale: CGFloat = 1.25,
                            yScale: CGFloat = 1.0,
                            initialAlpha: CGFloat = 0.5,
                            duration: TimeInterval = 0.5)

@@ -77,7 +77,7 @@ extension SKShader {
     /// Initializes a shader with a set of texture uniforms to match ShaderToy.com inputs.
     ///
     /// If channels are not specified, this function will attempt to load them from the application bundle by matching the pattern `"filename0.png"` to `"filename3.png"`.
-    open class func withShadertoyUniforms(
+    public class func withShadertoyUniforms(
         fileNamed name: String,
         channel0: SKTexture? = nil,
         channel1: SKTexture? = nil,

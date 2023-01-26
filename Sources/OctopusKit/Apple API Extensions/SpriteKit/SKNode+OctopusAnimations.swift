@@ -12,7 +12,7 @@ extension SKNode {
     
     /// Cycles the node's `isHidden` state between `true` and `false` for the specified number of times, optionally removing the node from its parent at the end.
     @inlinable
-    open func blink(times: Int,
+    public func blink(times: Int,
                     withDelay delay: TimeInterval = 0.1,
                     removeFromParentOnCompletion: Bool = false)
     {

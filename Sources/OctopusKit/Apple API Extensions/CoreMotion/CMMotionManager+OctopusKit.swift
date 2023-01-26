@@ -15,7 +15,7 @@ extension CMMotionManager {
     
     /// A convenience method that calls all of the "`stop-`" methods.
     @inlinable
-    open func stopAllUpdates() {
+    public func stopAllUpdates() {
         self.stopDeviceMotionUpdates()
         self.stopAccelerometerUpdates()
         self.stopGyroUpdates()

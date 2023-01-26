@@ -12,7 +12,7 @@ extension SKConstraint {
  
     /// Creates a constraint that restricts both coordinates of a node's position inside the specified rectangle.
     @inlinable
-    open class func bounds(_ rect: CGRect) -> SKConstraint {
+    public class func bounds(_ rect: CGRect) -> SKConstraint {
         let xRange = SKRange(lowerLimit: rect.minX, upperLimit: rect.maxX)
         let yRange = SKRange(lowerLimit: rect.minY, upperLimit: rect.maxY)
         return positionX(xRange, y: yRange)
