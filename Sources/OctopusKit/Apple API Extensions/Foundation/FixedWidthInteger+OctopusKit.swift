@@ -18,6 +18,12 @@ public extension FixedWidthInteger {
         range.contains(self)
     }
     
+    /// Returns the specified percentage of this number as a `Double`.
+    @inlinable
+    func percent(_ percent: Double) -> Double {
+        return Double(self) * (percent / 100)
+    }
+    
     // MARK: - Random Numbers
     
     /// Returns a random integer from `0` to `upperBound-1` (**not** including `upperBound`) that does not match any of the numbers provided in the exclusion list.
