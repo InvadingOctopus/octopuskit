@@ -22,7 +22,7 @@ extension OKSubscene: KeyboardEventProvider {
         debugLog()
         #endif
         
-        self.entity?[KeyboardEventComponent]?.keyDown = KeyboardEventComponent.KeyboardEvent(event: event, node: self)
+        self.entity?[KeyboardEventComponent.self]?.keyDown = KeyboardEventComponent.KeyboardEvent(event: event, node: self)
     }
     
     /// Relays keyboard-input events to the subscene's `KeyboardEventComponent`.
@@ -31,7 +31,7 @@ extension OKSubscene: KeyboardEventProvider {
         debugLog()
         #endif
         
-        self.entity?[KeyboardEventComponent]?.keyUp = KeyboardEventComponent.KeyboardEvent(event: event, node: self)
+        self.entity?[KeyboardEventComponent.self]?.keyUp = KeyboardEventComponent.KeyboardEvent(event: event, node: self)
     }
     
     /// Relays keyboard-input events to the subscene's `KeyboardEventComponent`.
@@ -40,7 +40,7 @@ extension OKSubscene: KeyboardEventProvider {
         debugLog()
         #endif
         
-        self.entity?[KeyboardEventComponent]?.flagsChanged = KeyboardEventComponent.KeyboardEvent(event: event, node: self)
+        self.entity?[KeyboardEventComponent.self]?.flagsChanged = KeyboardEventComponent.KeyboardEvent(event: event, node: self)
     }
 
 }

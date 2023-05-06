@@ -22,7 +22,7 @@ extension OKSubscene: MouseEventProvider {
         debugLog()
         #endif
         
-        self.entity?[MouseEventComponent]?.mouseEntered = MouseEventComponent.MouseEvent(event: event, node: self)
+        self.entity?[MouseEventComponent.self]?.mouseEntered = MouseEventComponent.MouseEvent(event: event, node: self)
     }
 
     /// Relays mouse-input events to the subscene's `MouseEventComponent`.
@@ -31,7 +31,7 @@ extension OKSubscene: MouseEventProvider {
         debugLog()
         #endif
         
-        self.entity?[MouseEventComponent]?.mouseMoved = MouseEventComponent.MouseEvent(event: event, node: self)
+        self.entity?[MouseEventComponent.self]?.mouseMoved = MouseEventComponent.MouseEvent(event: event, node: self)
     }
     
     /// Relays mouse-input events to the subscene's `MouseEventComponent`.
@@ -40,7 +40,7 @@ extension OKSubscene: MouseEventProvider {
         debugLog()
         #endif
                 
-        self.entity?[MouseEventComponent]?.mouseDown = MouseEventComponent.MouseEvent(event: event, node: self)
+        self.entity?[MouseEventComponent.self]?.mouseDown = MouseEventComponent.MouseEvent(event: event, node: self)
     }
     
     /// Relays mouse-input events to the subscene's `MouseEventComponent`.
@@ -49,7 +49,7 @@ extension OKSubscene: MouseEventProvider {
         debugLog()
         #endif
         
-        self.entity?[MouseEventComponent]?.mouseDragged = MouseEventComponent.MouseEvent(event: event, node: self)
+        self.entity?[MouseEventComponent.self]?.mouseDragged = MouseEventComponent.MouseEvent(event: event, node: self)
     }
     
     /// Relays mouse-input events to the subscene's `MouseEventComponent`.
@@ -58,7 +58,7 @@ extension OKSubscene: MouseEventProvider {
         debugLog()
         #endif
         
-        self.entity?[MouseEventComponent]?.mouseUp = MouseEventComponent.MouseEvent(event: event, node: self)
+        self.entity?[MouseEventComponent.self]?.mouseUp = MouseEventComponent.MouseEvent(event: event, node: self)
     }
     
     /// Relays mouse-input events to the subscene's `MouseEventComponent`.
@@ -67,7 +67,7 @@ extension OKSubscene: MouseEventProvider {
         debugLog()
         #endif
         
-        self.entity?[MouseEventComponent]?.mouseExited = MouseEventComponent.MouseEvent(event: event, node: self)
+        self.entity?[MouseEventComponent.self]?.mouseExited = MouseEventComponent.MouseEvent(event: event, node: self)
     }
 }
 
