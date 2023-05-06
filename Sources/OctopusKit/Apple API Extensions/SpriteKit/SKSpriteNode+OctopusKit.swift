@@ -9,6 +9,7 @@
 // TODO: Tests
 
 import SpriteKit
+import GameplayKit
 
 extension SKSpriteNode {
     

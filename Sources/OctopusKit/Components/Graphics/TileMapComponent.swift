@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import GameplayKit
 
 /// A container for one or more `SKTileMapNode` layers and their associated tile set, tile groups, and map layouts.
 ///
