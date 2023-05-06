@@ -15,7 +15,7 @@ extension NSGestureRecognizer {
     /// Replaces `target` and `action`.
     ///
     /// Emulates the `UIGestureRecognizer` method to support code shared with iOS.
-    open func addTarget(_ target: AnyObject, action: Selector) {
+    public func addTarget(_ target: AnyObject, action: Selector) {
         self.target = target
         self.action = action
     }
@@ -23,7 +23,7 @@ extension NSGestureRecognizer {
     /// Removes `target` and `action` if the current properties match the arguments. If an argument is `nil`, then the corresponding property is also set to `nil`.
     ///
     /// Emulates the `UIGestureRecognizer` method to support code shared with iOS.
-    open func removeTarget(_ target: AnyObject?, action: Selector?) {
+    public func removeTarget(_ target: AnyObject?, action: Selector?) {
         // https://developer.apple.com/documentation/uikit/uigesturerecognizer/1624226-removetarget
         
         if target == nil { self.target = nil }

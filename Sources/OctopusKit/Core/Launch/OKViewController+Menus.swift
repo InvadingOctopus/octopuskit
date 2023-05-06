@@ -19,7 +19,7 @@ extension OKViewController {
     /// Add menu items common to all games.
     ///
     /// This is done programmatically as a convenience to avoid manual Storyboard modification for new projects.
-    open class func setDefaultMenus() {
+    public class func setDefaultMenus() {
         
         // TODO: Add pause/unpause
         // TODO: Internationalization (handle menu names in different languages).
