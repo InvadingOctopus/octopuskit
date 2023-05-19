@@ -29,7 +29,8 @@ struct FatButtonStyle: ButtonStyle {
                             x: 0,
                             y: configuration.isPressed  ? -2  : -10)
                     .brightness(configuration.isPressed ? 0.2 : 0)
-                    .animation(.easeOut(duration: 0.2)))
+                    .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+            )
     }
 }
 
