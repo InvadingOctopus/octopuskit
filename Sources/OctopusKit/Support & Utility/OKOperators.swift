@@ -8,11 +8,13 @@
 
 import Foundation
 
-infix operator ∈
+infix operator ∈: ComparisonPrecedence
 
 /// Returns `true` if the right-hand array contains the left-hand value.
+@inlinable
 public func ∈ <T: Equatable> (left: T, right: [T]) -> Bool {
     // CREDIT: https://gist.github.com/AliSoftware
     // CREDIT: https://gist.github.com/JohnSundell/1956ce36b9303eb4bf912da0de9e2844
     return right.contains(left)
 }
+
