@@ -19,3 +19,13 @@ public func ∈ <T: Equatable> (left: T, right: any Sequence<T>) -> Bool {
     return right.contains(left)
 }
 
+infix operator ≈: ComparisonPrecedence
+
+/// Approximation operator; "Almost Equal To".
+/// - Returns: `true` if the difference between the two floating point values is less than the `leastNormalMagnitude`; a value which compares less than or equal to all positive normal numbers (there may be smaller positive numbers but they are subnormal; represented with less precision than normal numbers.)
+@inlinable
+public func ≈ <T: FloatingPoint> (left: T, right: T) -> Bool {
+    // CREDIT: ryanslikesocool#3358@Discord
+    // Since we're using `abs`, it doesn't matter if we subtract `left` from `right` or vice versa.
+    abs(left - right) < T.leastNormalMagnitude
+}
