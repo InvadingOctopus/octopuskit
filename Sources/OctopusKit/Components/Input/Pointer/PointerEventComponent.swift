@@ -177,9 +177,6 @@ public final class PointerEventComponent: OKComponent, RequiresUpdatesPerFrame {
 //            .first
 //    }
     
-    @available(*, unavailable, renamed: "latestEventForCurrentFrame")
-    public var latestEvent: PointerEvent? = nil // TODO: Remove in 4.0.0 :)
-    
     /// Returns the last event received during this *or any previous* frames. To check the *latest* event received during the current frame, use `latestEventForCurrentFrame`.
     @LogInputEventChanges(propertyName: "PointerEventComponent.lastEvent")
     public private(set) var lastEvent: PointerEvent? = nil {
