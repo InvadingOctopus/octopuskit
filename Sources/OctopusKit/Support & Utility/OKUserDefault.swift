@@ -71,7 +71,8 @@ public typealias OctopusUserDefault = OKUserDefault
     ///
     /// This function may be chained with the `??` operator to provide a [different] default value at each call site.
     @inlinable
-    public static func preference <ValueType> (forKey key: String) -> ValueType? {
+    public static func preference(forKey key: String) -> ValueType? {
+        // CHECK: `preference<T>` removed for Swift 6 conformance; should it be brought back?
         if  let value = UserDefaults.standard.object(forKey: key) as? ValueType {
             OctopusKit.logForDebug("\"\(key)\" \(ValueType.self) = \(value)")
             return value

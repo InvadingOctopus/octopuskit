@@ -100,13 +100,15 @@ public struct OKViewControllerRepresentable <OKGameCoordinatorType, OKViewContro
 
 public extension OKViewControllerRepresentable { // CHECK: Should this be public?
     
-    class ViewControllerCoordinator <OKViewControllerType> : NSObject
-        where OKViewControllerType: OKViewController
+    class ViewControllerCoordinator <OKViewControllerTypeForCoordinator> : NSObject
+        where OKViewControllerTypeForCoordinator: OKViewController
     {
-        var viewController: OKViewControllerType
+        // `OKViewControllerType` renamed to `OKViewControllerTypeForCoordinator` for Swift 6 conformance, to avoid shadowing the same name from OKViewControllerRepresentable.
+        
+        var viewController: OKViewControllerTypeForCoordinator
         
         init(gameCoordinator: OKGameCoordinator) {
-            self.viewController = try! OKViewControllerType(gameCoordinator: gameCoordinator)
+            self.viewController = try! OKViewControllerTypeForCoordinator(gameCoordinator: gameCoordinator)
             super.init()
         }
     }
