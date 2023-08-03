@@ -11,7 +11,7 @@
 import Foundation
 
 public extension FloatingPoint {
-     
+    
     // MARK: - Random Numbers
     
     /// Shorthand for `Self(Int.random(in: range))`
@@ -41,4 +41,23 @@ public extension FloatingPoint {
     {
         Self(Int.random(in: range, using: &generator))
     }
+    
+    // MARK: - Percentages
+    
+    /// Returns the specified percentage of `self`.
+    @inlinable
+    func percent(_ percent: Self) -> Self {
+        // TODO: Apply this extension to integers too?
+        return self * (percent / 100)
+    }
+    
+    /// Returns `self` percent of the specified `value`.
+    ///
+    /// **Example:** `10.percent(of: 50)` returns `5`
+    @inlinable
+    func percent(of value: Self) -> Self {
+        // TODO: Apply this extension to integers too?
+        return value * (self / 100)
+    }
+
 }

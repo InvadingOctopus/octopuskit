@@ -44,7 +44,7 @@ class NumericsTests: XCTestCase {
         
         // #2: Test floats
         
-        XCTContext.runActivity(named: "Test integers") { _ in
+        XCTContext.runActivity(named: "Test floats") { _ in
             var value: Float = 10.0
             
             // #2A: Difference = 0.1
@@ -72,7 +72,27 @@ class NumericsTests: XCTestCase {
         
     }
 
+    func testFloatingPoint() {
+        
+        // TODO: #1: Test percent(_:)
+        
+        /* NOTE: This test will fail because you're not supposed to directly compare floating point numbers.
+         
+        XCTContext.runActivity(named: "Test percent") { _ in
+            
+            // #1A: N% of 100 should be N
+            
+            for percent in 0...100 {
+                XCTAssertTrue(100.percent(Double(percent)).isEqual(to: Double(percent)))
+            }
+        }
+        */
+        
+        // TODO: #2: Test percent(of:)
+    }
+    
     static var allTests = [
-        ("Test AdditiveArithmetic extensions", testAdditiveArithmetic)
+        ("Test AdditiveArithmetic extensions", testAdditiveArithmetic),
+        ("Test FloatingPoint extensions", testFloatingPoint)
     ]
 }
