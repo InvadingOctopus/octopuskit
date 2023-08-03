@@ -1,5 +1,7 @@
 # OctopusKit ![OctopusKit Logo](https://github.com/InvadingOctopus/octopuskit/blob/develop/Assets/Images/SinclairZXSpectrumOK-Slim.png?raw=true)
 
+⚠️ **NOTE: 4.0.0-beta-5 is the last version before non-game functionality is split into OctopusKit-Core.**  
+
 A 2D game engine based on ECS and written in 100% Swift for iOS, macOS and tvOS. 
 
 If you've tried making a game in Swift while sticking to the official APIs, this may be for you! OctopusKit wraps and extends Apple's frameworks:
