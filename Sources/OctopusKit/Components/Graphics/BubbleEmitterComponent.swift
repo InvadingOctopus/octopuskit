@@ -6,6 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 
@@ -42,9 +43,9 @@ public struct NodeBubble {
                          .timingMode(.easeOut)
         
         let floatAway   = SKAction.move(direction,
-                                      distance: distance,
-                                      duration: duration,
-                                      timingMode: .easeOut)
+                                        distance: distance,
+                                        duration: duration,
+                                        timingMode: .easeOut)
         
         return SKAction.group([fadeOut, floatAway])
     }

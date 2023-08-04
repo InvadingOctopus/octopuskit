@@ -8,9 +8,9 @@
 
 // TODO: macOS compatibility
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
-//import UIKit
 
 //#if os(iOS) // TODO: Add macOS trackpad support.
 

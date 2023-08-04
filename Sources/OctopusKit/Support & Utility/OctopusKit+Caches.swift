@@ -8,6 +8,7 @@
  
 // TODO: CHECK: Use NSCache?
 
+import OctopusCore
 import SpriteKit
 
 /// Predefined Caches and Loaders

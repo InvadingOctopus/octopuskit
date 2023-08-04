@@ -9,6 +9,7 @@
 // TODO: Cleanup cruft from importing the legacy class.
 // TODO: Improve comments/documentation.
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

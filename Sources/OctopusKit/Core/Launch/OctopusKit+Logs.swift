@@ -8,6 +8,8 @@
 
 //  Logs are in a separate extension for convenience, e.g. so that a project may replace them with its own versions.
 
+import OctopusCore
+
 public extension OctopusKit {
     
     // MARK: Global Logs

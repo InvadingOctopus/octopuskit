@@ -8,6 +8,7 @@
 
 // CHECK: Does it impact performance if each gesture recognizer component is its own delegate? Should `OKScene` be the single `OSGestureRecognizerDelegate`?
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

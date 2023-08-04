@@ -10,6 +10,7 @@
 // TODO: Add standard enumeration interface
 // TODO: Add dynamic matrix resizing
 
+import OctopusCore
 import SpriteKit
 
 public final class OKLayoutGridCell: SKNode {

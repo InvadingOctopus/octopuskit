@@ -22,13 +22,15 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: "https://github.com/InvadingOctopus/octopuscore.git", from: "1.0.0")
+        .package(path: "../OctopusCore")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "OctopusKit",
-            dependencies: [],
+            dependencies: ["OctopusCore"],
             exclude: [
                 "Apple API Extensions/SwiftUI/OctopusUI.md"],
             resources: [
@@ -36,7 +38,6 @@ let package = Package(
 //          , swiftSettings: [                // MARK: - Conditional Compilation Flags
 //                .define("LOGECSVERBOSE"),   // Log detailed ECS core events. ⚠️ May decrease performance.
 //                .define("LOGECSDEBUG"),     // Log ECS debugging info. ⚠️ Will decrease performance.
-//                .define("LOGCHANGES"),      // Enables the `@LogChanges` property wrapper and other value logging. ⚠️ May decrease performance.
 //                .define("LOGINPUTEVENTS"),  // Log detailed mouse/touch/pointer input events. ⚠️ May decrease performance.
 //                .define("LOGPHYSICS"),      // Log physics contact/collision events. ⚠️ May decrease performance.
 //                .define("LOGTURNBASED")     // Log each begin/update/end cycle for turn-based components. ⚠️ May decrease performance.

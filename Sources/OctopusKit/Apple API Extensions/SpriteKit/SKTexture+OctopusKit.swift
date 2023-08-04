@@ -8,6 +8,7 @@
 
 // TODO: Tests
 
+import OctopusCore
 import SpriteKit
 
 public extension SKTexture {
@@ -15,8 +16,8 @@ public extension SKTexture {
     /// Creates a gradient texture.
     convenience init(size: CGSize,
                      startColor: SKColor,
-                     endColor: SKColor,
-                     direction: OKDirection = .up)
+                     endColor:   SKColor,
+                     direction:  OKDirection = .up)
     {
         // CREDIT: https://theswiftdev.com/2017/10/24/spritekit-best-practices/
         

@@ -6,19 +6,20 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import OctopusCore
 import SpriteKit
 
 // MARK: - SpriteKit Utilities
 
-extension OKUtility {
+public extension OKUtility {
     
-    public static func loadFramesFromAtlas(named atlasName: String) -> [SKTexture] {
+    static func loadFramesFromAtlas(named atlasName: String) -> [SKTexture] {
         // CREDIT: Apple Adventure Sample
         let atlas = SKTextureAtlas(named: atlasName)
         return (atlas.textureNames ).sorted().map { atlas.textureNamed($0) }
     }
     
-    public static func runOneShotEmitter(emitter: SKEmitterNode, withDuration duration: CGFloat) {
+    static func runOneShotEmitter(emitter: SKEmitterNode, withDuration duration: CGFloat) {
         // CREDIT: Apple Adventure Sample
         let waitAction = SKAction.wait(forDuration: TimeInterval(duration))
         let birthRateSet = SKAction.run { emitter.particleBirthRate = 0.0 }

@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import OctopusCore
 import OctopusKit
 
 /// A custom component for the QuickStart project that holds some simple data to be shared across multiple game states and scenes.

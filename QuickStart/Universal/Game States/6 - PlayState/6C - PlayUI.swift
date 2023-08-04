@@ -11,6 +11,7 @@
 //  Once you understand how everything works, you may delete this file and replace it with your own UI.
 
 import SwiftUI
+import OctopusCore
 import OctopusKit
 
 struct PlayUI: View {

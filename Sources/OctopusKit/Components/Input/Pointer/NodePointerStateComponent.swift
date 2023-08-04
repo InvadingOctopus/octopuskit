@@ -10,6 +10,7 @@
 
 // PERFORMANCE: May need optimization?
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

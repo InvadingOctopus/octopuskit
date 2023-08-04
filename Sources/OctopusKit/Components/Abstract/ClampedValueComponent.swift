@@ -7,6 +7,7 @@
 //
 
 import GameplayKit
+import OctopusCore
 
 /// A base class for components that represent a single numeric value within a specific range, and reports its changes for subclasses to act upon.
 ///

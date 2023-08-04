@@ -8,6 +8,7 @@
 
 // TODO: Tests
 
+import OctopusCore
 import SpriteKit
 
 public extension SKNode {

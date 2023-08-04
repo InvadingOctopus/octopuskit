@@ -17,36 +17,12 @@ import Foundation
 
 import AppKit
 
-public typealias OSApplication      = NSApplication
-public typealias OSViewController   = NSViewController
-
-public typealias OSFont             = NSFont
-public typealias OSImage            = NSImage
-public typealias OSColor            = NSColor // ❕ Many differences between AppKit and UIKit.
-
-public typealias OSGestureRecognizer            = NSGestureRecognizer
-public typealias OSGestureRecognizerDelegate    = NSGestureRecognizerDelegate
-public typealias OSClickOrTapGestureRecognizer  = NSClickGestureRecognizer
-public typealias OSPanGestureRecognizer         = NSPanGestureRecognizer
-
 public typealias OSMouseOrTouchEventComponent           = MouseEventComponent
 public typealias OSClickOrTapGestureRecognizerComponent = ClickGestureRecognizerComponent
 
 #elseif canImport(UIKit)
 
 import UIKit
-
-public typealias OSApplication      = UIApplication
-public typealias OSViewController   = UIViewController
-
-public typealias OSFont             = UIFont
-public typealias OSImage            = UIImage
-public typealias OSColor            = UIColor // ❕ Many differences between AppKit and UIKit.
-
-public typealias OSGestureRecognizer            = UIGestureRecognizer
-public typealias OSGestureRecognizerDelegate    = UIGestureRecognizerDelegate
-public typealias OSClickOrTapGestureRecognizer  = UITapGestureRecognizer
-public typealias OSPanGestureRecognizer         = UIPanGestureRecognizer
 
 public typealias OSMouseOrTouchEventComponent   = TouchEventComponent
 

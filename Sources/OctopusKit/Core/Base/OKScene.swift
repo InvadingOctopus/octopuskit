@@ -14,6 +14,7 @@
 
 // 🙁 NOTE: This is a large class, but we cannot break it up into multiple files because "Overriding non-@objc declarations from extensions is not supported" as of 2018/03, and other issues with organizing code via extensions: https://github.com/realm/SwiftLint/issues/1767
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

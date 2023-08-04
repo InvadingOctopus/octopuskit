@@ -6,7 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-import Foundation
+import OctopusCore
 
 public struct OKConfiguration {
     

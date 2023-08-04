@@ -9,8 +9,8 @@
 // CHECK: Allow dynamic badge reassignment?
 // CHECK: Allow multiple badges, one at most in each direction?
 
+import OctopusCore
 import SpriteKit
-import GameplayKit
 
 /// Overlays a child node on an edge or corner of the entity's `NodeComponent` node.
 ///

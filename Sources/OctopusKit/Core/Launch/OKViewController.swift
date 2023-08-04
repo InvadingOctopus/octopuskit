@@ -8,6 +8,7 @@
 
 // TODO: Seek a cleaner way to mix iOS- and macOS-specific code?
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 
