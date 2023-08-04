@@ -6,9 +6,9 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
-import OctopusCore
 
 /// Signals the entity of this component to spawn a new entity, in the direction of the entity's `NodeComponent` node, and applies the specified initial forces to the new entity's physics body if there is one.
 ///

@@ -6,6 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import OctopusCore
 import GameplayKit
 
 /// A component that points to another component in a different entity. Used for sharing a single component instance across different entities.

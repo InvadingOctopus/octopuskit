@@ -6,7 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
-import SpriteKit
+import OctopusCore
 import GameplayKit
 
 /// Modifies the `zRotation` of the entity's `NodeComponent` node to gradually turn it towards the pointed location as received via a `PointerEventComponent`.

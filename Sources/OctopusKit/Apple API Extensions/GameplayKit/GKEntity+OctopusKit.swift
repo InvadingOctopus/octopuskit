@@ -8,6 +8,7 @@
 
 // TODO: Tests
 
+import OctopusCore
 import GameplayKit
 
 public extension GKEntity {

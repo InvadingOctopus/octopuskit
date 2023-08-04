@@ -8,6 +8,7 @@
 
 // CHECK: Should there be a way to mark components which have an `update` method, and automatically add them to a scene's component systems?
 
+import OctopusCore
 import GameplayKit
 
 public typealias OctopusComponent = OKComponent

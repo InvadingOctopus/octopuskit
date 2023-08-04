@@ -10,6 +10,7 @@
 // TODO: A way to combine array optionals?
 
 import Foundation
+import OctopusCore
 import GameplayKit
 
 public extension Array where Element == OKComponentSystem {
