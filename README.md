@@ -1,6 +1,6 @@
 # OctopusKit ![OctopusKit Logo](https://github.com/InvadingOctopus/octopuskit/blob/develop/Assets/Images/SinclairZXSpectrumOK-Slim.png?raw=true)
 
-⚠️ **NOTE: OctopusKit now requires [OctopusCore](#octopuscore).** [4.0.0-beta-5](https://github.com/InvadingOctopus/octopuskit/releases/tag/4.0.0-beta.5) is the last standalone version before non-game functionality was split into a separate repository. 
+⚠️ **NOTE: OctopusKit now requires [OctopusCore](#octopuscore).** Non-game functionality was split into a separate repository for use in general apps. For the last standalone version, see  [4.0.0-beta-5](https://github.com/InvadingOctopus/octopuskit/releases/tag/4.0.0-beta.5) 
 
 A 2D game engine based on ECS and written in 100% Swift for iOS, macOS and tvOS. 
 
