@@ -1,6 +1,6 @@
 # OctopusKit ![OctopusKit Logo](https://github.com/InvadingOctopus/octopuskit/blob/develop/Assets/Images/SinclairZXSpectrumOK-Slim.png?raw=true)
 
-⚠️ **NOTE: 4.0.0-beta-5 is the last version before non-game functionality is split into OctopusKit-Core.**  
+⚠️ **NOTE: OctopusKit now requires [OctopusCore](#octopuscore).** [4.0.0-beta-5](https://github.com/InvadingOctopus/octopuskit/releases/tag/4.0.0-beta.5) is the last standalone version before non-game functionality was split into a separate repository. 
 
 A 2D game engine based on ECS and written in 100% Swift for iOS, macOS and tvOS. 
 
@@ -295,9 +295,10 @@ Set the custom class of the scene as `OKScene` or a subclass of it. Load the sce
 
 ----
 
-[OctopusKit][repository] © 2021 [Invading Octopus][website] • [Apache License 2.0][license]
+[OctopusKit][repository] © 2023 [Invading Octopus][website] • [Apache License 2.0][license]
 
-[repository]: https://github.com/invadingoctopus/octopuskit
+[repository]:  https://github.com/invadingoctopus/octopuskit
+[octopuscore]: https://github.com/invadingoctopus/octopuscore 
 [website]: https://invadingoctopus.io
 [license]: https://www.apache.org/licenses/LICENSE-2.0.html
 [twitter]: https://twitter.com/invadingoctopus
