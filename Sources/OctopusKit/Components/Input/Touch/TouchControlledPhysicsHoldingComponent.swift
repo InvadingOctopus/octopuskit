@@ -41,7 +41,7 @@ public final class TouchControlledPhysicsHoldingComponent: OKComponent, Requires
         // This component does not make sense on a scene, so...
         
         if node is SKScene {
-            OctopusKit.logForWarnings("A TouchControlledPhysicsHoldingComponent cannot be added to the scene entity — Removing.")
+            OKLog.logForWarnings.debug("A TouchControlledPhysicsHoldingComponent cannot be added to the scene entity — Removing.")
             self.removeFromEntity()
         }
     }

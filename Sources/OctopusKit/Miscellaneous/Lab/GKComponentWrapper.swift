@@ -55,7 +55,7 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
     /// - IMPORTANT: If a subclass overrides this method, then `super.didAddToEntity()` *MUST* be called to ensure proper functionality, e.g. to check for dependencies on other components and to set `shouldRemoveFromEntityOnDeinit = true`.
     open func didAddToEntity() {
         
-        OctopusKit.logForComponents("\(entity) ← \(self)")
+        OKLog.logForComponents.debug("\(entity) ← \(self)")
         
         // super.didAddToEntity()
         
@@ -126,8 +126,8 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
             
             if  match?.componentType != requiredComponentType {
                 
-                OctopusKit.logForWarnings("\(entity) is missing a \(requiredComponentType) (or a RelayComponent linked to it) which is required by \(self)")
-                OctopusKit.logForTips("Check the order in which components are added. Ignore warning if entity has a substitutable component, or a RelayComponent(sceneComponentType:) but not yet added to a scene.")
+                OKLog.logForWarnings.debug("\(entity) is missing a \(requiredComponentType) (or a RelayComponent linked to it) which is required by \(self)")
+                OKLog.logForTips.debug("Check the order in which components are added. Ignore warning if entity has a substitutable component, or a RelayComponent(sceneComponentType:) but not yet added to a scene.")
                 
                 hasMissingDependencies = true
                 
@@ -150,7 +150,7 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
     /// - IMPORTANT: If a subclass overrides this method, then `super.willRemoveFromEntity()` MUST be called to ensure proper functionality, including clearing `shouldRemoveFromEntityOnDeinit`.
     open func willRemoveFromEntity() {
         
-        OctopusKit.logForComponents("\(entity) ~ \(self)")
+        OKLog.logForComponents.debug("\(entity) ~ \(self)")
         
         // super.willRemoveFromEntity()
         
@@ -176,7 +176,7 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
     open func willRemoveFromEntity(withNode node: SKNode) {}
     
     deinit {
-        OctopusKit.logForDeinits("\(self)")
+        OKLog.logForDeinits.debug("\(self)")
 
         if  shouldRemoveFromEntityOnDeinit {
             /// ⚠️ NOTE: Do NOT call `self.entity?.removeComponent(ofType: type(of: self))` here, as this may remove the NEW component, if one of the same class was added, causing this deinit's object to be replaced.
@@ -184,7 +184,7 @@ open class GKComponentWrapper: Component, UpdatablePerFrame {
         }
 
         if  shouldWarnIfDeinitWithoutRemoving {
-            OctopusKit.logForWarnings("\(self) deinit before willRemoveFromEntity()")
+            OKLog.logForWarnings.debug("\(self) deinit before willRemoveFromEntity()")
         }
     }
     

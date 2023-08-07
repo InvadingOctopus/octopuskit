@@ -81,17 +81,17 @@ public final class RandomlyPositionedGeneratorComponent: NodeAttachmentComponent
         // TODO: Fix anchorPoint positioning etc.
         
         guard self.numberOfNodes > 0 else {
-            OctopusKit.logForWarnings("numberOfNodes \(numberOfNodes) < 1")
+            OKLog.logForWarnings.debug("numberOfNodes \(numberOfNodes) < 1")
             return nil
         }
         
         guard let randomizationSource = coComponent(RandomizationComponent.self)?.source else {
-            OctopusKit.logForWarnings("\(String(describing: self.entity)) missing RandomizationSourceComponent")
+            OKLog.logForWarnings.debug("\(String(describing: self.entity)) missing RandomizationSourceComponent")
             return nil
         }
         
         if numberOfNodes > numberOfNodesWarningThreshold {
-            OctopusKit.logForWarnings("numberOfNodes \(numberOfNodes) > numberOfNodesWarningThreshold \(numberOfNodesWarningThreshold) — Potential performance degradation")
+            OKLog.logForWarnings.debug("numberOfNodes \(numberOfNodes) > numberOfNodesWarningThreshold \(numberOfNodesWarningThreshold) — Potential performance degradation")
         }
         
         let newContents = SKNode()

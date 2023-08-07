@@ -45,7 +45,7 @@ public final class DelayedRemovalComponent: OKComponent, RequiresUpdatesPerFrame
             secondsElapsed >= removalDelay
         {
             #if LOGECSVERBOSE
-            OctopusKit.logForComponents("Removing \(entity)", object: "\(self)")
+            OKLog.logForComponents.debug("Removing \(entity)", object: "\(self)")
             #endif
             
             entityNode?.removeFromParent()

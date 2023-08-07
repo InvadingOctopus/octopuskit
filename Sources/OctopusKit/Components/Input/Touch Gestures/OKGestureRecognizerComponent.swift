@@ -52,13 +52,13 @@ open class OKGestureRecognizerComponent <GestureRecognizerType> : OKComponent, O
         super.didAddToEntity(withNode: node)
         
         guard let scene = coComponent(SceneComponent.self)?.scene else {
-            OctopusKit.logForWarnings("\(entity) missing SceneComponent — Detaching")
+            OKLog.logForWarnings.debug("\(entity) missing SceneComponent — Detaching")
             self.removeFromEntity()
             return
         }
         
         guard let view = scene.view else {
-            OctopusKit.logForWarnings("\(scene) is not part of a view — Detaching")
+            OKLog.logForWarnings.debug("\(scene) is not part of a view — Detaching")
             self.removeFromEntity()
             return
         }
@@ -70,13 +70,13 @@ open class OKGestureRecognizerComponent <GestureRecognizerType> : OKComponent, O
         super.willRemoveFromEntity(withNode: node)
         
         guard let scene = coComponent(SceneComponent.self)?.scene else {
-            OctopusKit.logForWarnings("\(entity) missing SceneComponent — Detaching")
+            OKLog.logForWarnings.debug("\(entity) missing SceneComponent — Detaching")
             self.removeFromEntity()
             return
         }
         
         guard let view = scene.view else {
-            OctopusKit.logForWarnings("\(scene) is not part of a view")
+            OKLog.logForWarnings.debug("\(scene) is not part of a view")
             return
         }
         

@@ -28,7 +28,7 @@ public extension Array where Element == OKComponentSystem {
         }
         
         if  isDuplicateSystem {
-            OctopusKit.logForErrors("\(componentClass) added more than once! This may cause components to update multiple times every frame.")
+            OKLog.logForErrors.debug("\(componentClass) added more than once! This may cause components to update multiple times every frame.")
         }
         
         // Create and add the new system.
@@ -37,7 +37,7 @@ public extension Array where Element == OKComponentSystem {
         self.append(newSystem)
         
         #if LOGECSVERBOSE
-        OctopusKit.logForComponents("\(newSystem) componentClass = \(componentClass), count = \(self.count)")
+        OKLog.logForComponents.debug("\(newSystem) componentClass = \(componentClass), count = \(self.count)")
         #endif
     }
     

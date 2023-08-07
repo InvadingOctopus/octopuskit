@@ -20,7 +20,7 @@ open class iOSExclusiveComponent: OKComponent {
     
     public override init() {
         // TO DECIDE: Error or warning?
-        OctopusKit.logForErrors("\(type(of: self)) is for iOS only!")
+        OKLog.logForErrors.debug("\(type(of: self)) is for iOS only!")
         super.init()
     }
     

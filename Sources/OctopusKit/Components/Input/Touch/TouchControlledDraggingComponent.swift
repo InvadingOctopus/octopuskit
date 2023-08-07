@@ -58,7 +58,7 @@ public final class TouchControlledDraggingComponent: OKComponent, RequiresUpdate
         // A scene itself is not really draggable, so...
         
         if  node is SKScene {
-            OctopusKit.logForWarnings("A TouchControlledDraggingComponent cannot be added to the scene entity — Removing.")
+            OKLog.logForWarnings.debug("A TouchControlledDraggingComponent cannot be added to the scene entity — Removing.")
             OctopusKit.logForTips ("See CameraPanComponent.")
             self.removeFromEntity()
         }

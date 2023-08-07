@@ -34,7 +34,7 @@ public class NodeActionComponent: OKComponent {
     public override func didAddToEntity(withNode node: SKNode) {
         
         if let action = node.action(forKey: key) {
-            OctopusKit.logForWarnings("\(node) already has \(action) with key \"\(key)\" — Replacing")
+            OKLog.logForWarnings.debug("\(node) already has \(action) with key \"\(key)\" — Replacing")
             node.removeAction(forKey: key)
         }
         
@@ -44,7 +44,7 @@ public class NodeActionComponent: OKComponent {
     public override func willRemoveFromEntity(withNode node: SKNode) {
         
         if node.action(forKey: key) == nil {
-            OctopusKit.logForWarnings("\(node) has no action with key \"\(key)\"")
+            OKLog.logForWarnings.debug("\(node) has no action with key \"\(key)\"")
         }
         else {
             node.removeAction(forKey: key)

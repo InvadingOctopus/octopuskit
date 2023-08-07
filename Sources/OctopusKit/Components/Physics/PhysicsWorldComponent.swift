@@ -23,7 +23,7 @@ public final class PhysicsWorldComponent: OKComponent {
         super.didAddToEntity()
         
         guard let scene = coComponent(SceneComponent.self)?.scene  else {
-            OctopusKit.logForWarnings("\(entity) missing SceneComponent – Cannot assign physicsWorld")
+            OKLog.logForWarnings.debug("\(entity) missing SceneComponent – Cannot assign physicsWorld")
             return
         }
         
@@ -33,7 +33,7 @@ public final class PhysicsWorldComponent: OKComponent {
             scene.physicsWorld.contactDelegate = scene // as? SKPhysicsContactDelegate
         }
         else if scene.physicsWorld.contactDelegate !== scene {
-            OctopusKit.logForWarnings("\(scene.physicsWorld) has a contactDelegate that is not \(scene)")
+            OKLog.logForWarnings.debug("\(scene.physicsWorld) has a contactDelegate that is not \(scene)")
         }
         
         // If the physics simulation is paused, start it, as this would be the expected behavior upon adding a `PhysicsWorld` component.

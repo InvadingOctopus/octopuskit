@@ -45,7 +45,7 @@ public final class PointerControlledPhysicsHoldingComponent: OKComponent, Requir
         // This component does not make sense on a scene, so...
         
         if  node is SKScene {
-            OctopusKit.logForWarnings("A PointerControlledPhysicsHoldingComponent cannot be added to the scene entity — Removing.")
+            OKLog.logForWarnings.debug("A PointerControlledPhysicsHoldingComponent cannot be added to the scene entity — Removing.")
             self.removeFromEntity()
         }
     }

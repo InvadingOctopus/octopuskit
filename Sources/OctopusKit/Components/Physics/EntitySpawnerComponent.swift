@@ -132,37 +132,37 @@ open class EntitySpawnerComponent: OKComponent {
         
         // This component must be part of an entity.
         guard let entity = self.entity else {
-            OctopusKit.logForWarnings("\(self) is not part of an entity.")
+            OKLog.logForWarnings.debug("\(self) is not part of an entity.")
             return false
         }
         
         // The spawner entity needs to have a visual representation (even if it's invisible) to spawn the new entity from.
         guard let spawnerNode = self.entityNode else {
-            OctopusKit.logForWarnings("\(entity) has no SpriteKit node.")
+            OKLog.logForWarnings.debug("\(entity) has no SpriteKit node.")
             return false
         }
         
         // The spawner node needs to have a parent node.
         guard let spawnerNodeParent = spawnerNode.parent else {
-            OctopusKit.logForWarnings("\(spawnerNode) has no parent.")
+            OKLog.logForWarnings.debug("\(spawnerNode) has no parent.")
             return false
         }
         
         // The spawner entity needs to have an `OKEntityDelegate` (i.e. the parent scene) that will spawn the new entity for it.
         guard let spawnerDelegate = (entity as? OKEntity)?.delegate else {
-            OctopusKit.logForWarnings("\(entity) has no OKEntityDelegate")
+            OKLog.logForWarnings.debug("\(entity) has no OKEntityDelegate")
             return false
         }
         
         // We must have something to spawn.
         guard let entityToSpawn = entityToSpawnOverride ?? (spawnTemplate?.copy() as? OKEntity) else {
-            OctopusKit.logForWarnings("No entityToSpawnOverride and spawnTemplate \(spawnTemplate) did not return .copy()")
+            OKLog.logForWarnings.debug("No entityToSpawnOverride and spawnTemplate \(spawnTemplate) did not return .copy()")
             return false
         }
         
         // The spawned entity needs to have a visual representation (even if it's invisible).
         guard let nodeToSpawn = entityToSpawn.node else {
-            OctopusKit.logForWarnings("\(entityToSpawn) has no SpriteKit node.")
+            OKLog.logForWarnings.debug("\(entityToSpawn) has no SpriteKit node.")
             return false
         }
         
@@ -210,7 +210,7 @@ open class EntitySpawnerComponent: OKComponent {
         if  let impulse = impulse {
             
             guard let physicsBody = entityToSpawn.componentOrRelay(ofType: PhysicsComponent.self)?.physicsBody else {
-                OctopusKit.logForWarnings("\(entityToSpawn) has no PhysicsComponent with a physicsBody — Cannot apply impulse.")
+                OKLog.logForWarnings.debug("\(entityToSpawn) has no PhysicsComponent with a physicsBody — Cannot apply impulse.")
                 return didSpawnEntity
             }
             
@@ -232,7 +232,7 @@ open class EntitySpawnerComponent: OKComponent {
         {
             
             guard let spawnerPhysicsBody = coComponent(PhysicsComponent.self)?.physicsBody else {
-                OctopusKit.logForWarnings("\(entity) has no PhysicsComponent with a physicsBody — Cannot apply recoil.")
+                OKLog.logForWarnings.debug("\(entity) has no PhysicsComponent with a physicsBody — Cannot apply recoil.")
                 return didSpawnEntity
             }
             

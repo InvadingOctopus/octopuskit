@@ -20,7 +20,7 @@ public extension OctopusKit {
         
         let cache = OKCache<String, SKTextureAtlas> { key in
             
-            OctopusKit.logForResources("SKTextureAtlas named = \"\(key)\"")
+            OKLog.logForResources.debug("SKTextureAtlas named = \"\(key)\"")
             // TODO: Error handling in case of invalid key
             return SKTextureAtlas(named: key)
         }
@@ -32,7 +32,7 @@ public extension OctopusKit {
         
         let cache = OKCache<String, SKTexture> { key in
             
-            OctopusKit.logForResources("SKTexture imageNamed = \"\(key)\"")
+            OKLog.logForResources.debug("SKTexture imageNamed = \"\(key)\"")
             // TODO: Error handling in case of invalid key
             return SKTexture(imageNamed: key)
         }
@@ -44,7 +44,7 @@ public extension OctopusKit {
         
         let cache = OKCache<String, SKShader> { key in
             
-            OctopusKit.logForResources("SKShader fileNamed = \"\(key)\"")
+            OKLog.logForResources.debug("SKShader fileNamed = \"\(key)\"")
             // TODO: Error handling in case of invalid key
             return SKShader(fileNamed: key)
         }

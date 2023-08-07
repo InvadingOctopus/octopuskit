@@ -41,7 +41,7 @@ open class TimeComponent: OKComponent, RequiresUpdatesPerFrame {
     public init(secondsElapsed: TimeInterval) {
         
         if  secondsElapsed < 0 {
-            OctopusKit.logForWarnings("secondsElapsed = \(secondsElapsed), negative")
+            OKLog.logForWarnings.debug("secondsElapsed = \(secondsElapsed), negative")
         }
         
         self.secondsElapsed = secondsElapsed
@@ -80,7 +80,7 @@ open class TimeComponent: OKComponent, RequiresUpdatesPerFrame {
     }
     
     deinit {
-        OctopusKit.logForDeinits("secondsElapsed = \(secondsElapsed)")
+        OKLog.logForDeinits.debug("secondsElapsed = \(secondsElapsed)")
     }
 }
 

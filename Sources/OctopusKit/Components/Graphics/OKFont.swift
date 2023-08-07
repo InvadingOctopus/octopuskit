@@ -21,7 +21,7 @@ public struct OKFont {
                 color:  SKColor? = nil)
     {
         guard name != nil || size != nil || color != nil else {
-            OctopusKit.logForErrors("OKFont initialized with all values nil")
+            OKLog.logForErrors.debug("OKFont initialized with all values nil")
             fatalError()
         }
         

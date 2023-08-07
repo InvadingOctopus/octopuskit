@@ -40,7 +40,7 @@ public extension OKScenePresenter {
     /// Creates and returns an instance of the specified `OKScene` subclass.
     func createScene(ofClass sceneClass: OKScene.Type) -> OKScene?
     {
-        OctopusKit.logForFramework("\(sceneClass)")
+        OKLog.logForFramework.debug("\(sceneClass)")
         
         guard let spriteKitView = self.spriteKitView else {
             OctopusKit.logForErrors("\(self) does not have a spriteKitView — Creating scenes programmatically requires screen dimensions. 💡 Use loadScene(fileNamed:) to load a .sks made in the Xcode editor.") // TODO: Add internationalization.
@@ -60,19 +60,19 @@ public extension OKScenePresenter {
     func loadScene(fileNamed fileName: String) -> OKScene? {
         // TODO: Error handling
         
-        OctopusKit.logForResources("fileName = \"\(fileName)\"")
+        OKLog.logForResources.debug("fileName = \"\(fileName)\"")
         
         // Load the specified scene as a GKScene. This provides gameplay related content including entities and graphs.
         
         guard let gameplayKitScene = GKScene(fileNamed: fileName) else {
-            OctopusKit.logForErrors("Cannot load \"\(fileName)\" as GKScene")
+            OKLog.logForErrors.debug("Cannot load \"\(fileName)\" as GKScene")
             return nil
         }
         
         // Get the OKScene/SKScene from the loaded GKScene
         guard let spriteKitScene = gameplayKitScene.rootNode as? OKScene else {
             // TODO: Graceful failover to `SKScene(fileNamed:)`
-            OctopusKit.logForErrors("Cannot load \"\(fileName)\" as an OKScene")
+            OKLog.logForErrors.debug("Cannot load \"\(fileName)\" as an OKScene")
             return nil
         }
         
@@ -99,14 +99,14 @@ public extension OKScenePresenter {
         
         let transition = transitionOverride ?? self.currentScene?.transition(for: type(of: incomingScene))
         
-        OctopusKit.logForFramework("\(self.currentScene) → [\(transition)] → \(incomingScene)")
+        OKLog.logForFramework.debug("\(self.currentScene) → [\(transition)] → \(incomingScene)")
         
         // If the specified scene is already the current scene (as may be the case for scenes that handle multiple states, such as playing and paused) just set its delegate to the current state and return.
 
         incomingScene.octopusSceneDelegate = self.currentGameState
 
         guard incomingScene !== self.currentScene else {
-            OctopusKit.logForFramework("incomingScene is already currentScene — Resetting delegate but skipping presentation.")
+            OKLog.logForFramework.debug("incomingScene is already currentScene — Resetting delegate but skipping presentation.")
             return
         }
         
@@ -131,7 +131,7 @@ public extension OKScenePresenter {
         if  spriteKitView.scene is OKScene {
             self.currentScene = incomingScene
         } else {
-            OctopusKit.logForErrors("Cannot cast spriteKitView.scene as OKScene: \(spriteKitView.scene)")
+            OKLog.logForErrors.debug("Cannot cast spriteKitView.scene as OKScene: \(spriteKitView.scene)")
         }
 
         // Let the new scene determine UI focus for the Apple TV Remote.

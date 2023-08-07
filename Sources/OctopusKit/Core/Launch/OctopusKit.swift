@@ -53,7 +53,7 @@ public final class OctopusKit {
                 fatalError("OctopusKit: OctopusKit.shared set again after the singleton has already been initialized.")
             }
             if  let singleton = OctopusKit.shared {
-                OctopusKit.logForFramework("\(singleton) initialized.")
+                OKLog.logForFramework.debug("\(singleton) initialized.")
             }
         }
     }
@@ -110,7 +110,7 @@ public final class OctopusKit {
         {
             return view
         } else {
-            OctopusKit.logForDebug("Cannot access gameCoordinator.viewController?.view as an SKView.")
+            OKLog.logForDebug.debug("Cannot access gameCoordinator.viewController?.view as an SKView.")
             return nil
         }
     }

@@ -133,14 +133,14 @@ open class OKEntity: GKEntity {
             
             if  existingComponent === component { /// Note the 3 equal-signs: `===`
                 
-                OctopusKit.logForWarnings("\(self) already has \(component) — Not re-adding")
-                OctopusKit.logForTips("If you mean to reset the component or call its `didAddToEntity()` again, then remove it manually and re-add.")
+                OKLog.logForWarnings.debug("\(self) already has \(component) — Not re-adding")
+                OKLog.logForTips.debug("If you mean to reset the component or call its `didAddToEntity()` again, then remove it manually and re-add.")
                 
                 return
                 
             } else {
             
-                OctopusKit.logForWarnings("\(self) replacing \(existingComponent) → \(component)")
+                OKLog.logForWarnings.debug("\(self) replacing \(existingComponent) → \(component)")
             
                 // NOTE: BUG? GameplayKit's default implementation does NOT seem to set the about-to-be-replaced component's entity property to `nil`.
                 // So we manually remove an existing duplicate component here, if any.
@@ -162,7 +162,7 @@ open class OKEntity: GKEntity {
     }
     
     deinit {
-        OctopusKit.logForDeinits("\(self)")
+        OKLog.logForDeinits.debug("\(self)")
         
         // Give all components a chance to clean up after themselves.
         

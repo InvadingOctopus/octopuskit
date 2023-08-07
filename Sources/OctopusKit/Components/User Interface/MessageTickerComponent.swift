@@ -108,7 +108,7 @@ public final class MessageTickerComponent: NodeAttachmentComponent<SKNode>, Requ
             parent.frame.width > 1
             && parent.frame.height > 1
             else {
-            OctopusKit.logForErrors("\(parent) accumulated width or height <= 1")
+            OKLog.logForErrors.debug("\(parent) accumulated width or height <= 1")
             return nil
         }
         
@@ -272,7 +272,7 @@ public final class MessageTickerComponent: NodeAttachmentComponent<SKNode>, Requ
             delegate?.messageTicker(self, didFinishScrollingLastMessage: lastMessage!) // TODO: CHECK: forced unwrap
         }
         
-        // OctopusKit.logForDebug("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messagesBacklog.count))")
+        // OKLog.logForDebug.debug("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messagesBacklog.count))")
     }
     
     private func finishScrollingState() {

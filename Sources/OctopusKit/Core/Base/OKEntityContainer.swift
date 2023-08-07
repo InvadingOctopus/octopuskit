@@ -73,11 +73,11 @@ public extension OKEntityContainer {
     func addEntity(_ entity: GKEntity) {
         
         guard entities.insert(entity).inserted else {
-            OctopusKit.logForWarnings("\(entity) is already in \(self) — Not re-adding")
+            OKLog.logForWarnings.debug("\(entity) is already in \(self) — Not re-adding")
             return
         }
         
-        OctopusKit.logForComponents("\(entity.debugDescription), entities.count = \(entities.count)")
+        OKLog.logForComponents.debug("\(entity.debugDescription), entities.count = \(entities.count)")
         
         // If it's an `OKEntity` (as opposed to a basic `GKEntity`) and this entity container is an `OKEntityDelegate` (e.g. an `OKScene`) then introduce them to each other.
         
@@ -123,7 +123,7 @@ public extension OKEntityContainer {
         
         let systemsCollection = systemsCollection ?? self.componentSystems
         
-        OctopusKit.logForFramework("systemsCollection = \(systemsCollection)")
+        OKLog.logForFramework.debug("systemsCollection = \(systemsCollection)")
         
         for entity in entities {
             systemsCollection.addComponents(foundIn: entity)
@@ -175,11 +175,11 @@ public extension OKEntityContainer {
         
         guard entities.contains(entityToRemove) else {
             // CHECK: Warn on missing entry if the entity is going to leave anyway?
-            // OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
+            // OKLog.logForWarnings.debug("\(entity) is not registered with \(self)")
             return false
         }
         
-        OctopusKit.logForComponents("\(entityToRemove.debugDescription)")
+        OKLog.logForComponents.debug("\(entityToRemove.debugDescription)")
         
         // ℹ️ `entitiesToRemoveOnNextUpdate` is a `Set` which prevents duplicate values.
         
@@ -199,7 +199,7 @@ public extension OKEntityContainer {
         
         guard entities.contains(entityToRemove) else {
             // CHECK: Warn on missing entry if the entity is going to leave anyway?
-            // OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
+            // OKLog.logForWarnings.debug("\(entity) is not registered with \(self)")
             return false
         }
         
@@ -233,7 +233,7 @@ public extension OKEntityContainer {
         // NOTE: Remove the entity after components have been removed, to avoid the "entity is not registered with scene" warnings and reduce the potential for other unexpected behavior.
         
         if  entities.remove(entityToRemove) != nil {
-            OctopusKit.logForComponents("Removed \(entityToRemove.debugDescription), entities.count = \(entities.count)")
+            OKLog.logForComponents.debug("Removed \(entityToRemove.debugDescription), entities.count = \(entities.count)")
             return true
         } else {
             return false
@@ -298,7 +298,7 @@ public extension OKEntityContainer {
             if componentClass is RequiresUpdatesPerFrame.Type
             || componentClass is TurnBased.Type
             {
-                OctopusKit.logForWarnings("\(self) missing component system for \(componentClass) in \(entity)")
+                OKLog.logForWarnings.debug("\(self) missing component system for \(componentClass) in \(entity)")
             }
             
             return false
@@ -350,7 +350,7 @@ public extension OKEntityContainerNode {
         // ℹ️ There is no multiple entity version of this method, as the `components` parameter would cause the SAME components to be added to each entity (because they're reference types), leaving them in effect on only the last entity to be created!
         
         guard let node = self.childNode(withName: name) else {
-            OctopusKit.logForWarnings("No node with name \"\(name)\" in \(self)")
+            OKLog.logForWarnings.debug("No node with name \"\(name)\" in \(self)")
             return nil
         }
         
@@ -385,7 +385,7 @@ public extension OKEntityContainerNode {
             if  node.parent! != self,
                !node.inParentHierarchy(self)
             {
-                OctopusKit.logForWarnings("\(node) has parent \(node.parent) that is not in scene \(self)")
+                OKLog.logForWarnings.debug("\(node) has parent \(node.parent) that is not in scene \(self)")
             }
             return
         }
@@ -397,11 +397,11 @@ public extension OKEntityContainerNode {
             physicsBody.node != nil && physicsBody.node! != node
         {
             // ⚠️ NOTE: Apparently this will never occur as SpriteKit replaces `physicsBody.node` when the `physicsBody` is added to a new node.
-            OctopusKit.logForErrors("\(node) has a \(physicsBody) that belongs to another node! — \(physicsBody.node!)")
+            OKLog.logForErrors.debug("\(node) has a \(physicsBody) that belongs to another node! — \(physicsBody.node!)")
             return
         }
         
-        OctopusKit.logForDebug("\(self) ← \(node)")
+        OKLog.logForDebug.debug("\(self) ← \(node)")
         self.addChild(node)
     }
 }
@@ -415,7 +415,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     @inlinable
     public func entity(_ entity: GKEntity, didAddComponent component: GKComponent) {
         guard entities.contains(entity) else {
-            OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
+            OKLog.logForWarnings.debug("\(entity) is not registered with \(self)")
             return
         }
         
@@ -449,14 +449,14 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     @inlinable
     public func entity(_ entity: GKEntity, willRemoveComponent component: GKComponent) {
         guard entities.contains(entity) else {
-            OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
+            OKLog.logForWarnings.debug("\(entity) is not registered with \(self)")
             return
         }
         
         for componentSystem in self.componentSystems {
             if  componentSystem.componentClass == type(of: component) {
                 #if LOGECSVERBOSE
-                OctopusKit.logForComponents("Removing \(component) from \(componentSystem)")
+                OKLog.logForComponents.debug("Removing \(component) from \(componentSystem)")
                 #endif
                 componentSystem.removeComponent(component)
             }
@@ -468,7 +468,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     @inlinable
     @discardableResult public func entity(_ entity: GKEntity, didSpawn spawnedEntity: GKEntity) -> Bool {
         guard entities.contains(entity) else {
-            OctopusKit.logForWarnings("\(entity) is not registered with \(self)")
+            OKLog.logForWarnings.debug("\(entity) is not registered with \(self)")
             return false
         }
         

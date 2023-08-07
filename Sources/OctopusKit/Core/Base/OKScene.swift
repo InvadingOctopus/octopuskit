@@ -188,7 +188,7 @@ open class OKScene: SKScene,
     public var octopusSceneDelegate: OKSceneDelegate? {
         didSet {
             // Cannot use `@LogChanges` because "Protocol type 'OKSceneDelegate' cannot conform to 'Equatable' because only concrete types can conform to protocols"
-            OctopusKit.logForDebug("\(oldValue) → \(octopusSceneDelegate)")
+            OKLog.logForDebug.debug("\(oldValue) → \(octopusSceneDelegate)")
         }
     }
     
@@ -221,7 +221,7 @@ open class OKScene: SKScene,
     // MARK: - Load
     
     open override func sceneDidLoad() {
-        OctopusKit.logForFramework("\(self)")
+        OKLog.logForFramework.debug("\(self)")
         super.sceneDidLoad()
         
         // Create the initial set of component systems. This is also a convenient customization point for subclasses, so each scene can have a standard method for setting up its systems.
@@ -326,7 +326,7 @@ open class OKScene: SKScene,
         // Warn if the scene already has an entity representing it.
         
         if  let existingEntity = self.entity {
-            OctopusKit.logForErrors("\(self) already has an entity: \(existingEntity)")
+            OKLog.logForErrors.debug("\(self) already has an entity: \(existingEntity)")
             // CHECK: Remove the existing entity here, or exit the method here?
         }
         
@@ -356,7 +356,7 @@ open class OKScene: SKScene,
     /// Calls `createContents()` which may be used by a subclass to create the scene's contents, then adds all components from each entity in the `entities` set to the relevant systems in the `componentSystems` array. If overridden then `super` must be called for proper initialization of the scene.
     open override func didMove(to: SKView) {
         // CHECK: Should this be moved to `sceneDidLoad()`?
-        OctopusKit.logForFramework("name = \"\(name ?? "")\", size = \(size), view.frame.size = \(to.frame.size), scaleMode = \(scaleMode.rawValue)")
+        OKLog.logForFramework.debug("name = \"\(name ?? "")\", size = \(size), view.frame.size = \(to.frame.size), scaleMode = \(scaleMode.rawValue)")
         
         secondsElapsedSinceMovedToView = 0
         
@@ -364,7 +364,7 @@ open class OKScene: SKScene,
         
         if !didCreateContents {
             
-            OctopusKit.logForFramework("Calling createContents() for \(self)")
+            OKLog.logForFramework.debug("Calling createContents() for \(self)")
             createContents()
             
             // addAllComponentsFromAllEntities(to: self.componentSystems) // CHECK: Necessary? Should we just rely on OKEntityDelegate?
@@ -392,13 +392,13 @@ open class OKScene: SKScene,
     /// - NOTE: A scene may also/instead choose to create its contents in the `gameCoordinatorDidEnterState(_:from:)` method.
     @inlinable
     open func createContents() {
-        OctopusKit.logForFramework("Not implemented for \(self) — Override in subclass.")
+        OKLog.logForFramework.debug("Not implemented for \(self) — Override in subclass.")
     }
     
     open override func didChangeSize(_ oldSize: CGSize) {
         /// CHECK: This is seemingly always called after `init`, before `sceneDidLoad()`, even when the `oldSize` and current `size` are the same.
         super.didChangeSize(oldSize)
-        OctopusKit.logForFramework("\(self) — oldSize = \(oldSize) → \(self.size)")
+        OKLog.logForFramework.debug("\(self) — oldSize = \(oldSize) → \(self.size)")
     }
     
     /// By default, removes all entities from the scene when it is no longer in a view, so that the scene may be deinitialized and free up device memory.
@@ -425,14 +425,14 @@ open class OKScene: SKScene,
     ///
     /// Call `super` to add default logging.
     open func gameCoordinatorDidEnterState(_ state: GKState, from previousState: GKState?) {
-        OctopusKit.logForStates("\(previousState) → \(state)")
+        OKLog.logForStates.debug("\(previousState) → \(state)")
     }
     
     /// Called by `OKGameState`. To be overridden by a subclass if this same scene is used for different game states, e.g. to remove visual overlays that were presented during a paused or "game over" state.
     ///
     /// Call `super` to add default logging.
     open func gameCoordinatorWillExitState(_ exitingState: GKState, to nextState: GKState) {
-        OctopusKit.logForStates("\(exitingState) → \(nextState)")
+        OKLog.logForStates.debug("\(exitingState) → \(nextState)")
     }
     
     /// Abstract; override in subclass to provide a visual transition effect between scenes.
@@ -500,7 +500,7 @@ open class OKScene: SKScene,
             if  pausedAtTime == nil {
                 pausedAtTime = currentTime
                 
-                OctopusKit.logForFramework("pausedAtTime = \(pausedAtTime!), isPaused = \(isPaused), isPausedBySystem = \(isPausedBySystem), isPausedByPlayer = \(isPausedByPlayer), isPausedBySubscene = \(isPausedBySubscene)")
+                OKLog.logForFramework.debug("pausedAtTime = \(pausedAtTime!), isPaused = \(isPaused), isPausedBySystem = \(isPausedBySystem), isPausedByPlayer = \(isPausedByPlayer), isPausedBySubscene = \(isPausedBySubscene)")
             }
             
             return
@@ -651,7 +651,7 @@ open class OKScene: SKScene,
     open func applicationDidBecomeActive() {
         // NOTE: This method gets superfluously called twice after `OSAppDelegate.applicationWillEnterForeground(_:)` because of `OKScene.applicationWillEnterForeground()` and `OSAppDelegate.applicationDidBecomeActive(_:)`.
         
-        OctopusKit.logForFramework("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? " → false" : "")")
+        OKLog.logForFramework.debug("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? " → false" : "")")
         
         if  isPausedBySystem {
             isPaused = false
@@ -666,7 +666,7 @@ open class OKScene: SKScene,
     
     /// Called by `OSAppDelegate.applicationWillResignActive(_:)` when the player switches out of the app, or on interruptions such as a phone call, Control Center, Notification Center, or other system alerts.
     open func applicationWillResignActive() {
-        OctopusKit.logForFramework("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? "" : " → true")")
+        OKLog.logForFramework.debug("isPausedBySystem = \(isPausedBySystem)\(isPausedBySystem ? "" : " → true")")
         
         pausedAtTime = lastUpdateTime // CHECK: Should we rely on the stored value instead of getting current time? Probably yes.
         isPausedBySystem = true
@@ -711,7 +711,7 @@ open class OKScene: SKScene,
     ///
     /// When paused by the player, the gameplay and other game-specific logic is put on hold without preventing the scene from processing frame updates so the visual effects for a paused state can be shown and animated etc.
     open func togglePauseByPlayer() {
-        OctopusKit.logForFramework("isPausedByPlayer = \(isPausedByPlayer) → \(!isPausedByPlayer)")
+        OKLog.logForFramework.debug("isPausedByPlayer = \(isPausedByPlayer) → \(!isPausedByPlayer)")
         
         isPausedByPlayer = !isPausedByPlayer
         
@@ -747,7 +747,7 @@ open class OKScene: SKScene,
     ///
     /// - NOTE: Set the scene's `physicsWorld.speed` to `0` or `1` in your implementation to pause and unpause physics if needed.
     open func togglePauseBySubscene() {
-        OctopusKit.logForFramework("isPausedBySubscene = \(isPausedBySubscene) → (!isPausedBySubscene)")
+        OKLog.logForFramework.debug("isPausedBySubscene = \(isPausedBySubscene) → (!isPausedBySubscene)")
         
         isPausedBySubscene = !isPausedBySubscene
         
@@ -800,7 +800,7 @@ open class OKScene: SKScene,
         // Check if the specified subscene is already being presented.
         
         guard !self.subscenes.contains(subscene) else {
-            OctopusKit.logForWarnings("\(subscene) already in \(self.subscenes)")
+            OKLog.logForWarnings.debug("\(subscene) already in \(self.subscenes)")
             return
         }
         
@@ -808,7 +808,7 @@ open class OKScene: SKScene,
         
         let parent = parent ?? self.camera ?? self
         
-        OctopusKit.logForFramework("\(subscene) on \(parent) at zPosition \(zPosition)")
+        OKLog.logForFramework.debug("\(subscene) on \(parent) at zPosition \(zPosition)")
         
         // Set the subscene's properties.
         
@@ -852,12 +852,12 @@ open class OKScene: SKScene,
     open func subsceneDidFinish(_ subscene: OKSubscene,
                                 withResult result: OKSubsceneResultType?)
     {
-        OctopusKit.logForFramework("\(subscene) result = \(result)")
+        OKLog.logForFramework.debug("\(subscene) result = \(result)")
         
         if  let index = self.subscenes.firstIndex(of: subscene) {
             self.subscenes.remove(at: index) // ⚠️ CHECK: Will this cause a mutating-while-enumerating exception?
         } else {
-            OctopusKit.logForWarnings("\(subscene) not in the subscene list of \(self)")
+            OKLog.logForWarnings.debug("\(subscene) not in the subscene list of \(self)")
         }
         
         subscene.removeFromParent()
@@ -896,7 +896,7 @@ open class OKScene: SKScene,
     // MARK: - Deinitialization
     
     deinit {
-        OctopusKit.logForDeinits("\"\(self.name)\" secondsElapsedSinceMovedToView = \(secondsElapsedSinceMovedToView), lastUpdateTime = \(lastUpdateTime)")
+        OKLog.logForDeinits.debug("\"\(self.name)\" secondsElapsedSinceMovedToView = \(secondsElapsedSinceMovedToView), lastUpdateTime = \(lastUpdateTime)")
     }
     
 }

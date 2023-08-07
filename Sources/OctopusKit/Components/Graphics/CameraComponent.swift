@@ -91,7 +91,7 @@ public final class CameraComponent: NodeAttachmentComponent <SKCameraNode> {
         super.didAddToEntity(withNode: node)
         
         guard let scene = coComponent(SceneComponent.self)?.scene else {
-            OctopusKit.logForErrors("\(entity) missing SceneComponent – Cannot assign camera")
+            OKLog.logForErrors.debug("\(entity) missing SceneComponent – Cannot assign camera")
             return
         }
         
@@ -101,7 +101,7 @@ public final class CameraComponent: NodeAttachmentComponent <SKCameraNode> {
         if  scene.camera != nil
         &&  scene.camera != self.camera
         {
-            OctopusKit.logForWarnings("\(scene) already has \(scene.camera) — Replacing with \(self.camera)")
+            OKLog.logForWarnings.debug("\(scene) already has \(scene.camera) — Replacing with \(self.camera)")
         }
         
         scene.camera = self.camera
@@ -115,7 +115,7 @@ public final class CameraComponent: NodeAttachmentComponent <SKCameraNode> {
         // ℹ️ DESIGN: If the scene has a different camera by now, remove it anyway, since that would be the expected behavior when removing this component.
         
         if  scene.camera !== self.camera {
-            OctopusKit.logForWarnings("\(scene) has a different camera that is not associated with this component: \(scene.camera) — Removing")
+            OKLog.logForWarnings.debug("\(scene) has a different camera that is not associated with this component: \(scene.camera) — Removing")
         }
         
         scene.camera = nil

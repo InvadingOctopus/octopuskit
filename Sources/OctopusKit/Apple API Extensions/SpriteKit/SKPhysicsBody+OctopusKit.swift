@@ -33,7 +33,7 @@ public extension SKPhysicsBody {
         }
         
         if  sprite.physicsBody != nil {
-            OctopusKit.logForWarnings("\(sprite.name ?? String(describing: sprite)) already has a physicsBody – Replacing")
+            OKLog.logForWarnings.debug("\(sprite.name ?? String(describing: sprite)) already has a physicsBody – Replacing")
         }
         
         sprite.physicsBody = self
