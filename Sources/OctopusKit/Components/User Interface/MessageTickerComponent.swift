@@ -159,7 +159,7 @@ public final class MessageTickerComponent: NodeAttachmentComponent<SKNode>, Requ
     #endif
     
     deinit {
-        OKLog.logForDeinits() // TODO: Mention last message
+        OKLog.logForDeinits.debug("\(📜())") // TODO: Mention last message
     }
     
     // MARK: - Messages

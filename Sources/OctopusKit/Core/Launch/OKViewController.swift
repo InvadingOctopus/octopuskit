@@ -222,14 +222,14 @@ open class OKViewController: OSViewController {
     #if os(iOS) || os(tvOS) // MARK: - iOS & tvOS
     
     open override func viewWillAppear(_ animated: Bool) {
-        OKLog.logForFramework()
+        OKLog.logForFramework.debug("\(📜())")
         super.viewWillAppear(animated)
         
         // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OKScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
     }
     
     open override func viewWillLayoutSubviews() {
-        OKLog.logForFramework()
+        OKLog.logForFramework.debug("\(📜())")
         super.viewWillLayoutSubviews()
 
         // OBSOLETE?
@@ -241,7 +241,7 @@ open class OKViewController: OSViewController {
     
     open override func didReceiveMemoryWarning() {
         // Release any cached data, images, etc that aren't in use.
-        OKLog.logForResources() // CHECK: Should the log be written to before freeing up some memory?
+        OKLog.logForResources.debug("\(📜())") // CHECK: Should the log be written to before freeing up some memory?
         super.didReceiveMemoryWarning()
         OctopusKit.clearAllCaches()
     }
@@ -260,7 +260,7 @@ open class OKViewController: OSViewController {
     }
     
     open override func viewWillAppear() {
-        OKLog.logForFramework()
+        OKLog.logForFramework.debug("\(📜())")
         super.viewWillAppear()
         
         // NOTE: Do not call `enterInitialState()` from `viewWillAppear(_:)` as the OKScene's `createContents()` method may need access to the SKView's `safeAreaInsets`, which is [apparently] only set in `viewWillLayoutSubviews()` and may be necessary for positioning elements correctly on an iPhone X and other devices.
@@ -289,7 +289,7 @@ open class OKViewController: OSViewController {
     }
     
     open override func viewWillLayout() {
-        OKLog.logForFramework()
+        OKLog.logForFramework.debug("\(📜())")
         super.viewWillLayout()
         
         // OBSOLETE?
