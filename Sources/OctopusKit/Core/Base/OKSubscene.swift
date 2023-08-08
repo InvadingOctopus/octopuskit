@@ -98,7 +98,7 @@ open class OKSubscene: SKNode,
     ///
     /// - Important: The overriding implementation must call `createContents(for: parentNode)` for `OKSubscene` to notify the delegate.
     open func createContents(for parent: SKNode) {
-        OKLog.logForFramework.debug("\(📜())")
+        OKLog.logForFramework.debug("\(📜("createContents(for parent:) \(parent)"))")
         delegate?.subsceneWillAppear(self, on: parent)
         didCreateContents = true
     }

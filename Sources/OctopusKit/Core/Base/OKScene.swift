@@ -406,7 +406,7 @@ open class OKScene: SKScene,
     ///
     /// To prevent this behavior, for example in cases where a scene is expected to be presented again and should remain in memory, override this method.
     open override func willMove(from view: SKView) {
-        OKLog.logForFramework.debug("\(📜())")
+        OKLog.logForFramework.debug("\(📜("willMove(from view:) \(view)"))")
         super.willMove(from: view)
         
         // CHECK: Should we delay the teardown of an outgoing scene to prevent any performance hiccups in the incoming scene?
@@ -636,7 +636,7 @@ open class OKScene: SKScene,
     ///
     /// - Important: The overriding implementation must call `super.applicationWillEnterForeground()`.
     open func applicationWillEnterForeground() {
-        OKLog.logForFramework.debug("\(📜())")
+        OKLog.logForFramework.debug("\(📜("applicationWillEnterForeground()"))")
         
         if  isPausedBySystem {
             // CHECK: Should `OKScene.applicationDidBecomeActive()` be called from here too, or should we let `OSAppDelegate.applicationDidBecomeActive(_:)` call it?
@@ -681,7 +681,7 @@ open class OKScene: SKScene,
     
     /// Called by `OSAppDelegate.applicationDidEnterBackground(_:)`
     open func applicationDidEnterBackground() {
-        OKLog.logForFramework.debug("\(📜())")
+        OKLog.logForFramework.debug("\(📜("applicationDidEnterBackground()"))")
         
         if  !isPausedBySystem {
             applicationWillResignActive()
