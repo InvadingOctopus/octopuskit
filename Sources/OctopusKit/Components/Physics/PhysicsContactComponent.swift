@@ -6,6 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import OctopusCore
 import GameplayKit
 
 /// A base class for components which act upon a physics contact event if it involves the entity's `NodeComponent` node. A subclass can simply override `didBegin(_:, in:)` and `didEnd(_:, in:)` to implement behavior specific to the game and each entity.

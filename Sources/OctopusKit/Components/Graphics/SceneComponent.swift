@@ -8,6 +8,7 @@
 
 // CHECK: Should this component be just replaced with `NodeComponent`?
 
+import OctopusCore
 import GameplayKit
 
 public typealias SpriteKitSceneComponent = SceneComponent

@@ -8,6 +8,7 @@
 
 // CHECK: When a setting changes, update the animation without reseting it to the first frame?
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

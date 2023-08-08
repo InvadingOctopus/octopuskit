@@ -9,6 +9,7 @@
 // TODO: Tests
 // TODO: Error-handling
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

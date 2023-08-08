@@ -9,6 +9,7 @@
 // TODO: A way to associate each stored input with the node that received it.
 // CHECK: Use arrays of each event category?
 
+import OctopusCore
 import SpriteKit
 
 #if canImport(AppKit)

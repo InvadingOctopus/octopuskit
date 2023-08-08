@@ -8,6 +8,7 @@
 
 // TODO: Tests
 
+import OctopusCore
 import GameplayKit
 
 /// Tracks the number of seconds elapsed since adding to an entity and provides other timekeeping.

@@ -8,6 +8,7 @@
 
 // TODO: Tests
 
+import OctopusCore
 import GameplayKit
 
 /// Sets a `GKGoal` on the entity's `AgentComponent` component to head towards a specified position.

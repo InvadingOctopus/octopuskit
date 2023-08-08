@@ -6,6 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import OctopusCore
 import GameplayKit
 
 /// Stores events about contacts between physics bodies in a scene. The events may be observed by other components, and are cleared every frame.

@@ -8,6 +8,7 @@
 
 // DECIDE: Will constantly copying over events between this component and touch/mouse components be better than simply accessing the touch or mouse event at the point of use in player-controlled components?
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

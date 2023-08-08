@@ -10,6 +10,7 @@
 // CHECK: Add options for customizing the behavior?
 // PERFORMANCE: May need optimization.
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

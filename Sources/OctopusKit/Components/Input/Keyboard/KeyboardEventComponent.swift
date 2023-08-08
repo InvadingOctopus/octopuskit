@@ -10,6 +10,7 @@
 // CHECK: Use arrays of each event category?
 // TODO: Improve performance by using `NSEvent.keyCode` instead of `NSEvent.characters?`?
 
+import OctopusCore
 import SpriteKit
 
 #if canImport(AppKit)

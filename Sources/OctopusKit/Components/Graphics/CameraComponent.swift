@@ -6,6 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import OctopusCore
 import GameplayKit
 
 /// Manages the camera for the scene represented by the entity's `SceneComponent`, optionally tracking an specified node and limiting the camera position within the specified bounds.

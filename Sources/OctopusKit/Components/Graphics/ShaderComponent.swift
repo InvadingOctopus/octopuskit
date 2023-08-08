@@ -8,6 +8,7 @@
 
 // TODO: Full ShaderToy conversion.
 
+import OctopusCore
 import SpriteKit
 import GameplayKit
 

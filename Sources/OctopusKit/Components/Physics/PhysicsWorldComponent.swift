@@ -6,6 +6,7 @@
 //  Copyright © 2020 Invading Octopus. Licensed under Apache License v2.0 (see LICENSE.txt)
 //
 
+import OctopusCore
 import GameplayKit
 
 /// Retains a reference to the `physicsWorld` of an `SKScene` to be used by other components. Must be assigned to an entity with an `SceneComponent`. If the `physicsWorld` has no `contactDelegate` then it's set to the scene, if the scene conforms to `SKPhysicsContactDelegate` (as `OKScene` always does.)
