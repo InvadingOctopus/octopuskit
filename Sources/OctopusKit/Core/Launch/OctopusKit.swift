@@ -9,6 +9,7 @@
 import OctopusCore
 import SpriteKit
 import CoreData
+import OSLog
 
 #if os(iOS) // CHECK: Include tvOS?
 

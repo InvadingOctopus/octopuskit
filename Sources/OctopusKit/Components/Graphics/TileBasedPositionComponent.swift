@@ -9,6 +9,7 @@
 import OctopusCore
 import SpriteKit
 import GameplayKit
+import OSLog
 
 /// Updates the entity's `NodeComponent` node's position in every frame to align with the center of a tile in a `TileMapComponent`.
 public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFrame {
