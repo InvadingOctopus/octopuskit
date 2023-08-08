@@ -9,6 +9,7 @@
 import OctopusCore
 import SpriteKit
 import GameplayKit
+import OSLog
 
 /// Signals the entity of this component to spawn a new entity, in the direction of the entity's `NodeComponent` node, and applies the specified initial forces to the new entity's physics body if there is one.
 ///

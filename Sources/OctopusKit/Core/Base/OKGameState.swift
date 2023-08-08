@@ -9,6 +9,7 @@
 import OctopusCore
 import GameplayKit
 import SwiftUI
+import OSLog
 
 public typealias OctopusGameStateDelegate = OKGameStateDelegate
 public typealias OctopusGameState = OKGameState
