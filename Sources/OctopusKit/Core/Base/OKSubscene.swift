@@ -97,7 +97,7 @@ open class OKSubscene: SKNode,
     ///
     /// - Important: The overriding implementation must call `createContents(for: parentNode)` for `OKSubscene` to notify the delegate.
     open func createContents(for parent: SKNode) {
-        OctopusKit.logForFramework()
+        OKLog.logForFramework()
         delegate?.subsceneWillAppear(self, on: parent)
         didCreateContents = true
     }

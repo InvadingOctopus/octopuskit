@@ -267,7 +267,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
     
     /// Attempts to enter the state specified by `initialStateClass`.
     @discardableResult internal func enterInitialState() -> Bool {
-        OctopusKit.logForFramework()
+        OKLog.logForFramework()
         
         guard OctopusKit.initialized else {
             fatalError("OctopusKit not initialized")

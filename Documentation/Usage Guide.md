@@ -148,8 +148,8 @@ OKLog.printAsCSV
 > Check `OctopusKit+Logs.swift` in `Sources/Core/Launch` to see the list of default logs. Disable unwanted logs to reduce clutter and improve performance:
 
 ```swift
-OctopusKit.logForDebug.isDisabled = true
-OctopusKit.logForTips.isDisabled  = true
+OKLog.logForDebug.isDisabled = true
+OKLog.logForTips.isDisabled  = true
 ```
 
 💡 Set [Conditional Compilation Flags](tips#conditional-compilation-flags--debugging-aids) in [Tips & Troubleshooting][tips] to enable extra levels of verbose logging, such as player input events and physics collisions.
