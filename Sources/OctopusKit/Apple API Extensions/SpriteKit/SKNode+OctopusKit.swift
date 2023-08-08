@@ -10,6 +10,7 @@
 
 import OctopusCore
 import SpriteKit
+import OSLog
 
 public extension SKNode {
     

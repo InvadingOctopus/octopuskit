@@ -8,6 +8,7 @@
 
 import OctopusCore
 import GameplayKit
+import OSLog
 
 /// A component that points to another component in a different entity. Used for sharing a single component instance across different entities.
 ///

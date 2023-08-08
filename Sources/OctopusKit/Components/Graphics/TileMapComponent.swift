@@ -9,6 +9,7 @@
 import OctopusCore
 import SpriteKit
 import GameplayKit
+import OSLog
 
 /// A container for one or more `SKTileMapNode` layers and their associated tile set, tile groups, and map layouts.
 ///

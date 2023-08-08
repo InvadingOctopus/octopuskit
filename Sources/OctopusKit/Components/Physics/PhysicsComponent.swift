@@ -8,6 +8,7 @@
 
 import OctopusCore
 import GameplayKit
+import OSLog
 
 /// Encapsulates an `SKPhysicsBody` and maintains its properties to the specified values, if any.
 ///

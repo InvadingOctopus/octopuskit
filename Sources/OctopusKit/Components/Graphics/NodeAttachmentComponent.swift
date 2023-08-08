@@ -8,6 +8,7 @@
 
 import OctopusCore
 import GameplayKit
+import OSLog
 
 public typealias SpriteKitAttachmentComponent = NodeAttachmentComponent
 
