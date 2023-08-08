@@ -44,7 +44,7 @@ public extension OKScenePresenter {
         OKLog.logForFramework.debug("\(📜("\(sceneClass)"))")
         
         guard let spriteKitView = self.spriteKitView else {
-            OctopusKit.logForErrors("\(self) does not have a spriteKitView — Creating scenes programmatically requires screen dimensions. 💡 Use loadScene(fileNamed:) to load a .sks made in the Xcode editor.") // TODO: Add internationalization.
+            OKLog.logForErrors.debug("\(📜("\(self) does not have a spriteKitView — Creating scenes programmatically requires screen dimensions. 💡 Use loadScene(fileNamed:) to load a .sks made in the Xcode editor."))") // TODO: Add internationalization.
             return nil
         }
         

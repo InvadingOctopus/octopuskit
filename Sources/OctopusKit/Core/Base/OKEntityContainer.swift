@@ -479,7 +479,7 @@ extension OKEntityDelegate where Self: OKEntityContainer {
     
     @inlinable
     public func entityDidRequestRemoval(_ entity: GKEntity) {
-        // OctopusKit.logForComponents("\(entity)") // Already logging in `removeEntityOnNextUpdate(_:)`
+        // OKLog.logForComponents.debug("\(📜("\(entity)"))") // Already logging in `removeEntityOnNextUpdate(_:)`
         removeEntityOnNextUpdate(entity)
     }
 }

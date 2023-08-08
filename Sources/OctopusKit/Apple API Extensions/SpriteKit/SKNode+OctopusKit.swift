@@ -308,7 +308,7 @@ public extension SKNode {
         case .northWest,    .topLeft:       x = minX; y = maxY
         case .center:       break
         default:
-            OctopusKit.logForErrors("Invalid direction: \(direction)") // CHECK: Should this be an error?
+            OKLog.logForErrors.debug("\(📜("Invalid direction: \(direction)"))") // CHECK: Should this be an error?
             x = 0; y = 0
         }
         

@@ -89,7 +89,7 @@ public final class PanControlledDraggingComponent: OKComponent, RequiresUpdatesP
         
         if node is SKScene {
             OKLog.logForWarnings.debug("\(📜("A PanControlledDraggingComponent cannot be added to the scene entity — Removing."))")
-            OctopusKit.logForTips ("See CameraPanComponent.")
+            OKLog.logForTips.debug("\(📜("See CameraPanComponent."))")
             self.removeFromEntity()
         }
     }

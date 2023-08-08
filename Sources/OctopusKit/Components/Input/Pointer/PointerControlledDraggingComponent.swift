@@ -57,7 +57,7 @@ public final class PointerControlledDraggingComponent: OKComponent, RequiresUpda
         
         if  node is SKScene {
             OKLog.logForWarnings.debug("\(📜("A PointerControlledDraggingComponent cannot be added to the scene entity — Removing."))")
-            OctopusKit.logForTips ("See CameraPanComponent")
+            OKLog.logForTips.debug("\(📜("See CameraPanComponent"))")
             self.removeFromEntity()
         }
     }

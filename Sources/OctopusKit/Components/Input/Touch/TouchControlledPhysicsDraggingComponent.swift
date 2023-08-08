@@ -42,7 +42,7 @@ public final class TouchControlledPhysicsDraggingComponent: OKComponent, Require
         
         if  node is SKScene {
             OKLog.logForWarnings.debug("\(📜("A TouchControlledPhysicsDraggingComponent cannot be added to the scene entity — Removing."))")
-            OctopusKit.logForTips ("See CameraPanComponent.")
+            OKLog.logForTips.debug("\(📜("See CameraPanComponent."))")
             self.removeFromEntity()
         }
     }

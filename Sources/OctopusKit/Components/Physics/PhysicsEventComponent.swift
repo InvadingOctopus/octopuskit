@@ -66,7 +66,7 @@ public final class PhysicsEventComponent: OKComponent, RequiresUpdatesPerFrame {
         
         guard scene.physicsWorld.contactDelegate === scene else { // NOTE: The `===` operator.
             OKLog.logForWarnings.debug("\(📜("The scene's physicsWorld.contactDelegate is not set to the scene — \(self) may not automatically receive physics events!"))")
-            OctopusKit.logForTips ("Add a PhysicsWorldComponent to the OKScene.entity")
+            OKLog.logForTips.debug("\(📜("Add a PhysicsWorldComponent to the OKScene.entity"))")
             return
         }
     }

@@ -262,7 +262,7 @@ open class GKEntityWrapper: Entity, UpdatablePerFrame {
         if  let component = component {
             self.addComponent(component)
         } else {
-            OctopusKit.logForDebug("nil") // CHECK: Is logging this helpful?
+            OKLog.logForDebug.debug("\(📜("nil"))") // CHECK: Is logging this helpful?
         }
     }
     

@@ -294,7 +294,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
         return didEnterInitialState
     }
     
-    deinit { OctopusKit.logForDeinits("\(self)") }
+    deinit { OKLog.logForDeinits.debug("\(📜("\(self)"))") }
 
     // MARK: - Abstract Methods
     

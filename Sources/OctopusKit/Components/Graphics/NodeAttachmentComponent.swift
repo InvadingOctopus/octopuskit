@@ -111,7 +111,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // Make sure we have a parent to begin with.
         
         guard let currentParent = self.attachment?.parent else {
-            OctopusKit.logForWarnings("\(String(describing: self.attachment)) has no current parent") // CHECK: Should this be an error?
+            OKLog.logForWarnings.debug("\(📜("\(String(describing: self.attachment)) has no current parent"))") // CHECK: Should this be an error?
             return
         }
         
@@ -123,7 +123,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // Regenerate new contents for our current parent.
         
         guard let newAttachment = createAttachment(for: currentParent) else {
-            OctopusKit.logForWarnings("Could not create attachment for \(currentParent)") // CHECK: Should this be an error?
+            OKLog.logForWarnings.debug("\(📜("Could not create attachment for \(currentParent)"))") // CHECK: Should this be an error?
             return
         }
         

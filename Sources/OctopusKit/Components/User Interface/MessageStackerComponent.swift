@@ -97,7 +97,7 @@ public final class MessageStackerComponent: NodeAttachmentComponent<SKNode> {
     }
     
     deinit {
-        OctopusKit.logForDeinits("messages.count = \(messageLabels.count)") // TODO: Mention last message
+        OKLog.logForDeinits.debug("\(📜("messages.count = \(messageLabels.count)"))") // TODO: Mention last message
     }
     
     // MARK: - Messages

@@ -73,14 +73,14 @@ open class TileMapComponent: OKComponent {
                  rows:       Int,
                  layers:     Int = 1)
     {
-        guard columns > 0 else { OctopusKit.logForErrors("columns < 1: \(columns)"); return nil }
-        guard rows    > 0 else { OctopusKit.logForErrors("rows < 1: \(rows)");       return nil }
-        guard layers  > 0 else { OctopusKit.logForErrors("layers < 1: \(layers)");   return nil }
+        guard columns > 0 else { OKLog.logForErrors.debug("\(📜("columns < 1: \(columns)"))"); return nil }
+        guard rows    > 0 else { OKLog.logForErrors.debug("\(📜("rows < 1: \(rows)"))");       return nil }
+        guard layers  > 0 else { OKLog.logForErrors.debug("\(📜("layers < 1: \(layers)"))");   return nil }
         
         if  let tileSize = tileSize {
             guard  tileSize.width  > 0
                 && tileSize.height > 0
-                else { OctopusKit.logForErrors("Invalid tileSize: \(tileSize)");     return nil }
+                else { OKLog.logForErrors.debug("\(📜("Invalid tileSize: \(tileSize)"))");     return nil }
             
             self.tileSize = tileSize
         } else {

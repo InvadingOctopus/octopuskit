@@ -97,7 +97,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
         {
             /// NOTE: CHECK: PERFORMANCE: Is this a costly operation? Should `createBodyFromNodeFrame` be `true` or `false` by default?
             
-            OctopusKit.logForDebug("\(self) creating new physicsBody from the frame of \(String(describing: node))") // Not a warning because this would be the expected behavior of adding a `PhysicsComponent` with no arguments to a fresh entity/node.
+            OKLog.logForDebug.debug("\(📜("\(self) creating new physicsBody from the frame of \(String(describing: node))"))") // Not a warning because this would be the expected behavior of adding a `PhysicsComponent` with no arguments to a fresh entity/node.
             
             /// CHECK: Should this be `calculateAccumulatedFrame()`?
             
