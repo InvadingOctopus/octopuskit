@@ -57,7 +57,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
     
     @Published public var currentGameState: OKGameState? = nil {
         didSet {
-            OKLog.logForFramework.debug("\(oldValue) → \(currentGameState)")
+            OKLog.logForFramework.debug("\(📜("\(oldValue) → \(currentGameState)"))")
         }
     }
 
@@ -76,7 +76,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
     public weak var viewController: OKViewController? {
         didSet {
             // Can't use @LogChanges because "Property with a wrapper cannot also be weak"
-            OKLog.logForFramework.debug("\(oldValue) → \(viewController)")
+            OKLog.logForFramework.debug("\(📜("\(oldValue) → \(viewController)"))")
         }
     }
     
@@ -87,7 +87,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
 
     @Published public var currentScene: OKScene? {
            didSet {
-               OKLog.logForFramework.debug("\(oldValue) → \(currentScene)")
+               OKLog.logForFramework.debug("\(📜("\(oldValue) → \(currentScene)"))")
            }
        }
     
@@ -104,7 +104,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
     public init(states: [OKGameState],
                 initialStateClass: OKGameState.Type)
     {
-        OKLog.logForFramework.debug("states: \(states) — initial: \(initialStateClass)")
+        OKLog.logForFramework.debug("\(📜("states: \(states) — initial: \(initialStateClass)"))")
         
         assert(!states.isEmpty, "OKGameCoordinator must be initialized with at least one game state!")
         
@@ -128,7 +128,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
         
         self.initialStateClass = type(of: states.first!)
         
-        OKLog.logForFramework.debug("states: \(states) — initial: initialStateClass")
+        OKLog.logForFramework.debug("\(📜("states: \(states) — initial: initialStateClass"))")
         
         self.entity = OKEntity(name: OctopusKit.Constants.Strings.gameCoordinatorEntityName)
         super.init(states: states)
@@ -145,13 +145,13 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
             
             NotificationCenter.default.publisher(for: OSApplication.didFinishLaunchingNotification)
                 .sink { _ in
-                    OKLog.logForDebug.debug("Application.didFinishLaunchingNotification")
+                    OKLog.logForDebug.debug("\(📜("Application.didFinishLaunchingNotification"))")
                     // NOTE: Will not be received in a SwiftUI application, as this function will be called after the application has launched.
             },
             
             NotificationCenter.default.publisher(for: OSApplication.didBecomeActiveNotification)
                 .sink { _ in
-                    OKLog.logForDebug.debug("Application.didBecomeActiveNotification")
+                    OKLog.logForDebug.debug("\(📜("Application.didBecomeActiveNotification"))")
                     
                     // NOTE: If there is already an ongoing scene (maybe the application launch cycle was customized), call `scene.applicationDidBecomeActive()` before `enterInitialState()` so we don't issue a superfluous unpause event.
                                         
@@ -165,7 +165,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
             
             NotificationCenter.default.publisher(for: OSApplication.willResignActiveNotification)
                 .sink { _ in
-                    OKLog.logForDebug.debug("Application.willResignActiveNotification")
+                    OKLog.logForDebug.debug("\(📜("Application.willResignActiveNotification"))")
                     self.currentScene?.applicationWillResignActive()
             }
             
@@ -177,7 +177,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
             
             NotificationCenter.default.publisher(for: OSApplication.willFinishLaunchingNotification)
                 .sink { _ in
-                    OKLog.logForDebug.debug("Application.willFinishLaunchingNotification")
+                    OKLog.logForDebug.debug("\(📜("Application.willFinishLaunchingNotification"))")
                     // NOTE: Will not be received in a SwiftUI application, as this function will be called after the application has launched.
             }
         ]
@@ -190,13 +190,13 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
             
             NotificationCenter.default.publisher(for: OSApplication.willEnterForegroundNotification)
                 .sink { _ in
-                    OKLog.logForDebug.debug("Application.willEnterForegroundNotification")
+                    OKLog.logForDebug.debug("\(📜("Application.willEnterForegroundNotification"))")
                     self.currentScene?.applicationWillEnterForeground()
             },
             
             NotificationCenter.default.publisher(for: OSApplication.didEnterBackgroundNotification)
                 .sink { _ in
-                    OKLog.logForDebug.debug("Application.didEnterBackgroundNotification")
+                    OKLog.logForDebug.debug("\(📜("Application.didEnterBackgroundNotification"))")
                     self.currentScene?.applicationDidEnterBackground()
             }
         ]
@@ -225,7 +225,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
         if  self.canEnterState(stateClass) {
             self.objectWillChange.send()
         } else {
-            OKLog.logForWarnings.debug("Cannot enter \(stateClass) from currentState: \(currentState)")
+            OKLog.logForWarnings.debug("\(📜("Cannot enter \(stateClass) from currentState: \(currentState)"))")
             return false
         }
         
@@ -234,7 +234,7 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
         if  let stateClass = stateClass as? OKGameState.Type {
             self.currentGameState = self.state(forClass: stateClass)
         } else {
-            OKLog.logForErrors.debug("Cannot cast \(stateClass) as OKGameState")
+            OKLog.logForErrors.debug("\(📜("Cannot cast \(stateClass) as OKGameState"))")
         }
        
         // Call the parent implementation which will set the actual state.
@@ -246,19 +246,19 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
         if  didEnterRequestedState {
             
             if  self.currentState != self.currentGameState {
-                OKLog.logForErrors.debug("currentState: \(currentGameState) != currentGameState: \(currentGameState)")
+                OKLog.logForErrors.debug("\(📜("currentState: \(currentGameState) != currentGameState: \(currentGameState)"))")
             }
             
         } else {
             
-            OKLog.logForWarnings.debug("Could not enter \(stateClass) — currentState: \(currentState)")
+            OKLog.logForWarnings.debug("\(📜("Could not enter \(stateClass) — currentState: \(currentState)"))")
             
             // Reset the `currentGameState` to the actual state.
             
             if  let currentState = self.currentState as? OKGameState {
                 self.currentGameState = currentState
             } else {
-                OKLog.logForErrors.debug("Cannot cast \(stateClass) as OKGameState")
+                OKLog.logForErrors.debug("\(📜("Cannot cast \(stateClass) as OKGameState"))")
             }
         }
         
@@ -276,12 +276,12 @@ open class OKGameCoordinator: OKStateMachine, OKScenePresenter, ObservableObject
         // Even though GKStateMachine should handle the correct transitions between states, this coordinator should only initiate the initial state only once, just to be extra safe, and also as a flag for other classes to refer to if needed.
         
         guard !didEnterInitialState else {
-            OKLog.logForFramework.debug("didEnterInitialState already set. currentState: \(currentState)")
+            OKLog.logForFramework.debug("\(📜("didEnterInitialState already set. currentState: \(currentState)"))")
             return false
         }
         
         if  viewController == nil {
-            OKLog.logForDebug.debug("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OKGameCoordinator was initialized early in the application life cycle.")
+            OKLog.logForDebug.debug("\(📜("enterInitialState() called before viewController was set — May not be able to display the first scene. Ignore this warning if the OKGameCoordinator was initialized early in the application life cycle."))")
         }
         
         if  self.canEnterState(initialStateClass) {

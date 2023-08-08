@@ -129,11 +129,11 @@ open class TileMapComponent: OKComponent {
     @inlinable
     public func validateLayerIndex(_ index: Int) -> Bool {
         guard !layers.isEmpty else {
-            OKLog.logForErrors.debug("No tile map layers in \(self)")
+            OKLog.logForErrors.debug("\(📜("No tile map layers in \(self)"))")
             return false
         }
         guard index.isWithin(0 ..< layers.endIndex) else {
-            OKLog.logForErrors.debug("Layer index outside 0...\(layers.endIndex - 1): \(index)")
+            OKLog.logForErrors.debug("\(📜("Layer index outside 0...\(layers.endIndex - 1): \(index)"))")
             return false
         }
         return true
@@ -184,11 +184,11 @@ open class TileMapComponent: OKComponent {
                     layer.numberOfColumns <= noiseMap.sampleCount.x,
                     layer.numberOfRows    <= noiseMap.sampleCount.y
                 else {
-                    OKLog.logForWarnings.debug("Mismatching dimensions: Tile Map: (\(layer.numberOfColumns), \(layer.numberOfRows) — Noise Map: \(noiseMap.sampleCount)")
+                    OKLog.logForWarnings.debug("\(📜("Mismatching dimensions: Tile Map: (\(layer.numberOfColumns), \(layer.numberOfRows) — Noise Map: \(noiseMap.sampleCount)"))")
                     return
                 }
             } else {
-                OKLog.logForWarnings.debug("\(entity) has no NoiseMapComponent")
+                OKLog.logForWarnings.debug("\(📜("\(entity) has no NoiseMapComponent"))")
                 return
             }
         }

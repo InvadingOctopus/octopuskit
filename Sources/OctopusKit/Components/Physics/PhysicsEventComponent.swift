@@ -59,12 +59,12 @@ public final class PhysicsEventComponent: OKComponent, RequiresUpdatesPerFrame {
         super.didAddToEntity()
         
         guard let scene = self.entity?.node as? SKScene else {
-            OKLog.logForWarnings.debug("Entity \(self.entity) is not a scene — \(self) may not automatically receive physics events!")
+            OKLog.logForWarnings.debug("\(📜("Entity \(self.entity) is not a scene — \(self) may not automatically receive physics events!"))")
             return
         }
         
         guard scene.physicsWorld.contactDelegate === scene else { // NOTE: The `===` operator.
-            OKLog.logForWarnings.debug("The scene's physicsWorld.contactDelegate is not set to the scene — \(self) may not automatically receive physics events!")
+            OKLog.logForWarnings.debug("\(📜("The scene's physicsWorld.contactDelegate is not set to the scene — \(self) may not automatically receive physics events!"))")
             OctopusKit.logForTips ("Add a PhysicsWorldComponent to the OKScene.entity")
             return
         }

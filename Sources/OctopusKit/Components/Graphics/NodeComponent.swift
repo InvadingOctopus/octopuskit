@@ -43,7 +43,7 @@ public final class NodeComponent: GKSKNodeComponent {
         // Warn if the node is already a part of another entity.
         
         if  let existingNodeEntity = node.entity {
-            OKLog.logForWarnings.debug("\(node) is already associated with \(existingNodeEntity)")
+            OKLog.logForWarnings.debug("\(📜("\(node) is already associated with \(existingNodeEntity)"))")
         }
         
         super.init(node: node)
@@ -60,7 +60,7 @@ public final class NodeComponent: GKSKNodeComponent {
             
             if  let existingParent = node.parent {
                 
-                OKLog.logForWarnings.debug("\(node.name ?? String(describing: node)) already has a parent: \(existingParent) — Moving to \(newParent.name ?? String(optional: newParent))")
+                OKLog.logForWarnings.debug("\(📜("\(node.name ?? String(describing: node)) already has a parent: \(existingParent) — Moving to \(newParent.name ?? String(optional: newParent))"))")
                 
                 node.removeFromParent()
             }
@@ -106,7 +106,7 @@ public final class NodeComponent: GKSKNodeComponent {
     // MARK: Adding to Entity
     
     public final override func didAddToEntity() {
-        OKLog.logForComponents.debug("\(entity) ← \(self) \(super.node)")
+        OKLog.logForComponents.debug("\(📜("\(entity) ← \(self) \(super.node)"))")
         
         // Does our node already has a different entity? Check this before calling `super` which may set the node's `entity` property to ours.
         
@@ -114,7 +114,7 @@ public final class NodeComponent: GKSKNodeComponent {
             let nodeEntity = self.node.entity,
             nodeEntity !== entity
         {
-            OKLog.logForWarnings.debug("\(self.node)'s entity is \(nodeEntity), but \(self)'s entity is \(self.entity)")
+            OKLog.logForWarnings.debug("\(📜("\(self.node)'s entity is \(nodeEntity), but \(self)'s entity is \(self.entity)"))")
         }
         
         super.didAddToEntity()
@@ -167,7 +167,7 @@ public final class NodeComponent: GKSKNodeComponent {
     // MARK: Removal
     
     public final override func willRemoveFromEntity() {
-        OKLog.logForComponents.debug("\(entity) ~ \(self) \(super.node)")
+        OKLog.logForComponents.debug("\(📜("\(entity) ~ \(self) \(super.node)"))")
         
         // Warn if our node somehow ended up in a different entity by now. Check this before calling `super` which may set the node's `entity` property to `nil`.
         
@@ -175,7 +175,7 @@ public final class NodeComponent: GKSKNodeComponent {
             let nodeEntity = self.node.entity,
             nodeEntity !== entity
         {
-            OKLog.logForWarnings.debug("\(self.node)'s entity is \(nodeEntity), but \(self)'s entity is \(self.entity)")
+            OKLog.logForWarnings.debug("\(📜("\(self.node)'s entity is \(nodeEntity), but \(self)'s entity is \(self.entity)"))")
         }
         
         super.willRemoveFromEntity()
@@ -197,10 +197,10 @@ public final class NodeComponent: GKSKNodeComponent {
         // For `OKComponent` subclasses, use the `shouldRemoveFromEntityOnDeinit` flag.
         
         if  super.node.parent != nil {
-            OKLog.logForDeinits.debug("\(self) \(super.node) ~ Removing from \(super.node.parent!)")
+            OKLog.logForDeinits.debug("\(📜("\(self) \(super.node) ~ Removing from \(super.node.parent!)"))")
             super.node.removeFromParent()
         } else {
-            OKLog.logForDeinits.debug("\(self) \(super.node)")
+            OKLog.logForDeinits.debug("\(📜("\(self) \(super.node)"))")
         }
     }
     

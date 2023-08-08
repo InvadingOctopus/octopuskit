@@ -80,7 +80,7 @@ public final class MessageStackerComponent: NodeAttachmentComponent<SKNode> {
             parentSize.width > 1
                 && parentSize.height > 1
             else {
-                OKLog.logForErrors.debug("\(parent) width or height <= 1")
+                OKLog.logForErrors.debug("\(📜("\(parent) width or height <= 1"))")
                 return nil
         }
         
@@ -224,7 +224,7 @@ public final class MessageStackerComponent: NodeAttachmentComponent<SKNode> {
             delegate?.messageStacker(self, didFinishDisplayingLastMessage: lastMessage!) // TODO: Remove !
         }
         
-        // OKLog.logForDebug.debug("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messageLabelsBacklog.count))")
+        // OKLog.logForDebug.debug("\(📜("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messageLabelsBacklog.count))"))")
     }
 
 }

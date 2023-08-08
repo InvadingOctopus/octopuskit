@@ -34,7 +34,7 @@ public final class PositionSeekingGoalComponent: AgentGoalComponent {
                     
                     // ⚠️ NOTE: If this component is added with an initial `targetPosition == nil` then it is automatically paused. In that case, it must be manually unpaused before it can take effect!
                     if  isPaused && oldValue == nil {
-                        OKLog.logForDebug.debug("Possible mistake: targetPosition was set but goal isPaused.")
+                        OKLog.logForDebug.debug("\(📜("Possible mistake: targetPosition was set but goal isPaused."))")
                     }
                     
                     // CHECK: Should `unbrake()` depend on `isPaused` and/or `brakeOnNilTarget`, or always called?
@@ -100,7 +100,7 @@ public final class PositionSeekingGoalComponent: AgentGoalComponent {
         if targetPosition == nil {
             isPaused = true
             // Log a warning in case this component is added with a `nil` position and a developer forgets to unpause.
-            OKLog.logForDebug.debug("targetPosition is nil — This goal will be paused until manually unpaused.")
+            OKLog.logForDebug.debug("\(📜("targetPosition is nil — This goal will be paused until manually unpaused."))")
         }
     }
     

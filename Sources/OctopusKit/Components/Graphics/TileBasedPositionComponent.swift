@@ -72,7 +72,7 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
             else { return nil }
         
         guard tileMapComponent.layers.isValidIndex(self.tileMapLayer) else {
-            OKLog.logForWarnings.debug("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)")
+            OKLog.logForWarnings.debug("\(📜("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)"))")
             return nil
         }
         
@@ -150,7 +150,7 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
         else {
             // CHECK: PERFORMANCE: Is this check necessary? or would it be handled by the SKTileMapNode?
             // TODO: Warp-around option.
-            OKLog.logForWarnings.debug("\(self.coordinates) out of bounds for the \(tileMapNode.numberOfColumns) x \(tileMapNode.numberOfRows) tiles in \(tileMapNode)")
+            OKLog.logForWarnings.debug("\(📜("\(self.coordinates) out of bounds for the \(tileMapNode.numberOfColumns) x \(tileMapNode.numberOfRows) tiles in \(tileMapNode)"))")
             return nil
         }
         
@@ -204,12 +204,12 @@ public final class TileBasedPositionComponent: OKComponent, RequiresUpdatesPerFr
     @inlinable
     public func clampCoordinates() {
         guard let tileMapComponent = self.tileMapComponentOverride ?? coComponent(TileMapComponent.self) else {
-            OKLog.logForWarnings.debug("\(self) missing TileMapComponent — Cannot clamp, indexes may go out of bounds.")
+            OKLog.logForWarnings.debug("\(📜("\(self) missing TileMapComponent — Cannot clamp, indexes may go out of bounds."))")
             return
         }
         
         guard tileMapComponent.layers.isValidIndex(self.tileMapLayer) else {
-            OKLog.logForWarnings.debug("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)")
+            OKLog.logForWarnings.debug("\(📜("\(tileMapLayer) out of bounds for the \(tileMapComponent.layers.count) layers in \(tileMapComponent)"))")
             return
         }
         

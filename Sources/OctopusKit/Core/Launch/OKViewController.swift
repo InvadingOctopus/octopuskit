@@ -105,7 +105,7 @@ open class OKViewController: OSViewController {
         if  let octopusKitSingleton = OctopusKit.shared {
             self.gameCoordinator = octopusKitSingleton.gameCoordinator
         } else {
-            OKLog.logForWarnings.debug("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch. Ignore this warning if this OKViewController was loaded via AppKit/UIKit Storyboards.")
+            OKLog.logForWarnings.debug("\(📜("OctopusKit.shared? singleton not initialized. OctopusKit(gameCoordinator:) must be called at application launch. Ignore this warning if this OKViewController was loaded via AppKit/UIKit Storyboards."))")
         }
         
         super.init(coder: aDecoder)
@@ -115,9 +115,9 @@ open class OKViewController: OSViewController {
     open override func viewDidLoad() {
         
         #if canImport(UIKit)
-        OKLog.logForFramework.debug("view.frame = \(self.view?.frame)")
+        OKLog.logForFramework.debug("\(📜("view.frame = \(self.view?.frame)"))")
         #elseif canImport(AppKit)
-        OKLog.logForFramework.debug("view.frame = \(self.view.frame)")
+        OKLog.logForFramework.debug("\(📜("view.frame = \(self.view.frame)"))")
         #endif
         
         super.viewDidLoad()
@@ -131,7 +131,7 @@ open class OKViewController: OSViewController {
             
         } else {
             
-            OKLog.logForFramework.debug("Root view is nil or not an SpriteKit SKView — Creating child SKView")
+            OKLog.logForFramework.debug("\(📜("Root view is nil or not an SpriteKit SKView — Creating child SKView"))")
             
             #if canImport(UIKit)
             guard let rootView = self.view else { fatalError("OKViewController has no root view!") }

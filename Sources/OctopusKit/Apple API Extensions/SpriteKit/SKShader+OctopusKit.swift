@@ -28,12 +28,12 @@ public extension SKShader {
         // CHECK: PERFORMANCE: Should we use `SKShader.init(fileNamed:)` or `SKShader.init(source: String, uniforms: [SKUniform])`?
     
         guard let path = Bundle.main.path(forResource: name, ofType: "fsh") else {
-            OKLog.logForErrors.debug("\(name).fsh not found in bundle")
+            OKLog.logForErrors.debug("\(📜("\(name).fsh not found in bundle"))")
             fatalError()
         }
         
         guard let source = try? String(contentsOfFile: path, encoding: .utf8) else {
-            OKLog.logForErrors.debug("Cannot load \(name).fsh as String")
+            OKLog.logForErrors.debug("\(📜("Cannot load \(name).fsh as String"))")
             fatalError()
         }
         

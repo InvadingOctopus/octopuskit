@@ -33,7 +33,7 @@ open class PhysicsContactComponent: OKComponent, RequiresUpdatesPerFrame {
         if  let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody,
             physicsBody.contactTestBitMask == 0
         {
-            OKLog.logForWarnings.debug("\(physicsBody) of \(entity) has contactTestBitMask == 0 so contact events may not be generated!")
+            OKLog.logForWarnings.debug("\(📜("\(physicsBody) of \(entity) has contactTestBitMask == 0 so contact events may not be generated!"))")
         }
     }
     
