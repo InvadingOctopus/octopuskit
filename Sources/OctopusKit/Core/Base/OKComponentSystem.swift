@@ -36,7 +36,7 @@ public final class OKComponentSystem: GKComponentSystem <GKComponent> {
             return
         }
         
-        OKLog.logForComponents.debug("\(📜("\(component)", object: "\(self)"))")
+        OKLog.logForComponents.debug("\(📜("\(component) — Object: \(self)"))")
 
         super.addComponent(component)
     }

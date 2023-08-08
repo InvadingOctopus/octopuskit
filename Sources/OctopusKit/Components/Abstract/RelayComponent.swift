@@ -139,7 +139,7 @@ public final class RelayComponent <MasterComponentType> : OKComponent
     // MARK: Debugging
 
     public override func update(deltaTime seconds: TimeInterval) {
-        OKLog.logForWarnings.debug("\(📜("RelayComponent.update(deltaTime:) should not be called — Update the target component: \(self.target)", object: "\(self)"))")
+        OKLog.logForWarnings.debug("\(📜("RelayComponent.update(deltaTime:) should not be called — Update the target component: \(self.target) — Object: \(self)"))")
     }
 
     /*
