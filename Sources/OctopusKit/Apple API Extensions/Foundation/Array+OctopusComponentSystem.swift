@@ -12,6 +12,7 @@
 import Foundation
 import OctopusCore
 import GameplayKit
+import OSLog
 
 public extension Array where Element == OKComponentSystem {
     

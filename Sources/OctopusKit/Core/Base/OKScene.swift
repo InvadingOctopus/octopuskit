@@ -17,6 +17,7 @@
 import OctopusCore
 import SpriteKit
 import GameplayKit
+import OSLog
 
 public typealias OctopusScene = OKScene
 

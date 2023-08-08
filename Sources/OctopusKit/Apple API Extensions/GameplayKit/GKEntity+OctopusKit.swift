@@ -10,6 +10,7 @@
 
 import OctopusCore
 import GameplayKit
+import OSLog
 
 public extension GKEntity {
     
