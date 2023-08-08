@@ -20,7 +20,7 @@ open class macOSExclusiveComponent: OKComponent {
     
     public override init() {
         // TO DECIDE: Error or warning?
-        OKLog.logForErrors.debug("\(📜("\(type(of: self)) is for macOS only!"))")
+        OKLog.errors.debug("\(📜("\(type(of: self)) is for macOS only!"))")
         super.init()
     }
     

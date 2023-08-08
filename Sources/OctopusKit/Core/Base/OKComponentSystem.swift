@@ -21,8 +21,8 @@ public final class OKComponentSystem: GKComponentSystem <GKComponent> {
         if !(cls.self is RequiresUpdatesPerFrame.Type)
         && !(cls.self is TurnBased.Type)
         {
-            OKLog.logForWarnings.debug("\(📜("System created for component that is not marked as RequiresUpdatesPerFrame: \(cls)"))")
-            OKLog.logForTips.debug("\(📜("Either this system is unnecessary, or you forgot to add RequiresUpdatesPerFrame protocol conformance to \(cls)"))")
+            OKLog.warnings.debug("\(📜("System created for component that is not marked as RequiresUpdatesPerFrame: \(cls)"))")
+            OKLog.tips.debug("\(📜("Either this system is unnecessary, or you forgot to add RequiresUpdatesPerFrame protocol conformance to \(cls)"))")
         }
         
         super.init(componentClass: cls)
@@ -32,11 +32,11 @@ public final class OKComponentSystem: GKComponentSystem <GKComponent> {
     public final override func addComponent(_ component: GKComponent) {
         
         guard !(components.contains(component)) else {
-            OKLog.logForDebug.debug("\(📜("\(component) already in system – Skipping"))")
+            OKLog.debug.debug("\(📜("\(component) already in system – Skipping"))")
             return
         }
         
-        OKLog.logForComponents.debug("\(📜("\(component) — Object: \(self)"))")
+        OKLog.components.debug("\(📜("\(component) — Object: \(self)"))")
 
         super.addComponent(component)
     }

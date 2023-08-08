@@ -90,7 +90,7 @@ open class AgentGoalComponent: OKComponent {
     
     /// Abstract; to be implemented by subclass.
     open func createGoal() -> GKGoal? {
-        OKLog.logForWarnings.debug("\(📜("Not implemented by subclass"))")
+        OKLog.warnings.debug("\(📜("Not implemented by subclass"))")
         return nil
     }
     
@@ -100,7 +100,7 @@ open class AgentGoalComponent: OKComponent {
     open func applyGoalToAgent() {
         
         guard let agent = self.agent else {
-            OKLog.logForWarnings.debug("\(📜("\(entity) missing AgentComponent"))")
+            OKLog.warnings.debug("\(📜("\(entity) missing AgentComponent"))")
             return
         }
         
@@ -111,7 +111,7 @@ open class AgentGoalComponent: OKComponent {
         }
         
         guard let goal = self.goal else {
-            OKLog.logForWarnings.debug("\(📜("\(self) missing goal"))")
+            OKLog.warnings.debug("\(📜("\(self) missing goal"))")
             return
         }
         

@@ -42,7 +42,7 @@ open class TimeComponent: OKComponent, RequiresUpdatesPerFrame {
     public init(secondsElapsed: TimeInterval) {
         
         if  secondsElapsed < 0 {
-            OKLog.logForWarnings.debug("\(📜("secondsElapsed = \(secondsElapsed), negative"))")
+            OKLog.warnings.debug("\(📜("secondsElapsed = \(secondsElapsed), negative"))")
         }
         
         self.secondsElapsed = secondsElapsed
@@ -81,7 +81,7 @@ open class TimeComponent: OKComponent, RequiresUpdatesPerFrame {
     }
     
     deinit {
-        OKLog.logForDeinits.debug("\(📜("secondsElapsed = \(secondsElapsed)"))")
+        OKLog.deinits.debug("\(📜("secondsElapsed = \(secondsElapsed)"))")
     }
 }
 

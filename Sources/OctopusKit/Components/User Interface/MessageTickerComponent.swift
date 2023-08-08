@@ -109,7 +109,7 @@ public final class MessageTickerComponent: NodeAttachmentComponent<SKNode>, Requ
             parent.frame.width > 1
             && parent.frame.height > 1
             else {
-            OKLog.logForErrors.debug("\(📜("\(parent) accumulated width or height <= 1"))")
+            OKLog.errors.debug("\(📜("\(parent) accumulated width or height <= 1"))")
             return nil
         }
         
@@ -159,7 +159,7 @@ public final class MessageTickerComponent: NodeAttachmentComponent<SKNode>, Requ
     #endif
     
     deinit {
-        OKLog.logForDeinits.debug("\(📜("💀 \(self)"))") // TODO: Mention last message
+        OKLog.deinits.debug("\(📜("💀 \(self)"))") // TODO: Mention last message
     }
     
     // MARK: - Messages
@@ -273,7 +273,7 @@ public final class MessageTickerComponent: NodeAttachmentComponent<SKNode>, Requ
             delegate?.messageTicker(self, didFinishScrollingLastMessage: lastMessage!) // TODO: CHECK: forced unwrap
         }
         
-        // OKLog.logForDebug.debug("\(📜("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messagesBacklog.count))"))")
+        // OKLog.debug.debug("\(📜("Ticker message removed: \"\(label.text)\" (remaining:\(messageLabels.count), in backlog:\(messagesBacklog.count))"))")
     }
     
     private func finishScrollingState() {

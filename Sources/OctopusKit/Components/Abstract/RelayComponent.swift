@@ -129,9 +129,9 @@ public final class RelayComponent <MasterComponentType> : OKComponent
         if  let existingComponent = coComponent(MasterComponentType.self, ignoreRelayComponents: true)
         {
             if  existingComponent === target {
-                OKLog.logForWarnings.debug("\(📜("\(entity) already has \(existingComponent)"))")
+                OKLog.warnings.debug("\(📜("\(entity) already has \(existingComponent)"))")
             }   else {
-                OKLog.logForWarnings.debug("\(📜("\(entity) already has a \(type(of: existingComponent)) component: \(existingComponent)"))")
+                OKLog.warnings.debug("\(📜("\(entity) already has a \(type(of: existingComponent)) component: \(existingComponent)"))")
             }
         }
     }
@@ -139,7 +139,7 @@ public final class RelayComponent <MasterComponentType> : OKComponent
     // MARK: Debugging
 
     public override func update(deltaTime seconds: TimeInterval) {
-        OKLog.logForWarnings.debug("\(📜("RelayComponent.update(deltaTime:) should not be called — Update the target component: \(self.target) — Object: \(self)"))")
+        OKLog.warnings.debug("\(📜("RelayComponent.update(deltaTime:) should not be called — Update the target component: \(self.target) — Object: \(self)"))")
     }
 
     /*

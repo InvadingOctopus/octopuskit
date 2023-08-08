@@ -46,7 +46,7 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
         if  let gameCoordinator = self.stateMachine as? OKGameCoordinator {
             return gameCoordinator
         } else {
-            OKLog.logForErrors.debug("\(📜("Cannot cast stateMachine as OKGameCoordinator"))")
+            OKLog.errors.debug("\(📜("Cannot cast stateMachine as OKGameCoordinator"))")
             return nil
         }
     }
@@ -57,7 +57,7 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
     public fileprivate(set) weak var delegate: OKGameStateDelegate? {
         didSet {
             // Can't use @LogChanges because "Property with a wrapper cannot also be weak"
-            OKLog.logForFramework.debug("\(📜("\(oldValue) → \(delegate)"))")
+            OKLog.framework.debug("\(📜("\(oldValue) → \(delegate)"))")
         }
     }
     
@@ -97,21 +97,21 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
     /// - Important: When overriding in a subclass, take care of when you call `super.didEnter(from:)` as that affects when the current `OKScene` is notified via `gameCoordinatorDidEnterState(_:from:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
     open override func didEnter(from previousState: GKState?) {
         
-        OKLog.logForStates.debug("\(📜("\(previousState) → \(self)"))")
+        OKLog.states.debug("\(📜("\(previousState) → \(self)"))")
         super.didEnter(from: previousState)
         
         // ℹ️ DESIGN: Should the scene presentation be an optional step to be decided by the subclass? — No: A state should always display its associated scene, but the logic for deciding whether to enter an state can be performed elsewhere (except in `isValidNextState(_:)` as per the Apple documentation note.)
         // 💡 To programmatically modify the `associatedSceneClass` at runtime, you may override and replace `didEnter(from:)` or `willExit(to:)`
         
         guard let gameCoordinator = self.gameCoordinator else {
-            OKLog.logForErrors.debug("\(📜("\(self) has no gameCoordinator"))")
+            OKLog.errors.debug("\(📜("\(self) has no gameCoordinator"))")
             return
         }
     
         // If this state does not have any scene associated with it, as might be the case for "abstract" states, log so and exit.
         
         guard let associatedSceneClass = self.associatedSceneClass else {
-            OKLog.logForDebug.debug("\(📜("\(self) has no associatedSceneClass — A new scene will not be displayed for this state."))")
+            OKLog.debug.debug("\(📜("\(self) has no associatedSceneClass — A new scene will not be displayed for this state."))")
             
             // Set the current scene as the delegate of this new state, so that the scene can properly receive gameCoordinatorWillExitState(_:to:) etc.
             self.delegate = gameCoordinator.currentScene
@@ -134,7 +134,7 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
         // Make sure we have a scene by now before notifying it of the new state.
         
         guard let currentScene = gameCoordinator.currentScene else {
-            OKLog.logForErrors.debug("\(📜("gameCoordinator does not have a currentScene"))")
+            OKLog.errors.debug("\(📜("gameCoordinator does not have a currentScene"))")
             return
         }
         
@@ -145,7 +145,7 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
         if  type(of: currentScene) != associatedSceneClass,
             (incomingScene != nil && type(of: incomingScene!) != associatedSceneClass)
         {
-            OKLog.logForErrors.debug("\(📜("Neither \(currentScene) nor \(String(describing: incomingScene)) is \(String(describing: associatedSceneClass))"))")
+            OKLog.errors.debug("\(📜("Neither \(currentScene) nor \(String(describing: incomingScene)) is \(String(describing: associatedSceneClass))"))")
             // CHECK: Should this be a fatal error?
         }
         
@@ -164,20 +164,20 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
     
     /// - Important: When overriding in a subclass, take care of when you call `super.willExit(to:)` as that affects when the current `OKScene` is notified via `currentScene.gameCoordinatorWillExitState(_,to:)`. If you need to perform some tasks before the code in the scene is called, do so before calling `super`.
     open override func willExit(to nextState: GKState) {
-        OKLog.logForStates.debug("\(📜("\(self) → \(nextState)"))")
+        OKLog.states.debug("\(📜("\(self) → \(nextState)"))")
         super.willExit(to: nextState)
         
         // Notify our delegate, to let it perform any outgoing animations etc., or in case the game uses a single scene for multiple states (e.g. displaying an overlay for the paused state, menus, etc. on the gameplay view.)
         
         if  gameCoordinator?.currentScene !== self.delegate {
-            OKLog.logForWarnings.debug("\(📜("gameCoordinator?.currentScene: \(gameCoordinator?.currentScene) !== self.delegate: \(self.delegate)"))")
+            OKLog.warnings.debug("\(📜("gameCoordinator?.currentScene: \(gameCoordinator?.currentScene) !== self.delegate: \(self.delegate)"))")
         }
         
         self.delegate?.gameCoordinatorWillExitState(self, to: nextState)
     }
     
     deinit {
-        OKLog.logForDeinits.debug("\(📜("\(self)"))")
+        OKLog.deinits.debug("\(📜("\(self)"))")
     }
     
     // MARK: - OKSceneDelegate
@@ -227,7 +227,7 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
                              didRequestTransitionTo nextSceneFileName: String,
                              withTransition transition: SKTransition?)
     {
-        OKLog.logForFramework.debug("\(📜("nextSceneFileName: \(nextSceneFileName)"))")
+        OKLog.framework.debug("\(📜("nextSceneFileName: \(nextSceneFileName)"))")
         self.gameCoordinator?.loadAndPresentScene(fileNamed: nextSceneFileName, withTransition: transition)
         // outgoingScene.isPaused = false // CHECK: Necessary?
     }
@@ -241,7 +241,7 @@ open class OKGameState: OKState, OKSceneDelegate, ObservableObject {
                              didRequestTransitionTo nextSceneClass: OKScene.Type,
                              withTransition transition: SKTransition?)
     {
-        OKLog.logForFramework.debug("\(📜("nextSceneClass: \(nextSceneClass)"))")
+        OKLog.framework.debug("\(📜("nextSceneClass: \(nextSceneClass)"))")
         self.gameCoordinator?.createAndPresentScene(ofClass: nextSceneClass, withTransition: transition)
         // outgoingScene.isPaused = false // CHECK: Necessary?
     }

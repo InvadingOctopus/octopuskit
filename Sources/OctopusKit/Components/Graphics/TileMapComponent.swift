@@ -73,14 +73,14 @@ open class TileMapComponent: OKComponent {
                  rows:       Int,
                  layers:     Int = 1)
     {
-        guard columns > 0 else { OKLog.logForErrors.debug("\(📜("columns < 1: \(columns)"))"); return nil }
-        guard rows    > 0 else { OKLog.logForErrors.debug("\(📜("rows < 1: \(rows)"))");       return nil }
-        guard layers  > 0 else { OKLog.logForErrors.debug("\(📜("layers < 1: \(layers)"))");   return nil }
+        guard columns > 0 else { OKLog.errors.debug("\(📜("columns < 1: \(columns)"))"); return nil }
+        guard rows    > 0 else { OKLog.errors.debug("\(📜("rows < 1: \(rows)"))");       return nil }
+        guard layers  > 0 else { OKLog.errors.debug("\(📜("layers < 1: \(layers)"))");   return nil }
         
         if  let tileSize = tileSize {
             guard  tileSize.width  > 0
                 && tileSize.height > 0
-                else { OKLog.logForErrors.debug("\(📜("Invalid tileSize: \(tileSize)"))");     return nil }
+                else { OKLog.errors.debug("\(📜("Invalid tileSize: \(tileSize)"))");     return nil }
             
             self.tileSize = tileSize
         } else {
@@ -130,11 +130,11 @@ open class TileMapComponent: OKComponent {
     @inlinable
     public func validateLayerIndex(_ index: Int) -> Bool {
         guard !layers.isEmpty else {
-            OKLog.logForErrors.debug("\(📜("No tile map layers in \(self)"))")
+            OKLog.errors.debug("\(📜("No tile map layers in \(self)"))")
             return false
         }
         guard index.isWithin(0 ..< layers.endIndex) else {
-            OKLog.logForErrors.debug("\(📜("Layer index outside 0...\(layers.endIndex - 1): \(index)"))")
+            OKLog.errors.debug("\(📜("Layer index outside 0...\(layers.endIndex - 1): \(index)"))")
             return false
         }
         return true
@@ -185,11 +185,11 @@ open class TileMapComponent: OKComponent {
                     layer.numberOfColumns <= noiseMap.sampleCount.x,
                     layer.numberOfRows    <= noiseMap.sampleCount.y
                 else {
-                    OKLog.logForWarnings.debug("\(📜("Mismatching dimensions: Tile Map: (\(layer.numberOfColumns), \(layer.numberOfRows) — Noise Map: \(noiseMap.sampleCount)"))")
+                    OKLog.warnings.debug("\(📜("Mismatching dimensions: Tile Map: (\(layer.numberOfColumns), \(layer.numberOfRows) — Noise Map: \(noiseMap.sampleCount)"))")
                     return
                 }
             } else {
-                OKLog.logForWarnings.debug("\(📜("\(entity) has no NoiseMapComponent"))")
+                OKLog.warnings.debug("\(📜("\(entity) has no NoiseMapComponent"))")
                 return
             }
         }

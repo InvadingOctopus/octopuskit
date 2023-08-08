@@ -39,8 +39,8 @@ public final class PointerControlledPhysicsDraggingComponent: OKComponent, Requi
         // A scene itself is not really draggable, so...
         
         if  node is SKScene {
-            OKLog.logForWarnings.debug("\(📜("A PointerControlledPhysicsDraggingComponent cannot be added to the scene entity — Removing."))")
-            OKLog.logForTips.debug("\(📜("See CameraPanComponent."))")
+            OKLog.warnings.debug("\(📜("A PointerControlledPhysicsDraggingComponent cannot be added to the scene entity — Removing."))")
+            OKLog.tips.debug("\(📜("See CameraPanComponent."))")
             self.removeFromEntity()
         }
     }

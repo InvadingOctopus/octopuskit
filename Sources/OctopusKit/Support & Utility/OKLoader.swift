@@ -26,7 +26,7 @@ public final class OKLoader {
 //            if let loader = OctopusKit.startupLoader {
 //                loader()
 //            } else {
-//                OKLog.logForWarnings.debug("\(📜("No startupLoader specified in OctopusEnvironmnet"))")
+//                OKLog.warnings.debug("\(📜("No startupLoader specified in OctopusEnvironmnet"))")
 //            }
 //            
 //            dispatch_async(queue, completionHandler)

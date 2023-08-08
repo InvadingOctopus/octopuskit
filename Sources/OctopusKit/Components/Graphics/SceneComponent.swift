@@ -31,7 +31,7 @@ public final class SceneComponent: OKComponent {
         
         guard node is SKScene || node is OKScene // CHECK: Is checking for subclass redundant?
             else {
-                OKLog.logForErrors.debug("\(📜("\(node) is not a scene — Detaching from entity"))")
+                OKLog.errors.debug("\(📜("\(node) is not a scene — Detaching from entity"))")
                 self.removeFromEntity()
                 return
         }

@@ -48,7 +48,7 @@ open class OKEntityState: OKState {
     /// - IMPORTANT: The subclass **must** call `super.didEnter(from: previousState)` to add `componentsToAddOnEntry`.
     open override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
-        OKLog.logForStates.debug("\(📜("\"\(entity.name)\" \(previousState) → \(self)"))")
+        OKLog.states.debug("\(📜("\"\(entity.name)\" \(previousState) → \(self)"))")
         
         if  let componentsToAddOnEntry = self.componentsToAddOnEntry {
             // CHECK: Count before and after?
@@ -59,7 +59,7 @@ open class OKEntityState: OKState {
     /// - IMPORTANT: The subclass **must** call `super.willExit(to: nextState)` to remove `componentTypesToRemoveOnExit`.
     open override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
-        OKLog.logForStates.debug("\(📜("\"\(entity.name)\" \(self) → \(nextState)"))")
+        OKLog.states.debug("\(📜("\"\(entity.name)\" \(self) → \(nextState)"))")
         
         if  let componentTypesToRemoveOnExit = self.componentTypesToRemoveOnExit {
             // CHECK: Count before and after?

@@ -41,7 +41,7 @@ public final class TextureDictionaryComponent: OKComponent {
         atlasName: String,
         shouldApplyFirstTextureWhenAddedToEntity: Bool = true)
     {
-        OKLog.logForResources.debug("\(📜("atlasName = \"\(atlasName)\""))")
+        OKLog.resources.debug("\(📜("atlasName = \"\(atlasName)\""))")
      
         self.atlasName = atlasName
         
@@ -56,7 +56,7 @@ public final class TextureDictionaryComponent: OKComponent {
         // And has at least 1 texture.
         
         if atlas.textureNames.count < 1  {
-            OKLog.logForErrors.debug("\(📜("Atlas \"\(atlasName)\" has no textures"))")
+            OKLog.errors.debug("\(📜("Atlas \"\(atlasName)\" has no textures"))")
         }
         
         self.shouldApplyFirstTextureWhenAddedToEntity = shouldApplyFirstTextureWhenAddedToEntity
@@ -72,7 +72,7 @@ public final class TextureDictionaryComponent: OKComponent {
     
     public override func didAddToEntity(withNode node: SKNode) {
         guard let sprite = node as? SKSpriteNode else {
-            OKLog.logForWarnings.debug("\(📜("\(entity) does not have a SKSpriteNode as its NodeComponent's node"))")
+            OKLog.warnings.debug("\(📜("\(entity) does not have a SKSpriteNode as its NodeComponent's node"))")
             return
         }
         
@@ -82,7 +82,7 @@ public final class TextureDictionaryComponent: OKComponent {
     }
     
     deinit {
-        OKLog.logForDeinits.debug("\(📜("atlasName = \"\(atlasName)\""))")
+        OKLog.deinits.debug("\(📜("atlasName = \"\(atlasName)\""))")
     }
     
     // MARK - Dictionary Management
@@ -121,7 +121,7 @@ public final class TextureDictionaryComponent: OKComponent {
         // If we didn't find any textures with the specified prefix, just return the default one.
         
         if frameList.count < 1 {
-            OKLog.logForErrors.debug("\(📜("\(atlas) has no textures beginning with \"\(prefix)\" — Returning the first texture from the atlas"))")
+            OKLog.errors.debug("\(📜("\(atlas) has no textures beginning with \"\(prefix)\" — Returning the first texture from the atlas"))")
             frameList.append(atlas.textureNamed(atlas.textureNames.first ?? ""))
         }
         
@@ -159,7 +159,7 @@ public final class TextureDictionaryComponent: OKComponent {
         }
         
         if framesByPrefix[prefix] != nil {
-            OKLog.logForWarnings.debug("\(📜("\(self) already has frames with prefix \(prefix) — Replacing"))")
+            OKLog.warnings.debug("\(📜("\(self) already has frames with prefix \(prefix) — Replacing"))")
         }
         
         framesByPrefix[prefix] = getFrames(withPrefix: prefix)

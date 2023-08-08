@@ -70,7 +70,7 @@ public final class ValueDisplayComponent: NodeAttachmentComponent<SKLabelNode>, 
         let parentSize = (parent as? SKNodeWithSize)?.size ?? parent.frame.size
         
         if parentSize.width < 1 || parentSize.height < 1 {
-            OKLog.logForWarnings.debug("\(📜("\(parent) is too small: \(parent.frame)"))")
+            OKLog.warnings.debug("\(📜("\(parent) is too small: \(parent.frame)"))")
         }
         
         // Position the text at the top-left corner, filling the width of the parent, and set it to display multiple wrapped lines.

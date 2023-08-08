@@ -70,7 +70,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
     
     /// `super` must be called by overriding subclass for proper functionality. Adds `attachment` as a child of the `node` specified by the `NodeComponent`.
     open override func didAddToEntity(withNode node: SKNode) {
-        OKLog.logForComponents.debug("\(📜("\(node) ← \(attachment)"))")
+        OKLog.components.debug("\(📜("\(node) ← \(attachment)"))")
         
         // Warn if the overridden parent is not a child of this component's entity's node.
         
@@ -80,7 +80,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
             !parentOverride.inParentHierarchy(node) /// BUG FIXED: Use `child.inParentHierarchy(parent)` instead of `parent.children.contains(child)` because the latter will check only one layer deep.
             && parentOverride != node /// Skip warning if the `parentOverride` IS the node. This will be the case in situations like `parentOverride = scene.camera ?? scene` where a child node is added to a scene's camera if there is one, otherwise to the scene itself.
         {
-            OKLog.logForWarnings.debug("\(📜("The specified parentOverride \(parentOverride) is not a child of \(entity)'s node: \(node)"))")
+            OKLog.warnings.debug("\(📜("The specified parentOverride \(parentOverride) is not a child of \(entity)'s node: \(node)"))")
         }
         
         // Allow the subclass to conveniently create an attachment by simply overriding `createAttachment(for:)`.
@@ -111,7 +111,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // Make sure we have a parent to begin with.
         
         guard let currentParent = self.attachment?.parent else {
-            OKLog.logForWarnings.debug("\(📜("\(String(describing: self.attachment)) has no current parent"))") // CHECK: Should this be an error?
+            OKLog.warnings.debug("\(📜("\(String(describing: self.attachment)) has no current parent"))") // CHECK: Should this be an error?
             return
         }
         
@@ -123,7 +123,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         // Regenerate new contents for our current parent.
         
         guard let newAttachment = createAttachment(for: currentParent) else {
-            OKLog.logForWarnings.debug("\(📜("Could not create attachment for \(currentParent)"))") // CHECK: Should this be an error?
+            OKLog.warnings.debug("\(📜("Could not create attachment for \(currentParent)"))") // CHECK: Should this be an error?
             return
         }
         
@@ -136,7 +136,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
     open func addAttachment(to targetParent: SKNode) {
         
         guard let attachment = self.attachment else {
-            OKLog.logForWarnings.debug("\(📜("\(self) missing attachment"))")
+            OKLog.warnings.debug("\(📜("\(self) missing attachment"))")
             return
         }
         
@@ -144,7 +144,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         
         guard attachment.parent != targetParent else {
             /// CHECK: Apply `positionOffset` even if `attachment` is already in `targetParent`?
-            OKLog.logForDebug.debug("\(📜("\(attachment) already a child of \(targetParent)"))")
+            OKLog.debug.debug("\(📜("\(attachment) already a child of \(targetParent)"))")
             return
         }
         
@@ -153,7 +153,7 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
         if  let existingParent = attachment.parent,
             existingParent !== targetParent
         {
-            OKLog.logForWarnings.debug("\(📜("\(attachment) already has a different parent: \(existingParent) — Moving to \(String(describing: entity))'s NodeComponent node: \(targetParent)"))")
+            OKLog.warnings.debug("\(📜("\(attachment) already has a different parent: \(existingParent) — Moving to \(String(describing: entity))'s NodeComponent node: \(targetParent)"))")
             
             attachment.removeFromParent() // ℹ️ DESIGN: Snatch the attachment from its existing parent, as that would be the expected behavior of adding this component.
         }
@@ -181,13 +181,13 @@ open class NodeAttachmentComponent <AttachmentType> : OKComponent
             attachment.parent != nil
             else { return }
         
-        OKLog.logForComponents.debug("\(📜("\(node) ~ \(attachment)"))")
+        OKLog.components.debug("\(📜("\(node) ~ \(attachment)"))")
         
         // If a separate parent was not specified, assume the entity's `NodeComponent` node to be the rightful parent.
         let parent = self.parentOverride ?? node
         
         if  attachment.parent !== parent {
-            OKLog.logForWarnings.debug("\(📜("\(attachment) was not a child of \(parent) — Removing from \(attachment.parent)"))")
+            OKLog.warnings.debug("\(📜("\(attachment) was not a child of \(parent) — Removing from \(attachment.parent)"))")
         }
         
         // Since the removal of a component carries the expectation that the component's behavior will no longer be present, remove the attachment from any parent, even if the parent wasn't the expected node.

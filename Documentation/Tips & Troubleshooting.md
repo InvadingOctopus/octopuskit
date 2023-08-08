@@ -106,7 +106,7 @@ If an entity needs multiple components of the same type but with different param
 
 ⚠️ Setting any of the logging flags may reduce engine performance.
 
-- Set `OKLog.logForWarnings.breakpointOnNewEntry = true` to trigger a breakpoint whenever a new entry is added to the `logForWarnings`, allowing you to review the application state and call stack to catch causes of unexpected behavior.
+- Set `OKLog.warnings.breakpointOnNewEntry = true` to trigger a breakpoint whenever a new entry is added to the `logForWarnings`, allowing you to review the application state and call stack to catch causes of unexpected behavior.
 
     > `breakpointOnNewEntry` requires the `DEBUG` conditional compilation flag (automatically set by Xcode for debug builds).
 

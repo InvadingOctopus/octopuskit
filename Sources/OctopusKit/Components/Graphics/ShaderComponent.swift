@@ -75,7 +75,7 @@ open class ShaderComponent: OKComponent {
         super.didAddToEntity(withNode: node)
         
         guard let shaderCapableNode = node as? SKNodeWithShader else {
-            OKLog.logForWarnings.debug("\(📜("\(node) does not have a `shader` property — This component should only be added to entities with a SKSpriteNode, SKEffectNode or SKScene."))")
+            OKLog.warnings.debug("\(📜("\(node) does not have a `shader` property — This component should only be added to entities with a SKSpriteNode, SKEffectNode or SKScene."))")
             return
         }
         
@@ -104,7 +104,7 @@ open class ShaderComponent: OKComponent {
             
             // Then adopt the node's shader as this component's shader.
             
-            OKLog.logForDebug.debug("\(📜("\(self) missing shader — Adopting from \(node.name ?? String(describing: node))"))")
+            OKLog.debug.debug("\(📜("\(self) missing shader — Adopting from \(node.name ?? String(describing: node))"))")
             
             self.shader = node.shader
         }
@@ -121,7 +121,7 @@ open class ShaderComponent: OKComponent {
             
         else if self.shader != nil && node.shader != nil && self.shader !== node.shader {
             
-            OKLog.logForWarnings.debug("\(📜("Mismatching shaders: \(self) has \(self.shader), \(node.name ?? String(describing: node)) has \(node.shader) — Replacing node's shader"))")
+            OKLog.warnings.debug("\(📜("Mismatching shaders: \(self) has \(self.shader), \(node.name ?? String(describing: node)) has \(node.shader) — Replacing node's shader"))")
             
             node.shader = self.shader
         }
@@ -134,7 +134,7 @@ open class ShaderComponent: OKComponent {
         if  let nodeShader = node.shader,
             nodeShader !== self.shader
         {
-            OKLog.logForWarnings.debug("\(📜("\(node.name ?? String(describing: node)) had a different shader than this component – Removing"))")
+            OKLog.warnings.debug("\(📜("\(node.name ?? String(describing: node)) had a different shader than this component – Removing"))")
         }
         
         // Remove the shader even if the node had a different one, to keep the expected behavior of removing shader effects from the node when a ShaderComponent is removed.

@@ -148,12 +148,12 @@ public final class TextureAnimationComponent: OKComponent {
     public func loadFramesFromTextureDictionary(matchingPrefix prefix: String) -> [SKTexture]?  {
     
         guard let entity = self.entity else {
-            OKLog.logForWarnings.debug("\(📜("\(self) is not part of any entity."))")
+            OKLog.warnings.debug("\(📜("\(self) is not part of any entity."))")
             return nil
         }
         
         guard let textureDictionaryComponent = coComponent(TextureDictionaryComponent.self) else {
-            OKLog.logForWarnings.debug("\(📜("\(entity) missing TextureDictionaryComponent."))")
+            OKLog.warnings.debug("\(📜("\(entity) missing TextureDictionaryComponent."))")
             return nil
         }
         
@@ -162,7 +162,7 @@ public final class TextureAnimationComponent: OKComponent {
         // Warn if less than 1 frame in the dictionary but let the animation methods decide what to do about that.
         
         if frames.count < 1 {
-            OKLog.logForWarnings.debug("\(📜("\(textureDictionaryComponent) does not have any frames beginning with \"\(prefix)\""))")
+            OKLog.warnings.debug("\(📜("\(textureDictionaryComponent) does not have any frames beginning with \"\(prefix)\""))")
         }
         
         return frames
@@ -224,22 +224,22 @@ public final class TextureAnimationComponent: OKComponent {
     {
         
         guard let entity = self.entity else {
-            OKLog.logForWarnings.debug("\(📜("\(self) is not part of any entity."))")
+            OKLog.warnings.debug("\(📜("\(self) is not part of any entity."))")
             return false
         }
         
         guard let nodeComponent = coComponent(NodeComponent.self) else {
-            OKLog.logForWarnings.debug("\(📜("\(entity) is missing a NodeComponent."))")
+            OKLog.warnings.debug("\(📜("\(entity) is missing a NodeComponent."))")
             return false
         }
         
         guard let sprite = nodeComponent.node as? SKSpriteNode else {
-            OKLog.logForWarnings.debug("\(📜("\(entity) does not have a SKSpriteNode associated with its NodeComponent."))")
+            OKLog.warnings.debug("\(📜("\(entity) does not have a SKSpriteNode associated with its NodeComponent."))")
             return false
         }
         
         if textures.count < 1 {
-            OKLog.logForWarnings.debug("\(📜("textures.count < 1"))")
+            OKLog.warnings.debug("\(📜("textures.count < 1"))")
         }
         
         // Remove any previous animation.

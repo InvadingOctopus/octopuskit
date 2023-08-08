@@ -308,7 +308,7 @@ public extension SKNode {
         case .northWest,    .topLeft:       x = minX; y = maxY
         case .center:       break
         default:
-            OKLog.logForErrors.debug("\(📜("Invalid direction: \(direction)"))") // CHECK: Should this be an error?
+            OKLog.errors.debug("\(📜("Invalid direction: \(direction)"))") // CHECK: Should this be an error?
             x = 0; y = 0
         }
         
@@ -333,7 +333,7 @@ public extension SKNode {
         // TODO: Account for camera scaling
         
         guard let view = view ?? self.scene?.view else {
-            OKLog.logForWarnings.debug("\(📜("\(self) missing `scene.view` and no `view` argument provided."))")
+            OKLog.warnings.debug("\(📜("\(self) missing `scene.view` and no `view` argument provided."))")
             return 0
         }
         
@@ -356,13 +356,13 @@ public extension SKNode {
                 self.position.x -= view.safeAreaInsets.right * xSizeToViewRatio
                 return view.safeAreaInsets.right
             default:
-                OKLog.logForErrors.debug("\(📜("Invalid OKDirection: \(edge)"))")
+                OKLog.errors.debug("\(📜("Invalid OKDirection: \(edge)"))")
                 return 0
             }
             
         #else
         
-            OKLog.logForDebug.debug("\(📜("Only applicable on iOS."))")
+            OKLog.debug.debug("\(📜("Only applicable on iOS."))")
             return 0
             
         #endif

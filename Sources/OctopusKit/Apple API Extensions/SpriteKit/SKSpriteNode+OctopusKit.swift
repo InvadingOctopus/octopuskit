@@ -51,7 +51,7 @@ extension SKSpriteNode {
             self.size.width > 0
          && self.size.height > 0
             else {
-                OKLog.logForWarnings.debug("\(📜("\(self.name ?? String(describing: self)) has a width or height of 0"))")
+                OKLog.warnings.debug("\(📜("\(self.name ?? String(describing: self)) has a width or height of 0"))")
                 return nil
         }
         
@@ -68,7 +68,7 @@ extension SKSpriteNode {
         }
         
         if  let currentPhysicsBody = self.physicsBody {
-            OKLog.logForWarnings.debug("\(📜("\(self) already has \(currentPhysicsBody)"))")
+            OKLog.warnings.debug("\(📜("\(self) already has \(currentPhysicsBody)"))")
         }
         
         self.physicsBody = newPhysicsBody
@@ -84,7 +84,7 @@ extension SKSpriteNode {
         // ⚠️ This functionality cannot be added as an `SKPhysicsBody` extension, because of the usage of an inaccessible `PKPhysicsBody` superclass, as of 2017-10.
         
         guard let texture = self.texture else {
-            OKLog.logForErrors.debug("\(📜("\(self.name ?? String(describing: self)) does not have a texture"))")
+            OKLog.errors.debug("\(📜("\(self.name ?? String(describing: self)) does not have a texture"))")
             return nil
         }
         
@@ -108,7 +108,7 @@ extension SKSpriteNode {
         }
         
         if let currentPhysicsBody = self.physicsBody {
-            OKLog.logForWarnings.debug("\(📜("\(self) already has \(currentPhysicsBody)"))")
+            OKLog.warnings.debug("\(📜("\(self) already has \(currentPhysicsBody)"))")
         }
         
         self.physicsBody = newPhysicsBody

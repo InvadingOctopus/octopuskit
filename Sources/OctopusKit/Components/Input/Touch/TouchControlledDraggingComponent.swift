@@ -58,8 +58,8 @@ public final class TouchControlledDraggingComponent: OKComponent, RequiresUpdate
         // A scene itself is not really draggable, so...
         
         if  node is SKScene {
-            OKLog.logForWarnings.debug("\(📜("A TouchControlledDraggingComponent cannot be added to the scene entity — Removing."))")
-            OKLog.logForTips.debug("\(📜("See CameraPanComponent."))")
+            OKLog.warnings.debug("\(📜("A TouchControlledDraggingComponent cannot be added to the scene entity — Removing."))")
+            OKLog.tips.debug("\(📜("See CameraPanComponent."))")
             self.removeFromEntity()
         }
     }

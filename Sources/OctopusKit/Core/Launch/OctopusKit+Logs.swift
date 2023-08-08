@@ -16,12 +16,12 @@ public extension OKLog {
     // MARK: Global Game-related Logs
         
     /// A log for transitions within game states and entity states.
-    static let logForStates     = Logger(subsystem: OctopusCore.OctopusKit.Constants.Strings.octopusKitBundleID, category: "🚦 States")
+    static let states     = Logger(subsystem: OctopusCore.OctopusKit.Constants.Strings.octopusKitBundleID, category: "🚦 States")
     
     /// A log for the components architecture, including entities and component systems.
-    static let logForComponents = Logger(subsystem: OctopusCore.OctopusKit.Constants.Strings.octopusKitBundleID, category: "🧩 ECS")
+    static let components = Logger(subsystem: OctopusCore.OctopusKit.Constants.Strings.octopusKitBundleID, category: "🧩 ECS")
         
     /// A log for the cycle of turn updates in a turn-based game.
-    static let logForTurns      = Logger(subsystem: OctopusCore.OctopusKit.Constants.Strings.octopusKitBundleID, category: "🔄 Turns")
+    static let turns      = Logger(subsystem: OctopusCore.OctopusKit.Constants.Strings.octopusKitBundleID, category: "🔄 Turns")
 
 }

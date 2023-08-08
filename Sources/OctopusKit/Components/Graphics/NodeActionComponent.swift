@@ -35,7 +35,7 @@ public class NodeActionComponent: OKComponent {
     public override func didAddToEntity(withNode node: SKNode) {
         
         if let action = node.action(forKey: key) {
-            OKLog.logForWarnings.debug("\(📜("\(node) already has \(action) with key \"\(key)\" — Replacing"))")
+            OKLog.warnings.debug("\(📜("\(node) already has \(action) with key \"\(key)\" — Replacing"))")
             node.removeAction(forKey: key)
         }
         
@@ -45,7 +45,7 @@ public class NodeActionComponent: OKComponent {
     public override func willRemoveFromEntity(withNode node: SKNode) {
         
         if node.action(forKey: key) == nil {
-            OKLog.logForWarnings.debug("\(📜("\(node) has no action with key \"\(key)\""))")
+            OKLog.warnings.debug("\(📜("\(node) has no action with key \"\(key)\""))")
         }
         else {
             node.removeAction(forKey: key)

@@ -97,7 +97,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
         {
             /// NOTE: CHECK: PERFORMANCE: Is this a costly operation? Should `createBodyFromNodeFrame` be `true` or `false` by default?
             
-            OKLog.logForDebug.debug("\(📜("\(self) creating new physicsBody from the frame of \(String(describing: node))"))") // Not a warning because this would be the expected behavior of adding a `PhysicsComponent` with no arguments to a fresh entity/node.
+            OKLog.debug.debug("\(📜("\(self) creating new physicsBody from the frame of \(String(describing: node))"))") // Not a warning because this would be the expected behavior of adding a `PhysicsComponent` with no arguments to a fresh entity/node.
             
             /// CHECK: Should this be `calculateAccumulatedFrame()`?
             
@@ -132,7 +132,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
             
             // Then adopt the node's body as this component's body.
             
-            OKLog.logForDebug.debug("\(📜("\(self) missing physicsBody — Adopting from \(node.name ?? String(describing: node))"))")
+            OKLog.debug.debug("\(📜("\(self) missing physicsBody — Adopting from \(node.name ?? String(describing: node))"))")
             
             self.physicsBody = node.physicsBody
         }
@@ -151,7 +151,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
                 /// If our body's node is not the entity's `NodeComponent` node, log an error and detach from the entity, as an `PhysicsComponent` with a body that belongs to another node, *may* be invalid/undesired behavior in most cases.
                 
                 if !allowBodyFromDifferentNode {
-                    OKLog.logForErrors.debug("\(📜("\(physicsBody) already associated with \(physicsBody.node!) — Detaching from entity. If this is intentional, set the `allowBodyFromDifferentNode` flag."))")
+                    OKLog.errors.debug("\(📜("\(physicsBody) already associated with \(physicsBody.node!) — Detaching from entity. If this is intentional, set the `allowBodyFromDifferentNode` flag."))")
                     self.removeFromEntity()
                     return
                     
@@ -161,7 +161,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
                     /// In that case, just warn if the body is not part of the entity's hierarchy.
                     
                     if !physicsBody.node!.inParentHierarchy(node) {
-                        OKLog.logForWarnings.debug("\(📜("\(physicsBody) already associated with \(physicsBody.node!) which is not in the hierarchy of \(node) — This may not be the desired behavior."))")
+                        OKLog.warnings.debug("\(📜("\(physicsBody) already associated with \(physicsBody.node!) which is not in the hierarchy of \(node) — This may not be the desired behavior."))")
                         return
                     }
                 }
@@ -172,7 +172,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
             
         else if self.physicsBody != nil && node.physicsBody != nil && self.physicsBody !== node.physicsBody {
             
-            OKLog.logForWarnings.debug("\(📜("Mismatching bodies: \(self) has \(self.physicsBody), \(node.name ?? String(describing: node)) has \(node.physicsBody) — Replacing node's body"))")
+            OKLog.warnings.debug("\(📜("Mismatching bodies: \(self) has \(self.physicsBody), \(node.name ?? String(describing: node)) has \(node.physicsBody) — Replacing node's body"))")
             
             node.physicsBody = self.physicsBody
         }
@@ -203,7 +203,7 @@ public final class PhysicsComponent: OKComponent, RequiresUpdatesPerFrame {
         if  let nodePhysicsBody = node.physicsBody,
             nodePhysicsBody !== self.physicsBody
         {
-            OKLog.logForWarnings.debug("\(📜("\(node.name ?? String(describing: node)) had a different physicsBody than this component – Removing"))")
+            OKLog.warnings.debug("\(📜("\(node.name ?? String(describing: node)) had a different physicsBody than this component – Removing"))")
         }
         
         // Remove the physicsBody even if the node had a different one, to keep the expected behavior of removing physics from the node when a PhysicsComponent is removed.

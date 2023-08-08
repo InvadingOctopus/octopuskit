@@ -50,7 +50,7 @@ extension SKScene {
         
         #else
         
-        OKLog.logForDebug.debug("\(📜("Only applicable on iOS!"))")
+        OKLog.debug.debug("\(📜("Only applicable on iOS!"))")
         return self.frame
         
         #endif

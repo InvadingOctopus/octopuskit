@@ -21,7 +21,7 @@ open class iOSExclusiveComponent: OKComponent {
     
     public override init() {
         // TO DECIDE: Error or warning?
-        OKLog.logForErrors.debug("\(📜("\(type(of: self)) is for iOS only!"))")
+        OKLog.errors.debug("\(📜("\(type(of: self)) is for iOS only!"))")
         super.init()
     }
     

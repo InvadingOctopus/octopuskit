@@ -52,13 +52,13 @@ open class OKGestureRecognizerComponent <GestureRecognizerType> : OKComponent, O
         super.didAddToEntity(withNode: node)
         
         guard let scene = coComponent(SceneComponent.self)?.scene else {
-            OKLog.logForWarnings.debug("\(📜("\(entity) missing SceneComponent — Detaching"))")
+            OKLog.warnings.debug("\(📜("\(entity) missing SceneComponent — Detaching"))")
             self.removeFromEntity()
             return
         }
         
         guard let view = scene.view else {
-            OKLog.logForWarnings.debug("\(📜("\(scene) is not part of a view — Detaching"))")
+            OKLog.warnings.debug("\(📜("\(scene) is not part of a view — Detaching"))")
             self.removeFromEntity()
             return
         }
@@ -70,13 +70,13 @@ open class OKGestureRecognizerComponent <GestureRecognizerType> : OKComponent, O
         super.willRemoveFromEntity(withNode: node)
         
         guard let scene = coComponent(SceneComponent.self)?.scene else {
-            OKLog.logForWarnings.debug("\(📜("\(entity) missing SceneComponent — Detaching"))")
+            OKLog.warnings.debug("\(📜("\(entity) missing SceneComponent — Detaching"))")
             self.removeFromEntity()
             return
         }
         
         guard let view = scene.view else {
-            OKLog.logForWarnings.debug("\(📜("\(scene) is not part of a view"))")
+            OKLog.warnings.debug("\(📜("\(scene) is not part of a view"))")
             return
         }
         

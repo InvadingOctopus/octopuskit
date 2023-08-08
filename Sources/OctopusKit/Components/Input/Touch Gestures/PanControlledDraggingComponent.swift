@@ -88,8 +88,8 @@ public final class PanControlledDraggingComponent: OKComponent, RequiresUpdatesP
         // A scene itself is not really draggable, so...
         
         if node is SKScene {
-            OKLog.logForWarnings.debug("\(📜("A PanControlledDraggingComponent cannot be added to the scene entity — Removing."))")
-            OKLog.logForTips.debug("\(📜("See CameraPanComponent."))")
+            OKLog.warnings.debug("\(📜("A PanControlledDraggingComponent cannot be added to the scene entity — Removing."))")
+            OKLog.tips.debug("\(📜("See CameraPanComponent."))")
             self.removeFromEntity()
         }
     }

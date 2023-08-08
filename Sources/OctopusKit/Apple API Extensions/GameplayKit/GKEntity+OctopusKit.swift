@@ -134,7 +134,7 @@ public extension GKEntity {
         if  let component = component {
             self.addComponent(component)
         } else {
-            OKLog.logForDebug.debug("\(📜("nil"))") // CHECK: Is logging this helpful?
+            OKLog.debug.debug("\(📜("nil"))") // CHECK: Is logging this helpful?
         }
     }
     

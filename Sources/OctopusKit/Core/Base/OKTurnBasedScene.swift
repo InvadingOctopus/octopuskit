@@ -59,7 +59,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let turn = "T\(self.currentTurn)"
                     .paddedWithSpace(toLength: 5)
                 
-                OKLog.logForTurns.debug("\(📜("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🟢"))")
+                OKLog.turns.debug("\(📜("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🟢"))")
                 #endif
                 
                 component.beginTurn(delta: turns)
@@ -86,7 +86,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let turn = "T\(self.currentTurn)"
                     .paddedWithSpace(toLength: 5)
                 
-                OKLog.logForTurns.debug("\(📜("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🟡"))")
+                OKLog.turns.debug("\(📜("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🟡"))")
                 #endif
                 
                 component.updateTurn(delta: turns)
@@ -113,7 +113,7 @@ open class OKTurnBasedScene: OKScene, TurnBased {
                 let turn = "T\(self.currentTurn)"
                     .paddedWithSpace(toLength: 5)
                 
-                OKLog.logForTurns.debug("\(📜("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🔴"))")
+                OKLog.turns.debug("\(📜("\(entityName) \(component))", topic: "\(self.name)", function: "\(turn) 🔴"))")
                 #endif
                 
                 component.endTurn(delta: turns)
